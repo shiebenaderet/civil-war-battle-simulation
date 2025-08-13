@@ -91,7 +91,7 @@
         .battle-results-modal,
         .campaign-log-modal,
         .end-game-summary {
-            display: none !important;
+            display: none;
         }
 
         @keyframes fadeIn {
@@ -2183,6 +2183,8 @@
         
         hideAllScreens();
         elements.battleBriefing.style.display = 'block';
+        elements.gameScreen.style.display = 'block';
+        updateGameDisplay();
         window.scrollTo({ top: 0, behavior: 'smooth' });
         updateVocabularyDisplay();
     }
