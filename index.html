@@ -89,8 +89,9 @@
         .game-screen,
         .battle-briefing,
         .battle-results-modal,
+        .campaign-log-modal,
         .end-game-summary {
-            display: none;
+            display: none !important;
         }
 
         @keyframes fadeIn {
@@ -1389,7 +1390,7 @@
         <!-- Battle Results Modal -->
         <div class="battle-results-modal" id="battleResultsModal">
             <div class="battle-results-container">
-                <h2 class="battle-outcome" id="battleOutcome">VICTORY!</h2>
+                <h2 class="battle-outcome" id="battleOutcome"></h2>
                 
                 <!-- Quick Results Summary -->
                 <div class="results-summary">
@@ -1435,7 +1436,7 @@
         <!-- End Game Summary -->
         <div class="end-game-summary" id="endGameSummary">
             <div class="outcome-banner" id="outcomeBanner">
-                <h1 class="outcome-title" id="outcomeTitle">VICTORY!</h1>
+                <h1 class="outcome-title" id="outcomeTitle"></h1>
                 <p class="outcome-subtitle" id="outcomeSubtitle">The Union is Preserved</p>
             </div>
             
@@ -2000,6 +2001,10 @@
             vocabToggle: document.getElementById('vocabToggle')
         };
 
+        // Ensure only side selection screen is visible on load
+        hideAllScreens();
+        elements.sideSelection.style.display = 'block';
+        
         setupEventListeners();
         updateVocabularyDisplay();
     }
