@@ -4,6 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Civil War Battle Simulation - Educational Edition</title>
+    
+    <!-- Kagi Translation Integration -->
+    <script type="text/javascript">
+        function translateWithKagi(targetLanguage) {
+            // Get the current domain/hostname
+            const currentDomain = window.location.hostname;
+            const currentPort = window.location.port ? `:${window.location.port}` : '';
+            const fullDomain = `${currentDomain}${currentPort}`;
+            
+            // Create Kagi translate URL with embedded format
+            const kagiUrl = `https://translate.kagi.com/${fullDomain}${window.location.pathname}${window.location.search}`;
+            
+            // Navigate to the translated version in the same tab
+            window.location.href = kagiUrl;
+        }
+        
+        // Vocabulary Sidebar Toggle
+        function toggleVocabSidebar() {
+            const sidebar = document.getElementById('vocabSidebar');
+            sidebar.classList.toggle('open');
+        }
+    </script>
+    
     <style>
         * {
             margin: 0;
@@ -33,27 +56,111 @@
         }
 
         /* Language and Accessibility Controls */
-        .controls-panel {
+        /* Vocabulary Sidebar */
+        .vocab-sidebar {
             position: fixed;
+            left: 0;
+            top: 0;
+            width: 280px;
+            height: 100vh;
+            background: rgba(0,0,0,0.95);
+            border-right: 2px solid #444;
+            padding: 20px;
+            z-index: 1200;
+            overflow-y: auto;
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+        }
+        
+        .vocab-sidebar.open {
+            transform: translateX(0);
+        }
+        
+        .vocab-sidebar h3 {
+            color: #ffd700;
+            margin-bottom: 20px;
+            font-size: 1.2em;
+            text-align: center;
+            border-bottom: 2px solid #ffd700;
+            padding-bottom: 10px;
+        }
+        
+        .vocab-list {
+            list-style: none;
+        }
+        
+        .vocab-item {
+            margin-bottom: 15px;
+            padding: 10px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 8px;
+            border-left: 3px solid #ffd700;
+        }
+        
+        .vocab-term-name {
+            font-weight: bold;
+            color: #ffd700;
+            margin-bottom: 5px;
+        }
+        
+        .vocab-definition-text {
+            color: #f0f0f0;
+            font-size: 0.9em;
+            line-height: 1.4;
+        }
+        
+        .vocab-toggle-btn {
+            position: fixed;
+            left: 20px;
             top: 20px;
-            right: 20px;
-            background: rgba(0,0,0,0.8);
-            border: 1px solid #444;
-            border-radius: 10px;
-            padding: 15px;
-            z-index: 1000;
-            display: flex;
-            gap: 10px;
-            align-items: center;
+            background: linear-gradient(135deg, #ffd700, #f59e0b);
+            color: #000;
+            border: none;
+            padding: 12px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: 'Georgia', serif;
+            font-weight: bold;
+            z-index: 1300;
+            box-shadow: 0 4px 15px rgba(255,215,0,0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .vocab-toggle-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(255,215,0,0.4);
         }
 
-        .language-select {
+        .controls-panel {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(0,0,0,0.9);
+            border: 1px solid #444;
+            border-radius: 10px;
+            padding: 12px;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            align-items: center;
+            max-width: 200px;
+        }
+
+        /* Kagi Translation widget styling */
+        .translate-select {
             background: rgba(255,255,255,0.1);
             border: 1px solid #666;
             color: #fff;
             padding: 5px 10px;
             border-radius: 5px;
             font-family: 'Georgia', serif;
+            font-size: 0.9em;
+        }
+        
+        .translate-select option {
+            background: #2a2a2a;
+            color: #fff;
         }
 
         .vocab-toggle {
@@ -130,7 +237,7 @@
             left: 50%;
             transform: translateX(-50%);
             background: #1a1a1a;
-            color: #fff;
+            color: #fff !important;
             padding: 12px 15px;
             border-radius: 8px;
             font-size: 0.9em;
@@ -139,10 +246,11 @@
             opacity: 0;
             visibility: hidden;
             transition: all 0.3s ease;
-            z-index: 100;
+            z-index: 1100;
             box-shadow: 0 5px 20px rgba(0,0,0,0.5);
             border: 1px solid #444;
             margin-bottom: 10px;
+            white-space: normal;
         }
 
         .vocab-tooltip::after {
@@ -162,15 +270,13 @@
         }
 
         .vocab-definition {
-            margin-bottom: 8px;
-            color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            color: #f0f0f0 !important;
+            font-size: inherit;
+            line-height: 1.4;
         }
 
-        .vocab-translation {
-            font-size: 0.85em;
-            color: #ffd700;
-            font-style: italic;
-        }
 
         /* Side Cards */
         .sides-container {
@@ -1204,13 +1310,26 @@
         }
 
         @media (max-width: 700px) {
-            .game-container { padding: 10px; }
+            .game-container { padding: 10px; padding-left: 20px; }
             .game-title { font-size: 2em; }
             .side-card { width: 100%; max-width: 350px; }
             .sides-container { flex-direction: column; align-items: center; }
-            .controls-panel { position: relative; top: 0; right: 0; margin-bottom: 20px; }
+            .controls-panel { position: relative; bottom: auto; right: auto; margin: 20px auto; max-width: 90%; }
             .choice-pros-cons { grid-template-columns: 1fr; }
             .vocab-tooltip { width: 250px; }
+            
+            /* Mobile vocabulary sidebar */
+            .vocab-sidebar {
+                width: 90vw;
+                max-width: 300px;
+            }
+            
+            .vocab-toggle-btn {
+                left: 10px;
+                top: 10px;
+                padding: 10px 12px;
+                font-size: 0.9em;
+            }
             
             /* Mobile responsive for Civil War intro */
             .civil-war-intro .intro-content > div[style*="grid"] {
@@ -1237,15 +1356,64 @@
     </style>
 </head>
 <body>
+    <!-- Vocabulary Sidebar -->
+    <div class="vocab-sidebar" id="vocabSidebar">
+        <h3>📚 Key Terms</h3>
+        <ul class="vocab-list">
+            <li class="vocab-item">
+                <div class="vocab-term-name">Slavery</div>
+                <div class="vocab-definition-text">The practice of owning people as property and forcing them to work without pay</div>
+            </li>
+            <li class="vocab-item">
+                <div class="vocab-term-name">States' Rights</div>
+                <div class="vocab-definition-text">The belief that each state should decide its own laws instead of the federal government</div>
+            </li>
+            <li class="vocab-item">
+                <div class="vocab-term-name">Civil War</div>
+                <div class="vocab-definition-text">A war fought between people from the same country</div>
+            </li>
+            <li class="vocab-item">
+                <div class="vocab-term-name">Reinforcements</div>
+                <div class="vocab-definition-text">Extra soldiers sent to help your army when you need them</div>
+            </li>
+            <li class="vocab-item">
+                <div class="vocab-term-name">Flanking</div>
+                <div class="vocab-definition-text">A military tactic of attacking the sides of an enemy formation</div>
+            </li>
+            <li class="vocab-item">
+                <div class="vocab-term-name">Fortification</div>
+                <div class="vocab-definition-text">Structures built to defend against attack</div>
+            </li>
+            <li class="vocab-item">
+                <div class="vocab-term-name">Retreat</div>
+                <div class="vocab-definition-text">Moving forces away from battle to a safer position</div>
+            </li>
+            <li class="vocab-item">
+                <div class="vocab-term-name">Casualties</div>
+                <div class="vocab-definition-text">Soldiers killed, wounded, or missing in battle</div>
+            </li>
+        </ul>
+    </div>
+    
+    <!-- Vocabulary Toggle Button -->
+    <button class="vocab-toggle-btn" id="vocabToggleBtn" onclick="toggleVocabSidebar()">📚 Terms</button>
+
     <!-- Language and Accessibility Controls -->
     <div class="controls-panel">
-        <select class="language-select" id="languageSelect">
-            <option value="en">English</option>
-            <option value="es">Español</option>
-            <option value="fr">Français</option>
-            <option value="zh">中文</option>
+        <select class="translate-select" onchange="if(this.value) translateWithKagi(this.value); this.value='';">
+            <option value="">🌐 Translate Page</option>
+            <option value="Spanish">Español</option>
+            <option value="French">Français</option>
+            <option value="Portuguese">Português</option>
+            <option value="Chinese">中文</option>
+            <option value="Korean">한국어</option>
+            <option value="Ukrainian">Українська</option>
+            <option value="German">Deutsch</option>
+            <option value="Japanese">日本語</option>
+            <option value="Russian">Русский</option>
+            <option value="Arabic">العربية</option>
         </select>
-        <button class="vocab-toggle active" id="vocabToggle">Vocabulary Help: ON</button>
+        <button onclick="resetIntroduction()" style="background: #444; color: #fff; border: none; padding: 4px 8px; border-radius: 4px; font-size: 0.8em; margin-top: 5px;">Reset Intro</button>
     </div>
 
     <div class="game-container">
@@ -1261,7 +1429,7 @@
                 <div class="intro-content">
                     <p style="font-size: 1.1em; line-height: 1.6; margin-bottom: 20px; text-align: center;">
                         From 1861 to 1865, Americans fought Americans in our nation's deadliest conflict. 
-                        Over 600,000 people died fighting about <span class="vocab-term">slavery<span class="vocab-tooltip"><div class="vocab-definition">The practice of owning people as property</div></span></span> and whether states could leave the Union.
+                        Over 600,000 people died fighting about <strong style="color: #ffd700;">slavery</strong> and whether states could leave the Union.
                     </p>
                     
                     <div style="background: rgba(255, 215, 0, 0.1); padding: 15px; border-radius: 10px; margin: 20px 0; text-align: center;">
@@ -1278,7 +1446,7 @@
                 </div>
             </div>
             
-            <h2 style="color: #ffd700; text-align: center; margin: 30px 0 20px 0;">Choose Your Side</h2>
+            <h2 id="chooseSideHeading" style="color: #ffd700; text-align: center; margin: 30px 0 20px 0;">Choose Your Side</h2>
             
             <div class="sides-container">
                 <div class="side-card union-card" id="unionCard">
@@ -1286,11 +1454,11 @@
                     <h2 class="side-name">Union (The North)</h2>
                     <p class="side-description">
                         <strong>🏭 Industrial Powerhouse</strong><br>
-                        You command President Lincoln's forces fighting to keep America united and end <span class="vocab-term">slavery<span class="vocab-tooltip"><div class="vocab-definition">The practice of owning people as property</div></span></span> forever. 
+                        You command President Lincoln's forces fighting to keep America united and end <strong style="color: #ffd700;">slavery</strong> forever. 
                         Use your factories, railroads, and larger population to crush the rebellion!
                     </p>
                     <div style="background: rgba(59, 130, 246, 0.2); padding: 10px; border-radius: 8px; margin: 10px 0;">
-                        <p style="font-size: 0.9em; margin: 0;"><strong>Your Advantages:</strong> More <span class="vocab-term">reinforcements<span class="vocab-tooltip"><div class="vocab-definition">Additional troops sent to strengthen a military force</div></span></span>, better weapons, naval blockade</p>
+                        <p style="font-size: 0.9em; margin: 0;"><strong>Your Advantages:</strong> More <strong style="color: #ffd700;">reinforcements</strong>, better weapons, naval blockade</p>
                     </div>
                     <p class="soldier-count">Starting Army: 1,500,000 soldiers</p>
                     <p class="victory-condition">
@@ -1303,7 +1471,7 @@
                     <h2 class="side-name">Confederacy (The South)</h2>
                     <p class="side-description">
                         <strong>⚔️ Scrappy Underdogs</strong><br>
-                        Fight for <span class="vocab-term">states' rights<span class="vocab-tooltip"><div class="vocab-definition">The idea that individual states should have more power than the federal government</div></span></span> and Southern independence! 
+                        Fight for <strong style="color: #ffd700;">states' rights</strong> and Southern independence! 
                         You're outnumbered, but your generals know the land and your soldiers fight for their homeland.
                     </p>
                     <div style="background: rgba(107, 114, 128, 0.2); padding: 10px; border-radius: 8px; margin: 10px 0;">
@@ -1505,56 +1673,9 @@
         battleHistory: []
     };
 
-    // Language and settings
+    // Settings
     let settings = {
-        language: 'en',
         vocabHelp: true
-    };
-
-    // Vocabulary definitions with translations
-    const vocabulary = {
-        'slavery': {
-            en: 'The practice of owning people as property',
-            es: 'La práctica de ser dueño de personas como propiedad',
-            fr: 'La pratique de posséder des personnes comme propriété',
-            zh: '拥有人作为财产的做法'
-        },
-        'states\' rights': {
-            en: 'The idea that individual states should have more power than the federal government',
-            es: 'La idea de que los estados individuales deberían tener más poder que el gobierno federal',
-            fr: 'L\'idée que les États individuels devraient avoir plus de pouvoir que le gouvernement fédéral',
-            zh: '个别州应该比联邦政府拥有更多权力的想法'
-        },
-        'flanking': {
-            en: 'A military tactic of attacking the sides of an enemy formation',
-            es: 'Una táctica militar de atacar los lados de una formación enemiga',
-            fr: 'Une tactique militaire d\'attaquer les côtés d\'une formation ennemie',
-            zh: '攻击敌军编队侧翼的军事战术'
-        },
-        'fortify': {
-            en: 'To strengthen a place with defensive works against attack',
-            es: 'Fortalecer un lugar con obras defensivas contra ataques',
-            fr: 'Renforcer un lieu avec des ouvrages défensifs contre l\'attaque',
-            zh: '用防御工事加强一个地方以抵御攻击'
-        },
-        'retreat': {
-            en: 'To withdraw forces from battle to a safer position',
-            es: 'Retirar fuerzas de la batalla a una posición más segura',
-            fr: 'Retirer les forces du combat vers une position plus sûre',
-            zh: '将部队从战斗中撤退到更安全的位置'
-        },
-        'casualties': {
-            en: 'Soldiers killed, wounded, or missing in battle',
-            es: 'Soldados muertos, heridos o desaparecidos en batalla',
-            fr: 'Soldats tués, blessés ou portés disparus au combat',
-            zh: '在战斗中阵亡、受伤或失踪的士兵'
-        },
-        'reinforcements': {
-            en: 'Additional troops sent to strengthen a military force',
-            es: 'Tropas adicionales enviadas para reforzar una fuerza militar',
-            fr: 'Troupes supplémentaires envoyées pour renforcer une force militaire',
-            zh: '派遣来加强军事力量的增援部队'
-        }
     };
 
     // Complete battle data with all 10 battles
@@ -1996,7 +2117,7 @@
         union: {
             portrait: "🎩",
             name: "President Abraham Lincoln",
-            message: "My fellow American,\n\nYou are about to take command of Union forces during our nation's greatest crisis. The <span class='vocab-term'>Civil War<span class='vocab-tooltip'><div class='vocab-definition'>A war between different groups within the same country</div><div class='vocab-translation'>Spanish: guerra civil</div></span></span> began because Southern states wanted to leave the United States to keep <span class='vocab-term'>slavery<span class='vocab-tooltip'><div class='vocab-definition'>The practice of owning people as property</div><div class='vocab-translation'>Spanish: esclavitud</div></span></span> legal.\n\nAs a Union commander, you must make the same difficult decisions that real generals like Ulysses S. Grant and William T. Sherman faced. Every choice has consequences - for your soldiers, for civilians, and for the future of our country.\n\nRemember: we fight not just to win battles, but to preserve the idea that all people are created equal.\n\nGood luck, General.",
+            message: "My fellow American,\n\nYou are about to take command of Union forces during our nation's greatest crisis. The <span class='vocab-term'>Civil War<span class='vocab-tooltip'><div class='vocab-definition'>A war fought between people from the same country</div></span></span> began because Southern states wanted to leave the United States to keep <span class='vocab-term'>slavery<span class='vocab-tooltip'><div class='vocab-definition'>The system where people could own other people and force them to work without pay</div></span></span> legal.\n\nAs a Union commander, you must make the same difficult decisions that real generals like Ulysses S. Grant and William T. Sherman faced. Every choice has consequences - for your soldiers, for civilians, and for the future of our country.\n\nRemember: we fight not just to win battles, but to preserve the idea that all people are created equal.\n\nGood luck, General.",
             objectives: [
                 "Win 6 out of 10 major battles to restore the Union",
                 "Learn about the real strategies used in the Civil War",
@@ -2039,7 +2160,6 @@
             campaignLogBtn: document.getElementById('campaignLogBtn'),
             closeLogBtn: document.getElementById('closeLogBtn'),
             playAgainBtn: document.getElementById('playAgainBtn'),
-            languageSelect: document.getElementById('languageSelect'),
             vocabToggle: document.getElementById('vocabToggle')
         };
 
@@ -2051,8 +2171,18 @@
         
         if (!hasSeenIntro) {
             document.getElementById('civilWarIntro').style.display = 'block';
-            document.querySelector('h2[style*="Choose Your Side"]').style.display = 'none';
+            // Hide the "Choose Your Side" heading and side cards
+            document.getElementById('chooseSideHeading').style.display = 'none';
             document.querySelector('.sides-container').style.display = 'none';
+            // Force re-render of vocabulary tooltips after display change
+            setTimeout(() => {
+                updateVocabularyDisplay();
+                // Force browser to recalculate layout for tooltips
+                const introVocabTerms = document.querySelectorAll('#civilWarIntro .vocab-term');
+                introVocabTerms.forEach(term => {
+                    term.style.position = 'relative'; // Ensure proper positioning context
+                });
+            }, 150);
         }
         
         setupEventListeners();
@@ -2078,7 +2208,6 @@
         elements.closeLogBtn.addEventListener('click', closeCampaignLog);
 
         // Settings
-        elements.languageSelect.addEventListener('change', changeLanguage);
         elements.vocabToggle.addEventListener('click', toggleVocabularyHelp);
 
         // Close modal when clicking outside
@@ -2524,10 +2653,6 @@
         `;
     }
 
-    function changeLanguage() {
-        settings.language = elements.languageSelect.value;
-        updateVocabularyDisplay();
-    }
 
     function toggleVocabularyHelp() {
         settings.vocabHelp = !settings.vocabHelp;
@@ -2555,7 +2680,9 @@
         
         // Hide introduction and show side selection
         document.getElementById('civilWarIntro').style.display = 'none';
-        document.querySelector('h2[style*="Choose Your Side"]').style.display = 'block';
+        
+        // Show the "Choose Your Side" heading and side cards
+        document.getElementById('chooseSideHeading').style.display = 'block';
         document.querySelector('.sides-container').style.display = 'flex';
         
         // Update vocabulary display for new content
