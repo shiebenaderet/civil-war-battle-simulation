@@ -1212,6 +1212,12 @@
             .choice-pros-cons { grid-template-columns: 1fr; }
             .vocab-tooltip { width: 250px; }
             
+            /* Mobile responsive for Civil War intro */
+            .civil-war-intro .intro-content > div[style*="grid"] {
+                grid-template-columns: 1fr !important;
+                gap: 15px !important;
+            }
+            
             .battle-results-container {
                 padding: 20px;
                 margin: 10px;
@@ -1248,28 +1254,64 @@
             <h1 class="game-title">Civil War Battle Simulation</h1>
             <p class="subtitle">Educational Edition - Learn History Through Strategy</p>
             
+            <!-- Civil War Introduction - only shown on first visit -->
+            <div class="civil-war-intro" id="civilWarIntro" style="display: none;">
+                <h2 style="color: #ffd700; text-align: center; margin-bottom: 20px;">⚔️ The American Civil War (1861-1865) ⚔️</h2>
+                
+                <div class="intro-content">
+                    <p style="font-size: 1.1em; line-height: 1.6; margin-bottom: 20px; text-align: center;">
+                        From 1861 to 1865, Americans fought Americans in our nation's deadliest conflict. 
+                        Over 600,000 people died fighting about <span class="vocab-term">slavery<span class="vocab-tooltip"><div class="vocab-definition">The practice of owning people as property</div></span></span> and whether states could leave the Union.
+                    </p>
+                    
+                    <div style="background: rgba(255, 215, 0, 0.1); padding: 15px; border-radius: 10px; margin: 20px 0; text-align: center;">
+                        <p style="font-size: 1em; line-height: 1.5; margin: 0;">
+                            <strong>🎯 Your Mission:</strong> Command one side through 10 major battles, making the same tough decisions real generals faced!
+                        </p>
+                    </div>
+                    
+                    <div style="text-align: center; margin: 20px 0;">
+                        <button onclick="hideIntroduction()" style="background: linear-gradient(135deg, #059669, #10b981); color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-family: 'Georgia', serif; font-size: 1em;">
+                            Continue to Side Selection →
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <h2 style="color: #ffd700; text-align: center; margin: 30px 0 20px 0;">Choose Your Side</h2>
+            
             <div class="sides-container">
                 <div class="side-card union-card" id="unionCard">
                     <span class="side-flag">🇺🇸</span>
-                    <h2 class="side-name">Union</h2>
+                    <h2 class="side-name">Union (The North)</h2>
                     <p class="side-description">
-                        Fight to preserve the United States and end <span class="vocab-term">slavery<span class="vocab-tooltip"><div class="vocab-definition">The practice of owning people as property</div><div class="vocab-translation">Spanish: esclavitud</div></span></span>. Lead the industrial might of the North.
+                        <strong>🏭 Industrial Powerhouse</strong><br>
+                        You command President Lincoln's forces fighting to keep America united and end <span class="vocab-term">slavery<span class="vocab-tooltip"><div class="vocab-definition">The practice of owning people as property</div></span></span> forever. 
+                        Use your factories, railroads, and larger population to crush the rebellion!
                     </p>
-                    <p class="soldier-count">Starting Force: 1,500,000</p>
+                    <div style="background: rgba(59, 130, 246, 0.2); padding: 10px; border-radius: 8px; margin: 10px 0;">
+                        <p style="font-size: 0.9em; margin: 0;"><strong>Your Advantages:</strong> More <span class="vocab-term">reinforcements<span class="vocab-tooltip"><div class="vocab-definition">Additional troops sent to strengthen a military force</div></span></span>, better weapons, naval blockade</p>
+                    </div>
+                    <p class="soldier-count">Starting Army: 1,500,000 soldiers</p>
                     <p class="victory-condition">
-                        Win 6 out of 10 battles to claim victory
+                        🎯 Win 6 out of 10 battles to save the Union!
                     </p>
                 </div>
                 
                 <div class="side-card confederacy-card" id="confederacyCard">
                     <span class="side-flag">🏴</span>
-                    <h2 class="side-name">Confederacy</h2>
+                    <h2 class="side-name">Confederacy (The South)</h2>
                     <p class="side-description">
-                        Fight for <span class="vocab-term">states' rights<span class="vocab-tooltip"><div class="vocab-definition">The idea that individual states should have more power than the federal government</div><div class="vocab-translation">Spanish: derechos de los estados</div></span></span> and Southern independence. Command the armies of the South.
+                        <strong>⚔️ Scrappy Underdogs</strong><br>
+                        Fight for <span class="vocab-term">states' rights<span class="vocab-tooltip"><div class="vocab-definition">The idea that individual states should have more power than the federal government</div></span></span> and Southern independence! 
+                        You're outnumbered, but your generals know the land and your soldiers fight for their homeland.
                     </p>
-                    <p class="soldier-count">Starting Force: 1,000,000</p>
+                    <div style="background: rgba(107, 114, 128, 0.2); padding: 10px; border-radius: 8px; margin: 10px 0;">
+                        <p style="font-size: 0.9em; margin: 0;"><strong>Your Advantages:</strong> Better generals, home field, defensive tactics</p>
+                    </div>
+                    <p class="soldier-count">Starting Army: 1,000,000 soldiers</p>
                     <p class="victory-condition">
-                        Win 5 out of 10 battles to claim victory
+                        🎯 Win 5 out of 10 battles to gain independence!
                     </p>
                 </div>
             </div>
@@ -2001,9 +2043,17 @@
             vocabToggle: document.getElementById('vocabToggle')
         };
 
-        // Ensure only side selection screen is visible on load
+        // Check if this is first time playing - show introduction
+        const hasSeenIntro = localStorage.getItem('civilWarIntroSeen');
+        
         hideAllScreens();
         elements.sideSelection.style.display = 'block';
+        
+        if (!hasSeenIntro) {
+            document.getElementById('civilWarIntro').style.display = 'block';
+            document.querySelector('h2[style*="Choose Your Side"]').style.display = 'none';
+            document.querySelector('.sides-container').style.display = 'none';
+        }
         
         setupEventListeners();
         updateVocabularyDisplay();
@@ -2499,6 +2549,19 @@
         });
     }
 
+    function hideIntroduction() {
+        // Mark introduction as seen
+        localStorage.setItem('civilWarIntroSeen', 'true');
+        
+        // Hide introduction and show side selection
+        document.getElementById('civilWarIntro').style.display = 'none';
+        document.querySelector('h2[style*="Choose Your Side"]').style.display = 'block';
+        document.querySelector('.sides-container').style.display = 'flex';
+        
+        // Update vocabulary display for new content
+        updateVocabularyDisplay();
+    }
+
     function resetGame() {
         gameState = {
             side: null,
@@ -2511,6 +2574,12 @@
         };
         
         showSideSelection();
+    }
+
+    // For testing - reset introduction flag
+    function resetIntroduction() {
+        localStorage.removeItem('civilWarIntroSeen');
+        location.reload();
     }
 
     // Initialize when DOM is ready
