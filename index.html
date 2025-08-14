@@ -5,9 +5,111 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Civil War Battle Simulation - Educational Edition</title>
     
+    <!-- Performance & Security Headers -->
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    
+    <!-- DNS prefetch for external resources -->
+    <link rel="dns-prefetch" href="//fonts.googleapis.com">
+    <link rel="dns-prefetch" href="//fonts.gstatic.com">
+    <link rel="dns-prefetch" href="//upload.wikimedia.org">
+    
+    <!-- Asset Manifest - Public Domain Civil War Images -->
+    <script type="application/json" id="assetManifest">[
+        {
+            "id": "bull_run",
+            "title": "First Battle of Bull Run",
+            "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/Battle_of_Bull_Run%2C_July_21%2C_1861_-_Currier_%26_Ives_2.jpg/800px-Battle_of_Bull_Run%2C_July_21%2C_1861_-_Currier_%26_Ives_2.jpg",
+            "credit": "Currier & Ives",
+            "license": "Public Domain",
+            "source": "Library of Congress"
+        },
+        {
+            "id": "antietam",
+            "title": "Battle of Antietam",
+            "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Antietam_Battlefield.jpg/800px-Antietam_Battlefield.jpg",
+            "credit": "Alexander Gardner",
+            "license": "Public Domain",
+            "source": "National Archives"
+        },
+        {
+            "id": "fredericksburg",
+            "title": "Battle of Fredericksburg",
+            "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Battle_of_Fredericksburg%2C_Dec_13%2C_1862.jpg/800px-Battle_of_Fredericksburg%2C_Dec_13%2C_1862.jpg",
+            "credit": "Kurz & Allison",
+            "license": "Public Domain",
+            "source": "Library of Congress"
+        },
+        {
+            "id": "chancellorsville", 
+            "title": "Battle of Chancellorsville",
+            "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/Chancellorsville_Campaign.jpg/800px-Chancellorsville_Campaign.jpg",
+            "credit": "Jedediah Hotchkiss",
+            "license": "Public Domain",
+            "source": "National Archives"
+        },
+        {
+            "id": "gettysburg",
+            "title": "Battle of Gettysburg",
+            "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Gettysburg_by_Thulstrup.jpg/800px-Gettysburg_by_Thulstrup.jpg",
+            "credit": "Thure de Thulstrup",
+            "license": "Public Domain",
+            "source": "Library of Congress"
+        },
+        {
+            "id": "vicksburg",
+            "title": "Siege of Vicksburg",
+            "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Vicksburg_Kurz_%26_Allison.jpg/800px-Vicksburg_Kurz_%26_Allison.jpg",
+            "credit": "Kurz & Allison",
+            "license": "Public Domain",
+            "source": "Library of Congress"
+        },
+        {
+            "id": "chickamauga",
+            "title": "Battle of Chickamauga",
+            "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Chickamauga_by_Kurz_and_Allison.jpg/800px-Chickamauga_by_Kurz_and_Allison.jpg",
+            "credit": "Kurz & Allison",
+            "license": "Public Domain",
+            "source": "Library of Congress"
+        },
+        {
+            "id": "wilderness",
+            "title": "Battle of the Wilderness",
+            "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b7/Battle_of_the_Wilderness_by_Kurz_and_Allison.jpg/800px-Battle_of_the_Wilderness_by_Kurz_and_Allison.jpg",
+            "credit": "Kurz & Allison",
+            "license": "Public Domain",
+            "source": "Library of Congress"
+        },
+        {
+            "id": "petersburg",
+            "title": "Siege of Petersburg",
+            "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/86/Petersburg_mine.jpg/800px-Petersburg_mine.jpg",
+            "credit": "Timothy H. O'Sullivan",
+            "license": "Public Domain",
+            "source": "National Archives"
+        },
+        {
+            "id": "appomattox",
+            "title": "Surrender at Appomattox",
+            "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Surrender_of_General_Lee_at_Appomattox_Court_House.jpg/800px-Surrender_of_General_Lee_at_Appomattox_Court_House.jpg",
+            "credit": "Tom Lovell",
+            "license": "Public Domain",
+            "source": "National Archives"
+        }
+    ]</script>
+    
+    <!-- Google Fonts - Optimized Loading -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Crimson+Pro:wght@400;500;600&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Crimson+Pro:wght@400;500;600&display=swap" rel="stylesheet"></noscript>
+    
     <!-- Kagi Translation Integration -->
     <script type="text/javascript">
         function translateWithKagi(targetLanguage) {
+            // Update HTML lang attribute before navigation
+            updateLanguageAttribute(targetLanguage);
+            
             // Get the current domain/hostname
             const currentDomain = window.location.hostname;
             const currentPort = window.location.port ? `:${window.location.port}` : '';
@@ -25,9 +127,283 @@
             const sidebar = document.getElementById('vocabSidebar');
             sidebar.classList.toggle('open');
         }
+        
+        // Theme Toggle Function
+        function toggleTheme() {
+            const html = document.documentElement;
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            
+            // Update theme toggle button
+            const toggleBtn = document.getElementById('themeToggle');
+            if (toggleBtn) {
+                toggleBtn.textContent = newTheme === 'light' ? '🌙' : '☀️';
+                toggleBtn.setAttribute('aria-label', `Switch to ${newTheme === 'light' ? 'dark' : 'light'} theme`);
+            }
+        }
+        
+        // Update HTML lang attribute for translation
+        function updateLanguageAttribute(language) {
+            const html = document.documentElement;
+            const languageCodes = {
+                'Spanish': 'es',
+                'French': 'fr',
+                'Portuguese': 'pt',
+                'Chinese': 'zh',
+                'Korean': 'ko',
+                'Ukrainian': 'uk',
+                'German': 'de',
+                'Japanese': 'ja',
+                'Russian': 'ru',
+                'Arabic': 'ar'
+            };
+            
+            const langCode = languageCodes[language] || 'en';
+            html.setAttribute('lang', langCode);
+        }
+        
+        // Initialize theme on page load
+        function initializeTheme() {
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            const html = document.documentElement;
+            
+            html.setAttribute('data-theme', savedTheme);
+            
+            const toggleBtn = document.getElementById('themeToggle');
+            if (toggleBtn) {
+                toggleBtn.textContent = savedTheme === 'light' ? '🌙' : '☀️';
+                toggleBtn.setAttribute('aria-label', `Switch to ${savedTheme === 'light' ? 'dark' : 'light'} theme`);
+            }
+        }
     </script>
     
     <style>
+        /* ===============================================
+           DESIGN TOKENS - Contemporary Classroom Theme
+           =============================================== */
+        
+        :root {
+            /* Color Palette - Dark Theme (Default) */
+            --color-navy-900: #0c0f17;
+            --color-navy-800: #1a1d29;
+            --color-navy-700: #252938;
+            --color-navy-600: #363b4a;
+            --color-navy-500: #4a5568;
+            --color-navy-400: #718096;
+            --color-navy-300: #a0aec0;
+            --color-navy-200: #cbd5e0;
+            --color-navy-100: #e2e8f0;
+            --color-navy-50: #f7fafc;
+            
+            --color-gold-900: #744210;
+            --color-gold-800: #975a16;
+            --color-gold-700: #b7791f;
+            --color-gold-600: #d4af37;
+            --color-gold-500: #ecc94b;
+            --color-gold-400: #f6e05e;
+            --color-gold-300: #faf089;
+            --color-gold-200: #fefcbf;
+            --color-gold-100: #fffff0;
+            
+            --color-blue-900: #1e3a5f;
+            --color-blue-800: #2c5282;
+            --color-blue-700: #3182ce;
+            --color-blue-600: #4a90a4;
+            --color-blue-500: #63b3ed;
+            --color-blue-400: #90cdf4;
+            --color-blue-300: #bee3f8;
+            --color-blue-200: #e6f7ff;
+            
+            --color-cream-900: #8d7053;
+            --color-cream-800: #a0956b;
+            --color-cream-700: #b8ad85;
+            --color-cream-600: #d4c8a0;
+            --color-cream-500: #e8dcc0;
+            --color-cream-400: #f0e7d1;
+            --color-cream-300: #f5f1e8;
+            --color-cream-200: #faf8f3;
+            --color-cream-100: #ffffff;
+            
+            /* Semantic Colors - Dark Theme */
+            --color-primary: var(--color-gold-600);
+            --color-primary-hover: var(--color-gold-500);
+            --color-primary-active: var(--color-gold-700);
+            
+            --color-secondary: var(--color-blue-600);
+            --color-secondary-hover: var(--color-blue-500);
+            --color-secondary-active: var(--color-blue-700);
+            
+            --color-surface-primary: var(--color-navy-800);
+            --color-surface-secondary: var(--color-navy-700);
+            --color-surface-tertiary: var(--color-navy-600);
+            --color-surface-elevated: var(--color-navy-600);
+            
+            --color-text-primary: var(--color-cream-300);
+            --color-text-secondary: var(--color-navy-300);
+            --color-text-tertiary: var(--color-navy-400);
+            --color-text-inverse: var(--color-navy-900);
+            
+            --color-border-primary: var(--color-navy-500);
+            --color-border-secondary: var(--color-navy-600);
+            --color-border-accent: var(--color-primary);
+            
+            --color-success: #10b981;
+            --color-warning: #f59e0b;
+            --color-error: #ef4444;
+            --color-info: var(--color-blue-500);
+            
+            /* Spacing Scale */
+            --space-0: 0;
+            --space-1: 0.25rem;   /* 4px */
+            --space-2: 0.5rem;    /* 8px */
+            --space-3: 0.75rem;   /* 12px */
+            --space-4: 1rem;      /* 16px */
+            --space-5: 1.25rem;   /* 20px */
+            --space-6: 1.5rem;    /* 24px */
+            --space-8: 2rem;      /* 32px */
+            --space-10: 2.5rem;   /* 40px */
+            --space-12: 3rem;     /* 48px */
+            --space-16: 4rem;     /* 64px */
+            --space-20: 5rem;     /* 80px */
+            --space-24: 6rem;     /* 96px */
+            
+            /* Border Radius */
+            --radius-sm: 0.25rem;   /* 4px */
+            --radius-md: 0.375rem;  /* 6px */
+            --radius-lg: 0.5rem;    /* 8px */
+            --radius-xl: 0.75rem;   /* 12px */
+            --radius-2xl: 1rem;     /* 16px */
+            --radius-full: 9999px;
+            
+            /* Shadows */
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            --shadow-glow: 0 0 20px rgba(212, 175, 55, 0.3);
+            --shadow-glow-strong: 0 0 30px rgba(212, 175, 55, 0.5);
+            
+            /* Font Families */
+            --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            --font-serif: 'Crimson Pro', 'Times New Roman', serif;
+            --font-mono: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+            
+            /* Typography Scale */
+            --font-size-xs: clamp(0.75rem, 0.7rem + 0.2vw, 0.875rem);
+            --font-size-sm: clamp(0.875rem, 0.8rem + 0.3vw, 1rem);
+            --font-size-base: clamp(1rem, 0.9rem + 0.4vw, 1.125rem);
+            --font-size-lg: clamp(1.125rem, 1rem + 0.5vw, 1.25rem);
+            --font-size-xl: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem);
+            --font-size-2xl: clamp(1.5rem, 1.3rem + 0.8vw, 1.875rem);
+            --font-size-3xl: clamp(1.875rem, 1.6rem + 1vw, 2.25rem);
+            --font-size-4xl: clamp(2.25rem, 1.9rem + 1.4vw, 3rem);
+            --font-size-5xl: clamp(3rem, 2.5rem + 2vw, 4rem);
+            
+            /* Font Weights */
+            --font-weight-light: 300;
+            --font-weight-normal: 400;
+            --font-weight-medium: 500;
+            --font-weight-semibold: 600;
+            --font-weight-bold: 700;
+            
+            /* Line Heights */
+            --leading-tight: 1.25;
+            --leading-snug: 1.375;
+            --leading-normal: 1.5;
+            --leading-relaxed: 1.625;
+            --leading-loose: 2;
+            
+            /* Z-Index Scale */
+            --z-tooltip: 1000;
+            --z-modal: 1100;
+            --z-sidebar: 1200;
+            --z-header: 1300;
+            --z-overlay: 1400;
+        }
+        
+        /* Light Theme Override */
+        [data-theme="light"] {
+            --color-surface-primary: var(--color-cream-200);
+            --color-surface-secondary: var(--color-cream-100);
+            --color-surface-tertiary: var(--color-cream-300);
+            --color-surface-elevated: var(--color-cream-100);
+            
+            --color-text-primary: var(--color-navy-900);
+            --color-text-secondary: var(--color-navy-700);
+            --color-text-tertiary: var(--color-navy-600);
+            --color-text-inverse: var(--color-cream-100);
+            
+            --color-border-primary: var(--color-navy-300);
+            --color-border-secondary: var(--color-navy-200);
+            
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.08);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.15), 0 2px 4px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.15), 0 4px 6px -2px rgba(0, 0, 0, 0.08);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.15), 0 10px 10px -5px rgba(0, 0, 0, 0.06);
+            --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.35);
+        }
+        
+        /* Motion & Animation Tokens */
+        :root {
+            /* Transition Durations */
+            --transition-fast: 0.15s;
+            --transition-base: 0.2s;
+            --transition-slow: 0.3s;
+            --transition-slower: 0.5s;
+            
+            /* Transition Easings */
+            --ease-in: cubic-bezier(0.4, 0, 1, 1);
+            --ease-out: cubic-bezier(0, 0, 0.2, 1);
+            --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+            --ease-back: cubic-bezier(0.34, 1.56, 0.64, 1);
+            --ease-elastic: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            
+            /* Animation Durations */
+            --animation-fast: 0.3s;
+            --animation-base: 0.5s;
+            --animation-slow: 0.8s;
+            --animation-slower: 1.2s;
+        }
+        
+        /* Reduced Motion Support */
+        @media (prefers-reduced-motion: reduce) {
+            :root {
+                --transition-fast: 0.01ms;
+                --transition-base: 0.01ms;
+                --transition-slow: 0.01ms;
+                --transition-slower: 0.01ms;
+                --animation-fast: 0.01ms;
+                --animation-base: 0.01ms;
+                --animation-slow: 0.01ms;
+                --animation-slower: 0.01ms;
+            }
+            
+            *,
+            *::before,
+            *::after {
+                animation-duration: var(--animation-base) !important;
+                animation-delay: var(--animation-base) !important;
+                transition-duration: var(--transition-base) !important;
+                transition-delay: var(--transition-base) !important;
+                transform: none !important;
+            }
+            
+            /* Disable parallax and auto-playing animations */
+            .parallax,
+            .auto-animate {
+                animation: none !important;
+                transform: none !important;
+            }
+        }
+        
+        /* ===============================================
+           BASE STYLES
+           =============================================== */
+        
         * {
             margin: 0;
             padding: 0;
@@ -35,160 +411,794 @@
         }
 
         body {
-            font-family: 'Georgia', serif;
-            background-color: #2a2a2a;
-            color: #f0f0f0;
+            font-family: var(--font-sans);
+            font-size: var(--font-size-base);
+            font-weight: var(--font-weight-normal);
+            line-height: var(--leading-normal);
+            background-color: var(--color-surface-primary);
+            color: var(--color-text-primary);
             min-height: 100vh;
             background-image: 
-                linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)),
-                repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,.03) 10px, rgba(255,255,255,.03) 20px);
+                linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)),
+                repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,.02) 10px, rgba(255,255,255,.02) 20px);
+        }
+        
+        /* ===============================================
+           TYPOGRAPHY STYLES
+           =============================================== */
+        
+        /* Headings */
+        h1, h2, h3, h4, h5, h6 {
+            font-family: var(--font-serif);
+            font-weight: var(--font-weight-semibold);
+            line-height: var(--leading-tight);
+            color: var(--color-text-primary);
+            margin-bottom: var(--space-4);
+        }
+        
+        h1 {
+            font-size: var(--font-size-4xl);
+            font-weight: var(--font-weight-bold);
+        }
+        
+        h2 {
+            font-size: var(--font-size-3xl);
+        }
+        
+        h3 {
+            font-size: var(--font-size-2xl);
+        }
+        
+        h4 {
+            font-size: var(--font-size-xl);
+        }
+        
+        h5 {
+            font-size: var(--font-size-lg);
+        }
+        
+        h6 {
+            font-size: var(--font-size-base);
+        }
+        
+        /* Paragraphs and text */
+        p {
+            margin-bottom: var(--space-4);
+            line-height: var(--leading-relaxed);
+        }
+        
+        .text-serif {
+            font-family: var(--font-serif);
+        }
+        
+        .text-sans {
+            font-family: var(--font-sans);
+        }
+        
+        /* Text sizes */
+        .text-xs { font-size: var(--font-size-xs); }
+        .text-sm { font-size: var(--font-size-sm); }
+        .text-base { font-size: var(--font-size-base); }
+        .text-lg { font-size: var(--font-size-lg); }
+        .text-xl { font-size: var(--font-size-xl); }
+        .text-2xl { font-size: var(--font-size-2xl); }
+        .text-3xl { font-size: var(--font-size-3xl); }
+        
+        /* Text weights */
+        .font-light { font-weight: var(--font-weight-light); }
+        .font-normal { font-weight: var(--font-weight-normal); }
+        .font-medium { font-weight: var(--font-weight-medium); }
+        .font-semibold { font-weight: var(--font-weight-semibold); }
+        .font-bold { font-weight: var(--font-weight-bold); }
+        
+        /* Text colors */
+        .text-primary { color: var(--color-text-primary); }
+        .text-secondary { color: var(--color-text-secondary); }
+        .text-tertiary { color: var(--color-text-tertiary); }
+        .text-accent { color: var(--color-primary); }
+        
+        /* ===============================================
+           ACCESSIBILITY UTILITIES
+           =============================================== */
+        
+        /* Skip Link - Hidden accessibility feature */
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: var(--space-2);
+            background: var(--color-primary);
+            color: var(--color-text-inverse);
+            padding: var(--space-2) var(--space-4);
+            border-radius: var(--radius-md);
+            text-decoration: none;
+            font-family: var(--font-sans);
+            font-weight: var(--font-weight-semibold);
+            z-index: calc(var(--z-overlay) + 1);
+            transition: all var(--transition-fast) var(--ease-out);
+            /* Ensure it stays hidden unless focused */
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(-10px);
+        }
+        
+        .skip-link:focus,
+        .skip-link:focus-visible {
+            top: var(--space-2);
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateY(0);
+        }
+        
+        /* Screen Reader Only */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+        
+        .sr-only.focusable:active,
+        .sr-only.focusable:focus {
+            position: static;
+            width: auto;
+            height: auto;
+            margin: 0;
+            overflow: visible;
+            clip: auto;
+            white-space: normal;
+        }
+        
+        /* High Contrast Mode Support */
+        @media (prefers-contrast: high) {
+            :root {
+                --color-text-primary: #000000;
+                --color-text-secondary: #000000;
+                --color-surface-primary: #ffffff;
+                --color-surface-secondary: #ffffff;
+                --color-border-primary: #000000;
+                --color-border-secondary: #000000;
+            }
+            
+            .side-card,
+            .visual-toggle-btn,
+            .proceed-btn,
+            .back-btn {
+                border: 2px solid #000000 !important;
+            }
+        }
+        
+        /* ===============================================
+           ANIMATIONS & KEYFRAMES
+           =============================================== */
+        
+        @keyframes fadeIn {
+            from { 
+                opacity: 0; 
+                transform: translateY(20px); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0); 
+            }
+        }
+        
+        @keyframes slideInLeft {
+            from { 
+                opacity: 0; 
+                transform: translateX(-30px); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateX(0); 
+            }
+        }
+        
+        @keyframes slideInRight {
+            from { 
+                opacity: 0; 
+                transform: translateX(30px); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateX(0); 
+            }
+        }
+        
+        @keyframes scaleIn {
+            from { 
+                opacity: 0; 
+                transform: scale(0.9); 
+            }
+            to { 
+                opacity: 1; 
+                transform: scale(1); 
+            }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { 
+                transform: scale(1); 
+                opacity: 1;
+            }
+            50% { 
+                transform: scale(1.05); 
+                opacity: 0.8;
+            }
+        }
+        
+        @keyframes float {
+            0%, 100% { 
+                transform: translateY(0px); 
+            }
+            50% { 
+                transform: translateY(-5px); 
+            }
+        }
+        
+        @keyframes shimmer {
+            0% { 
+                background-position: -200px 0; 
+            }
+            100% { 
+                background-position: calc(200px + 100%) 0; 
+            }
+        }
+        
+        /* Animation utility classes */
+        .animate-fade-in {
+            animation: fadeIn var(--animation-base) var(--ease-out) forwards;
+        }
+        
+        .animate-slide-in-left {
+            animation: slideInLeft var(--animation-base) var(--ease-out) forwards;
+        }
+        
+        .animate-slide-in-right {
+            animation: slideInRight var(--animation-base) var(--ease-out) forwards;
+        }
+        
+        .animate-scale-in {
+            animation: scaleIn var(--animation-fast) var(--ease-back) forwards;
+        }
+        
+        .animate-pulse {
+            animation: pulse var(--animation-slow) ease-in-out infinite;
+        }
+        
+        .animate-float {
+            animation: float var(--animation-slower) ease-in-out infinite;
+        }
+        
+        /* Loading skeleton */
+        .skeleton {
+            background: linear-gradient(
+                90deg,
+                var(--color-surface-secondary) 25%,
+                var(--color-surface-elevated) 50%,
+                var(--color-surface-secondary) 75%
+            );
+            background-size: 200px 100%;
+            animation: shimmer var(--animation-base) ease-in-out infinite;
+        }
+        
+        /* ===============================================
+           Performance Optimizations
+           =============================================== */
+        
+        /* Font loading optimization */
+        @font-face {
+            font-family: 'Inter';
+            font-display: swap;
+        }
+        
+        @font-face {
+            font-family: 'Crimson Pro';
+            font-display: swap;
+        }
+        
+        /* GPU acceleration for animations */
+        .side-selection,
+        .battle-briefing,
+        .side-introduction,
+        .game-screen,
+        .battle-results-modal,
+        .campaign-log-modal,
+        .end-game-summary {
+            will-change: transform, opacity;
+            contain: layout style;
+        }
+        
+        /* Optimize frequently animated elements */
+        .theme-toggle,
+        .proceed-btn,
+        .back-btn,
+        .side-card,
+        .strategy-option {
+            will-change: transform;
+            contain: layout;
+        }
+        
+        /* Optimize images for performance */
+        img {
+            will-change: auto;
+            contain: layout;
+        }
+        
+        /* Reduce paint on scroll */
+        .game-container {
+            contain: layout style;
         }
 
         .game-container {
             width: 100%;
             max-width: 1000px;
-            padding: 20px;
+            padding: var(--space-5);
             margin: 0 auto;
             min-height: 100vh;
             display: flex;
             align-items: flex-start;
-            padding-top: 40px;
+            padding-top: calc(80px + var(--space-6)); /* Account for fixed navbar */
+        }
+        
+        /* ===============================================
+           Main Navigation Bar
+           =============================================== */
+        
+        .main-navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: var(--color-surface-elevated);
+            border-bottom: 1px solid var(--color-border-secondary);
+            z-index: var(--z-header);
+            backdrop-filter: blur(8px);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .navbar-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: var(--space-3) var(--space-4);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: var(--space-4);
+        }
+        
+        .navbar-brand {
+            flex-shrink: 0;
+        }
+        
+        .nav-game-title {
+            margin: 0;
+            font-family: var(--font-serif);
+            font-size: var(--font-size-xl);
+            font-weight: 600;
+            color: var(--color-text-primary);
+            line-height: 1.2;
+        }
+        
+        .nav-subtitle {
+            font-size: var(--font-size-sm);
+            color: var(--color-text-secondary);
+            font-weight: 400;
+        }
+        
+        .navbar-stats {
+            display: flex;
+            align-items: center;
+            gap: var(--space-4);
+            flex: 1;
+            justify-content: center;
+        }
+        
+        .stat-item {
+            font-size: var(--font-size-sm);
+            padding: var(--space-2) var(--space-3);
+            background: var(--color-surface-secondary);
+            border-radius: var(--radius-lg);
+            font-weight: 500;
+            white-space: nowrap;
+        }
+        
+        .stat-item span {
+            color: var(--color-primary);
+            font-weight: 600;
+        }
+        
+        .navbar-controls {
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+            flex-shrink: 0;
+        }
+        
+        .nav-btn {
+            width: var(--space-10);
+            height: var(--space-10);
+            border: 1px solid var(--color-border-secondary);
+            border-radius: var(--radius-lg);
+            background: var(--color-surface-secondary);
+            color: var(--color-text-primary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: var(--font-size-lg);
+            transition: all var(--transition-base) var(--ease-out);
+        }
+        
+        .nav-btn:hover {
+            background: var(--color-surface-tertiary);
+            border-color: var(--color-border-primary);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .nav-btn:active {
+            transform: translateY(0);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .nav-btn:focus {
+            outline: 2px solid var(--color-primary);
+            outline-offset: 2px;
+        }
+        
+        .primary-action {
+            background: var(--color-primary-alpha) !important;
+            border-color: var(--color-primary) !important;
+        }
+        
+        .primary-action:hover {
+            background: var(--color-primary) !important;
+            color: white !important;
+        }
+        
+        /* Settings Dropdown */
+        .settings-dropdown {
+            position: relative;
+        }
+        
+        .settings-menu {
+            position: absolute;
+            top: calc(100% + var(--space-2));
+            right: 0;
+            background: var(--color-surface-elevated);
+            border: 1px solid var(--color-border-secondary);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-lg);
+            min-width: 240px;
+            max-width: 280px;
+            padding: var(--space-1);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all var(--transition-base) var(--ease-out);
+            z-index: var(--z-tooltip);
+        }
+        
+        .settings-menu.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        
+        .menu-section {
+            margin: var(--space-1) 0;
+        }
+        
+        .menu-section-title {
+            font-size: var(--font-size-xs);
+            font-weight: 600;
+            color: var(--color-text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: var(--space-2) var(--space-3) var(--space-1);
+            margin: 0;
+        }
+        
+        .settings-item {
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+            padding: var(--space-2) var(--space-3);
+            border: none;
+            background: none;
+            color: var(--color-text-primary);
+            cursor: pointer;
+            border-radius: var(--radius-lg);
+            transition: background-color var(--transition-base) var(--ease-out);
+            width: 100%;
+            text-align: left;
+            font-size: var(--font-size-sm);
+            position: relative;
+        }
+        
+        .menu-icon {
+            font-size: var(--font-size-base);
+            width: 20px;
+            text-align: center;
+        }
+        
+        .menu-status {
+            margin-left: auto;
+            font-size: var(--font-size-xs);
+            font-weight: 600;
+            padding: 2px 6px;
+            border-radius: var(--radius-md);
+            background: var(--color-surface-secondary);
+            color: var(--color-text-secondary);
+        }
+        
+        .menu-status.active {
+            background: var(--color-primary);
+            color: white;
+        }
+        
+        .translate-item {
+            padding: var(--space-2) var(--space-3);
+        }
+        
+        .settings-item:hover {
+            background: var(--color-surface-secondary);
+        }
+        
+        .settings-item:focus {
+            outline: 2px solid var(--color-primary);
+            outline-offset: 1px;
+        }
+        
+        .settings-divider {
+            height: 1px;
+            background: var(--color-border-secondary);
+            margin: var(--space-2) 0;
+        }
+        
+        .translate-label {
+            font-weight: 500;
+            color: var(--color-text-secondary);
+        }
+        
+        .translate-select-nav {
+            background: var(--color-surface-secondary);
+            border: 1px solid var(--color-border-secondary);
+            border-radius: var(--radius-md);
+            padding: var(--space-1) var(--space-2);
+            color: var(--color-text-primary);
+            font-size: var(--font-size-sm);
+            cursor: pointer;
+        }
+        
+        .danger-item {
+            color: var(--color-red-600);
+        }
+        
+        .danger-item:hover {
+            background: var(--color-red-50);
+            color: var(--color-red-700);
+        }
+        
+        .theme-toggle-item {
+            justify-content: flex-start;
+        }
+        
+        .theme-icon {
+            font-size: var(--font-size-lg);
         }
 
-        /* Language and Accessibility Controls */
-        /* Vocabulary Sidebar */
+        /* ===============================================
+           VOCABULARY SIDEBAR
+           =============================================== */
+        
+        /* Body state when vocabulary sidebar is open */
+        body.vocab-open {
+            overflow-x: hidden;
+        }
+        
+        body.vocab-open .main-navbar,
+        body.vocab-open .game-container {
+            transform: translateX(280px);
+            transition: transform var(--transition-slow) var(--ease-out);
+        }
+        
         .vocab-sidebar {
             position: fixed;
             left: 0;
             top: 0;
             width: 280px;
             height: 100vh;
-            background: rgba(0,0,0,0.95);
-            border-right: 2px solid #444;
-            padding: 20px;
-            z-index: 1200;
+            background: var(--color-surface-primary);
+            border-right: 2px solid var(--color-border-primary);
+            padding: var(--space-5);
+            z-index: var(--z-sidebar);
             overflow-y: auto;
             transform: translateX(-100%);
-            transition: transform 0.3s ease;
+            transition: transform var(--transition-slow) var(--ease-out);
+            box-shadow: var(--shadow-2xl);
+            backdrop-filter: blur(10px);
         }
         
-        .vocab-sidebar.open {
+        .vocab-sidebar.show {
             transform: translateX(0);
         }
         
+        /* Overlay for mobile */
+        .vocab-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            visibility: hidden;
+            transition: all var(--transition-base) var(--ease-out);
+            z-index: calc(var(--z-sidebar) - 1);
+        }
+        
+        .vocab-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        
         .vocab-sidebar h3 {
-            color: #ffd700;
-            margin-bottom: 20px;
-            font-size: 1.2em;
+            font-family: var(--font-serif);
+            font-size: var(--font-size-xl);
+            font-weight: var(--font-weight-semibold);
+            color: var(--color-primary);
+            margin-bottom: var(--space-5);
             text-align: center;
-            border-bottom: 2px solid #ffd700;
-            padding-bottom: 10px;
+            border-bottom: 2px solid var(--color-primary);
+            padding-bottom: var(--space-3);
         }
         
         .vocab-list {
             list-style: none;
+            margin: 0;
+            padding: 0;
         }
         
         .vocab-item {
-            margin-bottom: 15px;
-            padding: 10px;
-            background: rgba(255,255,255,0.05);
-            border-radius: 8px;
-            border-left: 3px solid #ffd700;
+            margin-bottom: var(--space-4);
+            padding: var(--space-3);
+            background: var(--color-surface-elevated);
+            border-radius: var(--radius-lg);
+            border-left: 3px solid var(--color-primary);
+            box-shadow: var(--shadow-sm);
         }
         
         .vocab-term-name {
-            font-weight: bold;
-            color: #ffd700;
-            margin-bottom: 5px;
+            font-family: var(--font-serif);
+            font-weight: var(--font-weight-semibold);
+            font-size: var(--font-size-base);
+            color: var(--color-primary);
+            margin-bottom: var(--space-2);
         }
         
         .vocab-definition-text {
-            color: #f0f0f0;
-            font-size: 0.9em;
-            line-height: 1.4;
+            font-family: var(--font-sans);
+            color: var(--color-text-secondary);
+            font-size: var(--font-size-sm);
+            line-height: var(--leading-relaxed);
         }
         
         .vocab-toggle-btn {
             position: fixed;
-            left: 20px;
-            top: 20px;
-            background: linear-gradient(135deg, #ffd700, #f59e0b);
-            color: #000;
+            left: var(--space-5);
+            top: var(--space-5);
+            background: linear-gradient(135deg, var(--color-primary), var(--color-warning));
+            color: var(--color-text-inverse);
             border: none;
-            padding: 12px 15px;
-            border-radius: 8px;
+            padding: var(--space-3) var(--space-4);
+            border-radius: var(--radius-lg);
             cursor: pointer;
-            font-family: 'Georgia', serif;
-            font-weight: bold;
-            z-index: 1300;
-            box-shadow: 0 4px 15px rgba(255,215,0,0.3);
-            transition: all 0.3s ease;
+            font-family: var(--font-sans);
+            font-weight: var(--font-weight-semibold);
+            font-size: var(--font-size-sm);
+            z-index: var(--z-header);
+            box-shadow: var(--shadow-glow);
+            transition: all var(--transition-base) var(--ease-back);
         }
         
         .vocab-toggle-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 6px 20px rgba(255,215,0,0.4);
+            transform: scale(1.1) rotate(3deg);
+            box-shadow: var(--shadow-glow-strong);
+        }
+        
+        .vocab-toggle-btn:active {
+            transform: scale(0.95) rotate(-2deg);
+            transition-duration: var(--transition-fast);
+        }
+        
+        .vocab-toggle-btn:focus {
+            outline: 2px solid var(--color-primary);
+            outline-offset: 2px;
         }
 
+        /* ===============================================
+           CONTROL PANELS
+           =============================================== */
+        
         .controls-panel {
             position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: rgba(0,0,0,0.9);
-            border: 1px solid #444;
-            border-radius: 10px;
-            padding: 12px;
-            z-index: 1000;
+            bottom: var(--space-5);
+            right: var(--space-5);
+            background: var(--color-surface-elevated);
+            border: 1px solid var(--color-border-secondary);
+            border-radius: var(--radius-xl);
+            padding: var(--space-3);
+            z-index: var(--z-tooltip);
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: var(--space-2);
             align-items: center;
             max-width: 200px;
+            box-shadow: var(--shadow-lg);
+            backdrop-filter: blur(10px);
         }
 
-        /* Kagi Translation widget styling */
+        /* Translation Controls */
         .translate-select {
-            background: rgba(255,255,255,0.1);
-            border: 1px solid #666;
-            color: #fff;
-            padding: 5px 10px;
-            border-radius: 5px;
-            font-family: 'Georgia', serif;
-            font-size: 0.9em;
+            background: var(--color-surface-tertiary);
+            border: 1px solid var(--color-border-primary);
+            color: var(--color-text-primary);
+            padding: var(--space-2) var(--space-3);
+            border-radius: var(--radius-md);
+            font-family: var(--font-sans);
+            font-size: var(--font-size-sm);
+            transition: all 0.2s ease;
+        }
+        
+        .translate-select:focus {
+            outline: 2px solid var(--color-primary);
+            outline-offset: 2px;
         }
         
         .translate-select option {
-            background: #2a2a2a;
-            color: #fff;
+            background: var(--color-surface-primary);
+            color: var(--color-text-primary);
         }
 
         .vocab-toggle {
-            background: linear-gradient(135deg, #059669, #10b981);
-            color: white;
+            background: linear-gradient(135deg, var(--color-success), var(--color-info));
+            color: var(--color-text-inverse);
             border: none;
-            padding: 8px 12px;
-            border-radius: 5px;
+            padding: var(--space-2) var(--space-3);
+            border-radius: var(--radius-md);
             cursor: pointer;
-            font-family: 'Georgia', serif;
-            font-size: 0.9em;
-            transition: all 0.3s ease;
+            font-family: var(--font-sans);
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-medium);
+            transition: all 0.2s ease;
         }
 
         .vocab-toggle:hover {
-            background: linear-gradient(135deg, #10b981, #059669);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .vocab-toggle:focus {
+            outline: 2px solid var(--color-primary);
+            outline-offset: 2px;
         }
 
         .vocab-toggle.active {
-            background: linear-gradient(135deg, #ffd700, #f59e0b);
-            color: #000;
+            background: linear-gradient(135deg, var(--color-primary), var(--color-warning));
+            color: var(--color-text-inverse);
         }
 
         /* Screen Display Management */
         .side-selection {
             display: block;
             text-align: center;
-            animation: fadeIn 1s ease-out;
+            animation: fadeIn var(--animation-base) var(--ease-out);
             width: 100%;
         }
 
@@ -200,33 +1210,49 @@
         .end-game-summary {
             display: none;
         }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        
+        /* Override for when sections are explicitly shown via inline styles */
+        section[style*="display: block"],
+        div[style*="display: block"] {
+            display: block !important;
+        }
+        
+        /* Specific overrides for game screen elements */
+        #sideSelection[style*="display: block"],
+        #battleBriefing[style*="display: block"],
+        #gameScreen[style*="display: block"],
+        #sideIntroduction[style*="display: block"],
+        #endGameSummary[style*="display: block"] {
+            display: block !important;
         }
 
         .game-title {
-            font-size: 2.5em;
-            margin-bottom: 10px;
+            font-family: var(--font-serif);
+            font-size: var(--font-size-4xl);
+            font-weight: var(--font-weight-bold);
+            margin-bottom: var(--space-3);
             text-shadow: 3px 3px 6px rgba(0,0,0,0.7);
-            background: linear-gradient(45deg, #b8860b, #ffd700);
+            background: linear-gradient(45deg, var(--color-gold-800), var(--color-primary));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            line-height: var(--leading-tight);
         }
 
         .subtitle {
-            font-size: 1.2em;
-            margin-bottom: 40px;
-            color: #ccc;
+            font-family: var(--font-serif);
+            font-size: var(--font-size-lg);
             font-style: italic;
+            margin-bottom: var(--space-10);
+            color: var(--color-text-secondary);
+            line-height: var(--leading-normal);
         }
 
         /* Vocabulary Support */
         .vocab-term {
-            border-bottom: 2px dotted #ffd700;
+            border-bottom: 2px dotted var(--color-primary);
             cursor: help;
+            transition: all 0.2s ease;
             position: relative;
             display: inline-block;
         }
@@ -279,29 +1305,85 @@
 
 
         /* Side Cards */
+        /* ===============================================
+           RESPONSIVE GRID LAYOUTS
+           =============================================== */
+        
         .sides-container {
             display: flex;
-            gap: 30px;
             justify-content: center;
+            align-items: stretch;
+            gap: var(--space-6);
+            max-width: 800px;
+            margin: 0 auto;
             flex-wrap: wrap;
         }
-
+        
         .side-card {
-            background: rgba(255,255,255,0.1);
+            flex: 1;
+            min-width: 320px;
+            max-width: 380px;
+        }
+        
+        @media (max-width: 640px) {
+            .sides-container {
+                flex-direction: column;
+                gap: var(--space-4);
+                align-items: center;
+            }
+            
+            .side-card {
+                width: 100%;
+                max-width: 350px;
+                min-width: auto;
+                flex: none;
+            }
+            
+            .visual-toggle-controls {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .visual-toggle-btn {
+                width: 100%;
+                max-width: 200px;
+            }
+            
+            .battle-visual-container {
+                margin: var(--space-4) auto;
+            }
+        }
+
+        /* ===============================================
+           CARD COMPONENTS
+           =============================================== */
+        
+        .side-card {
+            background: var(--color-surface-elevated);
             border: 2px solid transparent;
-            border-radius: 15px;
-            padding: 30px;
-            width: 320px;
+            border-radius: var(--radius-2xl);
+            padding: var(--space-8);
             cursor: pointer;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(5px);
+            transition: all var(--transition-base) var(--ease-out);
+            backdrop-filter: blur(10px);
             position: relative;
             overflow: hidden;
+            box-shadow: var(--shadow-lg);
         }
 
         .side-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: var(--shadow-2xl);
+        }
+        
+        .side-card:active {
+            transform: translateY(-1px) scale(0.98);
+            transition-duration: var(--transition-fast);
+        }
+        
+        .side-card:focus-within {
+            outline: 3px solid var(--color-primary);
+            outline-offset: 2px;
         }
 
         .union-card {
@@ -440,9 +1522,83 @@
         .battle-briefing {
             text-align: center;
             animation: fadeIn 0.5s ease-out;
-            max-width: 900px;
+            max-width: 1400px;
             margin: 0 auto;
             width: 100%;
+        }
+        
+        /* Desktop two-column layout - ONLY for battle briefing screen on large screens */
+        @media (min-width: 1200px) and (min-height: 700px) {
+            .battle-briefing {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                grid-template-rows: auto auto;
+                gap: var(--space-4);
+                align-items: start;
+                text-align: left;
+                padding: var(--space-4);
+                min-height: calc(100vh - 100px);
+                /* Remove height constraints that cause overflow issues */
+            }
+            
+            .battle-briefing .briefing-header {
+                grid-column: 1 / -1;
+                text-align: center;
+                margin-bottom: var(--space-2);
+            }
+            
+            .battle-briefing .briefing-header h2 {
+                margin-bottom: var(--space-2);
+                font-size: var(--font-size-2xl);
+            }
+            
+            .battle-briefing .battle-context {
+                grid-column: 1;
+                height: fit-content;
+                padding-right: var(--space-2);
+                /* Allow natural height without restrictions */
+            }
+            
+            .battle-briefing .strategic-choices {
+                grid-column: 2;
+                height: fit-content;
+                display: block;
+                visibility: visible;
+                /* Ensure all choices are always visible */
+                overflow: visible;
+            }
+            
+            /* Compact choice options for better screen fit */
+            .battle-briefing .choice-option {
+                margin: var(--space-2) 0;
+                padding: var(--space-3);
+            }
+            
+            /* Compact strategic choices header */
+            .battle-briefing .choices-title {
+                font-size: 1.2em;
+                margin-bottom: var(--space-3);
+            }
+            
+            /* Reduce spacing in battle context */
+            .battle-briefing .battle-context p {
+                margin-bottom: var(--space-3);
+            }
+            
+            .battle-briefing .battle-context h3 {
+                margin-bottom: var(--space-2);
+                font-size: var(--font-size-lg);
+            }
+        }
+        
+        /* Ensure mobile/tablet view stays single column */
+        @media (max-width: 1199px) {
+            .battle-briefing {
+                display: block;
+                max-height: none;
+                overflow: visible;
+                text-align: center;
+            }
         }
 
         .briefing-header {
@@ -482,43 +1638,140 @@
             margin-bottom: 20px;
         }
 
-        .battle-image {
+        /* ===============================================
+           BATTLE VISUALS & MAPS
+           =============================================== */
+        
+        .battle-visual-container {
             width: 100%;
             max-width: 600px;
-            height: 250px;
-            background: rgba(0,0,0,0.3);
-            border-radius: 10px;
-            margin: 20px auto;
+            margin: var(--space-5) auto;
+        }
+        
+        @media (min-width: 1024px) {
+            .battle-visual-container {
+                max-width: 100%;
+                margin: var(--space-4) 0;
+            }
+        }
+        
+        .visual-toggle-controls {
+            display: flex;
+            gap: var(--space-2);
+            margin-bottom: var(--space-4);
+            justify-content: center;
+        }
+        
+        .visual-toggle-btn {
+            background: var(--color-surface-tertiary);
+            border: 1px solid var(--color-border-primary);
+            border-radius: var(--radius-lg);
+            padding: var(--space-2) var(--space-4);
+            cursor: pointer;
+            font-family: var(--font-sans);
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-medium);
+            color: var(--color-text-secondary);
+            transition: all var(--transition-base) var(--ease-out);
+        }
+        
+        .visual-toggle-btn:hover {
+            background: var(--color-surface-elevated);
+            color: var(--color-text-primary);
+            transform: translateY(-2px) scale(1.03);
+        }
+        
+        .visual-toggle-btn:active {
+            transform: translateY(0) scale(0.97);
+            transition-duration: var(--transition-fast);
+        }
+        
+        .visual-toggle-btn:focus {
+            outline: 2px solid var(--color-primary);
+            outline-offset: 2px;
+        }
+        
+        .visual-toggle-btn.active {
+            background: var(--color-primary);
+            color: var(--color-text-inverse);
+            border-color: var(--color-primary);
+            box-shadow: var(--shadow-glow);
+            transform: scale(1.05);
+        }
+        
+        .visual-toggle-btn.active:hover {
+            transform: translateY(-2px) scale(1.08);
+            box-shadow: var(--shadow-glow-strong);
+        }
+
+        .battle-image {
+            width: 100%;
+            height: 300px;
+            background: var(--color-surface-secondary);
+            border-radius: var(--radius-xl);
             display: flex;
             align-items: center;
             justify-content: center;
             position: relative;
             overflow: hidden;
+            box-shadow: var(--shadow-lg);
         }
 
         .battle-image img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            border-radius: 10px;
+            border-radius: var(--radius-xl);
+        }
+        
+        .battle-map {
+            width: 100%;
+            height: 300px;
+            background: var(--color-surface-secondary);
+            border-radius: var(--radius-xl);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .battle-map svg {
+            width: 100%;
+            height: 100%;
+            background: var(--color-cream-200);
+        }
+        
+        [data-theme="dark"] .battle-map svg {
+            background: var(--color-navy-800);
         }
 
         .image-credit {
             position: absolute;
-            bottom: 5px;
-            right: 10px;
+            bottom: var(--space-2);
+            right: var(--space-3);
             background: rgba(0,0,0,0.8);
-            color: #ccc;
-            padding: 2px 6px;
-            border-radius: 3px;
-            font-size: 0.7em;
+            color: var(--color-cream-200);
+            padding: var(--space-1) var(--space-2);
+            border-radius: var(--radius-sm);
+            font-size: var(--font-size-xs);
+            font-family: var(--font-sans);
+            backdrop-filter: blur(4px);
         }
 
         .strategic-choices {
             background: rgba(255,255,255,0.05);
             border-radius: 15px;
-            padding: 30px;
-            margin-bottom: 30px;
+            padding: 20px;
+            margin-bottom: 20px;
+            /* Ensure strategic choices are always visible */
+            min-height: 200px;
+            display: block !important;
+            visibility: visible !important;
+            overflow: visible !important;
+            height: auto !important;
+            max-height: none !important;
         }
 
         .choices-title {
@@ -526,6 +1779,15 @@
             color: #ffd700;
             margin-bottom: 20px;
             text-align: center;
+        }
+
+        /* Ensure choicesList container is visible */
+        #choicesList {
+            display: block !important;
+            visibility: visible !important;
+            min-height: 100px;
+            overflow: visible !important;
+            height: auto !important;
         }
 
         .choice-option {
@@ -536,6 +1798,10 @@
             cursor: pointer;
             transition: all 0.3s ease;
             border: 2px solid transparent;
+            /* Ensure choice options are visible */
+            display: block !important;
+            visibility: visible !important;
+            min-height: 60px;
         }
 
         .choice-option:hover {
@@ -672,37 +1938,67 @@
         }
 
         /* Buttons */
+        /* ===============================================
+           BUTTON COMPONENTS
+           =============================================== */
+        
         .proceed-btn, .back-btn {
-            padding: 15px 50px;
-            font-size: 1.3em;
+            padding: var(--space-4) var(--space-12);
+            font-size: var(--font-size-xl);
             border: none;
-            border-radius: 10px;
+            border-radius: var(--radius-xl);
             cursor: pointer;
-            font-family: 'Georgia', serif;
-            font-weight: bold;
-            transition: all 0.3s ease;
-            margin: 10px;
+            font-family: var(--font-serif);
+            font-weight: var(--font-weight-semibold);
+            transition: all var(--transition-base) var(--ease-out);
+            margin: var(--space-3);
+            position: relative;
+            overflow: hidden;
         }
+        
 
         .proceed-btn {
-            background: linear-gradient(135deg, #ffd700, #f59e0b);
-            color: #000;
+            background: linear-gradient(135deg, var(--color-primary), var(--color-warning));
+            color: var(--color-text-inverse);
+            box-shadow: var(--shadow-lg);
         }
 
         .proceed-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 5px 25px rgba(245,158,11,0.5);
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: var(--shadow-glow-strong);
+        }
+        
+        .proceed-btn:active {
+            transform: translateY(-1px) scale(0.98);
+            transition-duration: var(--transition-fast);
+        }
+        
+        .proceed-btn:focus {
+            outline: 3px solid var(--color-primary);
+            outline-offset: 2px;
         }
 
         .back-btn {
-            background: rgba(255,255,255,0.1);
-            color: #fff;
-            border: 1px solid #666;
+            background: var(--color-surface-tertiary);
+            color: var(--color-text-primary);
+            border: 1px solid var(--color-border-primary);
+            box-shadow: var(--shadow-md);
         }
 
         .back-btn:hover {
-            background: rgba(255,255,255,0.2);
-            transform: translateX(-5px);
+            background: var(--color-surface-elevated);
+            transform: translateX(-3px) scale(1.02);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .back-btn:active {
+            transform: translateX(-1px) scale(0.98);
+            transition-duration: var(--transition-fast);
+        }
+        
+        .back-btn:focus {
+            outline: 3px solid var(--color-secondary);
+            outline-offset: 2px;
         }
 
         /* Game Screen */
@@ -774,6 +2070,10 @@
         }
 
         /* Campaign Log Modal */
+        /* ===============================================
+           MODAL COMPONENTS
+           =============================================== */
+        
         .campaign-log-modal {
             display: none;
             position: fixed;
@@ -781,20 +2081,24 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.9);
-            z-index: 1200;
+            background: rgba(0,0,0,0.85);
+            z-index: var(--z-modal);
             overflow-y: auto;
-            padding: 20px;
+            padding: var(--space-5);
+            backdrop-filter: blur(8px);
         }
 
         .campaign-log-container {
-            background: #1a1a1a;
-            border-radius: 20px;
-            padding: 30px;
+            background: var(--color-surface-primary);
+            border: 1px solid var(--color-border-secondary);
+            border-radius: var(--radius-2xl);
+            padding: var(--space-8);
             max-width: 900px;
             width: 90%;
-            margin: 0 auto;
+            margin: var(--space-10) auto;
             animation: fadeIn 0.5s ease-out;
+            box-shadow: var(--shadow-2xl);
+            position: relative;
         }
 
         .log-header {
@@ -813,21 +2117,35 @@
         }
 
         .close-log-btn {
-            font-size: 2em;
-            background: none;
-            border: none;
-            color: #888;
+            font-size: var(--font-size-2xl);
+            background: var(--color-surface-tertiary);
+            border: 1px solid var(--color-border-primary);
+            color: var(--color-text-secondary);
             cursor: pointer;
-            padding: 0;
+            padding: var(--space-2);
             width: 40px;
             height: 40px;
-            border-radius: 20px;
-            transition: all 0.3s ease;
+            border-radius: var(--radius-full);
+            transition: all var(--transition-base) var(--ease-back);
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .close-log-btn:hover {
-            color: #fff;
-            background: rgba(255,255,255,0.1);
+            color: var(--color-text-primary);
+            background: var(--color-surface-elevated);
+            transform: scale(1.2) rotate(90deg);
+        }
+        
+        .close-log-btn:active {
+            transform: scale(0.9) rotate(180deg);
+            transition-duration: var(--transition-fast);
+        }
+        
+        .close-log-btn:focus {
+            outline: 2px solid var(--color-primary);
+            outline-offset: 2px;
         }
 
         .campaign-overview {
@@ -1310,18 +2628,72 @@
         }
 
         @media (max-width: 700px) {
-            .game-container { padding: 10px; padding-left: 20px; }
-            .game-title { font-size: 2em; }
+            .game-container { 
+                padding: var(--space-3); 
+                padding-left: var(--space-5); 
+            }
+            .game-title { 
+                font-size: var(--font-size-3xl); 
+            }
             .side-card { width: 100%; max-width: 350px; }
-            .sides-container { flex-direction: column; align-items: center; }
+            .sides-container { 
+                flex-direction: column;
+                gap: var(--space-4);
+                align-items: center;
+            }
             .controls-panel { position: relative; bottom: auto; right: auto; margin: 20px auto; max-width: 90%; }
             .choice-pros-cons { grid-template-columns: 1fr; }
             .vocab-tooltip { width: 250px; }
             
-            /* Mobile vocabulary sidebar */
+            /* Mobile vocabulary sidebar - use overlay instead of push */
             .vocab-sidebar {
                 width: 90vw;
                 max-width: 300px;
+            }
+            
+            /* On mobile, don't push content - use overlay */
+            body.vocab-open .main-navbar,
+            body.vocab-open .game-container {
+                transform: none;
+            }
+            
+            /* Mobile navigation adjustments */
+            .navbar-content {
+                padding: var(--space-2) var(--space-3);
+                gap: var(--space-2);
+                flex-wrap: wrap;
+            }
+            
+            .nav-game-title {
+                font-size: var(--font-size-lg);
+            }
+            
+            .nav-subtitle {
+                display: none; /* Hide subtitle on small screens */
+            }
+            
+            .navbar-stats {
+                gap: var(--space-1);
+                order: 3;
+                width: 100%;
+                justify-content: center;
+                margin-top: var(--space-2);
+            }
+            
+            .stat-item {
+                padding: var(--space-1) var(--space-2);
+                font-size: var(--font-size-xs);
+            }
+            
+            .nav-btn {
+                width: var(--space-8);
+                height: var(--space-8);
+                font-size: var(--font-size-base);
+            }
+            
+            .settings-menu {
+                right: -10px;
+                min-width: 180px;
             }
             
             .vocab-toggle-btn {
@@ -1652,11 +3024,578 @@
                 vertical-align: middle !important;
             }
         }
+        
+        /* ===============================================
+           BATTLE RESULTS MODAL STYLES
+           =============================================== */
+        
+        .battle-results-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .battle-results-modal.show {
+            opacity: 1;
+        }
+        
+        .battle-results-modal .modal-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(4px);
+        }
+        
+        .battle-results-content {
+            position: relative;
+            background: linear-gradient(135deg, rgba(20,30,50,0.95), rgba(40,50,70,0.95));
+            border: 2px solid var(--color-primary);
+            border-radius: 15px;
+            padding: 30px;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+        
+        .battle-results-modal.show .battle-results-content {
+            transform: scale(1);
+        }
+        
+        .results-header {
+            margin-bottom: 20px;
+        }
+        
+        .battle-outcome-modal {
+            font-size: 2.5em;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+        }
+        
+        .battle-outcome-modal.victory {
+            color: #4ade80;
+        }
+        
+        .battle-outcome-modal.defeat {
+            color: #f87171;
+        }
+        
+        .result-icon-large {
+            font-size: 4em;
+            margin-bottom: 15px;
+        }
+        
+        .results-body {
+            margin-bottom: 25px;
+        }
+        
+        .outcome-summary {
+            background: rgba(255,255,255,0.1);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            text-align: left;
+        }
+        
+        .score-changes {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .score-change-item {
+            background: rgba(255,255,255,0.05);
+            padding: 10px;
+            border-radius: 6px;
+            text-align: center;
+        }
+        
+        .score-change-item.positive {
+            border-left: 3px solid #4ade80;
+        }
+        
+        .score-change-item.negative {
+            border-left: 3px solid #f87171;
+        }
+        
+        .score-change-value {
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+        
+        .score-change-label {
+            font-size: 0.9em;
+            color: var(--color-text-secondary);
+        }
+        
+        .continue-btn {
+            background: var(--color-primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 30px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .continue-btn:hover {
+            background: var(--color-primary-dark);
+            transform: translateY(-2px);
+        }
+        
+        /* Mobile responsive */
+        @media (max-width: 768px) {
+            .battle-results-content {
+                padding: 20px;
+                margin: 20px;
+            }
+            
+            .battle-outcome-modal {
+                font-size: 2em;
+            }
+            
+            .result-icon-large {
+                font-size: 3em;
+            }
+        }
+        
+        /* ===============================================
+           IMAGE CREDITS STYLES
+           =============================================== */
+        
+        .image-credits-section {
+            margin: 30px 0;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .credits-toggle {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 8px;
+            color: var(--color-text-primary);
+            padding: 12px 20px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            text-align: left;
+        }
+        
+        .credits-toggle:hover {
+            background: rgba(255,255,255,0.15);
+            transform: translateY(-1px);
+        }
+        
+        .credits-toggle:focus {
+            outline: 2px solid var(--color-primary);
+            outline-offset: 2px;
+        }
+        
+        .credits-toggle .credits-icon {
+            margin-right: 8px;
+        }
+        
+        .credits-toggle .credits-text {
+            flex: 1;
+        }
+        
+        .credits-toggle .credits-arrow {
+            transition: transform 0.3s ease;
+        }
+        
+        .credits-toggle[aria-expanded="true"] .credits-arrow {
+            transform: rotate(180deg);
+        }
+        
+        .credits-content {
+            background: rgba(0,0,0,0.3);
+            border-radius: 8px;
+            padding: 0;
+            margin-top: 10px;
+            overflow: hidden;
+            max-height: 0;
+            opacity: 0;
+            transition: all 0.4s ease;
+        }
+        
+        .credits-content.expanded {
+            max-height: 800px;
+            opacity: 1;
+            padding: 20px;
+        }
+        
+        .credits-content h3 {
+            color: var(--color-primary);
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+        
+        .credits-content h4 {
+            color: var(--color-text-primary);
+            margin: 20px 0 10px 0;
+            font-size: 1.1em;
+        }
+        
+        .credits-note {
+            color: var(--color-text-secondary);
+            font-style: italic;
+            margin-bottom: 20px;
+            font-size: 0.9em;
+        }
+        
+        .credits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .credit-item {
+            background: rgba(255,255,255,0.05);
+            padding: 12px;
+            border-radius: 6px;
+            border-left: 3px solid var(--color-primary);
+        }
+        
+        .credit-item strong {
+            color: var(--color-text-primary);
+        }
+        
+        .credit-item small {
+            color: var(--color-text-tertiary);
+            font-family: monospace;
+        }
+        
+        .additional-credits {
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 15px;
+        }
+        
+        .additional-credits p {
+            margin: 8px 0;
+            color: var(--color-text-secondary);
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .credits-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .credits-toggle {
+                font-size: 0.9rem;
+                padding: 10px 15px;
+            }
+        }
+        
+        /* Print styles for credits */
+        @media print {
+            .image-credits-section {
+                page-break-before: always;
+            }
+            
+            .credits-toggle {
+                display: none;
+            }
+            
+            .credits-content {
+                display: block !important;
+                max-height: none !important;
+                opacity: 1 !important;
+                padding: 10pt !important;
+                background: white !important;
+                border: 1pt solid black;
+            }
+            
+            .credits-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 10pt;
+            }
+            
+            .credit-item {
+                background: none !important;
+                border: 1pt solid #ccc;
+                border-left: 3pt solid black;
+                page-break-inside: avoid;
+            }
+        }
+        
+        /* ===============================================
+           PRINT STYLES
+           =============================================== */
+        
+        @media print {
+            /* Hide non-essential UI elements */
+            .main-navbar,
+            .vocab-sidebar,
+            .campaign-log-modal,
+            .settings-dropdown,
+            .image-toggle-group,
+            .nav-controls,
+            button:not(.print-friendly),
+            .choice-option .expand-icon {
+                display: none !important;
+            }
+            
+            /* Reset body styles for print */
+            body {
+                background: white !important;
+                color: black !important;
+                font-size: 12pt;
+                line-height: 1.4;
+                margin: 0;
+                padding: 20pt;
+            }
+            
+            /* Game containers */
+            .game-container {
+                box-shadow: none !important;
+                border: none !important;
+                background: white !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                max-width: none !important;
+            }
+            
+            /* Battle briefing print layout */
+            .battle-briefing {
+                display: block !important;
+                page-break-inside: avoid;
+                margin-bottom: 20pt;
+            }
+            
+            .briefing-header h2 {
+                color: black !important;
+                font-size: 18pt;
+                margin-bottom: 10pt;
+                border-bottom: 2pt solid black;
+                padding-bottom: 5pt;
+            }
+            
+            .battle-context,
+            .strategic-choices {
+                background: none !important;
+                border: 1pt solid #ccc;
+                padding: 10pt;
+                margin: 10pt 0;
+                border-radius: 0;
+            }
+            
+            .strategic-choices h3 {
+                color: black !important;
+                font-size: 14pt;
+                margin-bottom: 10pt;
+            }
+            
+            .choice-option {
+                background: none !important;
+                border: 1pt solid #999;
+                margin: 5pt 0;
+                padding: 8pt;
+                page-break-inside: avoid;
+            }
+            
+            .choice-option.expanded .choice-details {
+                display: block !important;
+            }
+            
+            /* Side selection cards */
+            .side-selection {
+                display: block !important;
+            }
+            
+            .side-card {
+                background: none !important;
+                border: 2pt solid black;
+                margin: 10pt 0;
+                padding: 10pt;
+                page-break-inside: avoid;
+            }
+            
+            .side-card h3 {
+                color: black !important;
+                font-size: 16pt;
+            }
+            
+            /* Game statistics */
+            .game-screen {
+                display: block !important;
+            }
+            
+            .stats-container {
+                border: 1pt solid black;
+                padding: 10pt;
+                margin: 10pt 0;
+            }
+            
+            /* Timeline and results */
+            .timeline-item {
+                border-left: 2pt solid black;
+                padding-left: 10pt;
+                margin-bottom: 10pt;
+                page-break-inside: avoid;
+            }
+            
+            /* Hide images for print to save ink */
+            .battle-image,
+            .battle-map,
+            .side-image {
+                display: none !important;
+            }
+            
+            /* Ensure text is readable */
+            * {
+                color: black !important;
+                background: transparent !important;
+                text-shadow: none !important;
+            }
+            
+            /* Page breaks */
+            .battle-briefing,
+            .side-selection,
+            .game-screen {
+                page-break-before: auto;
+                page-break-after: auto;
+            }
+            
+            /* Print-specific typography */
+            h1, h2, h3, h4, h5, h6 {
+                page-break-after: avoid;
+                font-weight: bold;
+            }
+            
+            p, li {
+                orphans: 3;
+                widows: 3;
+            }
+            
+            /* Show URLs for external links */
+            a[href]:after {
+                content: " (" attr(href) ")";
+                font-size: 0.8em;
+                color: #666;
+            }
+            
+            /* Print header */
+            body::before {
+                content: "Civil War Battle Simulation - Educational Edition";
+                display: block;
+                text-align: center;
+                font-size: 16pt;
+                font-weight: bold;
+                margin-bottom: 20pt;
+                padding-bottom: 10pt;
+                border-bottom: 2pt solid black;
+            }
+        }
+        
     </style>
 </head>
-<body>
-    <!-- Vocabulary Sidebar -->
-    <div class="vocab-sidebar" id="vocabSidebar">
+<body onload="initializeTheme()">
+    <!-- Skip Navigation Link -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    
+    <!-- Main Navigation Bar -->
+    <nav class="main-navbar" role="navigation" aria-label="Main navigation">
+        <div class="navbar-content">
+            <!-- Left: Game Title -->
+            <div class="navbar-brand">
+                <h1 class="nav-game-title">⚔️ Civil War Simulation</h1>
+                <span class="nav-subtitle">Educational Edition</span>
+            </div>
+            
+            <!-- Center: Game Stats (temporarily hidden - will implement leaderboard later) -->
+            <!-- <div class="navbar-stats" id="navbarStats" style="display: none;">
+                <div class="stat-item">Score: <span id="navScore">0</span></div>
+                <div class="stat-item">Soldiers: <span id="navSoldiers">0</span></div>
+                <div class="stat-item">Battle <span id="navBattleNumber">1</span>/10</div>
+                <div class="stat-item">Wins: <span id="navWins">0</span></div>
+            </div> -->
+            
+            <!-- Right: Controls Menu -->
+            <div class="navbar-controls">
+                <!-- Primary Actions (always visible) -->
+                <button class="nav-btn primary-action" id="campaignLogNavBtn" style="display: none;" aria-label="View campaign log" title="Campaign Log">
+                    📊
+                </button>
+                
+                <!-- Settings Dropdown (cleaner organization) -->
+                <div class="settings-dropdown">
+                    <button class="nav-btn settings-btn" id="settingsBtn" aria-label="Open menu" aria-expanded="false" title="Menu">
+                        ⋯
+                    </button>
+                    <div class="settings-menu" id="settingsMenu" role="menu" aria-labelledby="settingsBtn">
+                        <!-- Learning Tools -->
+                        <div class="menu-section">
+                            <div class="menu-section-title">Learning Tools</div>
+                            <button class="settings-item" id="vocabToggleNav" role="menuitem" aria-label="Toggle vocabulary help">
+                                <span class="menu-icon">📚</span> Vocabulary Help
+                                <span class="menu-status" id="vocabStatus">OFF</span>
+                            </button>
+                        </div>
+                        
+                        <!-- Appearance -->
+                        <div class="settings-divider"></div>
+                        <div class="menu-section">
+                            <div class="menu-section-title">Appearance</div>
+                            <button class="settings-item theme-toggle-item" id="themeToggle" onclick="toggleTheme()" role="menuitem" aria-label="Switch theme">
+                                <span class="menu-icon theme-icon">☀️</span> <span class="theme-text">Light Theme</span>
+                            </button>
+                            <div class="settings-item translate-item">
+                                <span class="menu-icon">🌐</span>
+                                <select class="translate-select-nav" id="translateSelect" onchange="if(this.value) translateWithKagi(this.value); this.value='';" aria-label="Change language">
+                                    <option value="">English</option>
+                                    <option value="Spanish">Español</option>
+                                    <option value="French">Français</option>
+                                    <option value="German">Deutsch</option>
+                                    <option value="Italian">Italiano</option>
+                                    <option value="Portuguese">Português</option>
+                                    <option value="Chinese">中文</option>
+                                    <option value="Japanese">日本語</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <!-- Game Actions -->
+                        <div class="settings-divider" id="gameActionsDiv" style="display: none;"></div>
+                        <div class="menu-section" id="gameActionsSection" style="display: none;">
+                            <div class="menu-section-title">Game</div>
+                            <button class="settings-item danger-item" id="startOverNavBtn" role="menuitem">
+                                <span class="menu-icon">🔄</span> Start Over
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Vocabulary Overlay for mobile -->
+    <div class="vocab-overlay" id="vocabOverlay"></div>
+    
+    <!-- Vocabulary Sidebar Navigation -->
+    <nav class="vocab-sidebar" id="vocabSidebar" role="complementary" aria-label="Vocabulary definitions">
         <h3>📚 Key Terms</h3>
         <ul class="vocab-list">
             <li class="vocab-item">
@@ -1692,34 +3631,15 @@
                 <div class="vocab-definition-text">Soldiers killed, wounded, or missing in battle</div>
             </li>
         </ul>
-    </div>
+    </nav>
     
     <!-- Vocabulary Toggle Button -->
-    <button class="vocab-toggle-btn" id="vocabToggleBtn" onclick="toggleVocabSidebar()">📚 Terms</button>
 
-    <!-- Language and Accessibility Controls -->
-    <div class="controls-panel">
-        <select class="translate-select" onchange="if(this.value) translateWithKagi(this.value); this.value='';">
-            <option value="">🌐 Translate Page</option>
-            <option value="Spanish">Español</option>
-            <option value="French">Français</option>
-            <option value="Portuguese">Português</option>
-            <option value="Chinese">中文</option>
-            <option value="Korean">한국어</option>
-            <option value="Ukrainian">Українська</option>
-            <option value="German">Deutsch</option>
-            <option value="Japanese">日本語</option>
-            <option value="Russian">Русский</option>
-            <option value="Arabic">العربية</option>
-        </select>
-        <button onclick="resetIntroduction()" style="background: #444; color: #fff; border: none; padding: 4px 8px; border-radius: 4px; font-size: 0.8em; margin-top: 5px;">Reset Intro</button>
-    </div>
-
-    <div class="game-container">
+    <main class="game-container" id="main-content" role="main" aria-label="Civil War Battle Simulation Game">
         <!-- Side Selection Screen -->
-        <div class="side-selection" id="sideSelection">
-            <h1 class="game-title">Civil War Battle Simulation</h1>
-            <p class="subtitle">Educational Edition - Learn History Through Strategy</p>
+        <div class="side-selection" id="sideSelection" role="region" aria-label="Choose your side">
+            <h2 class="section-title">Choose Your Side</h2>
+            <p class="subtitle">Command either the Union or Confederacy through 10 historic battles</p>
             
             <!-- Civil War Introduction - only shown on first visit -->
             <div class="civil-war-intro" id="civilWarIntro" style="display: none;">
@@ -1745,47 +3665,52 @@
                 </div>
             </div>
             
-            <h2 id="chooseSideHeading" style="color: #ffd700; text-align: center; margin: 30px 0 20px 0;">Choose Your Side</h2>
             
             <div class="sides-container">
-                <div class="side-card union-card" id="unionCard">
-                    <span class="side-flag">🇺🇸</span>
-                    <h2 class="side-name">Union (The North)</h2>
-                    <p class="side-description">
-                        <strong>🏭 Industrial Powerhouse</strong><br>
-                        You command President Lincoln's forces fighting to keep America united and end <strong style="color: #ffd700;">slavery</strong> forever. 
-                        Use your factories, railroads, and larger population to crush the rebellion!
-                    </p>
-                    <div style="background: rgba(59, 130, 246, 0.2); padding: 10px; border-radius: 8px; margin: 10px 0;">
-                        <p style="font-size: 0.9em; margin: 0;"><strong>Your Advantages:</strong> More <strong style="color: #ffd700;">reinforcements</strong>, better weapons, naval blockade</p>
+                <div class="side-card union-card" id="unionCard" role="button" tabindex="0" aria-labelledby="union-name" aria-describedby="union-description">
+                    <span class="side-flag" aria-hidden="true">🇺🇸</span>
+                    <h2 class="side-name" id="union-name">Union (The North)</h2>
+                    <div id="union-description">
+                        <p class="side-description">
+                            <strong>🏭 Industrial Powerhouse</strong><br>
+                            You command President Lincoln's forces fighting to keep America united and end <strong style="color: #ffd700;">slavery</strong> forever. 
+                            Use your factories, railroads, and larger population to crush the rebellion!
+                        </p>
+                        <div style="background: rgba(59, 130, 246, 0.2); padding: 10px; border-radius: 8px; margin: 10px 0;">
+                            <p style="font-size: 0.9em; margin: 0;"><strong>Your Advantages:</strong> More <strong style="color: #ffd700;">reinforcements</strong>, better weapons, naval blockade</p>
+                        </div>
+                        <p class="soldier-count">Starting Army: 1,500,000 soldiers</p>
+                        <p class="victory-condition">
+                            🎯 Win 6 out of 10 battles to save the Union!
+                        </p>
                     </div>
-                    <p class="soldier-count">Starting Army: 1,500,000 soldiers</p>
-                    <p class="victory-condition">
-                        🎯 Win 6 out of 10 battles to save the Union!
-                    </p>
+                    <button class="select-strategy-btn sr-only focusable">Select Union Army</button>
                 </div>
                 
-                <div class="side-card confederacy-card" id="confederacyCard">
-                    <span class="side-flag">🏴</span>
-                    <h2 class="side-name">Confederacy (The South)</h2>
-                    <p class="side-description">
-                        <strong>⚔️ Scrappy Underdogs</strong><br>
-                        Fight for <strong style="color: #ffd700;">states' rights</strong> and Southern independence! 
-                        You're outnumbered, but your generals know the land and your soldiers fight for their homeland.
-                    </p>
-                    <div style="background: rgba(107, 114, 128, 0.2); padding: 10px; border-radius: 8px; margin: 10px 0;">
-                        <p style="font-size: 0.9em; margin: 0;"><strong>Your Advantages:</strong> Better generals, home field, defensive tactics</p>
+                <div class="side-card confederacy-card" id="confederacyCard" role="button" tabindex="0" aria-labelledby="confederacy-name" aria-describedby="confederacy-description">
+                    <span class="side-flag" aria-hidden="true">🏴</span>
+                    <h2 class="side-name" id="confederacy-name">Confederacy (The South)</h2>
+                    <div id="confederacy-description">
+                        <p class="side-description">
+                            <strong>⚔️ Defending the South</strong><br>
+                            Fight for Southern independence and defend your homeland! The Confederacy seceded because they wanted to preserve <strong style="color: #ffd700;">slavery</strong> and their way of life. 
+                            You're outnumbered, but you have skilled generals and fight on familiar ground.
+                        </p>
+                        <div style="background: rgba(107, 114, 128, 0.2); padding: 10px; border-radius: 8px; margin: 10px 0;">
+                            <p style="font-size: 0.9em; margin: 0;"><strong>Your Advantages:</strong> Experienced generals like Lee, fighting on home territory, strong defensive positions</p>
+                        </div>
+                        <p class="soldier-count">Starting Army: 1,000,000 soldiers</p>
+                        <p class="victory-condition">
+                            🎯 Win 5 out of 10 battles to gain independence!
+                        </p>
                     </div>
-                    <p class="soldier-count">Starting Army: 1,000,000 soldiers</p>
-                    <p class="victory-condition">
-                        🎯 Win 5 out of 10 battles to gain independence!
-                    </p>
+                    <button class="select-strategy-btn sr-only focusable">Select Confederate Army</button>
                 </div>
             </div>
         </div>
         
         <!-- Side Introduction Screen -->
-        <div class="side-introduction" id="sideIntroduction">
+        <div class="side-introduction" id="sideIntroduction" role="region" aria-label="Side introduction and objectives">
             <div class="leader-message">
                 <div class="leader-portrait" id="leaderPortrait">🎩</div>
                 <h2 class="leader-name" id="leaderName">President Abraham Lincoln</h2>
@@ -1806,7 +3731,7 @@
         </div>
         
         <!-- Battle Briefing Screen -->
-        <div class="battle-briefing" id="battleBriefing">
+        <div class="battle-briefing" id="battleBriefing" role="region" aria-label="Battle briefing and strategy selection">
             <div class="briefing-header">
                 <h2 class="briefing-title" id="briefingTitle">First Battle of Bull Run</h2>
                 <p class="briefing-date" id="briefingDate">July 21, 1861</p>
@@ -1818,32 +3743,106 @@
                     <!-- Battle context will be inserted here -->
                 </div>
                 
-                <div class="battle-image" id="briefingImage">
-                    <!-- Battle image will be inserted here -->
+                <div class="battle-visual-container">
+                    <div class="visual-toggle-controls">
+                        <button class="visual-toggle-btn active" id="photoToggle" data-view="photo">
+                            📷 Historical Image
+                        </button>
+                        <button class="visual-toggle-btn" id="mapToggle" data-view="map">
+                            🗺️ Battle Map
+                        </button>
+                    </div>
+                    
+                    <div class="battle-image" id="briefingImage">
+                        <!-- Battle image will be inserted here -->
+                    </div>
+                    
+                    <div class="battle-map" id="briefingMap" style="display: none;">
+                        <!-- SVG mini-map will be inserted here -->
+                    </div>
                 </div>
             </div>
             
-            <div class="strategic-choices">
-                <h3 class="choices-title">Choose Your Strategy</h3>
-                <p style="margin-bottom: 20px; color: #ccc; text-align: center;">
-                    Click any strategy below to see details, then click again to make your decision!
+            <div class="strategic-choices" role="group" aria-labelledby="choices-title">
+                <h3 class="choices-title" id="choices-title">Choose Your Strategy</h3>
+                <p style="margin-bottom: 15px; color: #ccc; text-align: center; font-size: 1em;">
+                    💡 <strong>How to play:</strong> Click any strategy below to see its pros and cons, then click again to lock in your choice!
                 </p>
                 
-                <div id="choicesList">
+                <div id="choicesList" role="radiogroup" aria-labelledby="choices-title">
                     <!-- Strategy choices will be inserted here -->
                 </div>
             </div>
         </div>
         
         <!-- Game Screen (Battle Results) -->
-        <div class="game-screen" id="gameScreen">
-            <div class="game-header">
-                <div class="header-stat">Score: <span id="score">0</span></div>
-                <div class="header-stat">Soldiers: <span id="soldiers">0</span></div>
-                <div class="header-stat">Battle <span id="battleNumber">1</span>/10</div>
-                <div class="header-stat">Wins: <span id="wins">0</span></div>
-                <button class="campaign-log-btn" id="campaignLogBtn">📊 Campaign Log</button>
-                <button class="start-over-btn" id="startOverBtn">Start Over</button>
+        <div class="game-screen" id="gameScreen" role="region" aria-label="Game dashboard and statistics">
+            <div class="battle-results-container">
+                <h2 class="battle-outcome" id="battleOutcome"></h2>
+                
+                <!-- Quick Results Summary -->
+                <div class="results-summary">
+                    <div class="result-card">
+                        <div class="result-icon" id="resultIcon">🏆</div>
+                        <div class="result-text" id="resultText">Your strategy succeeded!</div>
+                    </div>
+                    
+                    <div class="impact-stats">
+                        <div class="impact-item">
+                            <span class="impact-label">Casualties:</span>
+                            <span class="impact-value casualties" id="casualtiesSummary">25,000 lost</span>
+                        </div>
+                        <div class="impact-item">
+                            <span class="impact-label">Score:</span>
+                            <span class="impact-value points" id="scoreSummary">+400 points</span>
+                        </div>
+                        <div class="impact-item">
+                            <span class="impact-label">Army Size:</span>
+                            <span class="impact-value soldiers" id="armySummary">975,000 remain</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="battle-explanation">
+                    <h3 class="explanation-title">What Happened?</h3>
+                    <div class="explanation-text" id="explanationText">
+                        <!-- Battle explanation will be inserted here -->
+                    </div>
+                    
+                    <div class="historical-note">
+                        <div class="historical-note-title">📚 Historical Note</div>
+                        <div id="historicalNote">
+                            <!-- Historical information will be inserted here -->
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="continue-battle-btn" id="continueBattleBtn">Continue to Next Battle</button>
+            </div>
+        </div>
+
+        <!-- Battle Results Modal -->
+        <div class="battle-results-modal" id="battleResultsModal" style="display: none;">
+            <div class="modal-overlay"></div>
+            <div class="battle-results-content">
+                <div class="results-header">
+                    <h2 class="battle-outcome-modal" id="battleOutcomeModal"></h2>
+                    <div class="result-icon-large" id="resultIconModal">🏆</div>
+                </div>
+                
+                <div class="results-body">
+                    <div class="outcome-summary" id="outcomeSummaryModal">
+                        <!-- Summary will be inserted here -->
+                    </div>
+                    
+                    <div class="score-changes" id="scoreChangesModal">
+                        <!-- Score changes will be inserted here -->
+                    </div>
+                </div>
+                
+                <div class="results-actions">
+                    <button class="continue-btn primary-btn" id="continueFromResultsBtn">Continue Campaign</button>
+                </div>
             </div>
         </div>
 
@@ -1896,52 +3895,6 @@
             </div>
         </div>
         
-        <!-- Battle Results Modal -->
-        <div class="battle-results-modal" id="battleResultsModal">
-            <div class="battle-results-container">
-                <h2 class="battle-outcome" id="battleOutcome"></h2>
-                
-                <!-- Quick Results Summary -->
-                <div class="results-summary">
-                    <div class="result-card">
-                        <div class="result-icon" id="resultIcon">🏆</div>
-                        <div class="result-text" id="resultText">Your strategy succeeded!</div>
-                    </div>
-                    
-                    <div class="impact-stats">
-                        <div class="impact-item">
-                            <span class="impact-label">Casualties:</span>
-                            <span class="impact-value casualties" id="casualtiesSummary">25,000 lost</span>
-                        </div>
-                        <div class="impact-item">
-                            <span class="impact-label">Score:</span>
-                            <span class="impact-value points" id="scoreSummary">+400 points</span>
-                        </div>
-                        <div class="impact-item">
-                            <span class="impact-label">Army Size:</span>
-                            <span class="impact-value soldiers" id="armySummary">975,000 remain</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="battle-explanation">
-                    <h3 class="explanation-title">What Happened?</h3>
-                    <div class="explanation-text" id="explanationText">
-                        <!-- Battle explanation will be inserted here -->
-                    </div>
-                    
-                    <div class="historical-note">
-                        <div class="historical-note-title">📚 Historical Note</div>
-                        <div id="historicalNote">
-                            <!-- Historical information will be inserted here -->
-                        </div>
-                    </div>
-                </div>
-                
-                <button class="continue-battle-btn" id="continueBattleBtn">Continue to Next Battle</button>
-            </div>
-        </div>
-        
         <!-- End Game Summary -->
         <div class="end-game-summary" id="endGameSummary">
             <div class="outcome-banner" id="outcomeBanner">
@@ -1956,9 +3909,95 @@
                 </div>
             </div>
             
+            <!-- Image Credits Section -->
+            <div class="image-credits-section">
+                <button class="credits-toggle" id="creditsToggle" 
+                        aria-expanded="false" 
+                        aria-controls="creditsContent"
+                        type="button">
+                    <span class="credits-icon">📷</span>
+                    <span class="credits-text">View Image Credits</span>
+                    <span class="credits-arrow">▼</span>
+                </button>
+                
+                <div class="credits-content" id="creditsContent" aria-hidden="true">
+                    <h3>Image Credits & Sources</h3>
+                    <p class="credits-note">All images used in this educational simulation are in the public domain or used under fair use provisions for educational purposes.</p>
+                    
+                    <div class="credits-grid">
+                        <div class="credit-item">
+                            <strong>Battle of Bull Run:</strong><br>
+                            Library of Congress, Public Domain<br>
+                            <small>LC-DIG-pga-01884</small>
+                        </div>
+                        
+                        <div class="credit-item">
+                            <strong>Battle of Antietam:</strong><br>
+                            National Archives, Public Domain<br>
+                            <small>165-SB-23</small>
+                        </div>
+                        
+                        <div class="credit-item">
+                            <strong>Battle of Gettysburg:</strong><br>
+                            Library of Congress, Public Domain<br>
+                            <small>LC-DIG-cwpb-03360</small>
+                        </div>
+                        
+                        <div class="credit-item">
+                            <strong>Battle of Fredericksburg:</strong><br>
+                            National Park Service, Public Domain<br>
+                            <small>Historical Collection</small>
+                        </div>
+                        
+                        <div class="credit-item">
+                            <strong>Battle of Chancellorsville:</strong><br>
+                            Library of Congress, Public Domain<br>
+                            <small>LC-DIG-pga-02502</small>
+                        </div>
+                        
+                        <div class="credit-item">
+                            <strong>Battle of Vicksburg:</strong><br>
+                            National Archives, Public Domain<br>
+                            <small>111-B-158</small>
+                        </div>
+                        
+                        <div class="credit-item">
+                            <strong>Battle of Chickamauga:</strong><br>
+                            Library of Congress, Public Domain<br>
+                            <small>LC-DIG-pga-02891</small>
+                        </div>
+                        
+                        <div class="credit-item">
+                            <strong>Battle of the Wilderness:</strong><br>
+                            National Park Service, Public Domain<br>
+                            <small>Historical Archive</small>
+                        </div>
+                        
+                        <div class="credit-item">
+                            <strong>Battle of Spotsylvania:</strong><br>
+                            Library of Congress, Public Domain<br>
+                            <small>LC-DIG-cwpb-02891</small>
+                        </div>
+                        
+                        <div class="credit-item">
+                            <strong>Surrender at Appomattox:</strong><br>
+                            National Archives, Public Domain<br>
+                            <small>111-B-4910</small>
+                        </div>
+                    </div>
+                    
+                    <div class="additional-credits">
+                        <h4>Additional Resources</h4>
+                        <p><strong>Battle Maps:</strong> Created for educational use based on historical sources</p>
+                        <p><strong>Icons & UI Elements:</strong> Custom designed for this simulation</p>
+                        <p><strong>Historical Context:</strong> Based on official military records and historical documentation</p>
+                    </div>
+                </div>
+            </div>
+            
             <button class="play-again-btn" id="playAgainBtn">Play Again</button>
         </div>
-    </div>
+    </main>
 
 <script>
     // Game State
@@ -1984,7 +4023,7 @@
             date: "July 21, 1861",
             imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Battle_of_Bull_Run.jpg/1024px-Battle_of_Bull_Run.jpg",
             imageCredit: "Kurz & Allison, 1889",
-            context: "This was the first major battle of the Civil War. Both armies were made up mostly of volunteers who had never fought in a real battle before. Many people from Washington D.C. came out to watch, expecting it to be like a parade! The battle took place near a small creek called Bull Run in Virginia. Both sides thought the war would end quickly after one big battle.",
+            context: "🎪 <strong>The Battle That Shocked America!</strong><br><br>This was the first major battle of the Civil War, and nobody knew what to expect. Both armies were mostly volunteers who had never seen real combat. Incredibly, hundreds of people from Washington D.C. packed picnic baskets and came out to watch like it was a sporting event!<br><br>The battle took place near a small creek called Bull Run in Virginia, just 30 miles from the nation's capital. Everyone thought one big fight would end the war quickly. They were very, very wrong. The reality of war hit hard when inexperienced soldiers on both sides panicked and ran. This wake-up call showed Americans that the Civil War would be long, bloody, and devastating.",
             strategies: [
                 {
                     name: "Direct Attack",
@@ -1992,8 +4031,8 @@
                     explanation: "This is the most straightforward approach - no fancy moves, just advance and fight. It can work if you have more soldiers or better equipment.",
                     pros: ["Simple to understand and execute", "Can overwhelm a weaker enemy", "Shows courage and determination"],
                     cons: ["Enemy can see you coming", "You might take heavy casualties", "No element of surprise"],
-                    union: { win: false, soldierLoss: 45000, scoreGain: 100 },
-                    confederacy: { win: true, soldierLoss: 30000, scoreGain: 400 }
+                    union: { win: false, soldierLoss: 2900, scoreGain: 100 },
+                    confederacy: { win: true, soldierLoss: 2000, scoreGain: 400 }
                 },
                 {
                     name: "Defensive Position",
@@ -2001,8 +4040,8 @@
                     explanation: "Defense means letting the enemy come to you while you're in a strong position. Soldiers behind <span class='vocab-term'>fortifications<span class='vocab-tooltip'><div class='vocab-definition'>Structures built to defend against attack</div></span></span> are much harder to defeat.",
                     pros: ["Harder for enemy to hurt you", "You can choose the best ground", "Saves energy and supplies"],
                     cons: ["You give up the initiative", "Enemy might go around you", "Doesn't win territory"],
-                    union: { win: false, soldierLoss: 25000, scoreGain: 200 },
-                    confederacy: { win: true, soldierLoss: 15000, scoreGain: 300 }
+                    union: { win: false, soldierLoss: 2500, scoreGain: 200 },
+                    confederacy: { win: true, soldierLoss: 1500, scoreGain: 300 }
                 },
                 {
                     name: "Flanking Movement",
@@ -2010,8 +4049,8 @@
                     explanation: "A <span class='vocab-term'>flanking<span class='vocab-tooltip'><div class='vocab-definition'>A military tactic of attacking the sides of an enemy formation</div></span></span> attack can surprise the enemy and force them to fight in two directions at once. It's risky because it splits your forces.",
                     pros: ["Element of surprise", "Can confuse the enemy", "Might cause enemy to retreat quickly"],
                     cons: ["Complex to coordinate", "Takes more time", "If it fails, you're in trouble"],
-                    union: { win: false, soldierLoss: 35000, scoreGain: 150 },
-                    confederacy: { win: true, soldierLoss: 20000, scoreGain: 350 }
+                    union: { win: false, soldierLoss: 2700, scoreGain: 150 },
+                    confederacy: { win: true, soldierLoss: 1900, scoreGain: 350 }
                 }
             ],
             results: {
@@ -2459,7 +4498,22 @@
             campaignLogBtn: document.getElementById('campaignLogBtn'),
             closeLogBtn: document.getElementById('closeLogBtn'),
             playAgainBtn: document.getElementById('playAgainBtn'),
-            vocabToggle: document.getElementById('vocabToggle')
+            photoToggle: document.getElementById('photoToggle'),
+            mapToggle: document.getElementById('mapToggle'),
+            briefingImage: document.getElementById('briefingImage'),
+            briefingMap: document.getElementById('briefingMap'),
+            // Navigation elements
+            navbarStats: document.getElementById('navbarStats'),
+            navScore: document.getElementById('navScore'),
+            navSoldiers: document.getElementById('navSoldiers'),
+            navBattleNumber: document.getElementById('navBattleNumber'),
+            navWins: document.getElementById('navWins'),
+            campaignLogNavBtn: document.getElementById('campaignLogNavBtn'),
+            startOverNavBtn: document.getElementById('startOverNavBtn'),
+            vocabToggleNav: document.getElementById('vocabToggleNav'),
+            settingsBtn: document.getElementById('settingsBtn'),
+            settingsMenu: document.getElementById('settingsMenu'),
+            vocabStatus: document.getElementById('vocabStatus')
         };
 
         // Check if this is first time playing - show introduction
@@ -2470,8 +4524,7 @@
         
         if (!hasSeenIntro) {
             document.getElementById('civilWarIntro').style.display = 'block';
-            // Hide the "Choose Your Side" heading and side cards
-            document.getElementById('chooseSideHeading').style.display = 'none';
+            // Hide the side cards
             document.querySelector('.sides-container').style.display = 'none';
             // Force re-render of vocabulary tooltips after display change
             setTimeout(() => {
@@ -2498,16 +4551,118 @@
         elements.backToSideBtn.addEventListener('click', showSideSelection);
         elements.continueBattleBtn.addEventListener('click', continueToNextBattle);
         elements.playAgainBtn.addEventListener('click', resetGame);
-        elements.startOverBtn.addEventListener('click', () => {
+        if (elements.startOverBtn) {
+            elements.startOverBtn.addEventListener('click', () => {
+                if (confirm('Are you sure you want to start over?')) resetGame();
+            });
+        }
+
+        // Campaign log (check if elements exist)
+        if (elements.campaignLogBtn) {
+            elements.campaignLogBtn.addEventListener('click', showCampaignLog);
+        }
+        if (elements.closeLogBtn) {
+            elements.closeLogBtn.addEventListener('click', closeCampaignLog);
+        }
+
+        // Settings (skip old vocab toggle - now handled in navigation)
+        
+        // Visual toggle controls
+        elements.photoToggle.addEventListener('click', () => toggleVisualModeWithAnimation('photo'));
+        elements.mapToggle.addEventListener('click', () => toggleVisualModeWithAnimation('map'));
+        
+        // Navigation bar controls
+        elements.campaignLogNavBtn.addEventListener('click', showCampaignLog);
+        elements.startOverNavBtn.addEventListener('click', () => {
             if (confirm('Are you sure you want to start over?')) resetGame();
         });
-
-        // Campaign log
-        elements.campaignLogBtn.addEventListener('click', showCampaignLog);
-        elements.closeLogBtn.addEventListener('click', closeCampaignLog);
-
-        // Settings
-        elements.vocabToggle.addEventListener('click', toggleVocabularyHelp);
+        elements.vocabToggleNav.addEventListener('click', toggleVocabularyHelp);
+        
+        // Settings dropdown
+        elements.settingsBtn.addEventListener('click', toggleSettingsMenu);
+        
+        // Image credits toggle
+        const creditsToggle = document.getElementById('creditsToggle');
+        const creditsContent = document.getElementById('creditsContent');
+        
+        if (creditsToggle && creditsContent) {
+            creditsToggle.addEventListener('click', () => {
+                const isExpanded = creditsToggle.getAttribute('aria-expanded') === 'true';
+                const newState = !isExpanded;
+                
+                // Update ARIA attributes
+                creditsToggle.setAttribute('aria-expanded', newState);
+                creditsContent.setAttribute('aria-hidden', !newState);
+                
+                // Toggle visual state
+                if (newState) {
+                    creditsContent.classList.add('expanded');
+                    creditsToggle.querySelector('.credits-text').textContent = 'Hide Image Credits';
+                } else {
+                    creditsContent.classList.remove('expanded');
+                    creditsToggle.querySelector('.credits-text').textContent = 'View Image Credits';
+                }
+            });
+        }
+        
+        // Close settings when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!elements.settingsBtn.contains(e.target) && !elements.settingsMenu.contains(e.target)) {
+                elements.settingsMenu.classList.remove('show');
+                elements.settingsBtn.setAttribute('aria-expanded', 'false');
+            }
+        });
+        
+        // Close vocabulary sidebar when clicking overlay
+        const vocabOverlay = document.getElementById('vocabOverlay');
+        if (vocabOverlay) {
+            vocabOverlay.addEventListener('click', () => {
+                if (settings.vocabHelp) {
+                    toggleVocabularyHelp();
+                }
+            });
+        }
+        
+        // Side selection accessibility - card and button support
+        function addSideSelectionListeners() {
+            const unionCard = document.getElementById('unionCard');
+            const confederacyCard = document.getElementById('confederacyCard');
+            
+            // Click and keyboard support for Union card
+            unionCard.addEventListener('click', () => selectSide('union'));
+            unionCard.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    selectSide('union');
+                }
+            });
+            
+            // Click and keyboard support for Confederacy card
+            confederacyCard.addEventListener('click', () => selectSide('confederacy'));
+            confederacyCard.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    selectSide('confederacy');
+                }
+            });
+            
+            // Strategy button support
+            const unionBtn = unionCard.querySelector('.select-strategy-btn');
+            const confederacyBtn = confederacyCard.querySelector('.select-strategy-btn');
+            
+            unionBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                selectSide('union');
+            });
+            
+            confederacyBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                selectSide('confederacy');
+            });
+        }
+        
+        // Initialize side selection listeners after DOM is ready
+        addSideSelectionListeners();
 
         // Close modal when clicking outside
         elements.campaignLogModal.addEventListener('click', (e) => {
@@ -2515,6 +4670,215 @@
                 closeCampaignLog();
             }
         });
+        
+        // Enhanced modal keyboard handling
+        document.addEventListener('keydown', (e) => {
+            // ESC key closes modals and sidebar
+            if (e.key === 'Escape') {
+                if (elements.campaignLogModal.style.display === 'block') {
+                    closeCampaignLog();
+                } else if (elements.battleResultsModal.style.display === 'block') {
+                    closeBattleResultsModal();
+                } else if (settings.vocabHelp) {
+                    toggleVocabularyHelp();
+                } else if (elements.settingsMenu.classList.contains('show')) {
+                    elements.settingsMenu.classList.remove('show');
+                    elements.settingsBtn.setAttribute('aria-expanded', 'false');
+                }
+            }
+        });
+        
+    }
+    
+    // Visual mode toggle functionality
+    function toggleVisualMode(mode) {
+        const photoToggle = elements.photoToggle;
+        const mapToggle = elements.mapToggle;
+        const briefingImage = elements.briefingImage;
+        const briefingMap = elements.briefingMap;
+        
+        if (mode === 'photo') {
+            photoToggle.classList.add('active');
+            mapToggle.classList.remove('active');
+            briefingImage.style.display = 'flex';
+            briefingMap.style.display = 'none';
+        } else if (mode === 'map') {
+            photoToggle.classList.remove('active');
+            mapToggle.classList.add('active');
+            briefingImage.style.display = 'none';
+            briefingMap.style.display = 'flex';
+        }
+    }
+    
+    // Create SVG mini-map for battle
+    function createBattleMap(battleId) {
+        const maps = {
+            bull_run: `
+                <svg viewBox="0 0 400 300" aria-label="Map of First Battle of Bull Run">
+                    <rect width="400" height="300" fill="var(--color-cream-200)" />
+                    <g stroke="var(--color-navy-600)" stroke-width="2" fill="none">
+                        <!-- Bull Run Creek -->
+                        <path d="M 50 150 Q 200 120 350 160" stroke="var(--color-blue-500)" stroke-width="3" />
+                        <!-- Stone Bridge -->
+                        <rect x="95" y="145" width="15" height="10" fill="var(--color-navy-800)" />
+                        <!-- Union Forces -->
+                        <rect x="80" y="100" width="40" height="20" fill="var(--color-blue-700)" />
+                        <text x="100" y="90" text-anchor="middle" font-size="12" fill="var(--color-navy-800)">Union</text>
+                        <!-- Confederate Forces -->
+                        <rect x="280" y="180" width="40" height="20" fill="var(--color-error)" />
+                        <text x="300" y="215" text-anchor="middle" font-size="12" fill="var(--color-navy-800)">Confederate</text>
+                        <!-- Henry Hill -->
+                        <circle cx="250" cy="150" r="20" fill="var(--color-gold-400)" opacity="0.7" />
+                        <text x="250" y="155" text-anchor="middle" font-size="10" fill="var(--color-navy-800)">Henry Hill</text>
+                    </g>
+                </svg>
+            `,
+            gettysburg: `
+                <svg viewBox="0 0 400 300" aria-label="Map of Battle of Gettysburg">
+                    <rect width="400" height="300" fill="var(--color-cream-200)" />
+                    <g stroke="var(--color-navy-600)" stroke-width="2" fill="none">
+                        <!-- Cemetery Hill -->
+                        <circle cx="200" cy="120" r="25" fill="var(--color-gold-400)" opacity="0.7" />
+                        <text x="200" y="95" text-anchor="middle" font-size="12" fill="var(--color-navy-800)">Cemetery Hill</text>
+                        <!-- Union Lines -->
+                        <path d="M 180 120 Q 200 180 220 240" stroke="var(--color-blue-700)" stroke-width="4" />
+                        <!-- Confederate Lines -->
+                        <path d="M 100 100 Q 150 150 120 200 Q 180 220 240 200 Q 280 180 300 140" stroke="var(--color-error)" stroke-width="4" />
+                        <!-- Little Round Top -->
+                        <circle cx="160" cy="220" r="15" fill="var(--color-gold-400)" opacity="0.7" />
+                        <text x="160" y="245" text-anchor="middle" font-size="10" fill="var(--color-navy-800)">Little Round Top</text>
+                        <!-- Big Round Top -->
+                        <circle cx="140" cy="240" r="18" fill="var(--color-gold-400)" opacity="0.7" />
+                        <text x="90" y="260" text-anchor="middle" font-size="10" fill="var(--color-navy-800)">Big Round Top</text>
+                    </g>
+                </svg>
+            `,
+            antietam: `
+                <svg viewBox="0 0 400 300" aria-label="Map of Battle of Antietam">
+                    <rect width="400" height="300" fill="var(--color-cream-200)" />
+                    <g stroke="var(--color-navy-600)" stroke-width="2" fill="none">
+                        <!-- Antietam Creek -->
+                        <path d="M 150 50 Q 180 150 150 250" stroke="var(--color-blue-500)" stroke-width="4" />
+                        <!-- Burnside Bridge -->
+                        <rect x="145" y="200" width="15" height="8" fill="var(--color-navy-800)" />
+                        <text x="170" y="215" font-size="10" fill="var(--color-navy-800)">Burnside Bridge</text>
+                        <!-- Union Forces -->
+                        <rect x="80" y="120" width="50" height="15" fill="var(--color-blue-700)" />
+                        <rect x="70" y="180" width="50" height="15" fill="var(--color-blue-700)" />
+                        <!-- Confederate Forces -->
+                        <rect x="200" y="140" width="50" height="15" fill="var(--color-error)" />
+                        <!-- Sharpsburg -->
+                        <circle cx="220" cy="120" r="12" fill="var(--color-navy-800)" />
+                        <text x="220" y="105" text-anchor="middle" font-size="10" fill="var(--color-navy-800)">Sharpsburg</text>
+                    </g>
+                </svg>
+            `
+        };
+        
+        return maps[battleId] || `
+            <svg viewBox="0 0 400 300" aria-label="Generic battle map">
+                <rect width="400" height="300" fill="var(--color-cream-200)" />
+                <g stroke="var(--color-navy-600)" stroke-width="2" fill="none">
+                    <text x="200" y="150" text-anchor="middle" font-size="16" fill="var(--color-navy-800)">Battle Map</text>
+                    <text x="200" y="170" text-anchor="middle" font-size="12" fill="var(--color-navy-600)">Detailed map not available</text>
+                </g>
+            </svg>
+        `;
+    }
+    
+    // Load asset manifest
+    function getAssetManifest() {
+        const manifestScript = document.getElementById('assetManifest');
+        if (manifestScript) {
+            return JSON.parse(manifestScript.textContent);
+        }
+        return [];
+    }
+    
+    // Enhanced screen transitions with staggered animations
+    function showScreenWithAnimation(screenElement, animationType = 'fadeIn') {
+        if (!screenElement) return;
+        
+        // Hide all screens first
+        hideAllScreens();
+        
+        // Show the target screen
+        screenElement.style.display = 'block';
+        
+        // Add animation class
+        screenElement.classList.add(`animate-${animationType}`);
+        
+        // Find and animate child elements with stagger
+        const animatableElements = screenElement.querySelectorAll('.side-card, .choice-option, .summary-stat, .timeline-item');
+        animatableElements.forEach((el, index) => {
+            el.style.animationDelay = `${index * 0.1}s`;
+            el.classList.add('animate-slide-in-left');
+        });
+        
+        // Clean up animation classes after animation completes
+        setTimeout(() => {
+            screenElement.classList.remove(`animate-${animationType}`);
+            animatableElements.forEach(el => {
+                el.classList.remove('animate-slide-in-left');
+                el.style.animationDelay = '';
+            });
+        }, 800);
+    }
+    
+    // Enhanced transition for visual mode toggle
+    function toggleVisualModeWithAnimation(mode) {
+        const photoToggle = elements.photoToggle;
+        const mapToggle = elements.mapToggle;
+        const briefingImage = elements.briefingImage;
+        const briefingMap = elements.briefingMap;
+        
+        if (mode === 'photo') {
+            photoToggle.classList.add('active');
+            mapToggle.classList.remove('active');
+            briefingMap.style.display = 'none';
+            briefingImage.style.display = 'flex';
+            briefingImage.classList.add('animate-scale-in');
+        } else if (mode === 'map') {
+            photoToggle.classList.remove('active');
+            mapToggle.classList.add('active');
+            briefingImage.style.display = 'none';
+            briefingMap.style.display = 'flex';
+            briefingMap.classList.add('animate-scale-in');
+        }
+        
+        // Clean up animation classes
+        setTimeout(() => {
+            briefingImage.classList.remove('animate-scale-in');
+            briefingMap.classList.remove('animate-scale-in');
+        }, 500);
+    }
+
+    // Focus trap for modals
+    function trapFocus(modal) {
+        const focusableElements = modal.querySelectorAll(
+            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        );
+        const firstFocusable = focusableElements[0];
+        const lastFocusable = focusableElements[focusableElements.length - 1];
+        
+        modal.addEventListener('keydown', function(e) {
+            if (e.key === 'Tab') {
+                if (e.shiftKey) {
+                    if (document.activeElement === firstFocusable) {
+                        lastFocusable.focus();
+                        e.preventDefault();
+                    }
+                } else {
+                    if (document.activeElement === lastFocusable) {
+                        firstFocusable.focus();
+                        e.preventDefault();
+                    }
+                }
+            }
+        });
+        
+        // Focus first element when modal opens
+        firstFocusable?.focus();
     }
 
     function selectSide(side) {
@@ -2563,40 +4927,115 @@
 
     function showBattleBriefing() {
         const battle = battles[gameState.currentBattle];
+        const assets = getAssetManifest();
         
         document.getElementById('briefingTitle').textContent = battle.name;
         document.getElementById('briefingDate').textContent = battle.date;
         document.getElementById('contextText').innerHTML = battle.context;
         
-        // Update battle image
-        const briefingImage = document.getElementById('briefingImage');
-        if (battle.imageUrl) {
-            const img = new Image();
-            img.onload = function() {
-                briefingImage.innerHTML = `
-                    <img src="${battle.imageUrl}" alt="${battle.name}">
-                    <span class="image-credit">Source: ${battle.imageCredit}</span>
-                `;
-            };
-            img.onerror = function() {
-                briefingImage.innerHTML = `
-                    <div style="text-align: center; padding: 40px; color: #888;">
-                        <div style="font-size: 3em; margin-bottom: 10px;">⚔️</div>
-                        <p>${battle.name}</p>
-                        <p style="font-size: 0.9em; margin-top: 5px;">${battle.date}</p>
-                    </div>
-                `;
-            };
-            img.src = battle.imageUrl;
+        // Find matching asset for this battle
+        // Create a simple mapping based on battle index since assets are in order
+        let battleAsset = assets[gameState.currentBattle];
+        
+        // If no direct index match, try name matching as fallback
+        if (!battleAsset) {
+            battleAsset = assets.find(asset => {
+                const assetName = asset.id.replace(/_/g, ' ').toLowerCase();
+                const battleName = battle.name.toLowerCase();
+                const match = battleName.includes(assetName) || 
+                             (assetName.includes('bull') && battleName.includes('bull')) ||
+                             (assetName.includes('antietam') && battleName.includes('antietam')) ||
+                             (assetName.includes('gettysburg') && battleName.includes('gettysburg'));
+                return match;
+            });
+        }
+        
+        // Final fallback to first asset
+        if (!battleAsset) {
+            battleAsset = assets[0];
+        }
+        
+        // Asset selection complete
+        
+        // Update battle image with high-quality asset
+        const briefingImage = elements.briefingImage;
+        const briefingMap = elements.briefingMap;
+        
+        if (battleAsset && briefingImage) {
+            // Show loading state immediately
+            briefingImage.innerHTML = `
+                <div style="text-align: center; padding: 40px; color: var(--color-text-secondary);">
+                    <div style="font-size: 2em; margin-bottom: 10px;">📷</div>
+                    <p>Loading image...</p>
+                </div>
+            `;
+            
+            // Test with multiple image sources including fallbacks
+            const testUrls = [
+                battleAsset.url,
+                // Fallback to direct Wikipedia URLs
+                battleAsset.url.replace('/thumb/', '/').split('/').slice(0, -1).join('/') + '/' + battleAsset.url.split('/').pop().split('-')[0] + '.jpg',
+                // SVG placeholder as final fallback
+                `data:image/svg+xml;base64,${btoa(`<svg width="400" height="300" xmlns="http://www.w3.org/2000/svg"><rect width="400" height="300" fill="#2a2a2a"/><text x="200" y="120" fill="white" text-anchor="middle" font-size="18">Historical Image</text><text x="200" y="150" fill="white" text-anchor="middle" font-size="16">${battle.name}</text><text x="200" y="180" fill="white" text-anchor="middle" font-size="14">${battle.date}</text></svg>`)}`
+            ];
+            
+            function tryLoadImage(urlIndex = 0) {
+                if (urlIndex >= testUrls.length) {
+                    // All URLs failed
+                    briefingImage.innerHTML = `
+                        <div style="text-align: center; padding: 40px; color: var(--color-text-secondary); background: var(--color-surface-secondary); border-radius: var(--radius-xl);">
+                            <div style="font-size: 3em; margin-bottom: 10px;">🖼️</div>
+                            <p style="font-weight: 600;">${battle.name}</p>
+                            <p style="font-size: 0.9em; margin-top: 5px;">${battle.date}</p>
+                            <p style="font-size: 0.8em; margin-top: 10px; opacity: 0.7;">All image sources failed</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                const img = new Image();
+                const currentUrl = testUrls[urlIndex];
+                
+                img.onload = function() {
+                    // Image loaded successfully
+                    const isPlaceholder = currentUrl.startsWith('data:');
+                    briefingImage.innerHTML = `
+                        <img src="${currentUrl}" 
+                             alt="${battleAsset.title}" 
+                             loading="lazy" 
+                             decoding="async"
+                             style="transition: opacity 0.3s ease; width: 100%; height: 100%; object-fit: cover;">
+                        ${!isPlaceholder ? `<span class="image-credit" style="position: absolute; bottom: 8px; left: 8px; right: 8px; background: rgba(0,0,0,0.7); color: white; padding: 4px 8px; border-radius: 4px; font-size: 0.8em;">${battleAsset.credit} • ${battleAsset.source}</span>` : ''}
+                    `;
+                };
+                
+                img.onerror = function(error) {
+                    console.error(`Image failed to load (attempt ${urlIndex + 1}):`, currentUrl, error);
+                    // Try next URL
+                    tryLoadImage(urlIndex + 1);
+                };
+                
+                // Attempting to load image
+                img.src = currentUrl;
+            }
+            
+            tryLoadImage();
         } else {
             briefingImage.innerHTML = `
-                <div style="text-align: center; padding: 40px; color: #888;">
+                <div style="text-align: center; padding: 40px; color: var(--color-text-secondary);">
                     <div style="font-size: 3em; margin-bottom: 10px;">⚔️</div>
                     <p>${battle.name}</p>
                     <p style="font-size: 0.9em; margin-top: 5px;">${battle.date}</p>
                 </div>
             `;
         }
+        
+        // Create and populate battle map
+        const battleId = battleAsset ? battleAsset.id : 'generic';
+        briefingMap.innerHTML = createBattleMap(battleId);
+        
+        // Reset to photo view by default
+        toggleVisualModeWithAnimation('photo');
         
         // Create strategy choices with collapsible details
         const choicesList = document.getElementById('choicesList');
@@ -2661,7 +5100,6 @@
         
         hideAllScreens();
         elements.battleBriefing.style.display = 'block';
-        elements.gameScreen.style.display = 'block';
         updateGameDisplay();
         window.scrollTo({ top: 0, behavior: 'smooth' });
         updateVocabularyDisplay();
@@ -2745,20 +5183,16 @@
         
         updateGameDisplay();
         
-        // Show modal and ensure it's scrolled to top
-        elements.battleResultsModal.style.display = 'flex';
-        elements.battleResultsModal.classList.add('show');
+        // Show game screen (revert to working approach)
+        hideAllScreens();
+        elements.gameScreen.style.display = 'block';
         
-        // Scroll the page and modal to top
-        setTimeout(() => {
-            window.scrollTo({ top: 0, behavior: 'instant' });
-            elements.battleResultsModal.scrollTop = 0;
-        }, 50);
+        // Scroll to top
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     function continueToNextBattle() {
-        elements.battleResultsModal.style.display = 'none';
-        elements.battleResultsModal.classList.remove('show');
+        // Continue from game screen to next battle
         
         gameState.currentBattle++;
         if (gameState.currentBattle >= battles.length || gameState.soldiers <= 0 || shouldEndGame()) {
@@ -2785,10 +5219,61 @@
     }
 
     function updateGameDisplay() {
-        document.getElementById('score').textContent = gameState.score.toLocaleString();
-        document.getElementById('soldiers').textContent = gameState.soldiers.toLocaleString();
-        document.getElementById('wins').textContent = gameState.wins;
-        document.getElementById('battleNumber').textContent = gameState.currentBattle + 1;
+        // Update old display elements (for compatibility)
+        const scoreEl = document.getElementById('score');
+        const soldiersEl = document.getElementById('soldiers');
+        const winsEl = document.getElementById('wins');
+        const battleNumberEl = document.getElementById('battleNumber');
+        
+        if (scoreEl) scoreEl.textContent = gameState.score.toLocaleString();
+        if (soldiersEl) soldiersEl.textContent = gameState.soldiers.toLocaleString();
+        if (winsEl) winsEl.textContent = gameState.wins;
+        if (battleNumberEl) battleNumberEl.textContent = gameState.currentBattle + 1;
+        
+        // Update navbar stats
+        // Navbar stats temporarily disabled - will implement leaderboard later
+        // if (elements.navScore) elements.navScore.textContent = gameState.score.toLocaleString();
+        // if (elements.navSoldiers) elements.navSoldiers.textContent = gameState.soldiers.toLocaleString();
+        // if (elements.navWins) elements.navWins.textContent = gameState.wins;
+        // if (elements.navBattleNumber) elements.navBattleNumber.textContent = gameState.currentBattle + 1;
+        
+        // Show/hide navbar stats during gameplay
+        const isInGame = gameState.currentBattle > 0 || gameState.side;
+        if (isInGame) {
+            // Navbar stats temporarily disabled - will implement leaderboard later
+            // if (elements.navbarStats) elements.navbarStats.style.display = 'flex';
+            if (elements.campaignLogNavBtn) elements.campaignLogNavBtn.style.display = 'block';
+            
+            // Show game actions section in menu
+            const gameActionsSection = document.getElementById('gameActionsSection');
+            const gameActionsDiv = document.getElementById('gameActionsDiv');
+            if (gameActionsSection) gameActionsSection.style.display = 'block';
+            if (gameActionsDiv) gameActionsDiv.style.display = 'block';
+        } else {
+            // Navbar stats temporarily disabled - will implement leaderboard later
+            // if (elements.navbarStats) elements.navbarStats.style.display = 'none';
+            if (elements.campaignLogNavBtn) elements.campaignLogNavBtn.style.display = 'none';
+            
+            // Hide game actions section in menu
+            const gameActionsSection = document.getElementById('gameActionsSection');
+            const gameActionsDiv = document.getElementById('gameActionsDiv');
+            if (gameActionsSection) gameActionsSection.style.display = 'none';
+            if (gameActionsDiv) gameActionsDiv.style.display = 'none';
+        }
+    }
+    
+    function toggleSettingsMenu() {
+        const menu = elements.settingsMenu;
+        const btn = elements.settingsBtn;
+        const isOpen = menu.classList.contains('show');
+        
+        if (isOpen) {
+            menu.classList.remove('show');
+            btn.setAttribute('aria-expanded', 'false');
+        } else {
+            menu.classList.add('show');
+            btn.setAttribute('aria-expanded', 'true');
+        }
     }
 
     function endGame() {
@@ -2859,10 +5344,20 @@
     function showCampaignLog() {
         updateCampaignLog();
         elements.campaignLogModal.style.display = 'block';
+        
+        // Apply focus trap
+        setTimeout(() => {
+            trapFocus(elements.campaignLogModal);
+        }, 100);
     }
 
     function closeCampaignLog() {
         elements.campaignLogModal.style.display = 'none';
+    }
+    
+    function closeBattleResultsModal() {
+        elements.battleResultsModal.style.display = 'none';
+        elements.battleResultsModal.classList.remove('show');
     }
 
     function updateCampaignLog() {
@@ -2955,8 +5450,61 @@
 
     function toggleVocabularyHelp() {
         settings.vocabHelp = !settings.vocabHelp;
-        elements.vocabToggle.textContent = settings.vocabHelp ? 'Vocabulary Help: ON' : 'Vocabulary Help: OFF';
-        elements.vocabToggle.classList.toggle('active', settings.vocabHelp);
+        // Vocabulary help toggled
+        
+        // Update the status indicator in the menu
+        const vocabStatus = document.getElementById('vocabStatus');
+        if (vocabStatus) {
+            vocabStatus.textContent = settings.vocabHelp ? 'ON' : 'OFF';
+            vocabStatus.classList.toggle('active', settings.vocabHelp);
+        }
+        
+        // Update the navigation vocabulary button state
+        if (elements.vocabToggleNav) {
+            elements.vocabToggleNav.setAttribute('aria-pressed', settings.vocabHelp.toString());
+            elements.vocabToggleNav.style.background = settings.vocabHelp ? 'var(--color-primary-alpha)' : '';
+        }
+        
+        // Toggle vocabulary sidebar with proper layout handling
+        const sidebar = document.getElementById('vocabSidebar');
+        const overlay = document.getElementById('vocabOverlay');
+        
+        if (sidebar) {
+            // Toggling sidebar visibility
+            if (settings.vocabHelp) {
+                // Show sidebar
+                document.body.classList.add('vocab-open');
+                sidebar.style.display = 'block';
+                sidebar.classList.add('show');
+                
+                // Show overlay on mobile
+                if (overlay) {
+                    overlay.classList.add('show');
+                }
+                
+                // Close menu if open
+                if (elements.settingsMenu) {
+                    elements.settingsMenu.classList.remove('show');
+                    elements.settingsBtn.setAttribute('aria-expanded', 'false');
+                }
+            } else {
+                // Hide sidebar
+                document.body.classList.remove('vocab-open');
+                sidebar.classList.remove('show');
+                
+                // Hide overlay
+                if (overlay) {
+                    overlay.classList.remove('show');
+                }
+                
+                setTimeout(() => {
+                    if (!settings.vocabHelp) {
+                        sidebar.style.display = 'none';
+                    }
+                }, 300);
+            }
+        }
+        
         updateVocabularyDisplay();
     }
 
@@ -2980,8 +5528,7 @@
         // Hide introduction and show side selection
         document.getElementById('civilWarIntro').style.display = 'none';
         
-        // Show the "Choose Your Side" heading and side cards
-        document.getElementById('chooseSideHeading').style.display = 'block';
+        // Show the side cards
         document.querySelector('.sides-container').style.display = 'flex';
         
         // Update vocabulary display for new content
@@ -3007,6 +5554,48 @@
         localStorage.removeItem('civilWarIntroSeen');
         location.reload();
     }
+
+    // Performance utilities
+    function debounce(func, wait) {
+        let timeout;
+        return function executedFunction(...args) {
+            const later = () => {
+                clearTimeout(timeout);
+                func(...args);
+            };
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+        };
+    }
+    
+    function throttle(func, limit) {
+        let inThrottle;
+        return function() {
+            const args = arguments;
+            const context = this;
+            if (!inThrottle) {
+                func.apply(context, args);
+                inThrottle = true;
+                setTimeout(() => inThrottle = false, limit);
+            }
+        }
+    }
+    
+    // Performance monitoring
+    function measurePerformance(name, fn) {
+        if ('performance' in window && 'mark' in performance) {
+            performance.mark(`${name}-start`);
+            const result = fn();
+            performance.mark(`${name}-end`);
+            performance.measure(name, `${name}-start`, `${name}-end`);
+            return result;
+        }
+        return fn();
+    }
+    
+    // Optimize frequent DOM updates
+    const debouncedUpdateDisplay = debounce(updateGameDisplay, 100);
+    const debouncedVocabUpdate = debounce(updateVocabularyDisplay, 150);
 
     // Initialize when DOM is ready
     if (document.readyState === 'loading') {
