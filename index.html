@@ -104,22 +104,37 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Crimson+Pro:wght@400;500;600&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
     <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Crimson+Pro:wght@400;500;600&display=swap" rel="stylesheet"></noscript>
     
-    <!-- Kagi Translation Integration -->
+    <!-- Google Translate Integration -->
     <script type="text/javascript">
-        function translateWithKagi(targetLanguage) {
-            // Update HTML lang attribute before navigation
+        function translateWithGoogle(targetLanguage) {
+            // Update HTML lang attribute
             updateLanguageAttribute(targetLanguage);
             
-            // Get the current domain/hostname
-            const currentDomain = window.location.hostname;
-            const currentPort = window.location.port ? `:${window.location.port}` : '';
-            const fullDomain = `${currentDomain}${currentPort}`;
+            const langCode = getLanguageCode(targetLanguage);
             
-            // Create Kagi translate URL with embedded format
-            const kagiUrl = `https://translate.kagi.com/${fullDomain}${window.location.pathname}${window.location.search}`;
+            // Get current URL
+            const currentUrl = encodeURIComponent(window.location.href);
             
-            // Navigate to the translated version in the same tab
-            window.location.href = kagiUrl;
+            // Create Google Translate URL
+            const translateUrl = `https://translate.google.com/translate?sl=en&tl=${langCode}&u=${currentUrl}`;
+            
+            // Navigate to translated page
+            window.location.href = translateUrl;
+        }
+        
+        function getLanguageCode(language) {
+            const languageCodes = {
+                'Spanish': 'es',
+                'French': 'fr',
+                'Portuguese': 'pt',
+                'Chinese': 'zh',
+                'Korean': 'ko',
+                'Ukrainian': 'uk',
+                'Japanese': 'ja',
+                'Russian': 'ru',
+                'Arabic': 'ar'
+            };
+            return languageCodes[language] || 'en';
         }
         
         // Vocabulary Sidebar Toggle
@@ -148,20 +163,7 @@
         // Update HTML lang attribute for translation
         function updateLanguageAttribute(language) {
             const html = document.documentElement;
-            const languageCodes = {
-                'Spanish': 'es',
-                'French': 'fr',
-                'Portuguese': 'pt',
-                'Chinese': 'zh',
-                'Korean': 'ko',
-                'Ukrainian': 'uk',
-                'German': 'de',
-                'Japanese': 'ja',
-                'Russian': 'ru',
-                'Arabic': 'ar'
-            };
-            
-            const langCode = languageCodes[language] || 'en';
+            const langCode = getLanguageCode(language);
             html.setAttribute('lang', langCode);
         }
         
@@ -3564,12 +3566,13 @@
                             </button>
                             <div class="settings-item translate-item">
                                 <span class="menu-icon">🌐</span>
-                                <select class="translate-select-nav" id="translateSelect" onchange="if(this.value) translateWithKagi(this.value); this.value='';" aria-label="Change language">
+                                <select class="translate-select-nav" id="translateSelect" onchange="if(this.value) translateWithGoogle(this.value); this.value='';" aria-label="Change language">
                                     <option value="">English</option>
                                     <option value="Spanish">Español</option>
                                     <option value="French">Français</option>
-                                    <option value="German">Deutsch</option>
-                                    <option value="Italian">Italiano</option>
+                                    <option value="Korean">한국어</option>
+                                    <option value="Ukrainian">Українська</option>
+                                    <option value="Russian">Русский</option>
                                     <option value="Portuguese">Português</option>
                                     <option value="Chinese">中文</option>
                                     <option value="Japanese">日本語</option>
