@@ -19,23 +19,39 @@
         {
             "id": "bull_run",
             "title": "First Battle of Bull Run",
-            "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/Battle_of_Bull_Run%2C_July_21%2C_1861_-_Currier_%26_Ives_2.jpg/800px-Battle_of_Bull_Run%2C_July_21%2C_1861_-_Currier_%26_Ives_2.jpg",
+            "url": "images/battle_of_bull_run.jpg",
             "credit": "Currier & Ives",
+            "license": "Public Domain",
+            "source": "Library of Congress"
+        },
+        {
+            "id": "shiloh",
+            "title": "Battle of Shiloh",
+            "url": "images/battle_of_shiloh.jpg",
+            "credit": "Thure de Thulstrup",
             "license": "Public Domain",
             "source": "Library of Congress"
         },
         {
             "id": "antietam",
             "title": "Battle of Antietam",
-            "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Antietam_Battlefield.jpg/800px-Antietam_Battlefield.jpg",
+            "url": "images/battle_of_antietam.png",
             "credit": "Alexander Gardner",
             "license": "Public Domain",
             "source": "National Archives"
         },
         {
+            "id": "gettysburg",
+            "title": "Battle of Gettysburg",
+            "url": "images/battle_of_gettysburg.jpg",
+            "credit": "Thure de Thulstrup",
+            "license": "Public Domain",
+            "source": "Library of Congress"
+        },
+        {
             "id": "fredericksburg",
             "title": "Battle of Fredericksburg",
-            "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Battle_of_Fredericksburg%2C_Dec_13%2C_1862.jpg/800px-Battle_of_Fredericksburg%2C_Dec_13%2C_1862.jpg",
+            "url": "images/battle_of_fredericksburg.png",
             "credit": "Kurz & Allison",
             "license": "Public Domain",
             "source": "Library of Congress"
@@ -43,31 +59,15 @@
         {
             "id": "chancellorsville", 
             "title": "Battle of Chancellorsville",
-            "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/Chancellorsville_Campaign.jpg/800px-Chancellorsville_Campaign.jpg",
+            "url": "images/battle_of_chancellorsville.png",
             "credit": "Jedediah Hotchkiss",
             "license": "Public Domain",
             "source": "National Archives"
         },
         {
-            "id": "gettysburg",
-            "title": "Battle of Gettysburg",
-            "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Gettysburg_by_Thulstrup.jpg/800px-Gettysburg_by_Thulstrup.jpg",
-            "credit": "Thure de Thulstrup",
-            "license": "Public Domain",
-            "source": "Library of Congress"
-        },
-        {
-            "id": "vicksburg",
-            "title": "Siege of Vicksburg",
-            "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Vicksburg_Kurz_%26_Allison.jpg/800px-Vicksburg_Kurz_%26_Allison.jpg",
-            "credit": "Kurz & Allison",
-            "license": "Public Domain",
-            "source": "Library of Congress"
-        },
-        {
             "id": "chickamauga",
             "title": "Battle of Chickamauga",
-            "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Chickamauga_by_Kurz_and_Allison.jpg/800px-Chickamauga_by_Kurz_and_Allison.jpg",
+            "url": "images/battle_of_chickamauga.png",
             "credit": "Kurz & Allison",
             "license": "Public Domain",
             "source": "Library of Congress"
@@ -75,23 +75,23 @@
         {
             "id": "wilderness",
             "title": "Battle of the Wilderness",
-            "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b7/Battle_of_the_Wilderness_by_Kurz_and_Allison.jpg/800px-Battle_of_the_Wilderness_by_Kurz_and_Allison.jpg",
+            "url": "images/battle_of_the_wilderness.jpg",
             "credit": "Kurz & Allison",
             "license": "Public Domain",
             "source": "Library of Congress"
         },
         {
-            "id": "petersburg",
-            "title": "Siege of Petersburg",
-            "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/86/Petersburg_mine.jpg/800px-Petersburg_mine.jpg",
-            "credit": "Timothy H. O'Sullivan",
+            "id": "atlanta",
+            "title": "Battle of Atlanta",
+            "url": "images/battle_of_atlanta.jpg",
+            "credit": "Kurz & Allison",
             "license": "Public Domain",
-            "source": "National Archives"
+            "source": "Library of Congress"
         },
         {
             "id": "appomattox",
             "title": "Surrender at Appomattox",
-            "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Surrender_of_General_Lee_at_Appomattox_Court_House.jpg/800px-Surrender_of_General_Lee_at_Appomattox_Court_House.jpg",
+            "url": "images/surrender_appomattox.jpg",
             "credit": "Tom Lovell",
             "license": "Public Domain",
             "source": "National Archives"
@@ -106,20 +106,45 @@
     
     <!-- Google Translate Integration -->
     <script type="text/javascript">
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({
+                pageLanguage: 'en',
+                includedLanguages: 'es,fr,pt,zh,ko,uk,ja,ru,ar',
+                layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+                autoDisplay: false
+            }, 'google_translate_element');
+        }
+        
         function translateWithGoogle(targetLanguage) {
             // Update HTML lang attribute
             updateLanguageAttribute(targetLanguage);
             
             const langCode = getLanguageCode(targetLanguage);
             
-            // Get current URL
-            const currentUrl = encodeURIComponent(window.location.href);
-            
-            // Create Google Translate URL
-            const translateUrl = `https://translate.google.com/translate?sl=en&tl=${langCode}&u=${currentUrl}`;
-            
-            // Navigate to translated page
-            window.location.href = translateUrl;
+            // Load Google Translate if not already loaded
+            if (!document.querySelector('script[src*="translate.google.com"]')) {
+                const script = document.createElement('script');
+                script.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
+                script.async = true;
+                document.head.appendChild(script);
+                
+                script.onload = () => {
+                    setTimeout(() => {
+                        const select = document.querySelector('.goog-te-combo');
+                        if (select) {
+                            select.value = langCode;
+                            select.dispatchEvent(new Event('change'));
+                        }
+                    }, 1000);
+                };
+            } else {
+                // If already loaded, just change the language
+                const select = document.querySelector('.goog-te-combo');
+                if (select) {
+                    select.value = langCode;
+                    select.dispatchEvent(new Event('change'));
+                }
+            }
         }
         
         function getLanguageCode(language) {
@@ -3512,11 +3537,72 @@
             }
         }
         
+        /* Version Info Styling */
+        .version-info {
+            position: fixed;
+            bottom: 10px;
+            right: 15px;
+            background: rgba(0, 0, 0, 0.7);
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            font-family: 'Inter', sans-serif;
+            z-index: 1000;
+            opacity: 0.8;
+            transition: opacity 0.2s ease;
+        }
+        
+        .version-info:hover {
+            opacity: 1;
+        }
+        
+        [data-theme="light"] .version-info {
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Fix Google Translate bar positioning */
+        body {
+            top: 0 !important;
+            position: static !important;
+        }
+        
+        .goog-te-banner-frame {
+            display: none !important;
+        }
+        
+        #google_translate_element {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            z-index: 999;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 5px;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .goog-te-gadget {
+            font-size: 0;
+        }
+        
+        .goog-te-gadget .goog-te-combo {
+            margin: 0;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            padding: 5px;
+        }
+        
     </style>
 </head>
 <body onload="initializeTheme()">
     <!-- Skip Navigation Link -->
     <a href="#main-content" class="skip-link">Skip to main content</a>
+    
+    <!-- Google Translate Element -->
+    <div id="google_translate_element"></div>
     
     <!-- Main Navigation Bar -->
     <nav class="main-navbar" role="navigation" aria-label="Main navigation">
@@ -4024,7 +4110,7 @@
         {
             name: "First Battle of Bull Run",
             date: "July 21, 1861",
-            imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Battle_of_Bull_Run.jpg/1024px-Battle_of_Bull_Run.jpg",
+            imageUrl: "images/battle_of_bull_run.jpg",
             imageCredit: "Kurz & Allison, 1889",
             context: "🎪 <strong>The Battle That Shocked America!</strong><br><br>This was the first major battle of the Civil War, and nobody knew what to expect. Both armies were mostly volunteers who had never seen real combat. Incredibly, hundreds of people from Washington D.C. packed picnic baskets and came out to watch like it was a sporting event!<br><br>The battle took place near a small creek called Bull Run in Virginia, just 30 miles from the nation's capital. Everyone thought one big fight would end the war quickly. They were very, very wrong. The reality of war hit hard when inexperienced soldiers on both sides panicked and ran. This wake-up call showed Americans that the Civil War would be long, bloody, and devastating.",
             strategies: [
@@ -4067,7 +4153,7 @@
         {
             name: "Battle of Shiloh",
             date: "April 6-7, 1862",
-            imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/Thure_de_Thulstrup_-_Battle_of_Shiloh.jpg/1024px-Thure_de_Thulstrup_-_Battle_of_Shiloh.jpg",
+            imageUrl: "images/battle_of_shiloh.jpg",
             imageCredit: "Thure de Thulstrup, 1888",
             context: "General Ulysses S. Grant's Union army was camping near Shiloh Church in Tennessee when Confederate forces launched a surprise dawn attack. The Confederates hoped to destroy Grant's army before <span class='vocab-term'>reinforcements<span class='vocab-tooltip'><div class='vocab-definition'>Additional troops sent to strengthen a military force</div></span></span> could arrive. This was one of the bloodiest battles so far in the war.",
             strategies: [
@@ -4110,7 +4196,7 @@
         {
             name: "Battle of Antietam",
             date: "September 17, 1862",
-            imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/Battle_of_Antietam.png/1024px-Battle_of_Antietam.png",
+            imageUrl: "images/battle_of_antietam.png",
             imageCredit: "Kurz & Allison, 1888",
             context: "Robert E. Lee's Confederate army invaded Maryland, hoping to bring the war to Union territory and maybe convince European countries to help the South. But Union forces found Lee's battle plans wrapped around some cigars! Now General McClellan knows exactly where Lee's forces are positioned. This could be the chance to end the rebellion.",
             strategies: [
@@ -4153,7 +4239,7 @@
         {
             name: "Battle of Gettysburg",
             date: "July 1-3, 1863",
-            imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/Thure_de_Thulstrup_-_L._Prang_and_Co._-_Battle_of_Gettysburg_-_Restoration_by_Adam_Cuerden.jpg/1024px-Thure_de_Thulstrup_-_L._Prang_and_Co._-_Battle_of_Gettysburg_-_Restoration_by_Adam_Cuerden.jpg",
+            imageUrl: "images/battle_of_gettysburg.jpg",
             imageCredit: "Thure de Thulstrup, 1887",
             context: "This three-day battle in Pennsylvania is often called the turning point of the Civil War. Robert E. Lee's Confederate army had invaded the North, hoping a victory on Union soil would convince other countries to help the Confederacy and maybe end the war. The battle started by accident when Confederate soldiers looking for shoes encountered Union cavalry in the town of Gettysburg.",
             strategies: [
@@ -4196,7 +4282,7 @@
         {
             name: "Battle of Fredericksburg",
             date: "December 13, 1862",
-            imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d6/Battle_of_Fredericksburg%2C_Dec_13%2C_1862.png/1024px-Battle_of_Fredericksburg%2C_Dec_13%2C_1862.png",
+            imageUrl: "images/battle_of_fredericksburg.png",
             imageCredit: "Kurz & Allison, 1888",
             context: "General Burnside's Union army must cross the Rappahannock River and attack Confederate positions on Marye's Heights. Lee has had weeks to prepare his defenses, including a stone wall that creates a perfect <span class='vocab-term'>fortification<span class='vocab-tooltip'><div class='vocab-definition'>A structure built to defend against attack</div></span></span>. The Confederates have the high ground and are well-prepared.",
             strategies: [
@@ -4239,7 +4325,7 @@
         {
             name: "Battle of Chancellorsville",
             date: "May 2-4, 1863",
-            imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Battle_of_Chancellorsville.png/1024px-Battle_of_Chancellorsville.png",
+            imageUrl: "images/battle_of_chancellorsville.png",
             imageCredit: "Kurz & Allison, 1888",
             context: "General Hooker's large Union army faces Lee in the tangled wilderness of Virginia. Despite being outnumbered 2-to-1, Lee plans his most daring move yet: splitting his already smaller army to send Stonewall Jackson on a <span class='vocab-term'>flanking<span class='vocab-tooltip'><div class='vocab-definition'>An attack on the side of an enemy formation</div></span></span> march around the Union right flank. It's incredibly risky, but it might be the only way to win.",
             strategies: [
@@ -4282,7 +4368,7 @@
         {
             name: "Battle of Chickamauga",
             date: "September 19-20, 1863",
-            imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Battle_of_Chickamauga.png/1024px-Battle_of_Chickamauga.png",
+            imageUrl: "images/battle_of_chickamauga.png",
             imageCredit: "Kurz & Allison, 1890",
             context: "In the forests of northern Georgia, Confederate General Bragg's army has caught Union General Rosecrans' forces spread out and vulnerable. The thick woods make it hard to see what's happening, and both sides are confused. A mistake in Union orders has created a gap in their battle line - but will the Confederates be able to exploit it?",
             strategies: [
@@ -4325,8 +4411,8 @@
         {
             name: "Battle of the Wilderness",
             date: "May 5-6, 1864",
-            imageUrl: "",
-            imageCredit: "",
+            imageUrl: "images/battle_of_the_wilderness.jpg",
+            imageCredit: "Kurz & Allison",
             context: "General Grant begins his campaign to end the war by fighting Lee continuously. The battle takes place in the same tangled Virginia wilderness where Hooker was defeated a year earlier. The thick undergrowth makes it almost impossible to see, and forest fires threaten to burn wounded soldiers alive. Grant is determined to keep fighting unlike previous Union commanders.",
             strategies: [
                 {
@@ -4368,7 +4454,7 @@
         {
             name: "Battle of Atlanta",
             date: "July 22, 1864",
-            imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/Kurz_%26_Allison_-_Battle_of_Atlanta.jpg/1024px-Kurz_%26_Allison_-_Battle_of_Atlanta.jpg",
+            imageUrl: "images/battle_of_atlanta.jpg",
             imageCredit: "Kurz & Allison, 1888",
             context: "General Sherman's Union army threatens Atlanta, the industrial heart of the Confederacy. The city's factories produce weapons and supplies for Confederate armies, and its railroads connect the eastern and western parts of the South. Confederate General Hood has replaced the cautious Johnston and wants to attack Sherman's forces before they can capture the city.",
             strategies: [
@@ -4411,8 +4497,8 @@
         {
             name: "Battle of Appomattox Court House",
             date: "April 9, 1865",
-            imageUrl: "",
-            imageCredit: "",
+            imageUrl: "images/surrender_appomattox.jpg",
+            imageCredit: "Tom Lovell",
             context: "This is the end. Lee's Confederate army, hungry and exhausted, is surrounded near the small Virginia town of Appomattox Court House. Grant's forces have cut off their escape routes. Lee has perhaps 28,000 men left, while Grant has over 100,000. The Confederate cause is clearly lost, but some want to fight to the end while others think it's time to surrender and save lives.",
             strategies: [
                 {
@@ -4964,6 +5050,17 @@
         const briefingImage = elements.briefingImage;
         const briefingMap = elements.briefingMap;
         
+        if (!battleAsset) {
+            briefingImage.innerHTML = `
+                <div style="text-align: center; padding: 40px; color: var(--color-text-secondary); background: var(--color-surface-secondary); border-radius: var(--radius-xl);">
+                    <div style="font-size: 3em; margin-bottom: 10px;">❌</div>
+                    <p style="font-weight: 600;">No Image Asset Found</p>
+                    <p style="font-size: 0.9em; margin-top: 5px;">${battle.name}</p>
+                </div>
+            `;
+            return;
+        }
+        
         if (battleAsset && briefingImage) {
             // Show loading state immediately
             briefingImage.innerHTML = `
@@ -4973,56 +5070,20 @@
                 </div>
             `;
             
-            // Test with multiple image sources including fallbacks
-            const testUrls = [
-                battleAsset.url,
-                // Fallback to direct Wikipedia URLs
-                battleAsset.url.replace('/thumb/', '/').split('/').slice(0, -1).join('/') + '/' + battleAsset.url.split('/').pop().split('-')[0] + '.jpg',
-                // SVG placeholder as final fallback
-                `data:image/svg+xml;base64,${btoa(`<svg width="400" height="300" xmlns="http://www.w3.org/2000/svg"><rect width="400" height="300" fill="#2a2a2a"/><text x="200" y="120" fill="white" text-anchor="middle" font-size="18">Historical Image</text><text x="200" y="150" fill="white" text-anchor="middle" font-size="16">${battle.name}</text><text x="200" y="180" fill="white" text-anchor="middle" font-size="14">${battle.date}</text></svg>`)}`
-            ];
+            // Direct image loading without CORS issues
+            const imageUrl = battleAsset.url;
             
-            function tryLoadImage(urlIndex = 0) {
-                if (urlIndex >= testUrls.length) {
-                    // All URLs failed
-                    briefingImage.innerHTML = `
-                        <div style="text-align: center; padding: 40px; color: var(--color-text-secondary); background: var(--color-surface-secondary); border-radius: var(--radius-xl);">
-                            <div style="font-size: 3em; margin-bottom: 10px;">🖼️</div>
-                            <p style="font-weight: 600;">${battle.name}</p>
-                            <p style="font-size: 0.9em; margin-top: 5px;">${battle.date}</p>
-                            <p style="font-size: 0.8em; margin-top: 10px; opacity: 0.7;">All image sources failed</p>
-                        </div>
-                    `;
-                    return;
-                }
-                
-                const img = new Image();
-                const currentUrl = testUrls[urlIndex];
-                
-                img.onload = function() {
-                    // Image loaded successfully
-                    const isPlaceholder = currentUrl.startsWith('data:');
-                    briefingImage.innerHTML = `
-                        <img src="${currentUrl}" 
-                             alt="${battleAsset.title}" 
-                             loading="lazy" 
-                             decoding="async"
-                             style="transition: opacity 0.3s ease; width: 100%; height: 100%; object-fit: cover;">
-                        ${!isPlaceholder ? `<span class="image-credit" style="position: absolute; bottom: 8px; left: 8px; right: 8px; background: rgba(0,0,0,0.7); color: white; padding: 4px 8px; border-radius: 4px; font-size: 0.8em;">${battleAsset.credit} • ${battleAsset.source}</span>` : ''}
-                    `;
-                };
-                
-                img.onerror = function(error) {
-                    console.error(`Image failed to load (attempt ${urlIndex + 1}):`, currentUrl, error);
-                    // Try next URL
-                    tryLoadImage(urlIndex + 1);
-                };
-                
-                // Attempting to load image
-                img.src = currentUrl;
-            }
-            
-            tryLoadImage();
+            // Set image directly in HTML to avoid CORS issues
+            briefingImage.innerHTML = `
+                <img src="${imageUrl}" 
+                     alt="${battleAsset.title}" 
+                     loading="lazy" 
+                     decoding="async"
+                     style="transition: opacity 0.3s ease; width: 100%; height: 100%; object-fit: cover;"
+                     onload="this.style.opacity='1'"
+                     onerror="this.onerror=null; this.src='data:image/svg+xml;base64,${btoa(`<svg width="400" height="300" xmlns="http://www.w3.org/2000/svg"><rect width="400" height="300" fill="#2a2a2a"/><text x="200" y="120" fill="white" text-anchor="middle" font-size="18">Historical Image</text><text x="200" y="150" fill="white" text-anchor="middle" font-size="16">${battle.name}</text><text x="200" y="180" fill="white" text-anchor="middle" font-size="14">${battle.date}</text></svg>`)}'; this.style.opacity='1';">
+                <span class="image-credit" style="position: absolute; bottom: 8px; left: 8px; right: 8px; background: rgba(0,0,0,0.7); color: white; padding: 4px 8px; border-radius: 4px; font-size: 0.8em;">${battleAsset.credit} • ${battleAsset.source}</span>
+            `;
         } else {
             briefingImage.innerHTML = `
                 <div style="text-align: center; padding: 40px; color: var(--color-text-secondary);">
@@ -5607,6 +5668,11 @@
         initializeGame();
     }
 </script>
+
+<!-- Version Display -->
+<div class="version-info">
+    <span>Civil War Battle Simulation v1.0.0</span>
+</div>
 
 </body>
 </html>
