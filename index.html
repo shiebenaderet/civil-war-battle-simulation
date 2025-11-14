@@ -5109,6 +5109,9 @@
         currentBattle: 0,
         score: 0,
         soldiers: 0,
+        morale: 100,           // NEW: Fighting spirit (0-150)
+        resources: 100,        // NEW: Supplies and equipment (0-200)
+        leadership: 70,        // NEW: Commander quality (0-100)
         wins: 0,
         losses: 0,
         battleHistory: [],
@@ -5301,6 +5304,9 @@
                     currentBattle: gameState.currentBattle,
                     score: gameState.score,
                     soldiers: gameState.soldiers,
+                    morale: gameState.morale,           // NEW
+                    resources: gameState.resources,     // NEW
+                    leadership: gameState.leadership,   // NEW
                     wins: gameState.wins,
                     losses: gameState.losses,
                     battleHistory: gameState.battleHistory
@@ -6304,13 +6310,25 @@
     }
 
     function startFirstBattle() {
-        gameState.soldiers = gameState.side === 'union' ? 1500000 : 1000000;
+        // Asymmetric starting conditions based on historical reality
+        if (gameState.side === 'union') {
+            gameState.soldiers = 1500000;    // Union had larger population
+            gameState.morale = 100;           // Both sides started motivated
+            gameState.resources = 150;        // Union had factories and railroads
+            gameState.leadership = 70;        // Union had poor generals early on
+        } else {
+            gameState.soldiers = 1000000;     // Confederacy smaller population
+            gameState.morale = 100;           // Both sides started motivated
+            gameState.resources = 80;         // South was agricultural, limited industry
+            gameState.leadership = 95;        // Lee, Jackson, Stuart were brilliant
+        }
+
         gameState.currentBattle = 0;
         gameState.score = 0;
         gameState.wins = 0;
         gameState.losses = 0;
         gameState.battleHistory = [];
-        
+
         showBattleBriefing();
     }
 
@@ -6464,14 +6482,20 @@
 
     function renderStrategyCarousel() {
         const battle = battles[gameState.currentBattle];
-        const strategy = battle.strategies[currentStrategyIndex];
+
+        // Get side-specific strategies
+        const strategies = gameState.side === 'union'
+            ? battle.union_strategies || battle.strategies
+            : battle.confederacy_strategies || battle.strategies;
+
+        const strategy = strategies[currentStrategyIndex];
         const container = document.getElementById('strategyCardContainer');
         const prevBtn = document.getElementById('prevStrategyBtn');
         const nextBtn = document.getElementById('nextStrategyBtn');
 
         // Determine strategy type
-        const strategyType = currentStrategyIndex === 0 ? 'aggressive' :
-                            currentStrategyIndex === 1 ? 'defensive' : 'tactical';
+        const strategyType = strategy.type || (currentStrategyIndex === 0 ? 'aggressive' :
+                            currentStrategyIndex === 1 ? 'defensive' : 'tactical');
 
         // Get strategy icon
         const icons = {
@@ -6480,15 +6504,11 @@
             tactical: '🎯'
         };
 
-        // Render strategy card
-        container.innerHTML = `
-            <div class="strategy-card-container ${strategyType}">
-                <div class="strategy-selected-checkmark">✓</div>
-                <div class="strategy-counter">${currentStrategyIndex + 1} of ${battle.strategies.length}</div>
-                <div class="strategy-icon">${icons[strategyType]}</div>
-                <h3 class="strategy-name">${strategy.name}</h3>
-                <p class="strategy-description">${strategy.description}</p>
-
+        // Build pros/cons or cost display
+        let effectsHTML = '';
+        if (strategy.pros && strategy.cons) {
+            // Old format compatibility
+            effectsHTML = `
                 <div class="strategy-pros-cons-grid">
                     <div class="strategy-pros-list">
                         <h4>✓ Advantages</h4>
@@ -6503,19 +6523,56 @@
                         </ul>
                     </div>
                 </div>
+            `;
+        } else {
+            // New format with explicit costs
+            effectsHTML = `
+                <div style="background: rgba(0,0,0,0.3); padding: 16px; border-radius: 8px; margin-top: 16px;">
+                    <h4 style="color: #ffd700; margin-bottom: 12px;">📊 Strategy Costs:</h4>
+                    <p style="margin-bottom: 8px; color: #ef4444;">
+                        <strong>👥 Soldiers:</strong> -${(strategy.soldier_cost || 0).toLocaleString()}
+                    </p>
+                    <p style="margin-bottom: 8px; color: ${(strategy.morale_change || 0) >= 0 ? '#10b981' : '#ef4444'};">
+                        <strong>💪 Morale:</strong> ${(strategy.morale_change || 0) >= 0 ? '+' : ''}${strategy.morale_change || 0}
+                    </p>
+                    <p style="margin-bottom: 8px; color: #f59e0b;">
+                        <strong>📦 Resources:</strong> -${strategy.resource_cost || 0}
+                    </p>
+                    <p style="margin-bottom: 0; color: #3b82f6;">
+                        <strong>🎯 Base Win Chance:</strong> ${strategy.base_win_chance || 50}%
+                    </p>
+                </div>
+            `;
+        }
+
+        // Render strategy card
+        container.innerHTML = `
+            <div class="strategy-card-container ${strategyType}">
+                <div class="strategy-selected-checkmark">✓</div>
+                <div class="strategy-counter">${currentStrategyIndex + 1} of ${strategies.length}</div>
+                <div class="strategy-icon">${icons[strategyType]}</div>
+                <h3 class="strategy-name">${strategy.name}</h3>
+                <p class="strategy-description">${strategy.description}</p>
+                ${effectsHTML}
             </div>
         `;
 
         // Update navigation buttons
         prevBtn.disabled = currentStrategyIndex === 0;
-        nextBtn.disabled = currentStrategyIndex === battle.strategies.length - 1;
+        nextBtn.disabled = currentStrategyIndex === strategies.length - 1;
     }
 
     function navigateStrategy(direction) {
         const battle = battles[gameState.currentBattle];
+
+        // Get side-specific strategies
+        const strategies = gameState.side === 'union'
+            ? battle.union_strategies || battle.strategies
+            : battle.confederacy_strategies || battle.strategies;
+
         const newIndex = currentStrategyIndex + direction;
 
-        if (newIndex >= 0 && newIndex < battle.strategies.length) {
+        if (newIndex >= 0 && newIndex < strategies.length) {
             currentStrategyIndex = newIndex;
             renderStrategyCarousel();
         }
@@ -6536,36 +6593,144 @@
         }
     }
 
-    function makeDecision(strategyIndex) {
-        const battle = battles[gameState.currentBattle];
-        const strategy = battle.strategies[strategyIndex];
-        const result = strategy[gameState.side];
-        
-        applyBattleResult(result, strategy);
+    /**
+     * Calculate battle outcome based on strategy and current game state
+     * Uses all four variables: soldiers, morale, resources, leadership
+     */
+    function calculateBattleOutcome(strategy) {
+        // Base win chance from strategy
+        let winChance = strategy.base_win_chance || 50;
+
+        // Leadership bonus
+        if (gameState.leadership >= 90) {
+            winChance += 15;
+        } else if (gameState.leadership >= 70) {
+            winChance += 5;
+        } else if (gameState.leadership < 50) {
+            winChance -= 10;
+        }
+
+        // Morale modifier
+        if (gameState.morale > 100) {
+            winChance += 10;
+        } else if (gameState.morale >= 80) {
+            winChance += 0;
+        } else if (gameState.morale >= 50) {
+            winChance -= 5;
+        } else {
+            winChance -= 15;
+        }
+
+        // Resource modifier
+        if (gameState.resources > 100) {
+            winChance += 5;
+        } else if (gameState.resources < 50) {
+            winChance -= 10;
+        }
+
+        // Clamp between 5% and 95%
+        winChance = Math.max(5, Math.min(95, winChance));
+
+        // Roll the dice
+        const roll = Math.random() * 100;
+        const won = roll < winChance;
+
+        return {
+            won: won,
+            winChance: winChance,
+            roll: roll
+        };
     }
 
-    function applyBattleResult(result, strategy) {
+    function makeDecision(strategyIndex) {
         const battle = battles[gameState.currentBattle];
-        
-        if (result.win) {
+
+        // Get side-specific strategies
+        const strategies = gameState.side === 'union'
+            ? battle.union_strategies || battle.strategies
+            : battle.confederacy_strategies || battle.strategies;
+
+        const strategy = strategies[strategyIndex];
+
+        // Calculate outcome based on all variables
+        const outcome = calculateBattleOutcome(strategy);
+
+        // Store old values for comparison
+        const oldValues = {
+            soldiers: gameState.soldiers,
+            morale: gameState.morale,
+            resources: gameState.resources,
+            leadership: gameState.leadership
+        };
+
+        // Apply strategy effects
+        gameState.soldiers -= strategy.soldier_cost || 0;
+        gameState.soldiers = Math.max(0, gameState.soldiers);
+
+        gameState.morale += strategy.morale_change || 0;
+        gameState.morale = Math.max(0, Math.min(150, gameState.morale));
+
+        gameState.resources -= strategy.resource_cost || 0;
+        gameState.resources = Math.max(0, gameState.resources);
+
+        gameState.leadership += strategy.leadership_change || 0;
+        gameState.leadership = Math.max(0, Math.min(100, gameState.leadership));
+
+        // Additional effects for winning/losing
+        if (outcome.won) {
             gameState.wins++;
+            gameState.morale += 5; // Victory boost
+            gameState.score += 400;
         } else {
             gameState.losses++;
+            gameState.morale -= 10; // Defeat penalty
+            gameState.soldiers -= Math.floor(strategy.soldier_cost * 0.5); // Additional casualties from defeat
+            gameState.score += 100;
         }
-        
-        gameState.soldiers -= result.soldierLoss;
+
+        // Clamp values again after win/loss effects
+        gameState.morale = Math.max(0, Math.min(150, gameState.morale));
         gameState.soldiers = Math.max(0, gameState.soldiers);
-        gameState.score += result.scoreGain;
-        
+
+        // Record in battle history
         gameState.battleHistory.push({
             battleNumber: gameState.currentBattle + 1,
             name: battle.name,
             strategy: strategy.name,
-            result: result.win ? 'Victory' : 'Defeat',
-            casualties: result.soldierLoss
+            result: outcome.won ? 'Victory' : 'Defeat',
+            casualties: strategy.soldier_cost,
+            changes: {
+                soldiers: gameState.soldiers - oldValues.soldiers,
+                morale: gameState.morale - oldValues.morale,
+                resources: gameState.resources - oldValues.resources,
+                leadership: gameState.leadership - oldValues.leadership
+            }
         });
 
-        showBattleResults(result, strategy);
+        // Trigger historical events
+        if (battle.historical_event) {
+            applyHistoricalEvent(battle.historical_event);
+        }
+
+        showBattleResults(outcome, strategy, oldValues);
+    }
+
+    function applyHistoricalEvent(event) {
+        // Apply effects from scripted historical events
+        if (event.morale_change) {
+            gameState.morale += event.morale_change[gameState.side] || 0;
+            gameState.morale = Math.max(0, Math.min(150, gameState.morale));
+        }
+
+        if (event.leadership_change) {
+            gameState.leadership += event.leadership_change[gameState.side] || 0;
+            gameState.leadership = Math.max(0, Math.min(100, gameState.leadership));
+        }
+
+        if (event.resources_change) {
+            gameState.resources += event.resources_change[gameState.side] || 0;
+            gameState.resources = Math.max(0, gameState.resources);
+        }
     }
 
     // Confetti celebration function
@@ -6590,24 +6755,24 @@
         }
     }
 
-    function showBattleResults(result, strategy) {
+    function showBattleResults(outcome, strategy, oldValues) {
         const battle = battles[gameState.currentBattle];
 
         // Trigger confetti for victories
-        if (result.win) {
+        if (outcome.won) {
             setTimeout(celebrateVictory, 500);
         }
 
         // Set outcome with better messaging
         const outcomeEl = document.getElementById('battleOutcome');
-        outcomeEl.textContent = result.win ? '🎉 VICTORY! 🎉' : '😔 Defeat';
-        outcomeEl.className = result.win ? 'battle-outcome battle-victory' : 'battle-outcome battle-defeat';
+        outcomeEl.textContent = outcome.won ? '🎉 VICTORY! 🎉' : '😔 Defeat';
+        outcomeEl.className = outcome.won ? 'battle-outcome battle-victory' : 'battle-outcome battle-defeat';
 
         // Set results summary with game-like language
         const resultIcon = document.getElementById('resultIcon');
         const resultText = document.getElementById('resultText');
 
-        if (result.win) {
+        if (outcome.won) {
             resultIcon.className = 'result-icon celebration-icon';
             resultIcon.textContent = '🎉';
             resultText.textContent = `Great job! You won ${battle.name}!`;
@@ -6617,25 +6782,69 @@
             resultText.textContent = `You lost this battle. Try a different strategy next time!`;
         }
 
-        document.getElementById('casualtiesSummary').textContent = `${result.soldierLoss.toLocaleString()} casualties`;
-        document.getElementById('scoreSummary').textContent = `+${result.scoreGain} points`;
+        // Calculate actual changes
+        const soldierChange = gameState.soldiers - oldValues.soldiers;
+        const moraleChange = gameState.morale - oldValues.morale;
+        const resourceChange = gameState.resources - oldValues.resources;
+
+        document.getElementById('casualtiesSummary').textContent = `${Math.abs(soldierChange).toLocaleString()} casualties`;
+        document.getElementById('scoreSummary').textContent = `+${outcome.won ? 400 : 100} points`;
         document.getElementById('armySummary').textContent = `${gameState.soldiers.toLocaleString()} soldiers left`;
 
-        // Create detailed explanation with ELL-friendly language
+        // Create detailed explanation with variable changes
         const sideResult = gameState.side === 'union' ?
-            (result.win ? 'union_victory' : 'union_loss') :
-            (result.win ? 'confederacy_victory' : 'confederacy_defeat');
+            (outcome.won ? 'union_victory' : 'union_loss') :
+            (outcome.won ? 'confederacy_victory' : 'confederacy_defeat');
+
+        // Build variable changes display
+        let variableChangesHTML = '<div style="background: rgba(0,0,0,0.3); padding: 16px; border-radius: 8px; margin: 16px 0;">';
+        variableChangesHTML += '<h4 style="color: #ffd700; margin-bottom: 12px;">📊 Variable Changes:</h4>';
+
+        // Soldiers
+        variableChangesHTML += `<p style="margin-bottom: 8px;">
+            <strong>Soldiers:</strong> ${oldValues.soldiers.toLocaleString()} → ${gameState.soldiers.toLocaleString()}
+            <span style="color: ${soldierChange < 0 ? '#ef4444' : '#10b981'};">(${soldierChange >= 0 ? '+' : ''}${soldierChange.toLocaleString()})</span><br>
+            <span style="font-size: 0.9em; color: #ccc;">Why: ${soldierChange < 0 ? 'Casualties from battle' : 'No additional losses'}</span>
+        </p>`;
+
+        // Morale
+        variableChangesHTML += `<p style="margin-bottom: 8px;">
+            <strong>Morale:</strong> ${oldValues.morale} → ${gameState.morale}
+            <span style="color: ${moraleChange >= 0 ? '#10b981' : '#ef4444'};">(${moraleChange >= 0 ? '+' : ''}${moraleChange})</span><br>
+            <span style="font-size: 0.9em; color: #ccc;">Why: ${outcome.won ? 'Victory boosted your troops\' confidence!' : 'Defeat hurt your soldiers\' morale'}</span>
+        </p>`;
+
+        // Resources
+        variableChangesHTML += `<p style="margin-bottom: 8px;">
+            <strong>Resources:</strong> ${oldValues.resources} → ${gameState.resources}
+            <span style="color: ${resourceChange >= 0 ? '#10b981' : '#ef4444'};">(${resourceChange >= 0 ? '+' : ''}${resourceChange})</span><br>
+            <span style="font-size: 0.9em; color: #ccc;">Why: ${resourceChange < 0 ? 'Used ammunition and supplies' : 'No resources spent'}</span>
+        </p>`;
+
+        // Leadership (if changed)
+        if (gameState.leadership !== oldValues.leadership) {
+            const leadChange = gameState.leadership - oldValues.leadership;
+            variableChangesHTML += `<p style="margin-bottom: 8px;">
+                <strong>Leadership:</strong> ${oldValues.leadership} → ${gameState.leadership}
+                <span style="color: ${leadChange >= 0 ? '#10b981' : '#ef4444'};">(${leadChange >= 0 ? '+' : ''}${leadChange})</span><br>
+                <span style="font-size: 0.9em; color: #ccc;">Why: ${battle.historical_event?.message || 'Strategic experience gained'}</span>
+            </p>`;
+        }
+
+        variableChangesHTML += '</div>';
 
         document.getElementById('explanationText').innerHTML = `
             <p><strong>Your Strategy:</strong> ${strategy.name}</p>
-            <p><strong>What Happened:</strong> ${battle.results[sideResult] || 'The battle outcome was determined by your strategic choice.'}</p>
-            ${result.win ? '<p style="color: #10b981; font-weight: 600;">💪 Nice work, Commander!</p>' : '<p style="color: #ffa500;">💡 Keep going! Every battle teaches you something.</p>'}
+            <p><strong>Win Chance:</strong> ${Math.round(outcome.winChance)}% ${outcome.won ? '(Succeeded!)' : '(Failed)'}</p>
+            ${variableChangesHTML}
+            <p style="margin-top: 12px;"><strong>What Happened:</strong> ${battle.results && battle.results[sideResult] ? battle.results[sideResult] : 'The battle outcome was determined by your strategic choices and army condition.'}</p>
+            ${outcome.won ? '<p style="color: #10b981; font-weight: 600; margin-top: 12px;">💪 Nice work, Commander!</p>' : '<p style="color: #ffa500; margin-top: 12px;">💡 Keep going! Learn from this and try differently next time.</p>'}
         `;
 
-        document.getElementById('historicalNote').textContent = battle.historical_notes.general;
+        document.getElementById('historicalNote').textContent = battle.historical_notes?.general || '';
 
         // Update button text with simpler language
-        if (gameState.currentBattle + 1 >= battles.length || gameState.soldiers <= 0) {
+        if (gameState.currentBattle + 1 >= battles.length || gameState.soldiers <= 0 || gameState.morale <= 0) {
             elements.continueBattleBtn.textContent = 'See Final Score →';
         } else {
             elements.continueBattleBtn.textContent = 'Next Battle →';
