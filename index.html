@@ -843,7 +843,68 @@
             color: var(--color-primary);
             font-weight: 600;
         }
-        
+
+        /* User Info in Navbar */
+        .navbar-user-info {
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+            flex: 1;
+            justify-content: center;
+            padding: 0 var(--space-4);
+        }
+
+        .navbar-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 2px solid var(--color-primary);
+            object-fit: cover;
+        }
+
+        .navbar-user-details {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .navbar-user-name {
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-semibold);
+            color: var(--color-text-primary);
+            line-height: 1.2;
+        }
+
+        .navbar-slot-info {
+            font-size: var(--font-size-xs);
+            color: var(--color-text-secondary);
+            line-height: 1.2;
+        }
+
+        /* Auto-save Indicator */
+        .auto-save-indicator {
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+            padding: var(--space-2) var(--space-3);
+            background: var(--color-success);
+            color: white;
+            border-radius: var(--radius-lg);
+            font-size: var(--font-size-xs);
+            font-weight: var(--font-weight-semibold);
+            opacity: 0;
+            transition: opacity var(--transition-base) var(--ease-out);
+            pointer-events: none;
+        }
+
+        .auto-save-indicator.show {
+            opacity: 1;
+        }
+
+        .auto-save-indicator .save-icon {
+            font-size: var(--font-size-base);
+        }
+
         .navbar-controls {
             display: flex;
             align-items: center;
@@ -3915,19 +3976,53 @@
                 <div class="stat-item">Wins: <span id="navWins">0</span></div>
             </div> -->
             
+            <!-- Center: User Info (shown when signed in) -->
+            <div class="navbar-user-info" id="navbarUserInfo" style="display: none;">
+                <img class="navbar-avatar" id="navbarAvatar" src="" alt="User avatar">
+                <div class="navbar-user-details">
+                    <div class="navbar-user-name" id="navbarUserName">Student</div>
+                    <div class="navbar-slot-info" id="navbarSlotInfo" style="display: none;">Slot <span id="navbarSlotNumber">1</span></div>
+                </div>
+            </div>
+
             <!-- Right: Controls Menu -->
             <div class="navbar-controls">
+                <!-- Auto-save indicator -->
+                <div class="auto-save-indicator" id="autoSaveIndicator" style="display: none;">
+                    <span class="save-icon">💾</span>
+                    <span class="save-text">Saved</span>
+                </div>
+
                 <!-- Primary Actions (always visible) -->
                 <button class="nav-btn primary-action" id="campaignLogNavBtn" style="display: none;" aria-label="View campaign log" title="Campaign Log">
                     📊
                 </button>
-                
+
                 <!-- Settings Dropdown (cleaner organization) -->
                 <div class="settings-dropdown">
                     <button class="nav-btn settings-btn" id="settingsBtn" aria-label="Open menu" aria-expanded="false" title="Menu">
                         ⋯
                     </button>
                     <div class="settings-menu" id="settingsMenu" role="menu" aria-labelledby="settingsBtn">
+                        <!-- User Account Section (shown when signed in) -->
+                        <div class="menu-section" id="userAccountSection" style="display: none;">
+                            <div class="menu-section-title">My Account</div>
+                            <button class="settings-item" id="manageSavesBtn" role="menuitem" aria-label="Manage save slots">
+                                <span class="menu-icon">💾</span> Manage Saves
+                            </button>
+                            <button class="settings-item" id="switchSlotBtn" role="menuitem" aria-label="Switch save slot" style="display: none;">
+                                <span class="menu-icon">🔄</span> Switch Save Slot
+                            </button>
+                            <button class="settings-item" id="exportCurrentSaveBtn" role="menuitem" aria-label="Export current save" style="display: none;">
+                                <span class="menu-icon">📥</span> Export This Save
+                            </button>
+                            <button class="settings-item" id="signOutNavBtn" role="menuitem" aria-label="Sign out">
+                                <span class="menu-icon">🚪</span> Sign Out
+                            </button>
+                        </div>
+
+                        <div class="settings-divider" id="userAccountDivider" style="display: none;"></div>
+
                         <!-- Learning Tools -->
                         <div class="menu-section">
                             <div class="menu-section-title">Learning Tools</div>
@@ -3935,8 +4030,11 @@
                                 <span class="menu-icon">📚</span> Vocabulary Help
                                 <span class="menu-status" id="vocabStatus">OFF</span>
                             </button>
+                            <button class="settings-item" id="howToPlayBtn" role="menuitem" aria-label="How to play">
+                                <span class="menu-icon">📖</span> How to Play
+                            </button>
                         </div>
-                        
+
                         <!-- Appearance -->
                         <div class="settings-divider"></div>
                         <div class="menu-section">
@@ -3959,7 +4057,7 @@
                                 </select>
                             </div>
                         </div>
-                        
+
                         <!-- Game Actions -->
                         <div class="settings-divider" id="gameActionsDiv" style="display: none;"></div>
                         <div class="menu-section" id="gameActionsSection" style="display: none;">
@@ -5201,6 +5299,7 @@
                     gameState.studentId = user.uid;
                     gameState.studentEmail = user.email;
                     gameState.studentName = user.displayName;
+                    updateNavbarUserInfo();
                     showSaveSlotScreen();
                 } else {
                     showSignInScreen();
@@ -6330,6 +6429,9 @@
 
             console.log('User signed in:', currentUser.email);
 
+            // Update navbar with user info
+            updateNavbarUserInfo();
+
             // Show save slot selection
             showSaveSlotScreen();
 
@@ -6472,6 +6574,9 @@
             gameState.battleHistory = state.battleHistory || [];
             gameState.currentSaveSlot = slotId;
 
+            // Update navbar to show slot info
+            updateNavbarUserInfo();
+
             // Check if game was completed
             if (gameState.currentBattle >= battles.length || shouldEndGame()) {
                 // Game was completed, show end screen
@@ -6495,6 +6600,9 @@
         gameState.wins = 0;
         gameState.losses = 0;
         gameState.battleHistory = [];
+
+        // Update navbar to show slot info
+        updateNavbarUserInfo();
 
         // Show side selection
         showSideSelection();
@@ -6544,6 +6652,7 @@
             saveManager.autoSave().then(saved => {
                 if (saved) {
                     console.log('Progress auto-saved');
+                    showAutoSaveNotification();
                 }
             });
         }, 1000);
@@ -6554,6 +6663,150 @@
         showBattleResults = showBattleResultsWithSave;
     }
 
+    // ==================================================
+    // NAVBAR UPDATE FUNCTIONS
+    // ==================================================
+
+    // Update navbar with user info
+    function updateNavbarUserInfo() {
+        const navbarUserInfo = document.getElementById('navbarUserInfo');
+        const navbarAvatar = document.getElementById('navbarAvatar');
+        const navbarUserName = document.getElementById('navbarUserName');
+        const navbarSlotInfo = document.getElementById('navbarSlotInfo');
+        const navbarSlotNumber = document.getElementById('navbarSlotNumber');
+
+        if (currentUser && navbarUserInfo) {
+            navbarAvatar.src = currentUser.photoURL || 'https://via.placeholder.com/36';
+            navbarUserName.textContent = currentUser.displayName || 'Student';
+            navbarUserInfo.style.display = 'flex';
+
+            // Show/hide slot info based on whether a slot is active
+            if (gameState.currentSaveSlot) {
+                navbarSlotNumber.textContent = gameState.currentSaveSlot;
+                navbarSlotInfo.style.display = 'block';
+            } else {
+                navbarSlotInfo.style.display = 'none';
+            }
+
+            // Show user account section in menu
+            document.getElementById('userAccountSection').style.display = 'block';
+            document.getElementById('userAccountDivider').style.display = 'block';
+
+            // Show/hide slot-specific options
+            if (gameState.currentSaveSlot) {
+                document.getElementById('switchSlotBtn').style.display = 'block';
+                document.getElementById('exportCurrentSaveBtn').style.display = 'block';
+            } else {
+                document.getElementById('switchSlotBtn').style.display = 'none';
+                document.getElementById('exportCurrentSaveBtn').style.display = 'none';
+            }
+        } else {
+            navbarUserInfo.style.display = 'none';
+            document.getElementById('userAccountSection').style.display = 'none';
+            document.getElementById('userAccountDivider').style.display = 'none';
+        }
+    }
+
+    // Show auto-save notification
+    function showAutoSaveNotification() {
+        const indicator = document.getElementById('autoSaveIndicator');
+        if (indicator) {
+            indicator.classList.add('show');
+            setTimeout(() => {
+                indicator.classList.remove('show');
+            }, 2000);
+        }
+    }
+
+    // Handle "Manage Saves" button click
+    function handleManageSaves() {
+        // Close settings menu
+        const settingsMenu = document.getElementById('settingsMenu');
+        if (settingsMenu) {
+            settingsMenu.classList.remove('show');
+        }
+
+        // Show save slot screen
+        showSaveSlotScreen();
+    }
+
+    // Handle "Switch Slot" button click
+    function handleSwitchSlot() {
+        if (confirm('Switch to a different save slot? Your current progress is auto-saved.')) {
+            // Auto-save current game first
+            saveManager.autoSave().then(() => {
+                // Close settings menu
+                const settingsMenu = document.getElementById('settingsMenu');
+                if (settingsMenu) {
+                    settingsMenu.classList.remove('show');
+                }
+
+                // Reset current slot
+                gameState.currentSaveSlot = null;
+
+                // Show save slot screen
+                showSaveSlotScreen();
+            });
+        }
+    }
+
+    // Handle "Export Current Save" button click
+    async function handleExportCurrentSave() {
+        if (gameState.currentSaveSlot) {
+            await exportSlot(gameState.currentSaveSlot);
+
+            // Close settings menu
+            const settingsMenu = document.getElementById('settingsMenu');
+            if (settingsMenu) {
+                settingsMenu.classList.remove('show');
+            }
+        }
+    }
+
+    // Handle "How to Play" button click
+    function showHowToPlay() {
+        // Close settings menu
+        const settingsMenu = document.getElementById('settingsMenu');
+        if (settingsMenu) {
+            settingsMenu.classList.remove('show');
+        }
+
+        // Show modal with instructions
+        const message = `
+**How to Play: Civil War Battle Simulation**
+
+**Getting Started:**
+1. Choose a save slot (you have 3 slots)
+2. Select Union or Confederacy
+3. Fight through 10 historic battles
+
+**During Battles:**
+• Read the historical context
+• Click a strategy to expand details
+• Click again to select that strategy
+• View the results and learn what happened
+
+**Victory Conditions:**
+• Union: Win 6 out of 10 battles
+• Confederacy: Win 5 out of 10 battles
+• Manage your soldiers carefully!
+
+**Tips:**
+• Your progress auto-saves after each battle
+• Use "Manage Saves" to switch campaigns
+• Try different strategies to see different outcomes
+• Read the historical notes to learn more
+
+**Vocabulary Help:**
+• Hover over dotted words for definitions
+• Toggle vocabulary help in the menu
+
+Good luck, Commander!
+        `;
+
+        alert(message.trim());
+    }
+
     // Event listeners for auth and save management
     document.addEventListener('DOMContentLoaded', () => {
         // Google Sign-In button
@@ -6562,16 +6815,42 @@
             signInBtn.addEventListener('click', handleGoogleSignIn);
         }
 
-        // Sign Out button
+        // Sign Out buttons (save slot screen and navbar)
         const signOutBtn = document.getElementById('signOutBtn');
         if (signOutBtn) {
             signOutBtn.addEventListener('click', handleSignOut);
+        }
+
+        const signOutNavBtn = document.getElementById('signOutNavBtn');
+        if (signOutNavBtn) {
+            signOutNavBtn.addEventListener('click', handleSignOut);
         }
 
         // Export all saves button
         const exportBtn = document.getElementById('exportSavesBtn');
         if (exportBtn) {
             exportBtn.addEventListener('click', () => saveManager.exportSaves());
+        }
+
+        // Navbar menu buttons
+        const manageSavesBtn = document.getElementById('manageSavesBtn');
+        if (manageSavesBtn) {
+            manageSavesBtn.addEventListener('click', handleManageSaves);
+        }
+
+        const switchSlotBtn = document.getElementById('switchSlotBtn');
+        if (switchSlotBtn) {
+            switchSlotBtn.addEventListener('click', handleSwitchSlot);
+        }
+
+        const exportCurrentSaveBtn = document.getElementById('exportCurrentSaveBtn');
+        if (exportCurrentSaveBtn) {
+            exportCurrentSaveBtn.addEventListener('click', handleExportCurrentSave);
+        }
+
+        const howToPlayBtn = document.getElementById('howToPlayBtn');
+        if (howToPlayBtn) {
+            howToPlayBtn.addEventListener('click', showHowToPlay);
         }
     });
 
