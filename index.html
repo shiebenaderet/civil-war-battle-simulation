@@ -2030,6 +2030,445 @@
             border-radius: 5px;
         }
 
+        /* ===============================================
+           UI/UX OVERHAUL: GAME-LIKE EXPERIENCE
+           =============================================== */
+
+        /* Progress Indicator - Star System */
+        .battle-progress {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(168, 85, 247, 0.2));
+            border-radius: 12px;
+            padding: 16px 24px;
+            margin: 0 auto 24px;
+            max-width: 800px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            border: 2px solid rgba(255, 215, 0, 0.3);
+        }
+
+        .progress-stars {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+        }
+
+        .progress-star {
+            font-size: 28px;
+            transition: all 0.3s ease;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.4));
+        }
+
+        .progress-star.win {
+            animation: starPulse 0.5s ease;
+        }
+
+        .progress-star.loss {
+            opacity: 0.5;
+        }
+
+        @keyframes starPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+        }
+
+        .progress-text {
+            font-size: 18px;
+            font-weight: 600;
+            color: #ffd700;
+            text-align: center;
+            margin-bottom: 8px;
+        }
+
+        .progress-stats {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            font-size: 14px;
+            color: #ccc;
+            flex-wrap: wrap;
+        }
+
+        .progress-stat {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Carousel Strategy Display */
+        .strategy-carousel {
+            position: relative;
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 0 60px; /* Space for arrows */
+        }
+
+        .strategy-card-container {
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.6), rgba(30, 30, 30, 0.6));
+            border-radius: 16px;
+            padding: 32px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+            border: 3px solid;
+            min-height: 400px;
+            position: relative;
+        }
+
+        .strategy-card-container.aggressive {
+            border-color: #dc2626;
+            background: linear-gradient(135deg, rgba(220, 38, 38, 0.15), rgba(30, 30, 30, 0.6));
+        }
+
+        .strategy-card-container.defensive {
+            border-color: #3b82f6;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(30, 30, 30, 0.6));
+        }
+
+        .strategy-card-container.tactical {
+            border-color: #a855f7;
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.15), rgba(30, 30, 30, 0.6));
+        }
+
+        .strategy-counter {
+            text-align: center;
+            font-size: 14px;
+            color: #999;
+            margin-bottom: 16px;
+            font-weight: 600;
+        }
+
+        .strategy-icon {
+            text-align: center;
+            font-size: 64px;
+            margin-bottom: 16px;
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.5));
+        }
+
+        .strategy-name {
+            font-size: 28px;
+            font-weight: bold;
+            color: #ffd700;
+            text-align: center;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .strategy-description {
+            font-size: 16px;
+            line-height: 1.6;
+            color: #e0e0e0;
+            text-align: center;
+            margin-bottom: 24px;
+            padding: 0 16px;
+        }
+
+        .strategy-pros-cons-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 16px;
+            margin-top: 20px;
+            text-align: left;
+        }
+
+        .strategy-pros-list, .strategy-cons-list {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            padding: 16px;
+        }
+
+        .strategy-pros-list {
+            border-left: 4px solid #10b981;
+        }
+
+        .strategy-cons-list {
+            border-left: 4px solid #ef4444;
+        }
+
+        .strategy-pros-list h4, .strategy-cons-list h4 {
+            margin: 0 0 12px 0;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .strategy-pros-list h4 {
+            color: #10b981;
+        }
+
+        .strategy-cons-list h4 {
+            color: #ef4444;
+        }
+
+        .strategy-pros-list ul, .strategy-cons-list ul {
+            margin: 0;
+            padding-left: 20px;
+            list-style: none;
+        }
+
+        .strategy-pros-list li {
+            color: #a7f3d0;
+            margin-bottom: 8px;
+            line-height: 1.4;
+            position: relative;
+            padding-left: 24px;
+        }
+
+        .strategy-pros-list li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #10b981;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .strategy-cons-list li {
+            color: #fecaca;
+            margin-bottom: 8px;
+            line-height: 1.4;
+            position: relative;
+            padding-left: 24px;
+        }
+
+        .strategy-cons-list li:before {
+            content: "⚠";
+            position: absolute;
+            left: 0;
+            color: #ef4444;
+            font-size: 16px;
+        }
+
+        /* Navigation Arrows */
+        .carousel-nav-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid #ffd700;
+            border-radius: 50%;
+            width: 48px;
+            height: 48px;
+            font-size: 24px;
+            color: #ffd700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            backdrop-filter: blur(4px);
+        }
+
+        .carousel-nav-btn:hover {
+            background: rgba(255, 215, 0, 0.3);
+            transform: translateY(-50%) scale(1.1);
+            box-shadow: 0 4px 12px rgba(255, 215, 0, 0.4);
+        }
+
+        .carousel-nav-btn:active {
+            transform: translateY(-50%) scale(0.95);
+        }
+
+        .carousel-nav-btn.prev {
+            left: 0;
+        }
+
+        .carousel-nav-btn.next {
+            right: 0;
+        }
+
+        .carousel-nav-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .carousel-nav-btn:disabled:hover {
+            transform: translateY(-50%) scale(1);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Big Action Button - Touch Friendly */
+        .choose-strategy-btn {
+            width: 100%;
+            max-width: 500px;
+            margin: 24px auto 0;
+            padding: 20px 32px;
+            font-size: 20px;
+            font-weight: bold;
+            background: linear-gradient(135deg, #059669, #10b981);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-family: var(--font-serif);
+            display: block;
+            min-height: 56px; /* Touch-friendly */
+        }
+
+        .choose-strategy-btn:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 8px 30px rgba(16, 185, 129, 0.6);
+            background: linear-gradient(135deg, #10b981, #34d399);
+        }
+
+        .choose-strategy-btn:active {
+            transform: translateY(-1px) scale(0.98);
+        }
+
+        .choose-strategy-btn.selected {
+            background: linear-gradient(135deg, #3b82f6, #60a5fa);
+            animation: pulseGlow 1.5s infinite;
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% {
+                box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+            }
+            50% {
+                box-shadow: 0 8px 30px rgba(59, 130, 246, 0.8);
+            }
+        }
+
+        /* Selection Feedback */
+        .strategy-selected-checkmark {
+            display: none;
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            font-size: 48px;
+            animation: checkmarkPop 0.5s ease;
+        }
+
+        .strategy-card-container.selected .strategy-selected-checkmark {
+            display: block;
+        }
+
+        @keyframes checkmarkPop {
+            0% {
+                transform: scale(0) rotate(-45deg);
+                opacity: 0;
+            }
+            50% {
+                transform: scale(1.2) rotate(5deg);
+            }
+            100% {
+                transform: scale(1) rotate(0deg);
+                opacity: 1;
+            }
+        }
+
+        /* Confetti Container for Celebrations */
+        .confetti-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+            overflow: hidden;
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: #ffd700;
+            opacity: 0;
+            animation: confettiFall 3s ease-out forwards;
+        }
+
+        @keyframes confettiFall {
+            0% {
+                opacity: 1;
+                transform: translateY(0) rotate(0deg);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(100vh) rotate(720deg);
+            }
+        }
+
+        /* Victory/Defeat Screen Enhancements */
+        .battle-victory {
+            color: #10b981 !important;
+            font-size: 3em !important;
+            text-shadow: 0 0 20px rgba(16, 185, 129, 0.6);
+            animation: victoryPulse 1s ease infinite;
+        }
+
+        .battle-defeat {
+            color: #ef4444 !important;
+            font-size: 2.5em !important;
+        }
+
+        @keyframes victoryPulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        .celebration-icon {
+            font-size: 80px;
+            margin: 20px auto;
+            display: block;
+            animation: celebrationBounce 1s ease infinite;
+        }
+
+        @keyframes celebrationBounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .strategy-carousel {
+                padding: 0 50px;
+            }
+
+            .carousel-nav-btn {
+                width: 44px;
+                height: 44px;
+                font-size: 20px;
+            }
+
+            .strategy-card-container {
+                padding: 24px 16px;
+                min-height: 350px;
+            }
+
+            .strategy-name {
+                font-size: 22px;
+            }
+
+            .strategy-description {
+                font-size: 14px;
+            }
+
+            .choose-strategy-btn {
+                font-size: 18px;
+                padding: 16px 24px;
+            }
+
+            .progress-stars {
+                gap: 4px;
+            }
+
+            .progress-star {
+                font-size: 24px;
+            }
+        }
+
         /* Buttons */
         /* ===============================================
            BUTTON COMPONENTS
@@ -4164,18 +4603,21 @@
     
     <!-- Vocabulary Toggle Button -->
 
+    <!-- Confetti Container for Celebrations -->
+    <div class="confetti-container" id="confettiContainer"></div>
+
     <main class="game-container" id="main-content" role="main" aria-label="Civil War Battle Simulation Game">
         <!-- Google Sign-In Screen -->
         <section class="sign-in-screen" id="signInScreen" role="region" aria-label="Sign in with Google">
             <div class="sign-in-container">
                 <div class="sign-in-header">
                     <span class="sign-in-icon">⚔️</span>
-                    <h2 class="sign-in-title">Civil War Battle Simulation</h2>
-                    <p class="sign-in-subtitle">Educational Edition for Students</p>
+                    <h2 class="sign-in-title">Civil War Commander</h2>
+                    <p class="sign-in-subtitle">Lead an army through 10 historic battles!</p>
                 </div>
 
                 <div class="sign-in-description">
-                    <p>Welcome, Commander! Sign in with your school Google account to save your progress and command your forces through 10 historic Civil War battles.</p>
+                    <p>Sign in to save your progress and make history!</p>
                 </div>
 
                 <button class="google-sign-in-btn" id="googleSignInBtn" aria-label="Sign in with Google">
@@ -4321,6 +4763,25 @@
         
         <!-- Battle Briefing Screen -->
         <div class="battle-briefing" id="battleBriefing" role="region" aria-label="Battle briefing and strategy selection">
+            <!-- Progress Indicator -->
+            <div class="battle-progress" id="battleProgress">
+                <div class="progress-stars" id="progressStars">
+                    <!-- Stars will be inserted here -->
+                </div>
+                <div class="progress-text" id="progressText">Battle 1 of 10</div>
+                <div class="progress-stats">
+                    <div class="progress-stat">
+                        <span id="progressSide">Union</span>
+                    </div>
+                    <div class="progress-stat">
+                        <span id="progressWins">0</span> wins
+                    </div>
+                    <div class="progress-stat">
+                        <span id="progressSoldiers">1,500,000</span> soldiers
+                    </div>
+                </div>
+            </div>
+
             <div class="briefing-header">
                 <h2 class="briefing-title" id="briefingTitle">First Battle of Bull Run</h2>
                 <p class="briefing-date" id="briefingDate">July 21, 1861</p>
@@ -4354,13 +4815,28 @@
             
             <div class="strategic-choices" role="group" aria-labelledby="choices-title">
                 <h3 class="choices-title" id="choices-title">Choose Your Strategy</h3>
-                <p style="margin-bottom: 15px; color: #ccc; text-align: center; font-size: 1em;">
-                    💡 <strong>How to play:</strong> Click any strategy below to see its pros and cons, then click again to lock in your choice!
+                <p style="margin-bottom: 20px; color: #ccc; text-align: center; font-size: 16px;">
+                    Use the arrows to explore each strategy, then click the big button to choose!
                 </p>
-                
-                <div id="choicesList" role="radiogroup" aria-labelledby="choices-title">
-                    <!-- Strategy choices will be inserted here -->
+
+                <!-- Carousel Container -->
+                <div class="strategy-carousel">
+                    <button class="carousel-nav-btn prev" id="prevStrategyBtn" aria-label="Previous strategy">
+                        ◀
+                    </button>
+
+                    <div id="strategyCardContainer">
+                        <!-- Strategy card will be inserted here -->
+                    </div>
+
+                    <button class="carousel-nav-btn next" id="nextStrategyBtn" aria-label="Next strategy">
+                        ▶
+                    </button>
                 </div>
+
+                <button class="choose-strategy-btn" id="chooseStrategyBtn">
+                    Choose This Strategy
+                </button>
             </div>
         </div>
         
@@ -5924,73 +6400,140 @@
         
         // Reset to photo view by default
         toggleVisualModeWithAnimation('photo');
-        
-        // Create strategy choices with collapsible details
-        const choicesList = document.getElementById('choicesList');
-        choicesList.innerHTML = '';
-        
-        battle.strategies.forEach((strategy, index) => {
-            const choiceDiv = document.createElement('div');
-            choiceDiv.className = `choice-option ${index === 0 ? 'aggressive' : index === 1 ? 'defensive' : 'tactical'}`;
-            choiceDiv.innerHTML = `
-                <div class="choice-header">
-                    <div class="choice-name">${strategy.name}</div>
-                    <div class="expand-icon">▼</div>
-                </div>
-                <div class="choice-description">${strategy.description}</div>
-                <div class="choice-details">
-                    <div class="choice-explanation">${strategy.explanation}</div>
-                    <div class="choice-pros-cons">
-                        <div class="pros">
-                            <div class="pros-title">✓ Advantages:</div>
-                            <ul>
-                                ${strategy.pros.map(pro => `<li>${pro}</li>`).join('')}
-                            </ul>
-                        </div>
-                        <div class="cons">
-                            <div class="cons-title">✗ Risks:</div>
-                            <ul>
-                                ${strategy.cons.map(con => `<li>${con}</li>`).join('')}
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            `;
-            
-            // Add click handler for expanding details
-            choiceDiv.addEventListener('click', (e) => {
-                // Check if they clicked the expand area (not trying to make a decision)
-                const isExpanded = choiceDiv.classList.contains('expanded');
-                
-                // First click expands, second click makes decision
-                if (!isExpanded) {
-                    // Collapse all other choices
-                    document.querySelectorAll('.choice-option').forEach(option => {
-                        option.classList.remove('expanded');
-                    });
-                    
-                    // Expand this choice
-                    choiceDiv.classList.add('expanded');
-                } else {
-                    // Make the decision
-                    makeDecision(index);
-                }
-            });
-            
-            choicesList.appendChild(choiceDiv);
-        });
-        
-        // Add instruction text
-        const instructionDiv = document.createElement('div');
-        instructionDiv.className = 'click-to-expand';
-        instructionDiv.innerHTML = '💡 <strong>How it works:</strong> First click = see details • Second click = make decision';
-        choicesList.appendChild(instructionDiv);
-        
+
+        // Update progress indicator
+        updateProgressIndicator();
+
+        // Initialize carousel
+        currentStrategyIndex = 0;
+        renderStrategyCarousel();
+
+        // Set up carousel navigation
+        const prevBtn = document.getElementById('prevStrategyBtn');
+        const nextBtn = document.getElementById('nextStrategyBtn');
+        const chooseBtn = document.getElementById('chooseStrategyBtn');
+
+        prevBtn.onclick = () => navigateStrategy(-1);
+        nextBtn.onclick = () => navigateStrategy(1);
+        chooseBtn.onclick = () => makeDecision(currentStrategyIndex);
+
+        // Keyboard navigation
+        document.addEventListener('keydown', handleStrategyKeyboard);
+
         hideAllScreens();
         elements.battleBriefing.style.display = 'block';
         updateGameDisplay();
         window.scrollTo({ top: 0, behavior: 'smooth' });
         updateVocabularyDisplay();
+    }
+
+    // Global variable for current strategy index
+    let currentStrategyIndex = 0;
+
+    function updateProgressIndicator() {
+        const progressStars = document.getElementById('progressStars');
+        const progressText = document.getElementById('progressText');
+        const progressSide = document.getElementById('progressSide');
+        const progressWins = document.getElementById('progressWins');
+        const progressSoldiers = document.getElementById('progressSoldiers');
+
+        // Create stars for all 10 battles
+        let starsHTML = '';
+        for (let i = 0; i < 10; i++) {
+            if (i < gameState.battleHistory.length) {
+                const battle = gameState.battleHistory[i];
+                if (battle.result === 'Victory') {
+                    starsHTML += '<span class="progress-star win">⭐</span>';
+                } else {
+                    starsHTML += '<span class="progress-star loss">❌</span>';
+                }
+            } else if (i === gameState.currentBattle) {
+                starsHTML += '<span class="progress-star current">⚪</span>';
+            } else {
+                starsHTML += '<span class="progress-star">⚪</span>';
+            }
+        }
+        progressStars.innerHTML = starsHTML;
+
+        // Update text
+        progressText.textContent = `Battle ${gameState.currentBattle + 1} of 10`;
+        progressSide.textContent = gameState.side === 'union' ? '🔵 Union' : '🔴 Confederacy';
+        progressWins.textContent = gameState.wins;
+        progressSoldiers.textContent = gameState.soldiers.toLocaleString();
+    }
+
+    function renderStrategyCarousel() {
+        const battle = battles[gameState.currentBattle];
+        const strategy = battle.strategies[currentStrategyIndex];
+        const container = document.getElementById('strategyCardContainer');
+        const prevBtn = document.getElementById('prevStrategyBtn');
+        const nextBtn = document.getElementById('nextStrategyBtn');
+
+        // Determine strategy type
+        const strategyType = currentStrategyIndex === 0 ? 'aggressive' :
+                            currentStrategyIndex === 1 ? 'defensive' : 'tactical';
+
+        // Get strategy icon
+        const icons = {
+            aggressive: '⚔️',
+            defensive: '🛡️',
+            tactical: '🎯'
+        };
+
+        // Render strategy card
+        container.innerHTML = `
+            <div class="strategy-card-container ${strategyType}">
+                <div class="strategy-selected-checkmark">✓</div>
+                <div class="strategy-counter">${currentStrategyIndex + 1} of ${battle.strategies.length}</div>
+                <div class="strategy-icon">${icons[strategyType]}</div>
+                <h3 class="strategy-name">${strategy.name}</h3>
+                <p class="strategy-description">${strategy.description}</p>
+
+                <div class="strategy-pros-cons-grid">
+                    <div class="strategy-pros-list">
+                        <h4>✓ Advantages</h4>
+                        <ul>
+                            ${strategy.pros.map(pro => `<li>${pro}</li>`).join('')}
+                        </ul>
+                    </div>
+                    <div class="strategy-cons-list">
+                        <h4>⚠ Risks</h4>
+                        <ul>
+                            ${strategy.cons.map(con => `<li>${con}</li>`).join('')}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        // Update navigation buttons
+        prevBtn.disabled = currentStrategyIndex === 0;
+        nextBtn.disabled = currentStrategyIndex === battle.strategies.length - 1;
+    }
+
+    function navigateStrategy(direction) {
+        const battle = battles[gameState.currentBattle];
+        const newIndex = currentStrategyIndex + direction;
+
+        if (newIndex >= 0 && newIndex < battle.strategies.length) {
+            currentStrategyIndex = newIndex;
+            renderStrategyCarousel();
+        }
+    }
+
+    function handleStrategyKeyboard(e) {
+        if (elements.battleBriefing.style.display !== 'block') return;
+
+        if (e.key === 'ArrowLeft') {
+            e.preventDefault();
+            navigateStrategy(-1);
+        } else if (e.key === 'ArrowRight') {
+            e.preventDefault();
+            navigateStrategy(1);
+        } else if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            makeDecision(currentStrategyIndex);
+        }
     }
 
     function makeDecision(strategyIndex) {
@@ -6025,58 +6568,92 @@
         showBattleResults(result, strategy);
     }
 
+    // Confetti celebration function
+    function celebrateVictory() {
+        const container = document.getElementById('confettiContainer');
+        const colors = ['#ffd700', '#ff6b6b', '#4ecdc4', '#45b7d1', '#f7dc6f', '#48c9b0'];
+
+        // Create 50 confetti pieces
+        for (let i = 0; i < 50; i++) {
+            setTimeout(() => {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + '%';
+                confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.animationDelay = Math.random() * 0.5 + 's';
+                confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                container.appendChild(confetti);
+
+                // Remove after animation
+                setTimeout(() => confetti.remove(), 3500);
+            }, i * 30);
+        }
+    }
+
     function showBattleResults(result, strategy) {
         const battle = battles[gameState.currentBattle];
-        
-        // Set outcome
+
+        // Trigger confetti for victories
+        if (result.win) {
+            setTimeout(celebrateVictory, 500);
+        }
+
+        // Set outcome with better messaging
         const outcomeEl = document.getElementById('battleOutcome');
-        outcomeEl.textContent = result.win ? 'VICTORY!' : 'DEFEAT';
+        outcomeEl.textContent = result.win ? '🎉 VICTORY! 🎉' : '😔 Defeat';
         outcomeEl.className = result.win ? 'battle-outcome battle-victory' : 'battle-outcome battle-defeat';
-        
-        // Set results summary (the new prominent section)
-        document.getElementById('resultIcon').textContent = result.win ? '🏆' : '💀';
-        document.getElementById('resultText').textContent = result.win ? 
-            'Your strategy succeeded!' : 'Your strategy was defeated.';
-        
-        document.getElementById('casualtiesSummary').textContent = `${result.soldierLoss.toLocaleString()} lost`;
+
+        // Set results summary with game-like language
+        const resultIcon = document.getElementById('resultIcon');
+        const resultText = document.getElementById('resultText');
+
+        if (result.win) {
+            resultIcon.className = 'result-icon celebration-icon';
+            resultIcon.textContent = '🎉';
+            resultText.textContent = `Great job! You won ${battle.name}!`;
+        } else {
+            resultIcon.className = 'result-icon';
+            resultIcon.textContent = '💔';
+            resultText.textContent = `You lost this battle. Try a different strategy next time!`;
+        }
+
+        document.getElementById('casualtiesSummary').textContent = `${result.soldierLoss.toLocaleString()} casualties`;
         document.getElementById('scoreSummary').textContent = `+${result.scoreGain} points`;
-        document.getElementById('armySummary').textContent = `${gameState.soldiers.toLocaleString()} remain`;
-        
-        // Create detailed explanation with highlighted outcome
-        const sideResult = gameState.side === 'union' ? 
-            (result.win ? 'union_victory' : 'union_loss') : 
+        document.getElementById('armySummary').textContent = `${gameState.soldiers.toLocaleString()} soldiers left`;
+
+        // Create detailed explanation with ELL-friendly language
+        const sideResult = gameState.side === 'union' ?
+            (result.win ? 'union_victory' : 'union_loss') :
             (result.win ? 'confederacy_victory' : 'confederacy_defeat');
-        
-        const outcomeHighlight = result.win ? 
-            '<span class="outcome-highlight victory-highlight">🎉 YOU WON THIS BATTLE! 🎉</span>' :
-            '<span class="outcome-highlight defeat-highlight">💔 You lost this battle 💔</span>';
-        
+
         document.getElementById('explanationText').innerHTML = `
-            <div style="text-align: center; margin-bottom: 20px;">
-                ${outcomeHighlight}
-            </div>
             <p><strong>Your Strategy:</strong> ${strategy.name}</p>
             <p><strong>What Happened:</strong> ${battle.results[sideResult] || 'The battle outcome was determined by your strategic choice.'}</p>
-            <p style="margin-top: 15px;"><strong>Why this happened:</strong> ${strategy.explanation.replace(/<[^>]*>/g, '')}</p>
+            ${result.win ? '<p style="color: #10b981; font-weight: 600;">💪 Nice work, Commander!</p>' : '<p style="color: #ffa500;">💡 Keep going! Every battle teaches you something.</p>'}
         `;
-        
+
         document.getElementById('historicalNote').textContent = battle.historical_notes.general;
-        
-        // Update button text
+
+        // Update button text with simpler language
         if (gameState.currentBattle + 1 >= battles.length || gameState.soldiers <= 0) {
-            elements.continueBattleBtn.textContent = 'View Final Results';
+            elements.continueBattleBtn.textContent = 'See Final Score →';
         } else {
-            elements.continueBattleBtn.textContent = 'Continue to Next Battle';
+            elements.continueBattleBtn.textContent = 'Next Battle →';
         }
-        
+
         updateGameDisplay();
-        
-        // Show game screen (revert to working approach)
+
+        // Show game screen
         hideAllScreens();
         elements.gameScreen.style.display = 'block';
-        
+
         // Scroll to top
         window.scrollTo({ top: 0, behavior: 'smooth' });
+
+        // Auto-save after showing results
+        setTimeout(async () => {
+            await saveManager.autoSave();
+        }, 500);
     }
 
     function continueToNextBattle() {
