@@ -1,176 +1,171 @@
-// App initialization and event wiring for Civil War Battle Simulation
+// App initialization and event wiring for Civil War Battle Simulation v3
 
-function initializeGame() {
-    cacheElements();
-
-    // Check if this is first time playing - show introduction
-    const hasSeenIntro = localStorage.getItem('civilWarIntroSeen');
-
-    hideAllScreens();
-    elements.sideSelection.style.display = 'block';
-
-    if (!hasSeenIntro) {
-        document.getElementById('civilWarIntro').style.display = 'block';
-        document.querySelector('.sides-container').style.display = 'none';
-        setTimeout(() => {
-            updateVocabularyDisplay();
-            const introVocabTerms = document.querySelectorAll('#civilWarIntro .vocab-term');
-            introVocabTerms.forEach(term => {
-                term.style.position = 'relative';
-            });
-        }, 150);
-    }
-
+function boot() {
+    cacheScreens();
     setupEventListeners();
-    updateVocabularyDisplay();
+    renderModeSelection();
 }
 
 function setupEventListeners() {
-    // Side selection
-    elements.unionCard.addEventListener('click', () => selectSide('union'));
-    elements.confederacyCard.addEventListener('click', () => selectSide('confederacy'));
-
-    // Navigation
-    elements.proceedToGame.addEventListener('click', startFirstBattle);
-    elements.backToSideBtn.addEventListener('click', showSideSelection);
-    elements.continueBattleBtn.addEventListener('click', continueToNextBattle);
-    elements.playAgainBtn.addEventListener('click', resetGame);
-    if (elements.startOverBtn) {
-        elements.startOverBtn.addEventListener('click', () => {
-            if (confirm('Are you sure you want to start over?')) resetGame();
-        });
-    }
-
-    // Campaign log
-    if (elements.campaignLogBtn) {
-        elements.campaignLogBtn.addEventListener('click', showCampaignLog);
-    }
-    if (elements.closeLogBtn) {
-        elements.closeLogBtn.addEventListener('click', closeCampaignLog);
-    }
-
-    // Visual toggle controls
-    elements.photoToggle.addEventListener('click', () => toggleVisualModeWithAnimation('photo'));
-    elements.mapToggle.addEventListener('click', () => toggleVisualModeWithAnimation('map'));
-
-    // Navigation bar controls
-    elements.campaignLogNavBtn.addEventListener('click', showCampaignLog);
-    elements.startOverNavBtn.addEventListener('click', () => {
-        if (confirm('Are you sure you want to start over?')) resetGame();
+    // Mode selection
+    document.getElementById('historicalModeCard').addEventListener('click', function() {
+        gameState.mode = 'historical';
+        renderSideSelection();
     });
-    elements.vocabToggleNav.addEventListener('click', toggleVocabularyHelp);
 
-    // Settings dropdown
-    elements.settingsBtn.addEventListener('click', toggleSettingsMenu);
+    document.getElementById('freeplayModeCard').addEventListener('click', function() {
+        if (!isHistoricalComplete()) return; // still locked
+        gameState.mode = 'freeplay';
+        renderSideSelection();
+    });
 
-    // Image credits toggle
-    const creditsToggle = document.getElementById('creditsToggle');
-    const creditsContent = document.getElementById('creditsContent');
-
-    if (creditsToggle && creditsContent) {
-        creditsToggle.addEventListener('click', () => {
-            const isExpanded = creditsToggle.getAttribute('aria-expanded') === 'true';
-            const newState = !isExpanded;
-
-            creditsToggle.setAttribute('aria-expanded', newState);
-            creditsContent.setAttribute('aria-hidden', !newState);
-
-            if (newState) {
-                creditsContent.classList.add('expanded');
-                creditsToggle.querySelector('.credits-text').textContent = 'Hide Image Credits';
-            } else {
-                creditsContent.classList.remove('expanded');
-                creditsToggle.querySelector('.credits-text').textContent = 'View Image Credits';
-            }
-        });
-    }
-
-    // Close settings when clicking outside
-    document.addEventListener('click', (e) => {
-        if (!elements.settingsBtn.contains(e.target) && !elements.settingsMenu.contains(e.target)) {
-            elements.settingsMenu.classList.remove('show');
-            elements.settingsBtn.setAttribute('aria-expanded', 'false');
+    // Keyboard support for mode cards
+    document.getElementById('historicalModeCard').addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            gameState.mode = 'historical';
+            renderSideSelection();
         }
     });
 
-    // Close vocabulary sidebar when clicking overlay
-    const vocabOverlay = document.getElementById('vocabOverlay');
-    if (vocabOverlay) {
-        vocabOverlay.addEventListener('click', () => {
-            if (settings.vocabHelp) {
-                toggleVocabularyHelp();
+    document.getElementById('freeplayModeCard').addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            if (!isHistoricalComplete()) return;
+            gameState.mode = 'freeplay';
+            renderSideSelection();
+        }
+    });
+
+    // Resume / New game
+    document.getElementById('resumeBtn').addEventListener('click', function() {
+        var saved = loadProgress();
+        if (saved) {
+            restoreGameState(saved);
+            if (saved.mode === 'historical') {
+                renderHistoricalBattle();
+            } else {
+                renderFreeplayBriefing();
             }
-        });
-    }
+        }
+    });
 
-    // Side selection accessibility - keyboard support
-    addSideSelectionListeners();
+    document.getElementById('newGameBtn').addEventListener('click', function() {
+        clearSave();
+        document.getElementById('resumePrompt').style.display = 'none';
+    });
 
-    // Close modal when clicking outside
-    elements.campaignLogModal.addEventListener('click', (e) => {
-        if (e.target === elements.campaignLogModal) {
+    // Side selection
+    document.getElementById('unionCard').addEventListener('click', function() {
+        startWithSide('union');
+    });
+    document.getElementById('confederacyCard').addEventListener('click', function() {
+        startWithSide('confederacy');
+    });
+
+    // Keyboard support for side cards
+    document.getElementById('unionCard').addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            startWithSide('union');
+        }
+    });
+    document.getElementById('confederacyCard').addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            startWithSide('confederacy');
+        }
+    });
+
+    // Back to mode selection
+    document.getElementById('backToModeBtn').addEventListener('click', function() {
+        renderModeSelection();
+    });
+
+    // Historical mode - narrative continue
+    document.getElementById('narrativeContinueBtn').addEventListener('click', function() {
+        advanceNarrative();
+    });
+
+    // Free-play - next battle
+    document.getElementById('nextBattleBtn').addEventListener('click', function() {
+        proceedFromResults();
+    });
+
+    // Campaign log
+    document.getElementById('campaignLogNavBtn').addEventListener('click', showCampaignLog);
+    document.getElementById('closeLogBtn').addEventListener('click', closeCampaignLog);
+
+    // End game buttons
+    document.getElementById('playAgainBtn').addEventListener('click', function() {
+        resetGameState();
+        renderModeSelection();
+    });
+    document.getElementById('backToMenuBtn').addEventListener('click', function() {
+        resetGameState();
+        renderModeSelection();
+    });
+
+    // Start over (nav menu)
+    document.getElementById('startOverNavBtn').addEventListener('click', function() {
+        if (confirm('Are you sure you want to start over? Your progress will be lost.')) {
+            resetGameState();
+            renderModeSelection();
+        }
+    });
+
+    // Settings menu
+    document.getElementById('settingsBtn').addEventListener('click', toggleSettingsMenu);
+
+    // Close settings when clicking outside
+    document.addEventListener('click', function(e) {
+        var settingsBtn = document.getElementById('settingsBtn');
+        var settingsMenu = document.getElementById('settingsMenu');
+        if (!settingsBtn.contains(e.target) && !settingsMenu.contains(e.target)) {
+            settingsMenu.classList.remove('show');
+            settingsBtn.setAttribute('aria-expanded', 'false');
+        }
+    });
+
+    // Close campaign log modal when clicking outside
+    document.getElementById('campaignLogModal').addEventListener('click', function(e) {
+        if (e.target === this) {
             closeCampaignLog();
         }
     });
 
-    // Keyboard handling for modals
-    document.addEventListener('keydown', (e) => {
+    // Keyboard: Escape closes modals
+    document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') {
-            if (elements.campaignLogModal.style.display === 'block') {
+            if (screens.campaignLogModal.style.display === 'block') {
                 closeCampaignLog();
-            } else if (elements.battleResultsModal.style.display === 'block') {
-                closeBattleResultsModal();
-            } else if (settings.vocabHelp) {
-                toggleVocabularyHelp();
-            } else if (elements.settingsMenu.classList.contains('show')) {
-                elements.settingsMenu.classList.remove('show');
-                elements.settingsBtn.setAttribute('aria-expanded', 'false');
+            } else {
+                var settingsMenu = document.getElementById('settingsMenu');
+                if (settingsMenu.classList.contains('show')) {
+                    settingsMenu.classList.remove('show');
+                    document.getElementById('settingsBtn').setAttribute('aria-expanded', 'false');
+                }
             }
         }
     });
+
+    // Credits toggle
+    setupCreditsToggle();
 }
 
-function addSideSelectionListeners() {
-    const unionCard = document.getElementById('unionCard');
-    const confederacyCard = document.getElementById('confederacyCard');
+function startWithSide(side) {
+    initializeGame(gameState.mode, side);
 
-    // Keyboard support for side cards
-    unionCard.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            selectSide('union');
-        }
-    });
-
-    confederacyCard.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            selectSide('confederacy');
-        }
-    });
-
-    // Strategy button support
-    const unionBtn = unionCard.querySelector('.select-strategy-btn');
-    const confederacyBtn = confederacyCard.querySelector('.select-strategy-btn');
-
-    unionBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        selectSide('union');
-    });
-
-    confederacyBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        selectSide('confederacy');
-    });
+    if (gameState.mode === 'historical') {
+        renderHistoricalBattle();
+    } else {
+        renderFreeplayBriefing();
+    }
 }
-
-// Optimized update functions
-const debouncedUpdateDisplay = debounce(updateGameDisplay, 100);
-const debouncedVocabUpdate = debounce(updateVocabularyDisplay, 150);
 
 // Initialize when DOM is ready
 if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initializeGame);
+    document.addEventListener('DOMContentLoaded', boot);
 } else {
-    initializeGame();
+    boot();
 }

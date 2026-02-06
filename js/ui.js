@@ -1,446 +1,518 @@
-// UI/DOM manipulation for Civil War Battle Simulation
+// UI/DOM manipulation for Civil War Battle Simulation v3
+// Handles screen transitions, rendering, and all DOM interactions
 
-// DOM element references
-let elements = {};
+// ============================================================
+// Screen Management
+// ============================================================
 
-// Cache DOM references
-function cacheElements() {
-    elements = {
-        sideSelection: document.getElementById('sideSelection'),
-        sideIntroduction: document.getElementById('sideIntroduction'),
-        battleBriefing: document.getElementById('battleBriefing'),
-        gameScreen: document.getElementById('gameScreen'),
-        battleResultsModal: document.getElementById('battleResultsModal'),
-        campaignLogModal: document.getElementById('campaignLogModal'),
-        endGameSummary: document.getElementById('endGameSummary'),
-        unionCard: document.getElementById('unionCard'),
-        confederacyCard: document.getElementById('confederacyCard'),
-        proceedToGame: document.getElementById('proceedToGame'),
-        backToSideBtn: document.getElementById('backToSideBtn'),
-        startOverBtn: document.getElementById('startOverBtn'),
-        continueBattleBtn: document.getElementById('continueBattleBtn'),
-        campaignLogBtn: document.getElementById('campaignLogBtn'),
-        closeLogBtn: document.getElementById('closeLogBtn'),
-        playAgainBtn: document.getElementById('playAgainBtn'),
-        photoToggle: document.getElementById('photoToggle'),
-        mapToggle: document.getElementById('mapToggle'),
-        briefingImage: document.getElementById('briefingImage'),
-        briefingMap: document.getElementById('briefingMap'),
-        // Navigation elements
-        navbarStats: document.getElementById('navbarStats'),
-        navScore: document.getElementById('navScore'),
-        navSoldiers: document.getElementById('navSoldiers'),
-        navBattleNumber: document.getElementById('navBattleNumber'),
-        navWins: document.getElementById('navWins'),
-        campaignLogNavBtn: document.getElementById('campaignLogNavBtn'),
-        startOverNavBtn: document.getElementById('startOverNavBtn'),
-        vocabToggleNav: document.getElementById('vocabToggleNav'),
-        settingsBtn: document.getElementById('settingsBtn'),
-        settingsMenu: document.getElementById('settingsMenu'),
-        vocabStatus: document.getElementById('vocabStatus')
-    };
+const screens = {};
+
+function cacheScreens() {
+    screens.modeSelection = document.getElementById('modeSelection');
+    screens.sideSelection = document.getElementById('sideSelection');
+    screens.historicalScreen = document.getElementById('historicalScreen');
+    screens.freeplayBriefing = document.getElementById('freeplayBriefing');
+    screens.freeplayResults = document.getElementById('freeplayResults');
+    screens.campaignLogModal = document.getElementById('campaignLogModal');
+    screens.endGameScreen = document.getElementById('endGameScreen');
 }
 
-// Hide all game screens
-function hideAllScreens() {
-    elements.sideSelection.style.display = 'none';
-    elements.sideIntroduction.style.display = 'none';
-    elements.battleBriefing.style.display = 'none';
-    elements.gameScreen.style.display = 'none';
-    elements.battleResultsModal.style.display = 'none';
-    elements.campaignLogModal.style.display = 'none';
-    elements.endGameSummary.style.display = 'none';
-}
-
-// Show side selection screen
-function showSideSelection() {
-    gameState.side = null;
-    hideAllScreens();
-    elements.sideSelection.style.display = 'block';
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-// Show side introduction with leader message
-function showSideIntroduction() {
-    hideAllScreens();
-    elements.sideIntroduction.style.display = 'block';
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-// Select a side and display leader message
-function selectSide(side) {
-    gameState.side = side;
-
-    const leader = leaderMessages[side];
-    document.getElementById('leaderPortrait').textContent = leader.portrait;
-    document.getElementById('leaderName').textContent = leader.name;
-    document.getElementById('leaderMessage').innerHTML = leader.message;
-
-    const objectivesList = document.getElementById('objectivesList');
-    objectivesList.innerHTML = '';
-    leader.objectives.forEach(objective => {
-        const item = document.createElement('div');
-        item.className = 'objective-item';
-        item.textContent = objective;
-        objectivesList.appendChild(item);
+function showScreen(screenId) {
+    Object.values(screens).forEach(function(el) {
+        if (el) el.style.display = 'none';
     });
-
-    showSideIntroduction();
+    if (screens[screenId]) {
+        screens[screenId].style.display = 'block';
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-// Start the first battle
-function startFirstBattle() {
-    initializeArmy();
-    showBattleBriefing();
+function showGameActions(show) {
+    var section = document.getElementById('gameActionsSection');
+    var divider = document.getElementById('gameActionsDiv');
+    if (section) section.style.display = show ? 'block' : 'none';
+    if (divider) divider.style.display = show ? 'block' : 'none';
 }
 
-// Display battle briefing screen
-function showBattleBriefing() {
-    const battle = battles[gameState.currentBattle];
-    const assets = getAssetManifest();
+function showCampaignLogBtn(show) {
+    var btn = document.getElementById('campaignLogNavBtn');
+    if (btn) btn.style.display = show ? 'block' : 'none';
+}
 
-    document.getElementById('briefingTitle').textContent = battle.name;
-    document.getElementById('briefingDate').textContent = battle.date;
-    document.getElementById('contextText').innerHTML = battle.context;
+// ============================================================
+// Mode Selection Screen
+// ============================================================
 
-    // Find matching asset for this battle
-    let battleAsset = assets[gameState.currentBattle];
+function renderModeSelection() {
+    var freeplayCard = document.getElementById('freeplayModeCard');
+    var freeplayLock = document.getElementById('freeplayLock');
+    var unlocked = isHistoricalComplete();
 
-    // If no direct index match, try name matching as fallback
-    if (!battleAsset) {
-        battleAsset = assets.find(asset => {
-            const assetName = asset.id.replace(/_/g, ' ').toLowerCase();
-            const battleName = battle.name.toLowerCase();
-            return battleName.includes(assetName) ||
-                   (assetName.includes('bull') && battleName.includes('bull')) ||
-                   (assetName.includes('antietam') && battleName.includes('antietam')) ||
-                   (assetName.includes('gettysburg') && battleName.includes('gettysburg'));
-        });
-    }
-
-    // Final fallback to first asset
-    if (!battleAsset) {
-        battleAsset = assets[0];
-    }
-
-    // Update battle image
-    const briefingImage = elements.briefingImage;
-    const briefingMap = elements.briefingMap;
-
-    if (!battleAsset) {
-        briefingImage.innerHTML = `
-            <div style="text-align: center; padding: 40px; color: var(--color-text-secondary); background: var(--color-surface-secondary); border-radius: var(--radius-xl);">
-                <div style="font-size: 3em; margin-bottom: 10px;">&#x274C;</div>
-                <p style="font-weight: 600;">No Image Asset Found</p>
-                <p style="font-size: 0.9em; margin-top: 5px;">${battle.name}</p>
-            </div>
-        `;
-        return;
-    }
-
-    if (battleAsset && briefingImage) {
-        // Show loading state
-        briefingImage.innerHTML = `
-            <div style="text-align: center; padding: 40px; color: var(--color-text-secondary);">
-                <div style="font-size: 2em; margin-bottom: 10px;">&#x1F4F7;</div>
-                <p>Loading image...</p>
-            </div>
-        `;
-
-        const imageUrl = battleAsset.url;
-        const fallbackSvg = btoa(`<svg width="400" height="300" xmlns="http://www.w3.org/2000/svg"><rect width="400" height="300" fill="#2a2a2a"/><text x="200" y="120" fill="white" text-anchor="middle" font-size="18">Historical Image</text><text x="200" y="150" fill="white" text-anchor="middle" font-size="16">${battle.name}</text><text x="200" y="180" fill="white" text-anchor="middle" font-size="14">${battle.date}</text></svg>`);
-
-        briefingImage.innerHTML = `
-            <img src="${imageUrl}"
-                 alt="${battleAsset.title}"
-                 loading="lazy"
-                 decoding="async"
-                 style="transition: opacity 0.3s ease; width: 100%; height: 100%; object-fit: cover;"
-                 onload="this.style.opacity='1'"
-                 onerror="this.onerror=null; this.src='data:image/svg+xml;base64,${fallbackSvg}'; this.style.opacity='1';">
-            <span class="image-credit" style="position: absolute; bottom: 8px; left: 8px; right: 8px; background: rgba(0,0,0,0.7); color: white; padding: 4px 8px; border-radius: 4px; font-size: 0.8em;">${battleAsset.credit} &bull; ${battleAsset.source}</span>
-        `;
+    if (unlocked) {
+        freeplayCard.classList.remove('locked');
+        freeplayLock.style.display = 'none';
     } else {
-        briefingImage.innerHTML = `
-            <div style="text-align: center; padding: 40px; color: var(--color-text-secondary);">
-                <div style="font-size: 3em; margin-bottom: 10px;">&#x2694;&#xFE0F;</div>
-                <p>${battle.name}</p>
-                <p style="font-size: 0.9em; margin-top: 5px;">${battle.date}</p>
-            </div>
-        `;
+        freeplayCard.classList.add('locked');
+        freeplayLock.style.display = 'block';
     }
 
-    // Create and populate battle map
-    const battleId = battleAsset ? battleAsset.id : 'generic';
-    briefingMap.innerHTML = createBattleMap(battleId);
+    // Check for saved game
+    var saved = loadProgress();
+    var resumePrompt = document.getElementById('resumePrompt');
+    if (saved && saved.mode && saved.side) {
+        resumePrompt.style.display = 'block';
+        var modeLabel = saved.mode === 'historical' ? 'Historical Mode' : 'Free-play Mode';
+        var sideLabel = saved.side === 'union' ? 'Union' : 'Confederacy';
+        var battleNum = (saved.currentBattle || 0) + 1;
+        document.querySelector('.resume-text').textContent =
+            'You have a saved ' + modeLabel + ' game (' + sideLabel + ', Battle ' + battleNum + ' of 10).';
+    } else {
+        resumePrompt.style.display = 'none';
+    }
 
-    // Reset to photo view by default
-    toggleVisualModeWithAnimation('photo');
+    showScreen('modeSelection');
+    showGameActions(false);
+    showCampaignLogBtn(false);
+}
 
-    // Create strategy choices
-    const choicesList = document.getElementById('choicesList');
-    choicesList.innerHTML = '';
+// ============================================================
+// Side Selection Screen
+// ============================================================
 
-    battle.strategies.forEach((strategy, index) => {
-        const choiceDiv = document.createElement('div');
-        choiceDiv.className = `choice-option ${index === 0 ? 'aggressive' : index === 1 ? 'defensive' : 'tactical'}`;
-        choiceDiv.innerHTML = `
-            <div class="choice-header">
-                <div class="choice-name">${strategy.name}</div>
-                <div class="expand-icon">&#x25BC;</div>
-            </div>
-            <div class="choice-description">${strategy.description}</div>
-            <div class="choice-details">
-                <div class="choice-explanation">${strategy.explanation}</div>
-                <div class="choice-pros-cons">
-                    <div class="pros">
-                        <div class="pros-title">&#x2713; Advantages:</div>
-                        <ul>
-                            ${strategy.pros.map(pro => `<li>${pro}</li>`).join('')}
-                        </ul>
-                    </div>
-                    <div class="cons">
-                        <div class="cons-title">&#x2717; Risks:</div>
-                        <ul>
-                            ${strategy.cons.map(con => `<li>${con}</li>`).join('')}
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        `;
+function renderSideSelection() {
+    var subtitle = document.getElementById('sideSelectionSubtitle');
+    var unionCount = document.getElementById('unionSoldierCount');
+    var confCount = document.getElementById('confederacySoldierCount');
 
-        // Click handler: first click expands, second click decides
-        choiceDiv.addEventListener('click', () => {
-            const isExpanded = choiceDiv.classList.contains('expanded');
+    if (gameState.mode === 'historical') {
+        subtitle.textContent = 'Experience these battles from the perspective you choose';
+        unionCount.textContent = '';
+        confCount.textContent = '';
+    } else {
+        subtitle.textContent = 'Command your chosen side through 10 major battles';
+        unionCount.textContent = 'Starting Army: 1,500,000 soldiers';
+        confCount.textContent = 'Starting Army: 1,000,000 soldiers';
+    }
 
-            if (!isExpanded) {
-                document.querySelectorAll('.choice-option').forEach(option => {
-                    option.classList.remove('expanded');
-                });
-                choiceDiv.classList.add('expanded');
-            } else {
-                makeDecision(index);
+    showScreen('sideSelection');
+}
+
+// ============================================================
+// Battle Image Helper
+// ============================================================
+
+function renderBattleImage(container, battle) {
+    var assets = getAssetManifest();
+    var asset = assets.find(function(a) { return a.id === battle.id; });
+
+    if (!asset) {
+        asset = assets[gameState.currentBattle] || assets[0];
+    }
+
+    if (asset) {
+        var fallbackSvg = btoa(
+            '<svg width="400" height="300" xmlns="http://www.w3.org/2000/svg">' +
+            '<rect width="400" height="300" fill="#2a2a2a"/>' +
+            '<text x="200" y="140" fill="white" text-anchor="middle" font-size="16">' + battle.name + '</text>' +
+            '<text x="200" y="170" fill="#aaa" text-anchor="middle" font-size="14">' + battle.date + '</text>' +
+            '</svg>'
+        );
+
+        container.innerHTML =
+            '<img src="' + asset.url + '" alt="' + asset.title + '" loading="lazy" decoding="async" ' +
+            'style="width:100%;height:100%;object-fit:cover;" ' +
+            'onerror="this.onerror=null;this.src=\'data:image/svg+xml;base64,' + fallbackSvg + '\';">' +
+            '<span class="image-credit">' + asset.credit + ' &bull; ' + asset.source + '</span>';
+    } else {
+        container.innerHTML =
+            '<div style="text-align:center;padding:40px;color:var(--color-text-secondary);">' +
+            '<div style="font-size:3em;margin-bottom:10px;">&#x2694;&#xFE0F;</div>' +
+            '<p>' + battle.name + '</p></div>';
+    }
+}
+
+// ============================================================
+// Historical Mode Screens
+// ============================================================
+
+var narrativeStep = 0; // tracks which section is visible (0-3)
+
+function renderHistoricalBattle() {
+    var content = getHistoricalContent();
+    narrativeStep = 0;
+
+    // Progress
+    document.getElementById('historicalProgressLabel').textContent =
+        'Battle ' + content.battleNumber + ' of ' + content.totalBattles;
+    document.getElementById('historicalProgressFill').style.width =
+        (content.battleNumber / content.totalBattles * 100) + '%';
+
+    // Header
+    document.getElementById('histBattleName').textContent = content.name;
+    document.getElementById('histBattleDate').textContent = content.date;
+    document.getElementById('histBattleLocation').textContent = content.location;
+
+    // Image
+    renderBattleImage(
+        document.getElementById('histBattleImage'),
+        battles[gameState.currentBattle]
+    );
+
+    // Narrative content
+    document.getElementById('histOverview').textContent = content.overview;
+
+    var perspectiveHeading = document.getElementById('perspectiveHeading');
+    perspectiveHeading.textContent = gameState.side === 'union'
+        ? 'Your Perspective (Union)' : 'Your Perspective (Confederacy)';
+    document.getElementById('histPerspective').textContent = content.perspective;
+
+    document.getElementById('histExperience').textContent = content.experience;
+    document.getElementById('histAftermath').textContent = content.aftermath;
+    document.getElementById('histOutcome').textContent = content.outcome;
+
+    var totalCasualties = content.casualties.union + content.casualties.confederacy;
+    document.getElementById('histCasualties').textContent =
+        'Casualties: ' + totalCasualties.toLocaleString() +
+        ' (Union: ' + content.casualties.union.toLocaleString() +
+        ', Confederate: ' + content.casualties.confederacy.toLocaleString() + ')';
+
+    document.getElementById('histKeyFact').textContent = content.keyFact;
+
+    // Reset visibility - only show overview
+    document.getElementById('narrativeOverview').style.display = 'block';
+    document.getElementById('narrativePerspective').style.display = 'none';
+    document.getElementById('narrativeExperience').style.display = 'none';
+    document.getElementById('narrativeAftermath').style.display = 'none';
+
+    // Button text
+    document.getElementById('narrativeContinueBtn').textContent = 'Continue Reading';
+
+    showScreen('historicalScreen');
+    showGameActions(true);
+    showCampaignLogBtn(false);
+}
+
+function advanceNarrative() {
+    narrativeStep++;
+
+    var sections = ['narrativeOverview', 'narrativePerspective', 'narrativeExperience', 'narrativeAftermath'];
+
+    if (narrativeStep < sections.length) {
+        // Reveal next section
+        var section = document.getElementById(sections[narrativeStep]);
+        section.style.display = 'block';
+        section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+        if (narrativeStep === sections.length - 1) {
+            // Last section - change button to "Next Battle"
+            var isLast = gameState.currentBattle >= battles.length - 1;
+            document.getElementById('narrativeContinueBtn').textContent =
+                isLast ? 'Complete Historical Mode' : 'Next Battle';
+        }
+    } else {
+        // Done with this battle, advance
+        var done = advanceHistorical();
+        if (done) {
+            renderHistoricalComplete();
+        } else {
+            renderHistoricalBattle();
+        }
+    }
+}
+
+function renderHistoricalComplete() {
+    var endBanner = document.getElementById('endBanner');
+    endBanner.className = 'outcome-banner victory-banner';
+
+    document.getElementById('endTitle').textContent = 'Historical Mode Complete!';
+    document.getElementById('endSubtitle').textContent =
+        'You\'ve experienced all 10 major battles of the Civil War';
+
+    var side = gameState.side;
+    var sideLabel = side === 'union' ? 'Union' : 'Confederate';
+
+    document.getElementById('endContent').innerHTML =
+        '<div class="end-summary">' +
+        '<h3>Your Journey Through History</h3>' +
+        '<p>You experienced the Civil War from the <strong>' + sideLabel + '</strong> perspective, ' +
+        'following the real events of 10 major battles from 1861 to 1865.</p>' +
+        '<div class="historical-timeline-summary">' +
+        battles.map(function(b, i) {
+            var winnerIcon = b.historical.winner === 'union' ? '&#x1F1FA;&#x1F1F8;'
+                : b.historical.winner === 'confederacy' ? '&#x1F3F4;' : '&#x1F91D;';
+            return '<div class="timeline-battle-item">' +
+                '<span class="timeline-number">' + (i + 1) + '</span>' +
+                '<span class="timeline-name">' + b.name + '</span>' +
+                '<span class="timeline-year">' + b.year + '</span>' +
+                '<span class="timeline-winner">' + winnerIcon + '</span>' +
+                '</div>';
+        }).join('') +
+        '</div>' +
+        '<div class="unlock-message">' +
+        '<h3>&#x1F513; Free-play Mode Unlocked!</h3>' +
+        '<p>Now that you know what really happened, try <strong>Free-play Mode</strong> ' +
+        'to make your own strategic decisions and change the course of history!</p>' +
+        '</div>' +
+        '</div>';
+
+    // Hide scoreboard for historical mode
+    document.getElementById('scoreboardSection').style.display = 'none';
+
+    showScreen('endGameScreen');
+    showGameActions(false);
+    showCampaignLogBtn(false);
+}
+
+// ============================================================
+// Free-play Mode Screens
+// ============================================================
+
+function renderFreeplayBriefing() {
+    var battle = battles[gameState.currentBattle];
+    var battleNum = gameState.currentBattle + 1;
+
+    // Progress
+    document.getElementById('freeplayProgressLabel').textContent =
+        'Battle ' + battleNum + ' of ' + battles.length;
+    document.getElementById('freeplayProgressFill').style.width =
+        (battleNum / battles.length * 100) + '%';
+
+    // Stats
+    document.getElementById('statWins').textContent = gameState.wins;
+    document.getElementById('statLosses').textContent = gameState.losses;
+    document.getElementById('statMomentum').textContent =
+        (gameState.momentum >= 0 ? '+' : '') + gameState.momentum;
+    document.getElementById('statSoldiers').textContent =
+        gameState.soldiers.toLocaleString();
+
+    // Color-code momentum
+    var momentumEl = document.getElementById('statMomentum');
+    momentumEl.className = 'stat-value' +
+        (gameState.momentum > 0 ? ' positive' : gameState.momentum < 0 ? ' negative' : '');
+
+    // Header
+    document.getElementById('fpBattleName').textContent = battle.name;
+    document.getElementById('fpBattleDate').textContent = battle.date;
+    document.getElementById('fpBattleLocation').textContent = battle.location;
+
+    // Image
+    renderBattleImage(document.getElementById('fpBattleImage'), battle);
+
+    // Briefing
+    document.getElementById('fpBriefing').textContent = battle.freeplay.briefing;
+
+    // Strategies - single click to choose
+    var list = document.getElementById('strategyList');
+    list.innerHTML = '';
+
+    battle.freeplay.strategies.forEach(function(strategy, index) {
+        var card = document.createElement('div');
+        card.className = 'strategy-card';
+        card.setAttribute('role', 'button');
+        card.setAttribute('tabindex', '0');
+        card.setAttribute('aria-label', 'Choose strategy: ' + strategy.name);
+
+        card.innerHTML =
+            '<div class="strategy-name">' + strategy.name + '</div>' +
+            '<div class="strategy-description">' + strategy.description + '</div>' +
+            '<div class="strategy-detail">' + strategy.detail + '</div>';
+
+        card.addEventListener('click', function() {
+            selectStrategy(index);
+        });
+        card.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                selectStrategy(index);
             }
         });
 
-        choicesList.appendChild(choiceDiv);
+        list.appendChild(card);
     });
 
-    // Add instruction text
-    const instructionDiv = document.createElement('div');
-    instructionDiv.className = 'click-to-expand';
-    instructionDiv.innerHTML = '&#x1F4A1; <strong>How it works:</strong> First click = see details &bull; Second click = make decision';
-    choicesList.appendChild(instructionDiv);
-
-    hideAllScreens();
-    elements.battleBriefing.style.display = 'block';
-    updateGameDisplay();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    updateVocabularyDisplay();
+    showScreen('freeplayBriefing');
+    showGameActions(true);
+    showCampaignLogBtn(true);
 }
 
-// Process player's strategy decision
-function makeDecision(strategyIndex) {
-    const { result, strategy } = processDecision(strategyIndex);
-    showBattleResults(result, strategy);
+function selectStrategy(index) {
+    // Confirm before committing
+    var battle = battles[gameState.currentBattle];
+    var strategy = battle.freeplay.strategies[index];
+
+    // Highlight selected card
+    var cards = document.querySelectorAll('.strategy-card');
+    cards.forEach(function(c, i) {
+        if (i === index) {
+            c.classList.add('selected');
+        } else {
+            c.classList.add('dimmed');
+        }
+        // Disable further clicks
+        c.style.pointerEvents = 'none';
+    });
+
+    // Brief delay for visual feedback, then resolve
+    setTimeout(function() {
+        var result = resolveBattle(index);
+        renderFreeplayResults(result);
+    }, 400);
 }
 
-// Display battle results
-function showBattleResults(result, strategy) {
-    const battle = battles[gameState.currentBattle];
+function renderFreeplayResults(result) {
+    // Banner
+    var banner = document.getElementById('resultBanner');
+    banner.className = result.won ? 'result-banner victory' : 'result-banner defeat';
+    document.getElementById('resultTitle').textContent = result.won ? 'VICTORY!' : 'DEFEAT';
 
-    // Set outcome
-    const outcomeEl = document.getElementById('battleOutcome');
-    outcomeEl.textContent = result.win ? 'VICTORY!' : 'DEFEAT';
-    outcomeEl.className = result.win ? 'battle-outcome battle-victory' : 'battle-outcome battle-defeat';
+    // Outcome text
+    document.getElementById('resultOutcome').textContent = result.outcomeText;
 
-    // Set results summary
-    document.getElementById('resultIcon').textContent = result.win ? '\u{1F3C6}' : '\u{1F480}';
-    document.getElementById('resultText').textContent = result.win ?
-        'Your strategy succeeded!' : 'Your strategy was defeated.';
+    // Stats
+    document.getElementById('resultCasualties').textContent =
+        result.casualties.toLocaleString() + ' lost';
+    document.getElementById('resultScore').textContent =
+        gameState.score.toLocaleString() + ' total';
+    document.getElementById('resultMomentum').textContent =
+        (result.momentumChange >= 0 ? '+' : '') + result.momentumChange;
+    document.getElementById('resultArmy').textContent =
+        gameState.soldiers.toLocaleString() + ' remain';
 
-    document.getElementById('casualtiesSummary').textContent = `${result.soldierLoss.toLocaleString()} lost`;
-    document.getElementById('scoreSummary').textContent = `+${result.scoreGain} points`;
-    document.getElementById('armySummary').textContent = `${gameState.soldiers.toLocaleString()} remain`;
+    // Color the momentum change
+    var momentumEl = document.getElementById('resultMomentum');
+    momentumEl.className = 'result-stat-value' +
+        (result.momentumChange > 0 ? ' positive' : ' negative');
 
-    // Create detailed explanation
-    const sideResult = gameState.side === 'union' ?
-        (result.win ? 'union_victory' : 'union_loss') :
-        (result.win ? 'confederacy_victory' : 'confederacy_defeat');
+    // Momentum meter - map momentum to percentage (center = 0, range -25 to +25)
+    var markerPos = Math.min(Math.max((gameState.momentum + 25) / 50 * 100, 2), 98);
+    document.getElementById('momentumMarker').style.left = markerPos + '%';
 
-    const outcomeHighlight = result.win ?
-        '<span class="outcome-highlight victory-highlight">\u{1F389} YOU WON THIS BATTLE! \u{1F389}</span>' :
-        '<span class="outcome-highlight defeat-highlight">\u{1F494} You lost this battle \u{1F494}</span>';
+    // Button text
+    var isLast = gameState.currentBattle >= battles.length - 1;
+    document.getElementById('nextBattleBtn').textContent =
+        isLast ? 'View Final Results' : 'Continue to Next Battle';
 
-    document.getElementById('explanationText').innerHTML = `
-        <div style="text-align: center; margin-bottom: 20px;">
-            ${outcomeHighlight}
-        </div>
-        <p><strong>Your Strategy:</strong> ${strategy.name}</p>
-        <p><strong>What Happened:</strong> ${battle.results[sideResult] || 'The battle outcome was determined by your strategic choice.'}</p>
-        <p style="margin-top: 15px;"><strong>Why this happened:</strong> ${strategy.explanation.replace(/<[^>]*>/g, '')}</p>
-    `;
+    showScreen('freeplayResults');
+}
 
-    document.getElementById('historicalNote').textContent = battle.historical_notes.general;
+function proceedFromResults() {
+    var advancement = advanceFreeplay();
 
-    // Historical Mode - show what really happened
-    const comparison = getHistoricalComparison(gameState.currentBattle, result.win);
-    const historicalSection = document.getElementById('historicalComparison');
-    if (historicalSection) {
-        const winnerLabel = comparison.historicalWinner === 'union' ? 'Union victory' :
-                           comparison.historicalWinner === 'confederacy' ? 'Confederate victory' : 'Draw / Inconclusive';
-        const matchIcon = comparison.playerMatchedHistory ? '\u2705' : '\u{1F504}';
-        const matchText = comparison.playerMatchedHistory ?
-            'Your result matched what really happened!' :
-            'In real history, this battle went differently than your game.';
-
-        historicalSection.innerHTML = `
-            <div class="history-comparison-header">
-                <span class="history-icon">\u{1F4DC}</span> What Really Happened
-            </div>
-            <div class="history-comparison-body">
-                <div class="history-real-outcome">
-                    <strong>Real outcome:</strong> ${winnerLabel}
-                </div>
-                <p class="history-detail">${comparison.historicalOutcome}</p>
-                <div class="history-match ${comparison.playerMatchedHistory ? 'matched' : 'different'}">
-                    ${matchIcon} ${matchText}
-                </div>
-            </div>
-        `;
-        historicalSection.style.display = 'block';
-    }
-
-    // Update button text
-    if (gameState.currentBattle + 1 >= battles.length || gameState.soldiers <= 0) {
-        elements.continueBattleBtn.textContent = 'View Final Results';
+    if (advancement.ended) {
+        renderFreeplayEnd(advancement);
     } else {
-        elements.continueBattleBtn.textContent = 'Continue to Next Battle';
-    }
-
-    updateGameDisplay();
-
-    hideAllScreens();
-    elements.gameScreen.style.display = 'block';
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-// Continue to next battle or end game
-function continueToNextBattle() {
-    const gameOver = advanceToNextBattle();
-    if (gameOver) {
-        endGame();
-    } else {
-        showBattleBriefing();
+        renderFreeplayBriefing();
     }
 }
 
-// End the game and show summary
-function endGame() {
-    const victory = checkVictory();
-    showEndGameSummary(victory);
-}
+function renderFreeplayEnd(advancement) {
+    var result = getFreeplayResult();
 
-// Display end game summary
-function showEndGameSummary(victory) {
-    hideAllScreens();
+    // Override with early-end message if applicable
+    if (advancement && advancement.reason === 'momentum_victory') {
+        result.victory = true;
+        result.title = 'DECISIVE VICTORY!';
+        result.subtitle = advancement.message;
+    } else if (advancement && advancement.reason === 'momentum_defeat') {
+        result.victory = false;
+        result.title = 'DECISIVE DEFEAT';
+        result.subtitle = advancement.message;
+    }
 
-    const banner = document.getElementById('outcomeBanner');
-    banner.className = victory ? 'outcome-banner victory-banner' : 'outcome-banner defeat-banner';
+    var banner = document.getElementById('endBanner');
+    banner.className = result.victory ? 'outcome-banner victory-banner' : 'outcome-banner defeat-banner';
+    document.getElementById('endTitle').textContent = result.title;
+    document.getElementById('endSubtitle').textContent = result.subtitle;
 
-    document.getElementById('outcomeTitle').textContent = victory ? 'VICTORY!' : 'DEFEAT';
-    document.getElementById('outcomeSubtitle').textContent = victory ?
-        (gameState.side === 'union' ? 'The Union is Preserved' : 'Confederate Independence Achieved') :
-        (gameState.side === 'union' ? 'The Rebellion Continues' : 'The Confederacy Falls');
+    var startingSoldiers = gameState.side === 'union' ? 1500000 : 1000000;
+    var casualtyRate = Math.round(((startingSoldiers - gameState.soldiers) / startingSoldiers) * 100);
+    var sideLabel = gameState.side === 'union' ? 'Union' : 'Confederacy';
 
-    const startingSoldiers = getStartingSoldiers(gameState.side);
-    const casualtyRate = Math.round(((startingSoldiers - gameState.soldiers) / startingSoldiers) * 100);
+    document.getElementById('endContent').innerHTML =
+        '<div class="end-summary">' +
+        '<h3>Campaign Results</h3>' +
+        '<p>' + result.summary + '</p>' +
+        '<div class="final-stats">' +
+        '<div class="final-stat"><span class="final-stat-label">Side</span><span class="final-stat-value">' + sideLabel + '</span></div>' +
+        '<div class="final-stat"><span class="final-stat-label">Final Score</span><span class="final-stat-value">' + gameState.score.toLocaleString() + '</span></div>' +
+        '<div class="final-stat"><span class="final-stat-label">Record</span><span class="final-stat-value">' + gameState.wins + 'W - ' + gameState.losses + 'L</span></div>' +
+        '<div class="final-stat"><span class="final-stat-label">Final Momentum</span><span class="final-stat-value">' + (gameState.momentum >= 0 ? '+' : '') + gameState.momentum + '</span></div>' +
+        '<div class="final-stat"><span class="final-stat-label">Soldiers Lost</span><span class="final-stat-value">' + (startingSoldiers - gameState.soldiers).toLocaleString() + ' (' + casualtyRate + '%)</span></div>' +
+        '<div class="final-stat"><span class="final-stat-label">Battles Fought</span><span class="final-stat-value">' + gameState.battleHistory.length + '</span></div>' +
+        '</div>' +
+        '<h3>Battle History</h3>' +
+        '<div class="battle-history-list">' +
+        gameState.battleHistory.map(function(b) {
+            return '<div class="history-item ' + (b.won ? 'won' : 'lost') + '">' +
+                '<span class="history-icon">' + (b.won ? '&#x2705;' : '&#x274C;') + '</span>' +
+                '<span class="history-name">' + b.name + '</span>' +
+                '<span class="history-strategy">' + b.strategy + '</span>' +
+                '<span class="history-momentum">Momentum: ' + (b.momentumAfter >= 0 ? '+' : '') + b.momentumAfter + '</span>' +
+                '</div>';
+        }).join('') +
+        '</div>' +
+        '</div>';
 
-    document.getElementById('finalStatsText').innerHTML = `
-        <div style="text-align: left; max-width: 600px; margin: 0 auto;">
-            <h3 style="color: #ffd700; margin-bottom: 15px;">Your Performance:</h3>
-            <p><strong>Final Score:</strong> ${gameState.score.toLocaleString()} points</p>
-            <p><strong>Battles Won:</strong> ${gameState.wins} out of ${gameState.currentBattle} fought</p>
-            <p><strong>Soldiers Lost:</strong> ${(startingSoldiers - gameState.soldiers).toLocaleString()} (${casualtyRate}% casualty rate)</p>
-            <p><strong>Side:</strong> ${gameState.side === 'union' ? '\u{1F1FA}\u{1F1F8} Union' : '\u{1F3F4} Confederacy'}</p>
-
-            <h3 style="color: #ffd700; margin: 20px 0 10px 0;">What You Learned:</h3>
-            <p>You experienced the same difficult decisions that real Civil War commanders faced. Each battle presented unique challenges based on terrain, troop positions, and available resources.</p>
-
-            <p style="margin-top: 15px;">
-                ${victory ?
-                    'Congratulations! Your strategic decisions led to victory. In the real Civil War, these battles helped determine the future of the United States.' :
-                    'Although you didn\'t achieve victory, you learned about the challenges of Civil War command. Every battle taught lessons that real generals had to learn the hard way.'
-                }
-            </p>
-
-            <h3 style="color: #ffd700; margin: 20px 0 10px 0;">Battle Summary:</h3>
-            <div style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 8px;">
-                ${gameState.battleHistory.map(battle =>
-                    `<div style="margin: 5px 0; padding: 5px; border-left: 3px solid ${battle.result === 'Victory' ? '#10b981' : '#dc2626'};">
-                        <strong>${battle.name}:</strong> ${battle.result === 'Victory' ? '\u2705' : '\u274C'} ${battle.result}
-                        (${battle.strategy}, ${battle.casualties.toLocaleString()} casualties)
-                    </div>`
-                ).join('')}
-            </div>
-        </div>
-    `;
-
-    // Render scoreboard section
+    // Show scoreboard
+    var scoreboardSection = document.getElementById('scoreboardSection');
+    scoreboardSection.style.display = 'block';
     renderScoreboardSection();
 
-    elements.endGameSummary.style.display = 'block';
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    showScreen('endGameScreen');
+    showGameActions(false);
+    showCampaignLogBtn(false);
 }
 
+// ============================================================
 // Scoreboard UI
+// ============================================================
+
 function renderScoreboardSection() {
-    const container = document.getElementById('scoreboardSection');
+    var container = document.getElementById('scoreboardSection');
     if (!container) return;
 
-    const scoreboard = getScoreboard();
+    var scoreboard = getScoreboard();
 
-    container.innerHTML = `
-        <div class="scoreboard-entry-form" id="scoreEntryForm">
-            <h3 class="scoreboard-form-title">\u{1F3C6} Add Your Score to the Leaderboard</h3>
-            <div class="scoreboard-input-row">
-                <input type="text" id="playerNameInput" class="player-name-input"
-                       placeholder="Enter your name (e.g. first name + last initial)"
-                       maxlength="20" aria-label="Your name for the scoreboard">
-                <button class="save-score-btn" id="saveScoreBtn">Save Score</button>
-            </div>
-        </div>
-        <div class="scoreboard-table-wrapper">
-            <h3 class="scoreboard-title">\u{1F4CA} Class Leaderboard</h3>
-            ${renderScoreboardTable(scoreboard)}
-            ${scoreboard.length > 0 ? '<button class="clear-scores-btn" id="clearScoresBtn">Clear All Scores</button>' : ''}
-        </div>
-    `;
+    container.innerHTML =
+        '<div class="scoreboard-entry-form" id="scoreEntryForm">' +
+        '<h3 class="scoreboard-form-title">&#x1F3C6; Add Your Score to the Leaderboard</h3>' +
+        '<div class="scoreboard-input-row">' +
+        '<input type="text" id="playerNameInput" class="player-name-input" ' +
+        'placeholder="Enter your name (e.g. first name + last initial)" ' +
+        'maxlength="20" aria-label="Your name for the scoreboard">' +
+        '<button class="save-score-btn" id="saveScoreBtn">Save Score</button>' +
+        '</div></div>' +
+        '<div class="scoreboard-table-wrapper">' +
+        '<h3 class="scoreboard-title">&#x1F4CA; Class Leaderboard</h3>' +
+        renderScoreboardTable(scoreboard) +
+        (scoreboard.length > 0 ? '<button class="clear-scores-btn" id="clearScoresBtn">Clear All Scores</button>' : '') +
+        '</div>';
 
-    // Wire up save button
-    const saveBtn = document.getElementById('saveScoreBtn');
-    const nameInput = document.getElementById('playerNameInput');
+    wireUpScoreboardEvents();
+}
+
+function wireUpScoreboardEvents() {
+    var saveBtn = document.getElementById('saveScoreBtn');
+    var nameInput = document.getElementById('playerNameInput');
     if (saveBtn && nameInput) {
-        saveBtn.addEventListener('click', () => {
-            const name = nameInput.value.trim();
+        saveBtn.addEventListener('click', function() {
+            var name = nameInput.value.trim();
             if (!name) {
                 nameInput.focus();
                 nameInput.style.borderColor = '#dc2626';
                 return;
             }
-            const updated = saveToScoreboard(name);
-            // Hide form, refresh table
+            var updated = saveToScoreboard(name);
             document.getElementById('scoreEntryForm').innerHTML =
-                '<p class="score-saved-msg">\u2705 Score saved!</p>';
-            document.querySelector('.scoreboard-table-wrapper').innerHTML = `
-                <h3 class="scoreboard-title">\u{1F4CA} Class Leaderboard</h3>
-                ${renderScoreboardTable(updated)}
-                <button class="clear-scores-btn" id="clearScoresBtn">Clear All Scores</button>
-            `;
+                '<p class="score-saved-msg">&#x2705; Score saved!</p>';
+            document.querySelector('.scoreboard-table-wrapper').innerHTML =
+                '<h3 class="scoreboard-title">&#x1F4CA; Class Leaderboard</h3>' +
+                renderScoreboardTable(updated) +
+                '<button class="clear-scores-btn" id="clearScoresBtn">Clear All Scores</button>';
             wireUpClearButton();
         });
 
-        nameInput.addEventListener('keydown', (e) => {
+        nameInput.addEventListener('keydown', function(e) {
             if (e.key === 'Enter') saveBtn.click();
             nameInput.style.borderColor = '';
         });
@@ -450,15 +522,14 @@ function renderScoreboardSection() {
 }
 
 function wireUpClearButton() {
-    const clearBtn = document.getElementById('clearScoresBtn');
+    var clearBtn = document.getElementById('clearScoresBtn');
     if (clearBtn) {
-        clearBtn.addEventListener('click', () => {
+        clearBtn.addEventListener('click', function() {
             if (confirm('Clear all scores from the leaderboard?')) {
                 clearScoreboard();
-                document.querySelector('.scoreboard-table-wrapper').innerHTML = `
-                    <h3 class="scoreboard-title">\u{1F4CA} Class Leaderboard</h3>
-                    ${renderScoreboardTable([])}
-                `;
+                document.querySelector('.scoreboard-table-wrapper').innerHTML =
+                    '<h3 class="scoreboard-title">&#x1F4CA; Class Leaderboard</h3>' +
+                    renderScoreboardTable([]);
             }
         });
     }
@@ -469,271 +540,73 @@ function renderScoreboardTable(scoreboard) {
         return '<p class="scoreboard-empty">No scores yet. Be the first to play!</p>';
     }
 
-    const rows = scoreboard.map((entry, i) => {
-        const medal = i === 0 ? '\u{1F947}' : i === 1 ? '\u{1F948}' : i === 2 ? '\u{1F949}' : (i + 1);
-        const sideIcon = entry.side === 'union' ? '\u{1F1FA}\u{1F1F8}' : '\u{1F3F4}';
-        const victoryIcon = entry.victory ? '\u2705' : '\u274C';
-        return `
-            <tr class="scoreboard-row ${i < 3 ? 'top-three' : ''}">
-                <td class="rank-cell">${medal}</td>
-                <td class="name-cell">${escapeHtml(entry.name)}</td>
-                <td class="score-cell">${entry.score.toLocaleString()}</td>
-                <td class="side-cell">${sideIcon}</td>
-                <td class="record-cell">${entry.wins}W-${entry.losses}L</td>
-                <td class="victory-cell">${victoryIcon}</td>
-            </tr>
-        `;
+    var rows = scoreboard.map(function(entry, i) {
+        var medal = i === 0 ? '&#x1F947;' : i === 1 ? '&#x1F948;' : i === 2 ? '&#x1F949;' : (i + 1);
+        var sideIcon = entry.side === 'union' ? '&#x1F1FA;&#x1F1F8;' : '&#x1F3F4;';
+        var victoryIcon = entry.victory ? '&#x2705;' : '&#x274C;';
+        return '<tr class="scoreboard-row' + (i < 3 ? ' top-three' : '') + '">' +
+            '<td class="rank-cell">' + medal + '</td>' +
+            '<td class="name-cell">' + escapeHtml(entry.name) + '</td>' +
+            '<td class="score-cell">' + entry.score.toLocaleString() + '</td>' +
+            '<td class="side-cell">' + sideIcon + '</td>' +
+            '<td class="record-cell">' + entry.wins + 'W-' + entry.losses + 'L</td>' +
+            '<td class="victory-cell">' + victoryIcon + '</td>' +
+            '</tr>';
     }).join('');
 
-    return `
-        <table class="scoreboard-table">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Name</th>
-                    <th>Score</th>
-                    <th>Side</th>
-                    <th>Record</th>
-                    <th>Won?</th>
-                </tr>
-            </thead>
-            <tbody>${rows}</tbody>
-        </table>
-    `;
+    return '<table class="scoreboard-table"><thead><tr>' +
+        '<th>#</th><th>Name</th><th>Score</th><th>Side</th><th>Record</th><th>Won?</th>' +
+        '</tr></thead><tbody>' + rows + '</tbody></table>';
 }
 
 function escapeHtml(text) {
-    const div = document.createElement('div');
+    var div = document.createElement('div');
     div.textContent = text;
     return div.innerHTML;
 }
 
-// Update game display stats
-function updateGameDisplay() {
-    const scoreEl = document.getElementById('score');
-    const soldiersEl = document.getElementById('soldiers');
-    const winsEl = document.getElementById('wins');
-    const battleNumberEl = document.getElementById('battleNumber');
+// ============================================================
+// Campaign Log Modal
+// ============================================================
 
-    if (scoreEl) scoreEl.textContent = gameState.score.toLocaleString();
-    if (soldiersEl) soldiersEl.textContent = gameState.soldiers.toLocaleString();
-    if (winsEl) winsEl.textContent = gameState.wins;
-    if (battleNumberEl) battleNumberEl.textContent = gameState.currentBattle + 1;
-
-    // Show/hide navbar stats during gameplay
-    const isInGame = gameState.currentBattle > 0 || gameState.side;
-    if (isInGame) {
-        if (elements.campaignLogNavBtn) elements.campaignLogNavBtn.style.display = 'block';
-        const gameActionsSection = document.getElementById('gameActionsSection');
-        const gameActionsDiv = document.getElementById('gameActionsDiv');
-        if (gameActionsSection) gameActionsSection.style.display = 'block';
-        if (gameActionsDiv) gameActionsDiv.style.display = 'block';
-    } else {
-        if (elements.campaignLogNavBtn) elements.campaignLogNavBtn.style.display = 'none';
-        const gameActionsSection = document.getElementById('gameActionsSection');
-        const gameActionsDiv = document.getElementById('gameActionsDiv');
-        if (gameActionsSection) gameActionsSection.style.display = 'none';
-        if (gameActionsDiv) gameActionsDiv.style.display = 'none';
-    }
-}
-
-// Visual mode toggles
-function toggleVisualMode(mode) {
-    const photoToggle = elements.photoToggle;
-    const mapToggle = elements.mapToggle;
-    const briefingImage = elements.briefingImage;
-    const briefingMap = elements.briefingMap;
-
-    if (mode === 'photo') {
-        photoToggle.classList.add('active');
-        mapToggle.classList.remove('active');
-        briefingImage.style.display = 'flex';
-        briefingMap.style.display = 'none';
-    } else if (mode === 'map') {
-        photoToggle.classList.remove('active');
-        mapToggle.classList.add('active');
-        briefingImage.style.display = 'none';
-        briefingMap.style.display = 'flex';
-    }
-}
-
-function toggleVisualModeWithAnimation(mode) {
-    const photoToggle = elements.photoToggle;
-    const mapToggle = elements.mapToggle;
-    const briefingImage = elements.briefingImage;
-    const briefingMap = elements.briefingMap;
-
-    if (mode === 'photo') {
-        photoToggle.classList.add('active');
-        mapToggle.classList.remove('active');
-        briefingMap.style.display = 'none';
-        briefingImage.style.display = 'flex';
-        briefingImage.classList.add('animate-scale-in');
-    } else if (mode === 'map') {
-        photoToggle.classList.remove('active');
-        mapToggle.classList.add('active');
-        briefingImage.style.display = 'none';
-        briefingMap.style.display = 'flex';
-        briefingMap.classList.add('animate-scale-in');
-    }
-
-    // Clean up animation classes
-    setTimeout(() => {
-        briefingImage.classList.remove('animate-scale-in');
-        briefingMap.classList.remove('animate-scale-in');
-    }, 500);
-}
-
-// Screen transitions with animation
-function showScreenWithAnimation(screenElement, animationType) {
-    animationType = animationType || 'fadeIn';
-    if (!screenElement) return;
-
-    hideAllScreens();
-    screenElement.style.display = 'block';
-    screenElement.classList.add('animate-' + animationType);
-
-    const animatableElements = screenElement.querySelectorAll('.side-card, .choice-option, .summary-stat, .timeline-item');
-    animatableElements.forEach((el, index) => {
-        el.style.animationDelay = (index * 0.1) + 's';
-        el.classList.add('animate-slide-in-left');
-    });
-
-    setTimeout(() => {
-        screenElement.classList.remove('animate-' + animationType);
-        animatableElements.forEach(el => {
-            el.classList.remove('animate-slide-in-left');
-            el.style.animationDelay = '';
-        });
-    }, 800);
-}
-
-// Focus trap for modal accessibility
-function trapFocus(modal) {
-    const focusableElements = modal.querySelectorAll(
-        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-    );
-    const firstFocusable = focusableElements[0];
-    const lastFocusable = focusableElements[focusableElements.length - 1];
-
-    modal.addEventListener('keydown', function(e) {
-        if (e.key === 'Tab') {
-            if (e.shiftKey) {
-                if (document.activeElement === firstFocusable) {
-                    lastFocusable.focus();
-                    e.preventDefault();
-                }
-            } else {
-                if (document.activeElement === lastFocusable) {
-                    firstFocusable.focus();
-                    e.preventDefault();
-                }
-            }
-        }
-    });
-
-    if (firstFocusable) firstFocusable.focus();
-}
-
-// Campaign log
 function showCampaignLog() {
-    updateCampaignLog();
-    elements.campaignLogModal.style.display = 'block';
+    document.getElementById('logBattlesFought').textContent = gameState.battleHistory.length;
+    document.getElementById('logWins').textContent = gameState.wins;
+    document.getElementById('logScore').textContent = gameState.score.toLocaleString();
+    document.getElementById('logMomentum').textContent =
+        (gameState.momentum >= 0 ? '+' : '') + gameState.momentum;
 
-    setTimeout(() => {
-        trapFocus(elements.campaignLogModal);
-    }, 100);
+    var timeline = document.getElementById('logTimeline');
+    if (gameState.battleHistory.length === 0) {
+        timeline.innerHTML = '<p style="text-align:center;color:#888;padding:20px;">No battles fought yet.</p>';
+    } else {
+        timeline.innerHTML = gameState.battleHistory.map(function(b) {
+            return '<div class="timeline-item ' + (b.won ? 'victory' : 'defeat') + '">' +
+                '<div class="timeline-battle">Battle ' + (b.battleIndex + 1) + ': ' + b.name + '</div>' +
+                '<div class="timeline-details">' +
+                'Strategy: ' + b.strategy + '<br>' +
+                'Result: ' + (b.won ? '&#x2705; Victory' : '&#x274C; Defeat') + '<br>' +
+                'Casualties: ' + b.casualties.toLocaleString() + '<br>' +
+                'Momentum: ' + (b.momentumAfter >= 0 ? '+' : '') + b.momentumAfter +
+                '</div></div>';
+        }).join('');
+    }
+
+    screens.campaignLogModal.style.display = 'block';
 }
 
 function closeCampaignLog() {
-    elements.campaignLogModal.style.display = 'none';
+    screens.campaignLogModal.style.display = 'none';
 }
 
-function closeBattleResultsModal() {
-    elements.battleResultsModal.style.display = 'none';
-    elements.battleResultsModal.classList.remove('show');
-}
+// ============================================================
+// Settings Menu
+// ============================================================
 
-function updateCampaignLog() {
-    document.getElementById('battlesCompleted').textContent = gameState.battleHistory.length;
-    document.getElementById('winsCount').textContent = gameState.wins;
-    document.getElementById('currentScore').textContent = gameState.score.toLocaleString();
-
-    const requiredWins = getRequiredWins(gameState.side);
-    const progressPercent = Math.min((gameState.wins / requiredWins) * 100, 100);
-    document.getElementById('victoryFill').style.width = progressPercent + '%';
-    document.getElementById('victoryText').textContent = `${gameState.wins} of ${requiredWins} wins needed`;
-
-    const timelineContainer = document.getElementById('timelineContainer');
-    timelineContainer.innerHTML = '';
-
-    if (gameState.battleHistory.length === 0) {
-        timelineContainer.innerHTML = '<p style="text-align: center; color: #888; padding: 20px;">No battles fought yet.</p>';
-    } else {
-        gameState.battleHistory.forEach(battle => {
-            const timelineItem = document.createElement('div');
-            timelineItem.className = 'timeline-item ' + battle.result.toLowerCase();
-            timelineItem.innerHTML = `
-                <div class="timeline-battle">Battle ${battle.battleNumber}: ${battle.name}</div>
-                <div class="timeline-details">
-                    Strategy: ${battle.strategy}<br>
-                    Result: ${battle.result === 'Victory' ? '\u2705' : '\u274C'} ${battle.result}<br>
-                    Casualties: ${battle.casualties.toLocaleString()} soldiers
-                </div>
-            `;
-            timelineContainer.appendChild(timelineItem);
-        });
-    }
-
-    updateStrategyAnalysis();
-}
-
-function updateStrategyAnalysis() {
-    const strategyStats = document.getElementById('strategyStats');
-
-    if (gameState.battleHistory.length === 0) {
-        strategyStats.innerHTML = '<p style="text-align: center; color: #888;">Strategy analysis will appear after battles.</p>';
-        return;
-    }
-
-    const strategies = {
-        aggressive: { count: 0, wins: 0 },
-        defensive: { count: 0, wins: 0 },
-        tactical: { count: 0, wins: 0 }
-    };
-
-    gameState.battleHistory.forEach(battle => {
-        const strategyType = categorizeStrategy(battle.strategy);
-        strategies[strategyType].count++;
-        if (battle.result === 'Victory') {
-            strategies[strategyType].wins++;
-        }
-    });
-
-    strategyStats.innerHTML = `
-        <div class="strategy-type">
-            <div class="strategy-name">Aggressive</div>
-            <div class="strategy-count" style="color: #dc2626;">${strategies.aggressive.count}</div>
-            <div class="strategy-success">${strategies.aggressive.count > 0 ? Math.round((strategies.aggressive.wins / strategies.aggressive.count) * 100) : 0}% success rate</div>
-        </div>
-        <div class="strategy-type">
-            <div class="strategy-name">Defensive</div>
-            <div class="strategy-count" style="color: #3b82f6;">${strategies.defensive.count}</div>
-            <div class="strategy-success">${strategies.defensive.count > 0 ? Math.round((strategies.defensive.wins / strategies.defensive.count) * 100) : 0}% success rate</div>
-        </div>
-        <div class="strategy-type">
-            <div class="strategy-name">Tactical</div>
-            <div class="strategy-count" style="color: #7c3aed;">${strategies.tactical.count}</div>
-            <div class="strategy-success">${strategies.tactical.count > 0 ? Math.round((strategies.tactical.wins / strategies.tactical.count) * 100) : 0}% success rate</div>
-        </div>
-    `;
-}
-
-// Settings menu toggle
 function toggleSettingsMenu() {
-    const menu = elements.settingsMenu;
-    const btn = elements.settingsBtn;
-    const isOpen = menu.classList.contains('show');
+    var menu = document.getElementById('settingsMenu');
+    var btn = document.getElementById('settingsBtn');
+    var isOpen = menu.classList.contains('show');
 
     if (isOpen) {
         menu.classList.remove('show');
@@ -744,86 +617,25 @@ function toggleSettingsMenu() {
     }
 }
 
-// Vocabulary help
-function toggleVocabularyHelp() {
-    settings.vocabHelp = !settings.vocabHelp;
+// ============================================================
+// Credits Toggle
+// ============================================================
 
-    const vocabStatus = document.getElementById('vocabStatus');
-    if (vocabStatus) {
-        vocabStatus.textContent = settings.vocabHelp ? 'ON' : 'OFF';
-        vocabStatus.classList.toggle('active', settings.vocabHelp);
-    }
+function setupCreditsToggle() {
+    var toggle = document.getElementById('creditsToggle');
+    var content = document.getElementById('creditsContent');
+    if (!toggle || !content) return;
 
-    if (elements.vocabToggleNav) {
-        elements.vocabToggleNav.setAttribute('aria-pressed', settings.vocabHelp.toString());
-        elements.vocabToggleNav.style.background = settings.vocabHelp ? 'var(--color-primary-alpha)' : '';
-    }
-
-    const sidebar = document.getElementById('vocabSidebar');
-    const overlay = document.getElementById('vocabOverlay');
-
-    if (sidebar) {
-        if (settings.vocabHelp) {
-            document.body.classList.add('vocab-open');
-            sidebar.style.display = 'block';
-            sidebar.classList.add('show');
-
-            if (overlay) {
-                overlay.classList.add('show');
-            }
-
-            if (elements.settingsMenu) {
-                elements.settingsMenu.classList.remove('show');
-                elements.settingsBtn.setAttribute('aria-expanded', 'false');
-            }
+    toggle.addEventListener('click', function() {
+        var expanded = toggle.getAttribute('aria-expanded') === 'true';
+        toggle.setAttribute('aria-expanded', !expanded);
+        content.setAttribute('aria-hidden', expanded);
+        if (!expanded) {
+            content.classList.add('expanded');
+            toggle.querySelector('.credits-text').textContent = 'Hide Image Credits';
         } else {
-            document.body.classList.remove('vocab-open');
-            sidebar.classList.remove('show');
-
-            if (overlay) {
-                overlay.classList.remove('show');
-            }
-
-            setTimeout(() => {
-                if (!settings.vocabHelp) {
-                    sidebar.style.display = 'none';
-                }
-            }, 300);
-        }
-    }
-
-    updateVocabularyDisplay();
-}
-
-function updateVocabularyDisplay() {
-    const vocabTerms = document.querySelectorAll('.vocab-term');
-    vocabTerms.forEach(term => {
-        if (settings.vocabHelp) {
-            term.style.borderBottom = '2px dotted #ffd700';
-            term.style.cursor = 'help';
-        } else {
-            term.style.borderBottom = 'none';
-            term.style.cursor = 'inherit';
+            content.classList.remove('expanded');
+            toggle.querySelector('.credits-text').textContent = 'View Image Credits';
         }
     });
-}
-
-// Introduction screen
-function hideIntroduction() {
-    localStorage.setItem('civilWarIntroSeen', 'true');
-    document.getElementById('civilWarIntro').style.display = 'none';
-    document.querySelector('.sides-container').style.display = 'flex';
-    updateVocabularyDisplay();
-}
-
-// Reset game
-function resetGame() {
-    resetGameState();
-    showSideSelection();
-}
-
-// For testing - reset introduction flag
-function resetIntroduction() {
-    localStorage.removeItem('civilWarIntroSeen');
-    location.reload();
 }
