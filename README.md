@@ -73,11 +73,11 @@ The Union must win all 3 swing battles (choosing the right strategy). The Confed
 
 ## Development Roadmap
 
-### Phase 1: Core Improvements (Current)
+### Phase 1: Core Improvements (Complete)
 - [x] Separate monolithic HTML into modular files (CSS, JS data, game logic, UI)
 - [x] Fix `shouldEndGame()` off-by-one bug in remaining battles calculation
-- [ ] Add a persistent scoreboard using localStorage for classroom competition
-- [ ] Add a "Historical Mode" that reveals what actually happened after each choice
+- [x] Persistent class leaderboard using localStorage (enter name, save score, top 10 rankings)
+- [x] "What Really Happened" historical mode after each battle (compares your result to real history)
 
 ### Phase 2: Classroom Features
 - [ ] **Teacher Dashboard**: Simple page showing class-wide statistics (most popular strategies, average win rates per side)

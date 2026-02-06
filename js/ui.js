@@ -283,6 +283,34 @@ function showBattleResults(result, strategy) {
 
     document.getElementById('historicalNote').textContent = battle.historical_notes.general;
 
+    // Historical Mode - show what really happened
+    const comparison = getHistoricalComparison(gameState.currentBattle, result.win);
+    const historicalSection = document.getElementById('historicalComparison');
+    if (historicalSection) {
+        const winnerLabel = comparison.historicalWinner === 'union' ? 'Union victory' :
+                           comparison.historicalWinner === 'confederacy' ? 'Confederate victory' : 'Draw / Inconclusive';
+        const matchIcon = comparison.playerMatchedHistory ? '\u2705' : '\u{1F504}';
+        const matchText = comparison.playerMatchedHistory ?
+            'Your result matched what really happened!' :
+            'In real history, this battle went differently than your game.';
+
+        historicalSection.innerHTML = `
+            <div class="history-comparison-header">
+                <span class="history-icon">\u{1F4DC}</span> What Really Happened
+            </div>
+            <div class="history-comparison-body">
+                <div class="history-real-outcome">
+                    <strong>Real outcome:</strong> ${winnerLabel}
+                </div>
+                <p class="history-detail">${comparison.historicalOutcome}</p>
+                <div class="history-match ${comparison.playerMatchedHistory ? 'matched' : 'different'}">
+                    ${matchIcon} ${matchText}
+                </div>
+            </div>
+        `;
+        historicalSection.style.display = 'block';
+    }
+
     // Update button text
     if (gameState.currentBattle + 1 >= battles.length || gameState.soldiers <= 0) {
         elements.continueBattleBtn.textContent = 'View Final Results';
@@ -358,8 +386,126 @@ function showEndGameSummary(victory) {
         </div>
     `;
 
+    // Render scoreboard section
+    renderScoreboardSection();
+
     elements.endGameSummary.style.display = 'block';
     window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// Scoreboard UI
+function renderScoreboardSection() {
+    const container = document.getElementById('scoreboardSection');
+    if (!container) return;
+
+    const scoreboard = getScoreboard();
+
+    container.innerHTML = `
+        <div class="scoreboard-entry-form" id="scoreEntryForm">
+            <h3 class="scoreboard-form-title">\u{1F3C6} Add Your Score to the Leaderboard</h3>
+            <div class="scoreboard-input-row">
+                <input type="text" id="playerNameInput" class="player-name-input"
+                       placeholder="Enter your name (e.g. first name + last initial)"
+                       maxlength="20" aria-label="Your name for the scoreboard">
+                <button class="save-score-btn" id="saveScoreBtn">Save Score</button>
+            </div>
+        </div>
+        <div class="scoreboard-table-wrapper">
+            <h3 class="scoreboard-title">\u{1F4CA} Class Leaderboard</h3>
+            ${renderScoreboardTable(scoreboard)}
+            ${scoreboard.length > 0 ? '<button class="clear-scores-btn" id="clearScoresBtn">Clear All Scores</button>' : ''}
+        </div>
+    `;
+
+    // Wire up save button
+    const saveBtn = document.getElementById('saveScoreBtn');
+    const nameInput = document.getElementById('playerNameInput');
+    if (saveBtn && nameInput) {
+        saveBtn.addEventListener('click', () => {
+            const name = nameInput.value.trim();
+            if (!name) {
+                nameInput.focus();
+                nameInput.style.borderColor = '#dc2626';
+                return;
+            }
+            const updated = saveToScoreboard(name);
+            // Hide form, refresh table
+            document.getElementById('scoreEntryForm').innerHTML =
+                '<p class="score-saved-msg">\u2705 Score saved!</p>';
+            document.querySelector('.scoreboard-table-wrapper').innerHTML = `
+                <h3 class="scoreboard-title">\u{1F4CA} Class Leaderboard</h3>
+                ${renderScoreboardTable(updated)}
+                <button class="clear-scores-btn" id="clearScoresBtn">Clear All Scores</button>
+            `;
+            wireUpClearButton();
+        });
+
+        nameInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') saveBtn.click();
+            nameInput.style.borderColor = '';
+        });
+    }
+
+    wireUpClearButton();
+}
+
+function wireUpClearButton() {
+    const clearBtn = document.getElementById('clearScoresBtn');
+    if (clearBtn) {
+        clearBtn.addEventListener('click', () => {
+            if (confirm('Clear all scores from the leaderboard?')) {
+                clearScoreboard();
+                document.querySelector('.scoreboard-table-wrapper').innerHTML = `
+                    <h3 class="scoreboard-title">\u{1F4CA} Class Leaderboard</h3>
+                    ${renderScoreboardTable([])}
+                `;
+            }
+        });
+    }
+}
+
+function renderScoreboardTable(scoreboard) {
+    if (scoreboard.length === 0) {
+        return '<p class="scoreboard-empty">No scores yet. Be the first to play!</p>';
+    }
+
+    const rows = scoreboard.map((entry, i) => {
+        const medal = i === 0 ? '\u{1F947}' : i === 1 ? '\u{1F948}' : i === 2 ? '\u{1F949}' : (i + 1);
+        const sideIcon = entry.side === 'union' ? '\u{1F1FA}\u{1F1F8}' : '\u{1F3F4}';
+        const victoryIcon = entry.victory ? '\u2705' : '\u274C';
+        return `
+            <tr class="scoreboard-row ${i < 3 ? 'top-three' : ''}">
+                <td class="rank-cell">${medal}</td>
+                <td class="name-cell">${escapeHtml(entry.name)}</td>
+                <td class="score-cell">${entry.score.toLocaleString()}</td>
+                <td class="side-cell">${sideIcon}</td>
+                <td class="record-cell">${entry.wins}W-${entry.losses}L</td>
+                <td class="victory-cell">${victoryIcon}</td>
+            </tr>
+        `;
+    }).join('');
+
+    return `
+        <table class="scoreboard-table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Score</th>
+                    <th>Side</th>
+                    <th>Record</th>
+                    <th>Won?</th>
+                </tr>
+            </thead>
+            <tbody>${rows}</tbody>
+        </table>
+    `;
+}
+
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
 }
 
 // Update game display stats

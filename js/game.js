@@ -132,6 +132,89 @@ function categorizeStrategy(strategyName) {
     return 'tactical';
 }
 
+// Scoreboard - persistent high scores using localStorage
+const SCOREBOARD_KEY = 'civilWarScoreboard';
+const MAX_SCOREBOARD_ENTRIES = 10;
+
+function getScoreboard() {
+    try {
+        const data = localStorage.getItem(SCOREBOARD_KEY);
+        return data ? JSON.parse(data) : [];
+    } catch (e) {
+        return [];
+    }
+}
+
+function saveToScoreboard(playerName) {
+    const scoreboard = getScoreboard();
+    const startingSoldiers = getStartingSoldiers(gameState.side);
+
+    const entry = {
+        name: playerName,
+        score: gameState.score,
+        side: gameState.side,
+        wins: gameState.wins,
+        losses: gameState.losses,
+        battlesPlayed: gameState.battleHistory.length,
+        soldiersRemaining: gameState.soldiers,
+        casualtyRate: Math.round(((startingSoldiers - gameState.soldiers) / startingSoldiers) * 100),
+        victory: checkVictory(),
+        date: new Date().toLocaleDateString()
+    };
+
+    scoreboard.push(entry);
+
+    // Sort by score descending, then by fewer casualties
+    scoreboard.sort((a, b) => {
+        if (b.score !== a.score) return b.score - a.score;
+        return a.casualtyRate - b.casualtyRate;
+    });
+
+    // Keep only top entries
+    if (scoreboard.length > MAX_SCOREBOARD_ENTRIES) {
+        scoreboard.length = MAX_SCOREBOARD_ENTRIES;
+    }
+
+    try {
+        localStorage.setItem(SCOREBOARD_KEY, JSON.stringify(scoreboard));
+    } catch (e) {
+        // localStorage may be full or unavailable
+    }
+
+    return scoreboard;
+}
+
+function clearScoreboard() {
+    localStorage.removeItem(SCOREBOARD_KEY);
+}
+
+// Historical Mode - track whether the player's choice matched history
+function getHistoricalComparison(battleIndex, playerWon) {
+    const battle = battles[battleIndex];
+    const historicalWinner = battle.historicalWinner;
+
+    let playerMatchedHistory = false;
+
+    if (gameState.side === 'union') {
+        const unionWonHistorically = (historicalWinner === 'union');
+        playerMatchedHistory = (playerWon === unionWonHistorically);
+    } else {
+        const confWonHistorically = (historicalWinner === 'confederacy');
+        playerMatchedHistory = (playerWon === confWonHistorically);
+    }
+
+    // For draws, the player's outcome is always "different" from history
+    if (historicalWinner === 'draw') {
+        playerMatchedHistory = false;
+    }
+
+    return {
+        historicalWinner: historicalWinner,
+        historicalOutcome: battle.historicalOutcome,
+        playerMatchedHistory: playerMatchedHistory
+    };
+}
+
 // Performance utilities
 function debounce(func, wait) {
     let timeout;

@@ -1,5 +1,5 @@
 // Battle data for Civil War Battle Simulation
-// Each battle contains historical context, strategies, and outcomes for both sides
+// Each battle contains historical context, strategies, outcomes, and real historical results
 
 const battles = [
     {
@@ -41,6 +41,8 @@ const battles = [
             union_loss: "The Union army was defeated in their first major battle. Many soldiers panicked and ran back toward Washington D.C., mixing with the civilians who had come to watch. This showed both sides that the war would not be over quickly.",
             confederacy_victory: "The Confederate forces successfully defended Virginia and gained confidence that they could defeat the larger Union army. However, they were too disorganized to pursue the retreating Union forces back to Washington."
         },
+        historicalWinner: "confederacy",
+        historicalOutcome: "Confederate victory. The Union army was routed and fled back to Washington D.C. in panic alongside civilian spectators. Confederate General Thomas "Stonewall" Jackson earned his famous nickname by standing firm like a stone wall.",
         historical_notes: {
             general: "This battle convinced both North and South that the war would last longer than expected. It led to both sides recruiting larger, better-trained armies."
         }
@@ -84,6 +86,8 @@ const battles = [
             union_victory: "Despite being surprised, Union forces managed to hold their ground and eventually push back the Confederate attack when reinforcements arrived the next day.",
             confederacy_defeat: "The Confederate surprise attack initially succeeded, but they couldn't finish off Grant's army before Union reinforcements arrived, turning victory into defeat."
         },
+        historicalWinner: "union",
+        historicalOutcome: "Union strategic victory. Though caught off guard on the first day, Union forces under Grant counterattacked on day two and forced the Confederates to retreat. This was one of the first battles to show the terrible scale of Civil War casualties, with over 23,000 combined losses.",
         historical_notes: {
             general: "This battle showed the importance of communication and coordination. It also demonstrated that the war was becoming more deadly - over 23,000 total casualties shocked both sides."
         }
@@ -127,6 +131,8 @@ const battles = [
             union_victory: "The Union army successfully used their intelligence advantage to defeat Lee's invasion. The Confederate army was forced to retreat back to Virginia.",
             confederacy_defeat: "Despite fighting bravely, the Confederate army was outmaneuvered and forced to abandon their invasion of the North."
         },
+        historicalWinner: "draw",
+        historicalOutcome: "Tactical draw, strategic Union victory. It was the bloodiest single day in American history with over 22,000 casualties. Lee was forced to retreat to Virginia, and Lincoln used this as the moment to announce the Emancipation Proclamation, changing the war's purpose to include ending slavery.",
         historical_notes: {
             general: "This was the bloodiest single day in American military history, with over 22,000 casualties. The Union victory convinced European countries not to recognize the Confederacy."
         }
@@ -170,6 +176,8 @@ const battles = [
             union_victory: "The Union army successfully defended their positions over three days. The famous 'Pickett's Charge' on the final day was repulsed with heavy Confederate losses, forcing Lee to retreat back to Virginia.",
             confederacy_defeat: "Lee's invasion of the North failed. The Confederate army suffered over 25,000 casualties and was forced to retreat. This marked the beginning of the end for Confederate hopes of victory."
         },
+        historicalWinner: "union",
+        historicalOutcome: "Decisive Union victory. Pickett's Charge on Day 3 was a devastating Confederate defeat - nearly 6,000 soldiers fell in under an hour. Lee retreated to Virginia and never again had the strength to invade the North. This is widely considered the turning point of the war.",
         historical_notes: {
             general: "Gettysburg is often called the turning point of the Civil War. After this defeat, the Confederacy would mostly fight defensive battles. President Lincoln later gave his famous Gettysburg Address at the dedication of the battlefield cemetery."
         }
@@ -213,6 +221,8 @@ const battles = [
             union_loss: "The Union attacks failed with terrible losses. Wave after wave of brave soldiers fell before the Confederate defenses. Burnside was soon replaced as commander.",
             confederacy_victory: "Confederate forces held their strong defensive positions and inflicted heavy casualties on the attacking Union forces. The stone wall at Marye's Heights proved nearly impregnable."
         },
+        historicalWinner: "confederacy",
+        historicalOutcome: "Decisive Confederate victory. Union General Burnside ordered 14 doomed assaults across open ground against entrenched Confederate positions on Marye's Heights. The Union suffered over 12,000 casualties compared to about 5,000 Confederate. Burnside was removed from command shortly after.",
         historical_notes: {
             general: "This battle showed the deadly effectiveness of defensive positions in the Civil War. The improved weapons of the 1860s made frontal assaults extremely costly."
         }
@@ -256,6 +266,8 @@ const battles = [
             union_loss: "Jackson's surprise flank attack succeeded brilliantly, routing part of the Union army. However, Jackson was accidentally shot by his own men and died, a huge loss for the Confederacy.",
             confederacy_victory: "Lee and Jackson's bold plan worked perfectly, defeating a much larger enemy force. But the victory came at a terrible cost when Jackson was mortally wounded by friendly fire."
         },
+        historicalWinner: "confederacy",
+        historicalOutcome: "Confederate tactical victory, but at a devastating cost. Lee's brilliant flanking maneuver through the Wilderness caught the Union off guard. However, Stonewall Jackson was accidentally shot by his own troops and died days later - a loss the Confederacy never recovered from.",
         historical_notes: {
             general: "This battle is considered Lee's masterpiece of tactical brilliance. However, the death of Stonewall Jackson was a blow from which the Confederate army never recovered."
         }
@@ -299,6 +311,8 @@ const battles = [
             union_loss: "The Confederate breakthrough shattered part of the Union army, forcing them to retreat toward Chattanooga. Only General Thomas's heroic stand prevented complete disaster.",
             confederacy_victory: "Longstreet's corps smashed through the gap in Union lines, achieving one of the Confederacy's greatest tactical victories. However, they couldn't pursue effectively due to the difficult terrain."
         },
+        historicalWinner: "confederacy",
+        historicalOutcome: "Confederate victory. It was one of the few battles where the Confederacy had more troops. Union General Rosecrans retreated to Chattanooga, but General George Thomas earned the nickname "Rock of Chickamauga" for his stubborn defense that prevented total disaster.",
         historical_notes: {
             general: "This was one of the Confederacy's last major victories, but they failed to destroy the Union army completely. The Union retreat to Chattanooga led to a siege that would eventually favor the North."
         }
@@ -342,6 +356,8 @@ const battles = [
             union_victory: "Despite heavy losses, Grant achieved his goal of keeping Lee's army engaged. Unlike previous Union commanders, Grant continued south instead of retreating.",
             confederacy_defeat: "Lee fought brilliantly in familiar terrain, but couldn't stop Grant's relentless advance. For the first time, a Union commander wouldn't be stopped by tactical defeats."
         },
+        historicalWinner: "draw",
+        historicalOutcome: "Inconclusive tactically, but a strategic shift. Grant lost more men than Lee but refused to retreat - unlike every Union general before him. Instead, he moved south toward Spotsylvania. Grant's willingness to keep fighting despite losses signaled a new, relentless Union strategy.",
         historical_notes: {
             general: "This battle marked a new phase of the war. Grant's strategy of continuous fighting, regardless of individual battle outcomes, began the final grinding down of Confederate resistance."
         }
@@ -385,6 +401,8 @@ const battles = [
             union_victory: "Sherman's forces captured Atlanta after defeating Confederate attempts to stop them. The fall of this vital Confederate city was a huge blow to Southern morale.",
             confederacy_defeat: "Despite brave fighting, Confederate forces couldn't prevent the fall of Atlanta. The loss of this industrial center and railroad hub severely damaged the Confederate cause."
         },
+        historicalWinner: "union",
+        historicalOutcome: "Union victory. Confederate General John B. Hood launched a desperate attack that failed, losing over 8,000 men. Sherman eventually captured Atlanta on September 2, 1864. This victory boosted Northern morale and helped Lincoln win re-election, ensuring the war would continue until Union victory.",
         historical_notes: {
             general: "The Battle of Atlanta on July 22, 1864 was a major Union tactical victory, but the city didn't fall until September 2. Sherman's capture of Atlanta was crucial to Lincoln's re-election in 1864. His famous telegram 'Atlanta is ours, and fairly won' helped convince Northern voters that the war could be won."
         }
@@ -428,6 +446,8 @@ const battles = [
             union_victory: "Lee chose to surrender to prevent further bloodshed. Grant's generous terms allowed Confederate soldiers to keep their horses and personal weapons, helping begin the healing process.",
             confederacy_defeat: "The Army of Northern Virginia surrendered, effectively ending the Civil War. Lee's decision to surrender rather than fight a hopeless battle saved thousands of lives."
         },
+        historicalWinner: "union",
+        historicalOutcome: "The war ended. Lee surrendered his Army of Northern Virginia to Grant. Grant offered generous terms: Confederate soldiers could go home, keep their horses, and officers could keep their sidearms. When Union troops began celebrating, Grant silenced them, saying "The war is over. The rebels are our countrymen again."",
         historical_notes: {
             general: "Lee's surrender at Appomattox effectively ended the Civil War. Grant's generous terms and both commanders' dignified behavior helped set a tone for reunification rather than revenge."
         }
