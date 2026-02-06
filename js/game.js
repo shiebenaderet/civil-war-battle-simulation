@@ -1,170 +1,374 @@
 // Game state and core logic for Civil War Battle Simulation
+// Supports Historical Mode (guided narrative) and Free-play Mode (strategic choices)
 
+// ============================================================
 // Game State
+// ============================================================
+
 let gameState = {
-    side: null,
+    mode: null,           // 'historical' or 'freeplay'
+    side: null,           // 'union' or 'confederacy'
     currentBattle: 0,
+    // Free-play specific
     score: 0,
     soldiers: 0,
     wins: 0,
     losses: 0,
+    momentum: 0,
     battleHistory: []
 };
 
-// Settings
-let settings = {
-    vocabHelp: true
-};
+// ============================================================
+// Save / Load / Progress
+// ============================================================
 
-// Load asset manifest from embedded JSON
-function getAssetManifest() {
-    const manifestScript = document.getElementById('assetManifest');
-    if (manifestScript) {
-        return JSON.parse(manifestScript.textContent);
+const SAVE_KEY = 'civilWarSave';
+const HISTORICAL_COMPLETE_KEY = 'civilWarHistoricalComplete';
+const SCOREBOARD_KEY = 'civilWarScoreboard';
+const MAX_SCOREBOARD_ENTRIES = 10;
+
+function saveProgress() {
+    try {
+        localStorage.setItem(SAVE_KEY, JSON.stringify(gameState));
+    } catch (e) {
+        // localStorage may be full or unavailable
     }
-    return [];
 }
 
-// Initialize soldiers based on side choice
-function initializeArmy() {
-    gameState.soldiers = gameState.side === 'union' ? 1500000 : 1000000;
+function loadProgress() {
+    try {
+        const data = localStorage.getItem(SAVE_KEY);
+        return data ? JSON.parse(data) : null;
+    } catch (e) {
+        return null;
+    }
+}
+
+function clearSave() {
+    localStorage.removeItem(SAVE_KEY);
+}
+
+function isHistoricalComplete() {
+    try {
+        return localStorage.getItem(HISTORICAL_COMPLETE_KEY) === 'true';
+    } catch (e) {
+        return false;
+    }
+}
+
+function markHistoricalComplete() {
+    try {
+        localStorage.setItem(HISTORICAL_COMPLETE_KEY, 'true');
+    } catch (e) {
+        // ignore
+    }
+}
+
+// ============================================================
+// Initialization
+// ============================================================
+
+function initializeGame(mode, side) {
+    gameState.mode = mode;
+    gameState.side = side;
     gameState.currentBattle = 0;
-    gameState.score = 0;
-    gameState.wins = 0;
-    gameState.losses = 0;
-    gameState.battleHistory = [];
-}
 
-// Process a strategy decision and update game state
-function processDecision(strategyIndex) {
-    const battle = battles[gameState.currentBattle];
-    const strategy = battle.strategies[strategyIndex];
-    const result = strategy[gameState.side];
-
-    if (result.win) {
-        gameState.wins++;
-    } else {
-        gameState.losses++;
+    if (mode === 'freeplay') {
+        gameState.soldiers = side === 'union' ? 1500000 : 1000000;
+        gameState.score = 0;
+        gameState.wins = 0;
+        gameState.losses = 0;
+        gameState.momentum = 0;
+        gameState.battleHistory = [];
     }
 
-    gameState.soldiers -= result.soldierLoss;
-    gameState.soldiers = Math.max(0, gameState.soldiers);
-    gameState.score += result.scoreGain;
-
-    gameState.battleHistory.push({
-        battleNumber: gameState.currentBattle + 1,
-        name: battle.name,
-        strategy: strategy.name,
-        result: result.win ? 'Victory' : 'Defeat',
-        casualties: result.soldierLoss
-    });
-
-    return { result, strategy, battle };
+    saveProgress();
 }
 
-// Determine if the game should end
-function shouldEndGame() {
-    const requiredWins = gameState.side === 'union' ? 6 : 5;
-    const battlesRemaining = battles.length - gameState.currentBattle;
-
-    // End if we've won enough battles
-    if (gameState.wins >= requiredWins) return true;
-
-    // End if we can't possibly win even by winning all remaining battles
-    if (gameState.wins + battlesRemaining < requiredWins) return true;
-
-    // End if we've run out of soldiers
-    if (gameState.soldiers <= 0) return true;
-
-    return false;
-}
-
-// Advance to the next battle, returns true if game should end
-function advanceToNextBattle() {
-    gameState.currentBattle++;
-    return gameState.currentBattle >= battles.length || gameState.soldiers <= 0 || shouldEndGame();
-}
-
-// Check if the player achieved victory
-function checkVictory() {
-    const requiredWins = gameState.side === 'union' ? 6 : 5;
-    return gameState.wins >= requiredWins && gameState.soldiers > 0;
-}
-
-// Get starting soldier count for a side
-function getStartingSoldiers(side) {
-    return side === 'union' ? 1500000 : 1000000;
-}
-
-// Get required wins for a side
-function getRequiredWins(side) {
-    return side === 'union' ? 6 : 5;
-}
-
-// Reset game state
 function resetGameState() {
     gameState = {
+        mode: null,
         side: null,
         currentBattle: 0,
         score: 0,
         soldiers: 0,
         wins: 0,
         losses: 0,
+        momentum: 0,
         battleHistory: []
     };
+    clearSave();
 }
 
-// Categorize a strategy name into a type
-function categorizeStrategy(strategyName) {
-    const aggressiveStrategies = [
-        'Direct Attack', 'Immediate Counterattack', 'Coordinated Assault',
-        'Attack the Center', 'Direct Assault', 'Exploit the Gap',
-        'Push Through Despite Losses', 'Aggressive Field Battle', 'Fight to the End'
-    ];
-    const defensiveStrategies = [
-        'Defensive Position', 'Form Defensive Lines', 'Hold the High Ground',
-        'Artillery Bombardment First', 'Hold Defensive Positions', 'Steady Pressure',
-        'Defensive Stand', 'Wait for Better Terrain', 'Defend the City'
-    ];
-
-    if (aggressiveStrategies.includes(strategyName)) return 'aggressive';
-    if (defensiveStrategies.includes(strategyName)) return 'defensive';
-    return 'tactical';
+function restoreGameState(saved) {
+    gameState = saved;
 }
 
-// Performance utilities
-function debounce(func, wait) {
-    let timeout;
-    return function executedFunction(...args) {
-        const later = () => {
-            clearTimeout(timeout);
-            func(...args);
-        };
-        clearTimeout(timeout);
-        timeout = setTimeout(later, wait);
+// ============================================================
+// Historical Mode
+// ============================================================
+
+function getHistoricalBattle() {
+    return battles[gameState.currentBattle];
+}
+
+function getHistoricalContent() {
+    const battle = battles[gameState.currentBattle];
+    const side = gameState.side;
+    const sideData = battle.historical[side];
+
+    return {
+        name: battle.name,
+        date: battle.date,
+        year: battle.year,
+        location: battle.location,
+        image: battle.image,
+        imageCredit: battle.imageCredit,
+        overview: battle.historical.overview,
+        perspective: sideData.perspective,
+        experience: sideData.experience,
+        aftermath: sideData.aftermath,
+        winner: battle.historical.winner,
+        outcome: battle.historical.outcome,
+        casualties: battle.historical.casualties,
+        keyFact: battle.historical.keyFact,
+        battleNumber: gameState.currentBattle + 1,
+        totalBattles: battles.length
     };
 }
 
-function throttle(func, limit) {
-    let inThrottle;
-    return function() {
-        const args = arguments;
-        const context = this;
-        if (!inThrottle) {
-            func.apply(context, args);
-            inThrottle = true;
-            setTimeout(() => inThrottle = false, limit);
-        }
-    };
-}
+function advanceHistorical() {
+    gameState.currentBattle++;
+    saveProgress();
 
-function measurePerformance(name, fn) {
-    if ('performance' in window && 'mark' in performance) {
-        performance.mark(`${name}-start`);
-        const result = fn();
-        performance.mark(`${name}-end`);
-        performance.measure(name, `${name}-start`, `${name}-end`);
-        return result;
+    if (gameState.currentBattle >= battles.length) {
+        markHistoricalComplete();
+        clearSave();
+        return true; // done
     }
-    return fn();
+    return false;
+}
+
+// ============================================================
+// Free-play Mode - Momentum System
+// ============================================================
+
+// Determine if player wins a battle based on strategy + momentum
+function resolveBattle(strategyIndex) {
+    const battle = battles[gameState.currentBattle];
+    const strategy = battle.freeplay.strategies[strategyIndex];
+    const side = gameState.side;
+
+    const basePower = strategy.power[side];
+    const momentumBonus = Math.floor(gameState.momentum / 5);
+    const effectivePower = basePower + momentumBonus;
+    const won = effectivePower >= battle.freeplay.difficulty;
+
+    // Update state
+    const casualties = strategy.casualties[side];
+    gameState.soldiers -= casualties;
+    gameState.soldiers = Math.max(0, gameState.soldiers);
+
+    if (won) {
+        gameState.wins++;
+        gameState.momentum += battle.freeplay.momentumValue;
+        gameState.score += (basePower * 100) + (battle.freeplay.momentumValue * 50);
+    } else {
+        gameState.losses++;
+        gameState.momentum -= battle.freeplay.momentumValue;
+        gameState.score += Math.max(0, basePower * 25);
+    }
+
+    gameState.battleHistory.push({
+        battleIndex: gameState.currentBattle,
+        name: battle.name,
+        strategy: strategy.name,
+        won: won,
+        casualties: casualties,
+        momentumAfter: gameState.momentum
+    });
+
+    saveProgress();
+
+    return {
+        won: won,
+        strategy: strategy,
+        battle: battle,
+        casualties: casualties,
+        outcomeText: won ? strategy.outcome.win : strategy.outcome.lose,
+        momentum: gameState.momentum,
+        momentumChange: won ? battle.freeplay.momentumValue : -battle.freeplay.momentumValue
+    };
+}
+
+// Check if the war should end early
+function checkWarEnd() {
+    const battleNum = gameState.currentBattle + 1; // 1-indexed for readability
+
+    // Always play at least 6 battles
+    if (battleNum < 6) return { ended: false };
+
+    // Decisive momentum victory (your side dominates)
+    if (gameState.side === 'union' && gameState.momentum >= 20) {
+        return {
+            ended: true,
+            reason: 'momentum_victory',
+            message: 'The Confederacy collapses! Your overwhelming victories have broken Southern will to fight. The war ends early with a decisive Union triumph.'
+        };
+    }
+    if (gameState.side === 'confederacy' && gameState.momentum >= 15) {
+        return {
+            ended: true,
+            reason: 'momentum_victory',
+            message: 'The North loses the will to fight! Your string of victories convinces the Union to negotiate peace. Confederate independence is achieved!'
+        };
+    }
+
+    // Decisive momentum defeat (your side is crushed)
+    if (gameState.side === 'union' && gameState.momentum <= -15) {
+        return {
+            ended: true,
+            reason: 'momentum_defeat',
+            message: 'Northern morale collapses. After so many defeats, the Union public demands peace negotiations. The war ends in Union failure.'
+        };
+    }
+    if (gameState.side === 'confederacy' && gameState.momentum <= -20) {
+        return {
+            ended: true,
+            reason: 'momentum_defeat',
+            message: 'The Confederacy is overwhelmed. Union victories have destroyed your army\'s ability to fight. Surrender is inevitable.'
+        };
+    }
+
+    return { ended: false };
+}
+
+// Advance to next free-play battle
+function advanceFreeplay() {
+    gameState.currentBattle++;
+    saveProgress();
+
+    // Check if all battles done
+    if (gameState.currentBattle >= battles.length) {
+        clearSave();
+        return { ended: true, reason: 'all_battles' };
+    }
+
+    // Check momentum-based early end
+    const warEnd = checkWarEnd();
+    if (warEnd.ended) {
+        clearSave();
+        return warEnd;
+    }
+
+    return { ended: false };
+}
+
+// Determine final outcome for free-play
+function getFreeplayResult() {
+    // Check momentum
+    if (gameState.momentum > 0) {
+        return {
+            victory: true,
+            title: 'VICTORY!',
+            subtitle: gameState.side === 'union'
+                ? 'The Union is Preserved!'
+                : 'Confederate Independence Achieved!',
+            summary: getMomentumSummary(true)
+        };
+    } else if (gameState.momentum < 0) {
+        return {
+            victory: false,
+            title: 'DEFEAT',
+            subtitle: gameState.side === 'union'
+                ? 'The Rebellion Continues...'
+                : 'The Confederacy Falls...',
+            summary: getMomentumSummary(false)
+        };
+    } else {
+        // Exact tie - edge to whoever won more battles
+        const won = gameState.wins > gameState.losses;
+        return {
+            victory: won,
+            title: won ? 'NARROW VICTORY' : 'STALEMATE',
+            subtitle: won
+                ? 'A hard-fought win by the narrowest of margins.'
+                : 'Neither side could achieve a decisive result.',
+            summary: 'The war ground to an exhausting conclusion with both sides nearly equal. History could have gone either way.'
+        };
+    }
+}
+
+function getMomentumSummary(victory) {
+    const m = Math.abs(gameState.momentum);
+    if (m >= 15) return 'A decisive, overwhelming campaign. Your strategic choices dominated the war.';
+    if (m >= 10) return 'A strong campaign with clear momentum in your favor. Your decisions consistently outmatched the enemy.';
+    if (m >= 5) return 'A solid but hard-fought campaign. Your choices made the difference, but it was closer than it might seem.';
+    return 'An extremely close campaign that could have gone either way. Every decision mattered.';
+}
+
+// ============================================================
+// Scoreboard
+// ============================================================
+
+function getScoreboard() {
+    try {
+        const data = localStorage.getItem(SCOREBOARD_KEY);
+        return data ? JSON.parse(data) : [];
+    } catch (e) {
+        return [];
+    }
+}
+
+function saveToScoreboard(playerName) {
+    const scoreboard = getScoreboard();
+    const startingSoldiers = gameState.side === 'union' ? 1500000 : 1000000;
+
+    const entry = {
+        name: playerName,
+        score: gameState.score,
+        side: gameState.side,
+        wins: gameState.wins,
+        losses: gameState.losses,
+        momentum: gameState.momentum,
+        battlesPlayed: gameState.battleHistory.length,
+        soldiersRemaining: gameState.soldiers,
+        casualtyRate: Math.round(((startingSoldiers - gameState.soldiers) / startingSoldiers) * 100),
+        victory: gameState.momentum > 0 || (gameState.momentum === 0 && gameState.wins > gameState.losses),
+        date: new Date().toLocaleDateString()
+    };
+
+    scoreboard.push(entry);
+    scoreboard.sort((a, b) => {
+        if (b.score !== a.score) return b.score - a.score;
+        return a.casualtyRate - b.casualtyRate;
+    });
+
+    if (scoreboard.length > MAX_SCOREBOARD_ENTRIES) {
+        scoreboard.length = MAX_SCOREBOARD_ENTRIES;
+    }
+
+    try {
+        localStorage.setItem(SCOREBOARD_KEY, JSON.stringify(scoreboard));
+    } catch (e) {
+        // ignore
+    }
+
+    return scoreboard;
+}
+
+function clearScoreboard() {
+    localStorage.removeItem(SCOREBOARD_KEY);
+}
+
+// ============================================================
+// Utilities
+// ============================================================
+
+function getAssetManifest() {
+    const manifestScript = document.getElementById('assetManifest');
+    if (manifestScript) {
+        return JSON.parse(manifestScript.textContent);
+    }
+    return [];
 }

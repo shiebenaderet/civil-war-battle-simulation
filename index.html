@@ -40,14 +40,6 @@
             "source": "National Archives"
         },
         {
-            "id": "gettysburg",
-            "title": "Battle of Gettysburg",
-            "url": "images/battle_of_gettysburg.jpg",
-            "credit": "Thure de Thulstrup",
-            "license": "Public Domain",
-            "source": "Library of Congress"
-        },
-        {
             "id": "fredericksburg",
             "title": "Battle of Fredericksburg",
             "url": "images/battle_of_fredericksburg.jpg",
@@ -62,6 +54,14 @@
             "credit": "Jedediah Hotchkiss",
             "license": "Public Domain",
             "source": "National Archives"
+        },
+        {
+            "id": "gettysburg",
+            "title": "Battle of Gettysburg",
+            "url": "images/battle_of_gettysburg.jpg",
+            "credit": "Thure de Thulstrup",
+            "license": "Public Domain",
+            "source": "Library of Congress"
         },
         {
             "id": "chickamauga",
@@ -217,17 +217,7 @@
                         &#x22EF;
                     </button>
                     <div class="settings-menu" id="settingsMenu" role="menu" aria-labelledby="settingsBtn">
-                        <!-- Learning Tools -->
-                        <div class="menu-section">
-                            <div class="menu-section-title">Learning Tools</div>
-                            <button class="settings-item" id="vocabToggleNav" role="menuitem" aria-label="Toggle vocabulary help">
-                                <span class="menu-icon">&#x1F4DA;</span> Vocabulary Help
-                                <span class="menu-status" id="vocabStatus">OFF</span>
-                            </button>
-                        </div>
-
                         <!-- Appearance -->
-                        <div class="settings-divider"></div>
                         <div class="menu-section">
                             <div class="menu-section-title">Appearance</div>
                             <button class="settings-item theme-toggle-item" id="themeToggle" onclick="toggleTheme()" role="menuitem" aria-label="Switch theme">
@@ -263,327 +253,326 @@
         </div>
     </nav>
 
-    <!-- Vocabulary Overlay for mobile -->
-    <div class="vocab-overlay" id="vocabOverlay"></div>
-
-    <!-- Vocabulary Sidebar Navigation -->
-    <nav class="vocab-sidebar" id="vocabSidebar" role="complementary" aria-label="Vocabulary definitions">
-        <h3>&#x1F4DA; Key Terms</h3>
-        <ul class="vocab-list">
-            <li class="vocab-item">
-                <div class="vocab-term-name">Slavery</div>
-                <div class="vocab-definition-text">The practice of owning people as property and forcing them to work without pay</div>
-            </li>
-            <li class="vocab-item">
-                <div class="vocab-term-name">States' Rights</div>
-                <div class="vocab-definition-text">The belief that each state should decide its own laws instead of the federal government</div>
-            </li>
-            <li class="vocab-item">
-                <div class="vocab-term-name">Civil War</div>
-                <div class="vocab-definition-text">A war fought between people from the same country</div>
-            </li>
-            <li class="vocab-item">
-                <div class="vocab-term-name">Reinforcements</div>
-                <div class="vocab-definition-text">Extra soldiers sent to help your army when you need them</div>
-            </li>
-            <li class="vocab-item">
-                <div class="vocab-term-name">Flanking</div>
-                <div class="vocab-definition-text">A military tactic of attacking the sides of an enemy formation</div>
-            </li>
-            <li class="vocab-item">
-                <div class="vocab-term-name">Fortification</div>
-                <div class="vocab-definition-text">Structures built to defend against attack</div>
-            </li>
-            <li class="vocab-item">
-                <div class="vocab-term-name">Retreat</div>
-                <div class="vocab-definition-text">Moving forces away from battle to a safer position</div>
-            </li>
-            <li class="vocab-item">
-                <div class="vocab-term-name">Casualties</div>
-                <div class="vocab-definition-text">Soldiers killed, wounded, or missing in battle</div>
-            </li>
-        </ul>
-    </nav>
-
     <main class="game-container" id="main-content" role="main" aria-label="Civil War Battle Simulation Game">
-        <!-- Side Selection Screen -->
-        <div class="side-selection" id="sideSelection" role="region" aria-label="Choose your side">
-            <h2 class="section-title">Choose Your Side</h2>
-            <p class="subtitle">Command either the Union or Confederacy through 10 historic battles</p>
 
-            <!-- Civil War Introduction - only shown on first visit -->
-            <div class="civil-war-intro" id="civilWarIntro" style="display: none;">
-                <h2 style="color: #ffd700; text-align: center; margin-bottom: 20px;">&#x2694;&#xFE0F; The American Civil War (1861-1865) &#x2694;&#xFE0F;</h2>
+        <!-- ======================== -->
+        <!-- MODE SELECTION SCREEN    -->
+        <!-- ======================== -->
+        <div class="screen" id="modeSelection" role="region" aria-label="Choose game mode">
+            <h2 class="section-title">&#x2694;&#xFE0F; Civil War Battle Simulation</h2>
+            <p class="subtitle">Experience the American Civil War (1861-1865) through 10 major battles</p>
 
-                <div class="intro-content">
-                    <p style="font-size: 1.1em; line-height: 1.6; margin-bottom: 20px; text-align: center;">
-                        From 1861 to 1865, Americans fought Americans in our nation's deadliest conflict.
-                        Over 600,000 people died fighting about <strong style="color: #ffd700;">slavery</strong> and whether states could leave the Union.
-                    </p>
+            <div class="mode-cards">
+                <div class="mode-card historical-mode-card" id="historicalModeCard" role="button" tabindex="0">
+                    <div class="mode-icon">&#x1F4DC;</div>
+                    <h3 class="mode-title">Historical Mode</h3>
+                    <p class="mode-description">Experience the war as it actually happened. Follow the real battles, decisions, and outcomes from either side's perspective.</p>
+                    <ul class="mode-features">
+                        <li>Guided walkthrough of all 10 battles</li>
+                        <li>See events from Union or Confederate perspective</li>
+                        <li>Learn what really happened and why</li>
+                        <li>Progress is saved automatically</li>
+                    </ul>
+                    <div class="mode-badge">Start Here</div>
+                </div>
 
-                    <div style="background: rgba(255, 215, 0, 0.1); padding: 15px; border-radius: 10px; margin: 20px 0; text-align: center;">
-                        <p style="font-size: 1em; line-height: 1.5; margin: 0;">
-                            <strong>&#x1F3AF; Your Mission:</strong> Command one side through 10 major battles, making the same tough decisions real generals faced!
-                        </p>
-                    </div>
-
-                    <div style="text-align: center; margin: 20px 0;">
-                        <button onclick="hideIntroduction()" style="background: linear-gradient(135deg, #059669, #10b981); color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-family: 'Georgia', serif; font-size: 1em;">
-                            Continue to Side Selection &#x2192;
-                        </button>
+                <div class="mode-card freeplay-mode-card" id="freeplayModeCard" role="button" tabindex="0">
+                    <div class="mode-icon">&#x1F3AF;</div>
+                    <h3 class="mode-title">Free-play Mode</h3>
+                    <p class="mode-description">Make your own strategic decisions and change the course of history. Your choices determine whether the war ends in victory or defeat.</p>
+                    <ul class="mode-features">
+                        <li>Choose strategies for each battle</li>
+                        <li>Momentum system - wins build on wins</li>
+                        <li>War can end early or drag on</li>
+                        <li>Compete on the class leaderboard</li>
+                    </ul>
+                    <div class="mode-lock" id="freeplayLock">
+                        &#x1F512; Complete Historical Mode to unlock
                     </div>
                 </div>
             </div>
+
+            <!-- Resume saved game prompt -->
+            <div class="resume-prompt" id="resumePrompt" style="display: none;">
+                <p class="resume-text">You have a saved game in progress.</p>
+                <div class="resume-actions">
+                    <button class="btn-primary" id="resumeBtn">Continue Where You Left Off</button>
+                    <button class="btn-secondary" id="newGameBtn">Start Fresh</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ======================== -->
+        <!-- SIDE SELECTION SCREEN    -->
+        <!-- ======================== -->
+        <div class="screen" id="sideSelection" style="display:none;" role="region" aria-label="Choose your side">
+            <h2 class="section-title">Choose Your Side</h2>
+            <p class="subtitle" id="sideSelectionSubtitle">Experience these battles from the perspective you choose</p>
 
             <div class="sides-container">
-                <div class="side-card union-card" id="unionCard" role="button" tabindex="0" aria-labelledby="union-name" aria-describedby="union-description">
+                <div class="side-card union-card" id="unionCard" role="button" tabindex="0" aria-label="Play as the Union">
                     <span class="side-flag" aria-hidden="true">&#x1F1FA;&#x1F1F8;</span>
-                    <h2 class="side-name" id="union-name">Union (The North)</h2>
-                    <div id="union-description">
-                        <p class="side-description">
-                            <strong>&#x1F3ED; Industrial Powerhouse</strong><br>
-                            You command President Lincoln's forces fighting to keep America united and end <strong style="color: #ffd700;">slavery</strong> forever.
-                            Use your factories, railroads, and larger population to crush the rebellion!
-                        </p>
-                        <div style="background: rgba(59, 130, 246, 0.2); padding: 10px; border-radius: 8px; margin: 10px 0;">
-                            <p style="font-size: 0.9em; margin: 0;"><strong>Your Advantages:</strong> More <strong style="color: #ffd700;">reinforcements</strong>, better weapons, naval blockade</p>
-                        </div>
-                        <p class="soldier-count">Starting Army: 1,500,000 soldiers</p>
-                        <p class="victory-condition">
-                            &#x1F3AF; Win 6 out of 10 battles to save the Union!
-                        </p>
-                    </div>
-                    <button class="select-strategy-btn sr-only focusable">Select Union Army</button>
+                    <h2 class="side-name">Union (The North)</h2>
+                    <p class="side-description">
+                        <strong>&#x1F3ED; Industrial Powerhouse</strong><br>
+                        Command President Lincoln's forces fighting to keep America united and end slavery forever.
+                    </p>
+                    <p class="soldier-count" id="unionSoldierCount"></p>
                 </div>
 
-                <div class="side-card confederacy-card" id="confederacyCard" role="button" tabindex="0" aria-labelledby="confederacy-name" aria-describedby="confederacy-description">
+                <div class="side-card confederacy-card" id="confederacyCard" role="button" tabindex="0" aria-label="Play as the Confederacy">
                     <span class="side-flag" aria-hidden="true">&#x1F3F4;</span>
-                    <h2 class="side-name" id="confederacy-name">Confederacy (The South)</h2>
-                    <div id="confederacy-description">
-                        <p class="side-description">
-                            <strong>&#x2694;&#xFE0F; Defending the South</strong><br>
-                            Fight for Southern independence and defend your homeland! The Confederacy seceded because they wanted to preserve <strong style="color: #ffd700;">slavery</strong> and their way of life.
-                            You're outnumbered, but you have skilled generals and fight on familiar ground.
-                        </p>
-                        <div style="background: rgba(107, 114, 128, 0.2); padding: 10px; border-radius: 8px; margin: 10px 0;">
-                            <p style="font-size: 0.9em; margin: 0;"><strong>Your Advantages:</strong> Experienced generals like Lee, fighting on home territory, strong defensive positions</p>
-                        </div>
-                        <p class="soldier-count">Starting Army: 1,000,000 soldiers</p>
-                        <p class="victory-condition">
-                            &#x1F3AF; Win 5 out of 10 battles to gain independence!
-                        </p>
+                    <h2 class="side-name">Confederacy (The South)</h2>
+                    <p class="side-description">
+                        <strong>&#x2694;&#xFE0F; Defending the South</strong><br>
+                        Fight for Southern independence. Outnumbered but with skilled generals and home territory advantage.
+                    </p>
+                    <p class="soldier-count" id="confederacySoldierCount"></p>
+                </div>
+            </div>
+
+            <button class="back-btn" id="backToModeBtn">&#x2190; Back to Mode Selection</button>
+        </div>
+
+        <!-- ================================= -->
+        <!-- HISTORICAL MODE: BATTLE NARRATIVE  -->
+        <!-- ================================= -->
+        <div class="screen" id="historicalScreen" style="display:none;" role="region" aria-label="Historical battle narrative">
+            <!-- Progress bar -->
+            <div class="battle-progress">
+                <div class="progress-label" id="historicalProgressLabel">Battle 1 of 10</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="historicalProgressFill" style="width: 10%"></div>
+                </div>
+            </div>
+
+            <!-- Battle header -->
+            <div class="battle-header">
+                <h2 class="battle-name" id="histBattleName">First Battle of Bull Run</h2>
+                <div class="battle-meta">
+                    <span class="battle-date" id="histBattleDate">July 21, 1861</span>
+                    <span class="battle-location" id="histBattleLocation">Manassas, Virginia</span>
+                </div>
+            </div>
+
+            <!-- Battle image -->
+            <div class="battle-image-container" id="histBattleImage">
+                <!-- Image loaded by JS -->
+            </div>
+
+            <!-- Narrative sections - revealed progressively -->
+            <div class="narrative-sections" id="narrativeSections">
+                <!-- Section 1: Overview -->
+                <div class="narrative-section" id="narrativeOverview">
+                    <h3 class="narrative-heading">The Situation</h3>
+                    <p class="narrative-text" id="histOverview"></p>
+                </div>
+
+                <!-- Section 2: Your Perspective -->
+                <div class="narrative-section perspective-section" id="narrativePerspective" style="display:none;">
+                    <h3 class="narrative-heading" id="perspectiveHeading">From Your Side</h3>
+                    <p class="narrative-text" id="histPerspective"></p>
+                </div>
+
+                <!-- Section 3: What Happened -->
+                <div class="narrative-section experience-section" id="narrativeExperience" style="display:none;">
+                    <h3 class="narrative-heading">What Happened</h3>
+                    <p class="narrative-text" id="histExperience"></p>
+                </div>
+
+                <!-- Section 4: Aftermath + Key Fact -->
+                <div class="narrative-section aftermath-section" id="narrativeAftermath" style="display:none;">
+                    <h3 class="narrative-heading">The Aftermath</h3>
+                    <p class="narrative-text" id="histAftermath"></p>
+
+                    <div class="outcome-box" id="histOutcomeBox">
+                        <div class="outcome-label">Historical Outcome</div>
+                        <div class="outcome-result" id="histOutcome"></div>
+                        <div class="outcome-casualties" id="histCasualties"></div>
                     </div>
-                    <button class="select-strategy-btn sr-only focusable">Select Confederate Army</button>
+
+                    <div class="key-fact-box">
+                        <div class="key-fact-label">&#x1F4A1; Did You Know?</div>
+                        <p class="key-fact-text" id="histKeyFact"></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigation buttons -->
+            <div class="narrative-nav">
+                <button class="btn-primary" id="narrativeContinueBtn">Continue Reading</button>
+            </div>
+        </div>
+
+        <!-- ============================= -->
+        <!-- FREE-PLAY: BATTLE BRIEFING    -->
+        <!-- ============================= -->
+        <div class="screen" id="freeplayBriefing" style="display:none;" role="region" aria-label="Battle briefing and strategy selection">
+            <!-- Progress + Stats bar -->
+            <div class="freeplay-status">
+                <div class="battle-progress">
+                    <div class="progress-label" id="freeplayProgressLabel">Battle 1 of 10</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="freeplayProgressFill" style="width: 10%"></div>
+                    </div>
+                </div>
+                <div class="war-stats">
+                    <div class="stat-item">
+                        <span class="stat-label">Wins</span>
+                        <span class="stat-value" id="statWins">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Losses</span>
+                        <span class="stat-value" id="statLosses">0</span>
+                    </div>
+                    <div class="stat-item momentum-stat">
+                        <span class="stat-label">Momentum</span>
+                        <span class="stat-value" id="statMomentum">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Army</span>
+                        <span class="stat-value" id="statSoldiers">1,500,000</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Battle header -->
+            <div class="battle-header">
+                <h2 class="battle-name" id="fpBattleName">First Battle of Bull Run</h2>
+                <div class="battle-meta">
+                    <span class="battle-date" id="fpBattleDate">July 21, 1861</span>
+                    <span class="battle-location" id="fpBattleLocation">Manassas, Virginia</span>
+                </div>
+            </div>
+
+            <!-- Battle image -->
+            <div class="battle-image-container" id="fpBattleImage">
+                <!-- Image loaded by JS -->
+            </div>
+
+            <!-- Briefing text -->
+            <div class="briefing-text">
+                <h3 class="briefing-label">Situation Report</h3>
+                <p class="briefing-content" id="fpBriefing"></p>
+            </div>
+
+            <!-- Strategy choices - single click to select -->
+            <div class="strategy-choices" role="group" aria-label="Choose your strategy">
+                <h3 class="choices-heading">Choose Your Strategy</h3>
+                <div class="strategy-list" id="strategyList">
+                    <!-- Strategies rendered by JS -->
                 </div>
             </div>
         </div>
 
-        <!-- Side Introduction Screen -->
-        <div class="side-introduction" id="sideIntroduction" role="region" aria-label="Side introduction and objectives">
-            <div class="leader-message">
-                <div class="leader-portrait" id="leaderPortrait">&#x1F3A9;</div>
-                <h2 class="leader-name" id="leaderName">President Abraham Lincoln</h2>
-                <div class="message-text" id="leaderMessage">
-                    <!-- Message will be inserted here -->
+        <!-- ============================= -->
+        <!-- FREE-PLAY: BATTLE RESULTS     -->
+        <!-- ============================= -->
+        <div class="screen" id="freeplayResults" style="display:none;" role="region" aria-label="Battle results">
+            <div class="result-banner" id="resultBanner">
+                <h2 class="result-title" id="resultTitle">VICTORY!</h2>
+            </div>
+
+            <div class="result-details">
+                <p class="result-outcome" id="resultOutcome"></p>
+
+                <div class="result-stats">
+                    <div class="result-stat">
+                        <span class="result-stat-label">Casualties</span>
+                        <span class="result-stat-value" id="resultCasualties">25,000</span>
+                    </div>
+                    <div class="result-stat">
+                        <span class="result-stat-label">Score</span>
+                        <span class="result-stat-value" id="resultScore">+400</span>
+                    </div>
+                    <div class="result-stat">
+                        <span class="result-stat-label">Momentum</span>
+                        <span class="result-stat-value" id="resultMomentum">+2</span>
+                    </div>
+                    <div class="result-stat">
+                        <span class="result-stat-label">Army Size</span>
+                        <span class="result-stat-value" id="resultArmy">975,000</span>
+                    </div>
+                </div>
+
+                <!-- Momentum meter -->
+                <div class="momentum-meter">
+                    <div class="momentum-label">War Momentum</div>
+                    <div class="momentum-bar">
+                        <div class="momentum-negative-zone"></div>
+                        <div class="momentum-positive-zone"></div>
+                        <div class="momentum-marker" id="momentumMarker" style="left: 50%"></div>
+                    </div>
+                    <div class="momentum-labels">
+                        <span>Enemy Winning</span>
+                        <span>Even</span>
+                        <span>You're Winning</span>
+                    </div>
                 </div>
             </div>
 
-            <div class="war-objectives">
-                <h3 class="objectives-title">Your Mission</h3>
-                <div id="objectivesList">
-                    <!-- Objectives will be inserted here -->
-                </div>
-            </div>
-
-            <button class="proceed-btn" id="proceedToGame">Begin Your Command</button>
-            <button class="back-btn" id="backToSideBtn">&#x2190; Choose Different Side</button>
+            <button class="btn-primary" id="nextBattleBtn">Continue to Next Battle</button>
         </div>
 
-        <!-- Battle Briefing Screen -->
-        <div class="battle-briefing" id="battleBriefing" role="region" aria-label="Battle briefing and strategy selection">
-            <div class="briefing-header">
-                <h2 class="briefing-title" id="briefingTitle">First Battle of Bull Run</h2>
-                <p class="briefing-date" id="briefingDate">July 21, 1861</p>
-            </div>
-
-            <div class="battle-context">
-                <h3 class="context-title">Historical Context</h3>
-                <div class="context-text" id="contextText">
-                    <!-- Battle context will be inserted here -->
+        <!-- ============================= -->
+        <!-- CAMPAIGN LOG MODAL            -->
+        <!-- ============================= -->
+        <div class="modal" id="campaignLogModal" style="display:none;">
+            <div class="modal-container">
+                <div class="modal-header">
+                    <h2 class="modal-title">Campaign Progress</h2>
+                    <button class="modal-close" id="closeLogBtn">&times;</button>
                 </div>
-
-                <div class="battle-visual-container">
-                    <div class="visual-toggle-controls">
-                        <button class="visual-toggle-btn active" id="photoToggle" data-view="photo">
-                            &#x1F4F7; Historical Image
-                        </button>
-                        <button class="visual-toggle-btn" id="mapToggle" data-view="map">
-                            &#x1F5FA;&#xFE0F; Battle Map
-                        </button>
-                    </div>
-
-                    <div class="battle-image" id="briefingImage">
-                        <!-- Battle image will be inserted here -->
-                    </div>
-
-                    <div class="battle-map" id="briefingMap" style="display: none;">
-                        <!-- SVG mini-map will be inserted here -->
-                    </div>
-                </div>
-            </div>
-
-            <div class="strategic-choices" role="group" aria-labelledby="choices-title">
-                <h3 class="choices-title" id="choices-title">Choose Your Strategy</h3>
-                <p style="margin-bottom: 15px; color: #ccc; text-align: center; font-size: 1em;">
-                    &#x1F4A1; <strong>How to play:</strong> Click any strategy below to see its pros and cons, then click again to lock in your choice!
-                </p>
-
-                <div id="choicesList" role="radiogroup" aria-labelledby="choices-title">
-                    <!-- Strategy choices will be inserted here -->
-                </div>
-            </div>
-        </div>
-
-        <!-- Game Screen (Battle Results) -->
-        <div class="game-screen" id="gameScreen" role="region" aria-label="Game dashboard and statistics">
-            <div class="battle-results-container">
-                <h2 class="battle-outcome" id="battleOutcome"></h2>
-
-                <!-- Quick Results Summary -->
-                <div class="results-summary">
-                    <div class="result-card">
-                        <div class="result-icon" id="resultIcon">&#x1F3C6;</div>
-                        <div class="result-text" id="resultText">Your strategy succeeded!</div>
-                    </div>
-
-                    <div class="impact-stats">
-                        <div class="impact-item">
-                            <span class="impact-label">Casualties:</span>
-                            <span class="impact-value casualties" id="casualtiesSummary">25,000 lost</span>
-                        </div>
-                        <div class="impact-item">
-                            <span class="impact-label">Score:</span>
-                            <span class="impact-value points" id="scoreSummary">+400 points</span>
-                        </div>
-                        <div class="impact-item">
-                            <span class="impact-label">Army Size:</span>
-                            <span class="impact-value soldiers" id="armySummary">975,000 remain</span>
+                <div class="modal-body">
+                    <div class="campaign-overview">
+                        <div class="progress-summary">
+                            <div class="summary-stat">
+                                <div class="stat-number" id="logBattlesFought">0</div>
+                                <div class="stat-label">Battles</div>
+                            </div>
+                            <div class="summary-stat">
+                                <div class="stat-number" id="logWins">0</div>
+                                <div class="stat-label">Wins</div>
+                            </div>
+                            <div class="summary-stat">
+                                <div class="stat-number" id="logScore">0</div>
+                                <div class="stat-label">Score</div>
+                            </div>
+                            <div class="summary-stat">
+                                <div class="stat-number" id="logMomentum">0</div>
+                                <div class="stat-label">Momentum</div>
+                            </div>
                         </div>
                     </div>
-                </div>
-
-                <div class="battle-explanation">
-                    <h3 class="explanation-title">What Happened?</h3>
-                    <div class="explanation-text" id="explanationText">
-                        <!-- Battle explanation will be inserted here -->
-                    </div>
-
-                    <div class="historical-note">
-                        <div class="historical-note-title">&#x1F4DA; Historical Note</div>
-                        <div id="historicalNote">
-                            <!-- Historical information will be inserted here -->
-                        </div>
-                    </div>
-                </div>
-
-                <button class="continue-battle-btn" id="continueBattleBtn">Continue to Next Battle</button>
-            </div>
-        </div>
-
-        <!-- Battle Results Modal -->
-        <div class="battle-results-modal" id="battleResultsModal" style="display: none;">
-            <div class="modal-overlay"></div>
-            <div class="battle-results-content">
-                <div class="results-header">
-                    <h2 class="battle-outcome-modal" id="battleOutcomeModal"></h2>
-                    <div class="result-icon-large" id="resultIconModal">&#x1F3C6;</div>
-                </div>
-
-                <div class="results-body">
-                    <div class="outcome-summary" id="outcomeSummaryModal">
-                        <!-- Summary will be inserted here -->
-                    </div>
-
-                    <div class="score-changes" id="scoreChangesModal">
-                        <!-- Score changes will be inserted here -->
-                    </div>
-                </div>
-
-                <div class="results-actions">
-                    <button class="continue-btn primary-btn" id="continueFromResultsBtn">Continue Campaign</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Campaign Log Modal -->
-        <div class="campaign-log-modal" id="campaignLogModal">
-            <div class="campaign-log-container">
-                <div class="log-header">
-                    <h2 class="log-title">Your Campaign Progress</h2>
-                    <button class="close-log-btn" id="closeLogBtn">&times;</button>
-                </div>
-
-                <div class="campaign-overview">
-                    <div class="progress-summary">
-                        <div class="summary-stat">
-                            <div class="stat-number" id="battlesCompleted">3</div>
-                            <div class="stat-label">Battles Fought</div>
-                        </div>
-                        <div class="summary-stat">
-                            <div class="stat-number" id="winsCount">2</div>
-                            <div class="stat-label">Victories</div>
-                        </div>
-                        <div class="summary-stat">
-                            <div class="stat-number" id="currentScore">1,250</div>
-                            <div class="stat-label">Total Score</div>
-                        </div>
-                    </div>
-
-                    <div class="victory-progress">
-                        <h3 class="progress-title">Progress to Victory</h3>
-                        <div class="victory-bar">
-                            <div class="victory-fill" id="victoryFill" style="width: 33%"></div>
-                            <div class="victory-text" id="victoryText">2 of 6 wins needed</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="battle-timeline">
-                    <h3 class="timeline-title">Battle Timeline</h3>
-                    <div class="timeline-container" id="timelineContainer">
-                        <!-- Timeline items will be inserted here -->
-                    </div>
-                </div>
-
-                <div class="strategy-analysis">
-                    <h3 class="analysis-title">Your Decision-Making</h3>
-                    <div class="strategy-stats" id="strategyStats">
-                        <!-- Strategy analysis will be inserted here -->
+                    <div class="battle-timeline" id="logTimeline">
+                        <!-- Timeline rendered by JS -->
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- End Game Summary -->
-        <div class="end-game-summary" id="endGameSummary">
-            <div class="outcome-banner" id="outcomeBanner">
-                <h1 class="outcome-title" id="outcomeTitle"></h1>
-                <p class="outcome-subtitle" id="outcomeSubtitle">The Union is Preserved</p>
+        <!-- ============================= -->
+        <!-- END GAME SUMMARY              -->
+        <!-- ============================= -->
+        <div class="screen" id="endGameScreen" style="display:none;" role="region" aria-label="Game results">
+            <div class="outcome-banner" id="endBanner">
+                <h1 class="outcome-title" id="endTitle">VICTORY!</h1>
+                <p class="outcome-subtitle" id="endSubtitle">The Union is Preserved</p>
             </div>
 
-            <div class="final-stats-container">
-                <h2 style="color: #ffd700; margin-bottom: 20px;">Campaign Summary</h2>
-                <div id="finalStatsText">
-                    <!-- Final statistics will be inserted here -->
-                </div>
+            <!-- Different content for Historical vs Free-play -->
+            <div id="endContent">
+                <!-- Rendered by JS -->
             </div>
 
-            <!-- Image Credits Section -->
+            <!-- Scoreboard (free-play only) -->
+            <div id="scoreboardSection" class="scoreboard-section" style="display:none;">
+                <!-- Rendered by JS -->
+            </div>
+
+            <!-- Image Credits -->
             <div class="image-credits-section">
-                <button class="credits-toggle" id="creditsToggle"
-                        aria-expanded="false"
-                        aria-controls="creditsContent"
-                        type="button">
+                <button class="credits-toggle" id="creditsToggle" aria-expanded="false" aria-controls="creditsContent" type="button">
                     <span class="credits-icon">&#x1F4F7;</span>
                     <span class="credits-text">View Image Credits</span>
                     <span class="credits-arrow">&#x25BC;</span>
@@ -591,72 +580,28 @@
 
                 <div class="credits-content" id="creditsContent" aria-hidden="true">
                     <h3>Image Credits &amp; Sources</h3>
-                    <p class="credits-note">All images used in this educational simulation are in the public domain or used under fair use provisions for educational purposes.</p>
-
+                    <p class="credits-note">All images used in this educational simulation are in the public domain.</p>
                     <div class="credits-grid">
-                        <div class="credit-item">
-                            <strong>Battle of Bull Run:</strong><br>
-                            Library of Congress, Public Domain<br>
-                            <small>LC-DIG-pga-01884</small>
-                        </div>
-                        <div class="credit-item">
-                            <strong>Battle of Antietam:</strong><br>
-                            National Archives, Public Domain<br>
-                            <small>165-SB-23</small>
-                        </div>
-                        <div class="credit-item">
-                            <strong>Battle of Gettysburg:</strong><br>
-                            Library of Congress, Public Domain<br>
-                            <small>LC-DIG-cwpb-03360</small>
-                        </div>
-                        <div class="credit-item">
-                            <strong>Battle of Fredericksburg:</strong><br>
-                            National Park Service, Public Domain<br>
-                            <small>Historical Collection</small>
-                        </div>
-                        <div class="credit-item">
-                            <strong>Battle of Chancellorsville:</strong><br>
-                            Library of Congress, Public Domain<br>
-                            <small>LC-DIG-pga-02502</small>
-                        </div>
-                        <div class="credit-item">
-                            <strong>Battle of Vicksburg:</strong><br>
-                            National Archives, Public Domain<br>
-                            <small>111-B-158</small>
-                        </div>
-                        <div class="credit-item">
-                            <strong>Battle of Chickamauga:</strong><br>
-                            Library of Congress, Public Domain<br>
-                            <small>LC-DIG-pga-02891</small>
-                        </div>
-                        <div class="credit-item">
-                            <strong>Battle of the Wilderness:</strong><br>
-                            National Park Service, Public Domain<br>
-                            <small>Historical Archive</small>
-                        </div>
-                        <div class="credit-item">
-                            <strong>Battle of Spotsylvania:</strong><br>
-                            Library of Congress, Public Domain<br>
-                            <small>LC-DIG-cwpb-02891</small>
-                        </div>
-                        <div class="credit-item">
-                            <strong>Surrender at Appomattox:</strong><br>
-                            National Archives, Public Domain<br>
-                            <small>111-B-4910</small>
-                        </div>
-                    </div>
-
-                    <div class="additional-credits">
-                        <h4>Additional Resources</h4>
-                        <p><strong>Battle Maps:</strong> Created for educational use based on historical sources</p>
-                        <p><strong>Icons &amp; UI Elements:</strong> Custom designed for this simulation</p>
-                        <p><strong>Historical Context:</strong> Based on official military records and historical documentation</p>
+                        <div class="credit-item"><strong>Battle of Bull Run:</strong><br>Library of Congress, Public Domain</div>
+                        <div class="credit-item"><strong>Battle of Shiloh:</strong><br>Library of Congress, Public Domain</div>
+                        <div class="credit-item"><strong>Battle of Antietam:</strong><br>National Archives, Public Domain</div>
+                        <div class="credit-item"><strong>Battle of Fredericksburg:</strong><br>Library of Congress, Public Domain</div>
+                        <div class="credit-item"><strong>Battle of Chancellorsville:</strong><br>National Archives, Public Domain</div>
+                        <div class="credit-item"><strong>Battle of Gettysburg:</strong><br>Library of Congress, Public Domain</div>
+                        <div class="credit-item"><strong>Battle of Chickamauga:</strong><br>Library of Congress, Public Domain</div>
+                        <div class="credit-item"><strong>Battle of the Wilderness:</strong><br>Library of Congress, Public Domain</div>
+                        <div class="credit-item"><strong>Battle of Atlanta:</strong><br>Library of Congress, Public Domain</div>
+                        <div class="credit-item"><strong>Surrender at Appomattox:</strong><br>National Archives, Public Domain</div>
                     </div>
                 </div>
             </div>
 
-            <button class="play-again-btn" id="playAgainBtn">Play Again</button>
+            <div class="end-actions">
+                <button class="btn-primary" id="playAgainBtn">Play Again</button>
+                <button class="btn-secondary" id="backToMenuBtn">Back to Menu</button>
+            </div>
         </div>
+
     </main>
 
     <!-- JavaScript - Data files first, then logic, then UI, then app init -->
@@ -669,7 +614,7 @@
 
     <!-- Version Display -->
     <div class="version-info">
-        <span>Civil War Battle Simulation v2.0.0</span>
+        <span>Civil War Battle Simulation v3.0.0</span>
     </div>
 </body>
 </html>
