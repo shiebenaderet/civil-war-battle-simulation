@@ -2606,6 +2606,72 @@ img {
     font-style: italic;
 }
 
+/* Reflection theme header (grouped reflections) */
+.reflect-theme {
+    display: inline-block;
+    font-family: var(--font-sans);
+    font-size: var(--font-size-lg);
+    font-weight: 800;
+    color: var(--color-accent);
+}
+
+.reflect-battles {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    font-style: italic;
+}
+
+/* Teacher Tip - Expandable coaching hint */
+.teacher-tip {
+    margin-bottom: var(--space-4);
+}
+
+.teacher-tip-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-4);
+    background: rgba(var(--color-primary-rgb), 0.08);
+    border: 2px solid rgba(var(--color-primary-rgb), 0.2);
+    border-radius: var(--radius-pill);
+    color: var(--color-primary);
+    font-size: var(--font-size-sm);
+    font-weight: 700;
+    cursor: pointer;
+    transition: all var(--transition-base) var(--ease-out);
+}
+
+.teacher-tip-toggle::before {
+    content: '\1F4A1';
+    font-size: 1em;
+}
+
+.teacher-tip-toggle:hover {
+    background: rgba(var(--color-primary-rgb), 0.15);
+    border-color: var(--color-primary);
+    transform: translateY(-1px);
+}
+
+.teacher-tip-toggle[aria-expanded="true"] {
+    background: rgba(var(--color-primary-rgb), 0.12);
+    border-color: var(--color-primary);
+}
+
+.teacher-tip-content {
+    margin-top: var(--space-3);
+    padding: var(--space-4);
+    background: rgba(var(--color-primary-rgb), 0.06);
+    border-left: 3px solid var(--color-primary);
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+}
+
+.teacher-tip-text {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+    margin: 0;
+}
+
 /* ===============================================
    FOG OF WAR / HISTORICAL EVENT (FREE-PLAY)
    =============================================== */
@@ -2819,29 +2885,81 @@ img {
 }
 
 /* ===============================================
-   WWYD FEEDBACK
+   WWYD FEEDBACK - Choice vs. History
    =============================================== */
 
 .wwyd-feedback {
-    background: linear-gradient(135deg, rgba(var(--color-primary-rgb), 0.1), rgba(124, 58, 237, 0.08));
-    border: 2px solid rgba(var(--color-primary-rgb), 0.25);
-    border-radius: var(--radius-xl);
-    padding: var(--space-5) var(--space-6);
-    margin-bottom: var(--space-4);
+    background: var(--color-surface-secondary);
+    border: 3px solid var(--color-primary);
+    border-radius: var(--radius-2xl);
+    padding: var(--space-6) var(--space-8);
+    margin: var(--space-6) auto;
+    max-width: 640px;
     text-align: center;
+    box-shadow: 0 4px 24px rgba(var(--color-primary-rgb), 0.15);
 }
 
-.feedback-icon {
-    font-size: 2rem;
-    margin-bottom: var(--space-2);
+.feedback-heading {
+    font-family: var(--font-sans);
+    font-size: var(--font-size-lg);
+    font-weight: 800;
+    color: var(--color-primary);
+    margin-bottom: var(--space-5);
 }
 
-.feedback-text {
+.feedback-your-choice,
+.feedback-historical {
+    margin-bottom: var(--space-4);
+}
+
+.feedback-label {
+    font-size: var(--font-size-sm);
+    font-weight: 700;
+    color: var(--color-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: var(--space-1);
+}
+
+.feedback-choice-text {
     font-size: var(--font-size-base);
     font-weight: 600;
     color: var(--color-text-primary);
-    line-height: 1.6;
+    line-height: 1.5;
+    padding: var(--space-3) var(--space-4);
+    background: rgba(var(--color-primary-rgb), 0.06);
+    border-radius: var(--radius-md);
+}
+
+.feedback-badge {
+    display: inline-block;
+    padding: var(--space-2) var(--space-5);
+    border-radius: var(--radius-pill);
+    font-size: var(--font-size-sm);
+    font-weight: 800;
+    margin-bottom: var(--space-4);
+}
+
+.feedback-badge.badge-match {
+    background: rgba(16, 185, 129, 0.15);
+    color: var(--color-success);
+    border: 2px solid var(--color-success);
+}
+
+.feedback-badge.badge-different {
+    background: rgba(245, 158, 11, 0.15);
+    color: var(--color-warning);
+    border: 2px solid var(--color-warning);
+}
+
+.feedback-detail {
+    font-size: var(--font-size-base);
+    color: var(--color-text-primary);
+    line-height: 1.7;
     margin: 0;
+    text-align: left;
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--color-border-secondary);
 }
 
 /* ===============================================
