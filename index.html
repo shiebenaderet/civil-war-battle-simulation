@@ -215,6 +215,9 @@
                 <button class="nav-btn primary-action" id="campaignLogNavBtn" style="display: none;" aria-label="View campaign log" title="Campaign Log">
                     &#x1F4CA;
                 </button>
+                <button class="nav-btn help-btn" id="helpToggleBtn" style="display: none;" aria-label="Toggle help tips" title="Help">
+                    ?
+                </button>
 
                 <div class="settings-dropdown">
                     <button class="nav-btn settings-btn" id="settingsBtn" aria-label="Open menu" aria-expanded="false" title="Menu">
@@ -240,6 +243,26 @@
             </div>
         </div>
     </nav>
+
+    <!-- Help Bar - contextual tips (toggleable) -->
+    <div class="help-bar" id="helpBar" style="display:none;" role="status" aria-live="polite">
+        <span class="help-bar-icon">&#x1F4A1;</span>
+        <span class="help-bar-text" id="helpBarText">Welcome! Click Continue to move through each battle step by step.</span>
+        <button class="help-bar-close" id="helpBarClose" aria-label="Close help">&times;</button>
+    </div>
+
+    <!-- Tutorial Overlay -->
+    <div class="tutorial-overlay" id="tutorialOverlay" style="display:none;">
+        <div class="tutorial-backdrop" id="tutorialBackdrop"></div>
+        <div class="tutorial-tooltip" id="tutorialTooltip">
+            <div class="tutorial-step-count" id="tutorialStepCount"></div>
+            <p class="tutorial-text" id="tutorialText"></p>
+            <div class="tutorial-actions">
+                <button class="tutorial-skip" id="tutorialSkip">Skip Tutorial</button>
+                <button class="tutorial-next btn-primary" id="tutorialNext">Next</button>
+            </div>
+        </div>
+    </div>
 
     <main class="game-container" id="main-content" role="main" aria-label="Civil War Battle Simulation Game">
 
@@ -773,7 +796,7 @@
 
     <!-- Version Display -->
     <div class="version-info">
-        <span>Civil War Battle Simulation v3.4.1</span>
+        <span>Civil War Battle Simulation v3.5.0</span>
     </div>
 </body>
 </html>
