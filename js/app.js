@@ -1,4 +1,4 @@
-// App initialization and event wiring for Civil War Battle Simulation v3
+// App initialization and event wiring for Civil War Battle Simulation v3.1
 
 function boot() {
     cacheScreens();
@@ -154,6 +154,12 @@ function setupEventListeners() {
 }
 
 function startWithSide(side) {
+    // Capture student name for historical mode PDF export
+    var nameInput = document.getElementById('studentNameInput');
+    if (nameInput && gameState.mode === 'historical') {
+        gameState.studentName = nameInput.value.trim() || 'Student';
+    }
+
     initializeGame(gameState.mode, side);
 
     if (gameState.mode === 'historical') {
