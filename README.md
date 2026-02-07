@@ -32,7 +32,7 @@ Unlocked after completing Historical Mode. Students make strategic choices with 
 - **Momentum system**: victories build power, defeats erode it
 - **Fog of war**: random events change battle outcomes unpredictably
 - **Historical events**: side-dependent modifiers based on real events (e.g., finding Lee's lost orders at Antietam)
-- **Class leaderboard**: top 10 scores saved locally
+- **Class leaderboard**: Firebase-powered shared leaderboard with room codes, plus local top-10 fallback
 
 ## For Educators
 
@@ -89,8 +89,9 @@ civil-war-battle-simulation/
 │   │   ├── battles.js      # 13 battles with historical + freeplay data
 │   │   ├── leaders.js      # Lincoln & Davis messages
 │   │   └── maps.js         # SVG battle maps
+│   ├── firebase-leaderboard.js  # Firebase class leaderboard (room codes, shared scores)
 │   ├── game.js             # State, save/load, momentum, fog of war, scoreboard
-│   ├── ui.js               # Screen management, rendering, DOM
+│   ├── ui.js               # Screen management, rendering, DOM, tutorial, reflections
 │   └── app.js              # Init, event wiring, screen flow
 ├── images/                 # Public domain artwork (Library of Congress, National Archives)
 └── README.md
@@ -102,10 +103,13 @@ civil-war-battle-simulation/
 - **No ES modules** - works with `file://` protocol for offline classroom use
 - **GitHub Pages deployment** - push to main branch to deploy
 - **localStorage** for persistence (game saves, leaderboard, theme preference)
-- Scripts load in dependency order: data files → game logic → UI → app init
+- **Firebase Realtime Database** for shared class leaderboards (gracefully degrades to local-only when offline)
+- Scripts load in dependency order: data files → game logic → Firebase → UI → app init
 
 ## Version History
 
+- **v3.8.0** - Beginner difficulty polish: fixed blank "Did You Know?" box (label was showing with no content), hidden Tech Spotlight at beginner to reduce reading load, Voice and Bigger Picture sections now collapsible at beginner (start collapsed with "tap to read" hint). Battle review buttons added to grouped reflection screens - students can click any battle in the group to see a quick recap of what happened and what they chose, with match/different badges, helping them reference events while writing reflections.
+- **v3.7.1** - Firebase-powered class leaderboard with room codes. Teachers create rooms in Firebase, students enter a code to join and see class-wide rankings. Scores include name, side, win/loss record, and momentum. Graceful offline fallback to device-only leaderboard. ArcGIS interactive war map embedded in Campaign Log modal.
 - **v3.7.0** - Progressive reveal animation for What Happened sections (staggered cascade instead of wall of text), PDF export now tracks match history (summary box + per-battle badges), free-play results show historical context ("What Really Happened"), combined name + side + difficulty into single setup screen, comprehensive mobile responsive improvements (step pills, touch targets, button sizing)
 - **v3.6.0** - Redesigned WWYD feedback (shows student's choice vs. historical decision with match/different badge), grouped reflections every 3-4 battles around bigger themes (4 reflections instead of 13), expandable "Need a hint?" teacher tips on reflection prompts
 - **v3.5.1** - Intro splash screen explaining both game modes and learning objectives (shown on first visit), difficulty level descriptions no longer mention grade levels (avoids stigma)
