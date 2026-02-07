@@ -222,6 +222,9 @@ function renderHistoricalBattle() {
     document.getElementById('historicalProgressFill').style.width =
         (content.battleNumber / content.totalBattles * 100) + '%';
 
+    // Step pills - reset to step 0
+    updateStepPills(0);
+
     // Header
     document.getElementById('histBattleName').textContent = content.name;
     document.getElementById('histBattleDate').textContent = content.date;
@@ -293,7 +296,7 @@ function renderHistoricalBattle() {
 
     // --- Section 5: A Voice From the War ---
     document.getElementById('histVoiceQuote').textContent = content.voice.quote;
-    document.getElementById('histVoiceAttribution').textContent = '— ' + content.voice.attribution;
+    document.getElementById('histVoiceAttribution').textContent = '\u2014 ' + content.voice.attribution;
     document.getElementById('histVoiceSource').textContent = content.voice.source;
 
     // --- Section 6: The Bigger Picture ---
@@ -325,9 +328,9 @@ function renderHistoricalBattle() {
     document.getElementById('histReflectPrompt').textContent = content.reflection;
     document.getElementById('histReflectInput').value = '';
 
-    // Reset visibility - only show intel (step 0)
+    // STREAMLINED FLOW: Step 0 shows Intel + Situation together (Briefing)
     document.getElementById('sectionIntel').style.display = 'block';
-    document.getElementById('sectionSituation').style.display = 'none';
+    document.getElementById('sectionSituation').style.display = 'block';
     document.getElementById('sectionWWYD').style.display = 'none';
     document.getElementById('sectionHappened').style.display = 'none';
     document.getElementById('sectionVoice').style.display = 'none';
@@ -358,20 +361,36 @@ function selectWwydOption(idx) {
         }
     });
 
-    // If narrative is waiting at step 2 (WWYD), enable the continue button
+    // If narrative is waiting at step 1 (WWYD), enable the continue button
     var continueBtn = document.getElementById('narrativeContinueBtn');
-    if (narrativeStep === 2) {
+    if (narrativeStep === 1) {
         continueBtn.disabled = false;
         continueBtn.classList.add('pulse-hint');
     }
 }
 
+// Update step indicator pills
+function updateStepPills(step) {
+    var pills = document.querySelectorAll('.step-pill');
+    pills.forEach(function(pill, i) {
+        pill.classList.remove('active', 'completed');
+        if (i < step) pill.classList.add('completed');
+        else if (i === step) pill.classList.add('active');
+    });
+}
+
 function advanceNarrative() {
     var continueBtn = document.getElementById('narrativeContinueBtn');
 
-    // Step 2 is WWYD - block if no option selected
-    if (narrativeStep === 2 && wwydSelected === -1) {
-        // Don't advance; the student must pick an option first
+    // STREAMLINED 4-STEP FLOW:
+    // Step 0: Briefing (Intel + Situation shown)
+    // Step 1: Your Call (WWYD - blocks until selection)
+    // Step 2: What Happened (outcome + tech + voice + bigger picture - all at once)
+    // Step 3: Reflect (writing prompt)
+    // Step 4: Save & advance
+
+    // Step 1 is WWYD - block if no option selected
+    if (narrativeStep === 1 && wwydSelected === -1) {
         continueBtn.disabled = true;
         return;
     }
@@ -381,13 +400,8 @@ function advanceNarrative() {
 
     switch (narrativeStep) {
         case 1:
-            // Show Situation
-            targetSection = document.getElementById('sectionSituation');
-            targetSection.style.display = 'block';
-            break;
-
-        case 2:
             // Show WWYD - block continue until student picks an option
+            updateStepPills(1);
             targetSection = document.getElementById('sectionWWYD');
             targetSection.style.display = 'block';
             if (wwydSelected === -1) {
@@ -395,35 +409,31 @@ function advanceNarrative() {
             }
             break;
 
-        case 3:
-            // Show What Happened (WWYD must have been selected to reach here)
-            targetSection = document.getElementById('sectionHappened');
-            targetSection.style.display = 'block';
+        case 2:
+            // THE REVEAL: Show What Happened + Voice + Bigger Picture all at once
+            updateStepPills(2);
             continueBtn.disabled = false;
             continueBtn.classList.remove('pulse-hint');
+
+            // Show all three "reveal" sections together
+            var happened = document.getElementById('sectionHappened');
+            happened.style.display = 'block';
+            targetSection = happened;
+
+            document.getElementById('sectionVoice').style.display = 'block';
+            document.getElementById('sectionBigPicture').style.display = 'block';
             break;
 
-        case 4:
-            // Show Voice
-            targetSection = document.getElementById('sectionVoice');
-            targetSection.style.display = 'block';
-            break;
-
-        case 5:
-            // Show Bigger Picture
-            targetSection = document.getElementById('sectionBigPicture');
-            targetSection.style.display = 'block';
-            break;
-
-        case 6:
+        case 3:
             // Show Reflect, change button text
+            updateStepPills(3);
             targetSection = document.getElementById('sectionReflect');
             targetSection.style.display = 'block';
             var isLast = gameState.currentBattle >= battles.length - 1;
-            continueBtn.textContent = isLast ? 'Complete Historical Mode' : 'Next Battle';
+            continueBtn.textContent = isLast ? 'Complete Historical Mode' : 'Next Battle \u2192';
             break;
 
-        case 7:
+        case 4:
             // Save response and advance to next battle
             var wwydChoiceText = '';
             if (wwydSelected >= 0) {

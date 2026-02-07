@@ -109,6 +109,7 @@ civil-war-battle-simulation/
 
 ## Version History
 
+- **v3.3.0** - Blooket-inspired UI redesign (Nunito font, vibrant colors, bold rounded cards, pill buttons), streamlined Historical Mode (4 steps per battle instead of 7), step indicator pills
 - **v3.2.0** - Diverse primary source voices, Perspectives sidebars (race, class, gender, Indigenous), strengthened reflection prompts
 - **v3.1.0** - 13 battles, interactive Historical Mode (7-section narrative), fog of war, PDF export, student response tracking
 - **v3.0.0** - Two-mode system (Historical + Free-play), momentum system, complete rebuild
