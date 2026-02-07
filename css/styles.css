@@ -1688,6 +1688,463 @@ img {
 }
 
 /* ===============================================
+   STUDENT NAME INPUT
+   =============================================== */
+
+.student-name-section {
+    max-width: 400px;
+    margin: 0 auto var(--spacing-6);
+    text-align: center;
+}
+
+.student-name-label {
+    display: block;
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    margin-bottom: var(--spacing-2);
+}
+
+.student-name-input {
+    width: 100%;
+    padding: var(--spacing-3) var(--spacing-4);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    color: var(--color-text-primary);
+    font-size: var(--font-size-base);
+    text-align: center;
+    transition: border-color 0.2s;
+}
+
+.student-name-input:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.15);
+}
+
+.student-name-input::placeholder {
+    color: var(--color-text-secondary);
+    opacity: 0.6;
+}
+
+/* ===============================================
+   INTEL REPORT SECTION
+   =============================================== */
+
+.intel-section {
+    border-left: 3px solid var(--color-blue-700);
+}
+
+.intel-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-4);
+}
+
+@media (max-width: 600px) {
+    .intel-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.intel-card {
+    padding: var(--spacing-4);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-border);
+    background: var(--color-surface);
+}
+
+.intel-card h4 {
+    margin: 0 0 var(--spacing-3);
+    font-size: var(--font-size-base);
+    font-weight: 600;
+}
+
+.intel-card div {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    margin-bottom: var(--spacing-1);
+}
+
+.union-intel {
+    border-left: 3px solid var(--color-blue-700);
+}
+
+.union-intel h4 {
+    color: var(--color-blue-500);
+}
+
+.confederacy-intel {
+    border-left: 3px solid #c0392b;
+}
+
+.confederacy-intel h4 {
+    color: #e74c3c;
+}
+
+/* ===============================================
+   SITUATION SECTION
+   =============================================== */
+
+.situation-section {
+    border-left: 3px solid var(--color-gold-600);
+}
+
+/* ===============================================
+   WHAT WOULD YOU DO? SECTION
+   =============================================== */
+
+.wwyd-section {
+    border-left: 3px solid #9b59b6;
+}
+
+.wwyd-prompt {
+    font-size: var(--font-size-base);
+    color: var(--color-text-primary);
+    margin-bottom: var(--spacing-4);
+    font-weight: 500;
+}
+
+.wwyd-options {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-3);
+}
+
+.wwyd-option-btn {
+    display: block;
+    width: 100%;
+    padding: var(--spacing-4);
+    background: var(--color-surface);
+    border: 2px solid var(--color-border);
+    border-radius: var(--radius-md);
+    color: var(--color-text-primary);
+    font-size: var(--font-size-sm);
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.2s;
+    line-height: 1.4;
+}
+
+.wwyd-option-btn:hover {
+    border-color: var(--color-primary);
+    background: rgba(212, 175, 55, 0.08);
+}
+
+.wwyd-option-btn:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.15);
+}
+
+.wwyd-option-btn.selected {
+    border-color: var(--color-primary);
+    background: rgba(212, 175, 55, 0.15);
+    font-weight: 500;
+}
+
+.wwyd-option-btn.dimmed {
+    opacity: 0.4;
+    cursor: default;
+}
+
+.wwyd-option-btn.dimmed:hover {
+    border-color: var(--color-border);
+    background: var(--color-surface);
+}
+
+/* ===============================================
+   WHAT HAPPENED + TECH SECTION
+   =============================================== */
+
+.happened-section {
+    border-left: 3px solid #27ae60;
+}
+
+.tech-highlight {
+    margin-top: var(--spacing-4);
+    padding: var(--spacing-4);
+    background: rgba(52, 152, 219, 0.08);
+    border: 1px solid rgba(52, 152, 219, 0.2);
+    border-radius: var(--radius-md);
+}
+
+.tech-label {
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    color: var(--color-blue-500);
+    margin-bottom: var(--spacing-2);
+}
+
+.tech-name {
+    font-size: var(--font-size-base);
+    font-weight: 600;
+    color: var(--color-text-primary);
+    margin-bottom: var(--spacing-2);
+}
+
+.tech-description {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    margin: 0;
+    line-height: 1.5;
+}
+
+/* ===============================================
+   VOICE FROM THE WAR SECTION
+   =============================================== */
+
+.voice-section {
+    border-left: 3px solid #e67e22;
+}
+
+.voice-quote {
+    font-family: var(--font-serif);
+    font-size: var(--font-size-lg);
+    font-style: italic;
+    color: var(--color-text-primary);
+    line-height: 1.6;
+    margin: 0 0 var(--spacing-3);
+    padding: var(--spacing-4);
+    background: rgba(230, 126, 34, 0.06);
+    border-radius: var(--radius-md);
+    border: 1px solid rgba(230, 126, 34, 0.15);
+    position: relative;
+}
+
+.voice-quote::before {
+    content: '\201C';
+    font-size: 3em;
+    color: rgba(230, 126, 34, 0.3);
+    position: absolute;
+    top: -0.1em;
+    left: 0.1em;
+    font-family: Georgia, serif;
+    line-height: 1;
+}
+
+.voice-attribution {
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    color: var(--color-text-primary);
+}
+
+.voice-source {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-secondary);
+    font-style: italic;
+}
+
+/* ===============================================
+   BIGGER PICTURE SECTION
+   =============================================== */
+
+.bigger-picture-section {
+    border-left: 3px solid #2ecc71;
+}
+
+/* ===============================================
+   REFLECT SECTION
+   =============================================== */
+
+.reflect-section {
+    border-left: 3px solid #e74c3c;
+}
+
+.reflect-prompt {
+    font-size: var(--font-size-base);
+    color: var(--color-text-primary);
+    margin-bottom: var(--spacing-3);
+    font-weight: 500;
+}
+
+.reflect-input {
+    width: 100%;
+    padding: var(--spacing-3) var(--spacing-4);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    color: var(--color-text-primary);
+    font-size: var(--font-size-sm);
+    font-family: var(--font-sans);
+    line-height: 1.5;
+    resize: vertical;
+    min-height: 80px;
+    transition: border-color 0.2s;
+}
+
+.reflect-input:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.15);
+}
+
+.reflect-input::placeholder {
+    color: var(--color-text-secondary);
+    opacity: 0.6;
+}
+
+/* ===============================================
+   FOG OF WAR / HISTORICAL EVENT (FREE-PLAY)
+   =============================================== */
+
+.fog-of-war-section {
+    margin-bottom: var(--spacing-4);
+    padding: var(--spacing-4);
+    background: rgba(52, 73, 94, 0.15);
+    border: 1px solid rgba(52, 73, 94, 0.3);
+    border-radius: var(--radius-md);
+}
+
+.fog-event, .hist-event {
+    display: flex;
+    align-items: baseline;
+    gap: var(--spacing-2);
+    flex-wrap: wrap;
+    margin-bottom: var(--spacing-2);
+}
+
+.fog-event:last-child, .hist-event:last-child {
+    margin-bottom: 0;
+}
+
+.fog-label {
+    font-weight: 600;
+    font-size: var(--font-size-sm);
+    color: var(--color-text-primary);
+    white-space: nowrap;
+}
+
+.fog-text {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    flex: 1;
+}
+
+.fog-mod {
+    font-weight: 700;
+    font-size: var(--font-size-sm);
+    padding: 2px 8px;
+    border-radius: var(--radius-sm);
+    white-space: nowrap;
+}
+
+/* ===============================================
+   POWER BREAKDOWN (FREE-PLAY RESULTS)
+   =============================================== */
+
+.power-breakdown {
+    margin-bottom: var(--spacing-4);
+    padding: var(--spacing-4);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+}
+
+.power-label {
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    color: var(--color-text-secondary);
+    margin-bottom: var(--spacing-3);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.power-item {
+    display: flex;
+    justify-content: space-between;
+    padding: var(--spacing-1) 0;
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.power-item:last-child {
+    border-bottom: none;
+}
+
+.power-total {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-2);
+    margin-top: var(--spacing-3);
+    padding-top: var(--spacing-3);
+    border-top: 2px solid var(--color-border);
+    font-weight: 600;
+    font-size: var(--font-size-base);
+    color: var(--color-text-primary);
+}
+
+.power-vs {
+    color: var(--color-text-secondary);
+    font-weight: 400;
+    margin-left: var(--spacing-2);
+}
+
+/* ===============================================
+   HISTORICAL EVENT NOTICE (FREE-PLAY BRIEFING)
+   =============================================== */
+
+.historical-event-notice {
+    margin-bottom: var(--spacing-4);
+    padding: var(--spacing-4);
+    background: rgba(230, 126, 34, 0.08);
+    border: 1px solid rgba(230, 126, 34, 0.2);
+    border-radius: var(--radius-md);
+}
+
+.hist-event-label {
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    color: #e67e22;
+    margin-bottom: var(--spacing-2);
+}
+
+.hist-event-text {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    margin: 0;
+    font-style: italic;
+}
+
+/* ===============================================
+   PDF EXPORT SECTION
+   =============================================== */
+
+.pdf-export-section {
+    text-align: center;
+    margin: var(--spacing-6) 0;
+    padding: var(--spacing-6);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+}
+
+.pdf-export-btn {
+    font-size: var(--font-size-lg) !important;
+    padding: var(--spacing-4) var(--spacing-8) !important;
+}
+
+.pdf-hint {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-secondary);
+    margin-top: var(--spacing-2);
+}
+
+/* ===============================================
+   PULSE HINT ANIMATION
+   =============================================== */
+
+.pulse-hint {
+    animation: pulseHint 1.5s ease-in-out infinite;
+}
+
+@keyframes pulseHint {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.4); }
+    50% { box-shadow: 0 0 0 8px rgba(212, 175, 55, 0); }
+}
+
+/* ===============================================
    PRINT STYLES
    =============================================== */
 

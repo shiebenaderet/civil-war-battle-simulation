@@ -1,4 +1,4 @@
-// Game state and core logic for Civil War Battle Simulation
+// Game state and core logic for Civil War Battle Simulation v3.1
 // Supports Historical Mode (guided narrative) and Free-play Mode (strategic choices)
 
 // ============================================================
@@ -9,6 +9,9 @@ let gameState = {
     mode: null,           // 'historical' or 'freeplay'
     side: null,           // 'union' or 'confederacy'
     currentBattle: 0,
+    studentName: '',
+    // Historical mode - response tracking
+    responses: [],        // { battleId, wwydChoice, reflectionText }
     // Free-play specific
     score: 0,
     soldiers: 0,
@@ -72,6 +75,7 @@ function initializeGame(mode, side) {
     gameState.mode = mode;
     gameState.side = side;
     gameState.currentBattle = 0;
+    gameState.responses = [];
 
     if (mode === 'freeplay') {
         gameState.soldiers = side === 'union' ? 1500000 : 1000000;
@@ -90,6 +94,8 @@ function resetGameState() {
         mode: null,
         side: null,
         currentBattle: 0,
+        studentName: '',
+        responses: [],
         score: 0,
         soldiers: 0,
         wins: 0,
@@ -102,6 +108,9 @@ function resetGameState() {
 
 function restoreGameState(saved) {
     gameState = saved;
+    // Ensure new fields exist for saves from older versions
+    if (!gameState.responses) gameState.responses = [];
+    if (!gameState.studentName) gameState.studentName = '';
 }
 
 // ============================================================
@@ -115,26 +124,42 @@ function getHistoricalBattle() {
 function getHistoricalContent() {
     const battle = battles[gameState.currentBattle];
     const side = gameState.side;
-    const sideData = battle.historical[side];
+    const h = battle.historical;
 
     return {
+        id: battle.id,
         name: battle.name,
         date: battle.date,
         year: battle.year,
         location: battle.location,
         image: battle.image,
         imageCredit: battle.imageCredit,
-        overview: battle.historical.overview,
-        perspective: sideData.perspective,
-        experience: sideData.experience,
-        aftermath: sideData.aftermath,
-        winner: battle.historical.winner,
-        outcome: battle.historical.outcome,
-        casualties: battle.historical.casualties,
-        keyFact: battle.historical.keyFact,
+        situation: h.situation[side],
+        intel: h.intel,
+        whatWouldYouDo: h.whatWouldYouDo[side],
+        whatHappened: h.whatHappened,
+        tech: h.tech,
+        voice: h.voice,
+        biggerPicture: h.biggerPicture,
+        reflection: h.reflection,
+        winner: h.winner,
+        outcome: h.outcome,
+        casualties: h.casualties,
+        keyFact: h.keyFact,
         battleNumber: gameState.currentBattle + 1,
         totalBattles: battles.length
     };
+}
+
+function saveHistoricalResponse(wwydChoice, reflectionText) {
+    const battle = battles[gameState.currentBattle];
+    gameState.responses.push({
+        battleId: battle.id,
+        battleName: battle.name,
+        wwydChoice: wwydChoice,
+        reflectionText: reflectionText || ''
+    });
+    saveProgress();
 }
 
 function advanceHistorical() {
@@ -150,10 +175,25 @@ function advanceHistorical() {
 }
 
 // ============================================================
-// Free-play Mode - Momentum System
+// Free-play Mode - Momentum + Fog of War System
 // ============================================================
 
-// Determine if player wins a battle based on strategy + momentum
+// Roll a random fog-of-war event for a battle
+function rollFogOfWar(battle) {
+    var events = battle.freeplay.fogOfWar;
+    if (!events || events.length === 0) return null;
+    var idx = Math.floor(Math.random() * events.length);
+    return events[idx];
+}
+
+// Get the historical event for a battle (predetermined, side-dependent)
+function getHistoricalEvent(battle) {
+    var evt = battle.freeplay.historicalEvent;
+    if (!evt) return null;
+    return evt;
+}
+
+// Determine if player wins a battle based on strategy + momentum + fog-of-war
 function resolveBattle(strategyIndex) {
     const battle = battles[gameState.currentBattle];
     const strategy = battle.freeplay.strategies[strategyIndex];
@@ -161,7 +201,19 @@ function resolveBattle(strategyIndex) {
 
     const basePower = strategy.power[side];
     const momentumBonus = Math.floor(gameState.momentum / 5);
-    const effectivePower = basePower + momentumBonus;
+
+    // Fog of war
+    var fogEvent = rollFogOfWar(battle);
+    var fogMod = fogEvent ? fogEvent.mod : 0;
+
+    // Historical event (side-dependent modifier)
+    var histEvent = getHistoricalEvent(battle);
+    var histMod = 0;
+    if (histEvent) {
+        histMod = histEvent.mod[side] || 0;
+    }
+
+    const effectivePower = basePower + momentumBonus + fogMod + histMod;
     const won = effectivePower >= battle.freeplay.difficulty;
 
     // Update state
@@ -185,7 +237,9 @@ function resolveBattle(strategyIndex) {
         strategy: strategy.name,
         won: won,
         casualties: casualties,
-        momentumAfter: gameState.momentum
+        momentumAfter: gameState.momentum,
+        fogEvent: fogEvent,
+        histEvent: histEvent
     });
 
     saveProgress();
@@ -197,18 +251,25 @@ function resolveBattle(strategyIndex) {
         casualties: casualties,
         outcomeText: won ? strategy.outcome.win : strategy.outcome.lose,
         momentum: gameState.momentum,
-        momentumChange: won ? battle.freeplay.momentumValue : -battle.freeplay.momentumValue
+        momentumChange: won ? battle.freeplay.momentumValue : -battle.freeplay.momentumValue,
+        fogEvent: fogEvent,
+        histEvent: histEvent,
+        fogMod: fogMod,
+        histMod: histMod,
+        basePower: basePower,
+        momentumBonus: momentumBonus,
+        effectivePower: effectivePower,
+        difficulty: battle.freeplay.difficulty
     };
 }
 
 // Check if the war should end early
 function checkWarEnd() {
-    const battleNum = gameState.currentBattle + 1; // 1-indexed for readability
+    const battleNum = gameState.currentBattle + 1;
 
-    // Always play at least 6 battles
-    if (battleNum < 6) return { ended: false };
+    // Always play at least 8 battles (adjusted for 13-battle campaign)
+    if (battleNum < 8) return { ended: false };
 
-    // Decisive momentum victory (your side dominates)
     if (gameState.side === 'union' && gameState.momentum >= 20) {
         return {
             ended: true,
@@ -224,7 +285,6 @@ function checkWarEnd() {
         };
     }
 
-    // Decisive momentum defeat (your side is crushed)
     if (gameState.side === 'union' && gameState.momentum <= -15) {
         return {
             ended: true,
@@ -248,13 +308,11 @@ function advanceFreeplay() {
     gameState.currentBattle++;
     saveProgress();
 
-    // Check if all battles done
     if (gameState.currentBattle >= battles.length) {
         clearSave();
         return { ended: true, reason: 'all_battles' };
     }
 
-    // Check momentum-based early end
     const warEnd = checkWarEnd();
     if (warEnd.ended) {
         clearSave();
@@ -266,7 +324,6 @@ function advanceFreeplay() {
 
 // Determine final outcome for free-play
 function getFreeplayResult() {
-    // Check momentum
     if (gameState.momentum > 0) {
         return {
             victory: true,
@@ -286,7 +343,6 @@ function getFreeplayResult() {
             summary: getMomentumSummary(false)
         };
     } else {
-        // Exact tie - edge to whoever won more battles
         const won = gameState.wins > gameState.losses;
         return {
             victory: won,
@@ -339,7 +395,7 @@ function saveToScoreboard(playerName) {
     };
 
     scoreboard.push(entry);
-    scoreboard.sort((a, b) => {
+    scoreboard.sort(function(a, b) {
         if (b.score !== a.score) return b.score - a.score;
         return a.casualtyRate - b.casualtyRate;
     });

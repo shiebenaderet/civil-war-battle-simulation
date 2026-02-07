@@ -1,11 +1,11 @@
-// UI/DOM manipulation for Civil War Battle Simulation v3
+// UI/DOM manipulation for Civil War Battle Simulation v3.1
 // Handles screen transitions, rendering, and all DOM interactions
 
 // ============================================================
 // Screen Management
 // ============================================================
 
-const screens = {};
+var screens = {};
 
 function cacheScreens() {
     screens.modeSelection = document.getElementById('modeSelection');
@@ -65,7 +65,7 @@ function renderModeSelection() {
         var sideLabel = saved.side === 'union' ? 'Union' : 'Confederacy';
         var battleNum = (saved.currentBattle || 0) + 1;
         document.querySelector('.resume-text').textContent =
-            'You have a saved ' + modeLabel + ' game (' + sideLabel + ', Battle ' + battleNum + ' of 10).';
+            'You have a saved ' + modeLabel + ' game (' + sideLabel + ', Battle ' + battleNum + ' of ' + battles.length + ').';
     } else {
         resumePrompt.style.display = 'none';
     }
@@ -83,15 +83,18 @@ function renderSideSelection() {
     var subtitle = document.getElementById('sideSelectionSubtitle');
     var unionCount = document.getElementById('unionSoldierCount');
     var confCount = document.getElementById('confederacySoldierCount');
+    var studentNameSection = document.getElementById('studentNameSection');
 
     if (gameState.mode === 'historical') {
         subtitle.textContent = 'Experience these battles from the perspective you choose';
         unionCount.textContent = '';
         confCount.textContent = '';
+        if (studentNameSection) studentNameSection.style.display = 'block';
     } else {
-        subtitle.textContent = 'Command your chosen side through 10 major battles';
+        subtitle.textContent = 'Command your chosen side through ' + battles.length + ' major battles';
         unionCount.textContent = 'Starting Army: 1,500,000 soldiers';
         confCount.textContent = 'Starting Army: 1,000,000 soldiers';
+        if (studentNameSection) studentNameSection.style.display = 'none';
     }
 
     showScreen('sideSelection');
@@ -135,11 +138,13 @@ function renderBattleImage(container, battle) {
 // Historical Mode Screens
 // ============================================================
 
-var narrativeStep = 0; // tracks which section is visible (0-3)
+var narrativeStep = 0;   // 0-7: tracks which section is visible
+var wwydSelected = -1;   // tracks which WWYD option the student picked
 
 function renderHistoricalBattle() {
     var content = getHistoricalContent();
     narrativeStep = 0;
+    wwydSelected = -1;
 
     // Progress
     document.getElementById('historicalProgressLabel').textContent =
@@ -158,16 +163,53 @@ function renderHistoricalBattle() {
         battles[gameState.currentBattle]
     );
 
-    // Narrative content
-    document.getElementById('histOverview').textContent = content.overview;
+    // --- Section 1: Intel Report ---
+    var intelGrid = document.getElementById('histIntelGrid');
+    var intel = content.intel;
+    intelGrid.innerHTML =
+        '<div class="intel-card union-intel">' +
+            '<h4>Union</h4>' +
+            '<div>Forces: ' + escapeHtml(intel.union.forces) + '</div>' +
+            '<div>Commander: ' + escapeHtml(intel.union.commander) + '</div>' +
+            '<div>Advantage: ' + escapeHtml(intel.union.advantage) + '</div>' +
+        '</div>' +
+        '<div class="intel-card confederacy-intel">' +
+            '<h4>Confederacy</h4>' +
+            '<div>Forces: ' + escapeHtml(intel.confederacy.forces) + '</div>' +
+            '<div>Commander: ' + escapeHtml(intel.confederacy.commander) + '</div>' +
+            '<div>Advantage: ' + escapeHtml(intel.confederacy.advantage) + '</div>' +
+        '</div>';
 
-    var perspectiveHeading = document.getElementById('perspectiveHeading');
-    perspectiveHeading.textContent = gameState.side === 'union'
-        ? 'Your Perspective (Union)' : 'Your Perspective (Confederacy)';
-    document.getElementById('histPerspective').textContent = content.perspective;
+    // --- Section 2: The Situation ---
+    document.getElementById('histSituation').textContent = content.situation;
 
-    document.getElementById('histExperience').textContent = content.experience;
-    document.getElementById('histAftermath').textContent = content.aftermath;
+    // --- Section 3: What Would You Do? ---
+    var wwyd = content.whatWouldYouDo;
+    document.getElementById('histWWYDPrompt').textContent = wwyd.prompt;
+
+    var optionsContainer = document.getElementById('histWWYDOptions');
+    optionsContainer.innerHTML = '';
+    wwyd.options.forEach(function(optionText, idx) {
+        var btn = document.createElement('button');
+        btn.className = 'wwyd-option-btn';
+        btn.textContent = optionText;
+        btn.setAttribute('role', 'radio');
+        btn.setAttribute('aria-checked', 'false');
+        btn.setAttribute('tabindex', '0');
+        btn.addEventListener('click', function() {
+            selectWwydOption(idx);
+        });
+        btn.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                selectWwydOption(idx);
+            }
+        });
+        optionsContainer.appendChild(btn);
+    });
+
+    // --- Section 4: What Really Happened ---
+    document.getElementById('histWhatHappened').textContent = content.whatHappened;
     document.getElementById('histOutcome').textContent = content.outcome;
 
     var totalCasualties = content.casualties.union + content.casualties.confederacy;
@@ -176,47 +218,145 @@ function renderHistoricalBattle() {
         ' (Union: ' + content.casualties.union.toLocaleString() +
         ', Confederate: ' + content.casualties.confederacy.toLocaleString() + ')';
 
+    document.getElementById('histTechName').textContent = content.tech.name;
+    document.getElementById('histTechDesc').textContent = content.tech.description;
+
+    // --- Section 5: A Voice From the War ---
+    document.getElementById('histVoiceQuote').textContent = content.voice.quote;
+    document.getElementById('histVoiceAttribution').textContent = '— ' + content.voice.attribution;
+    document.getElementById('histVoiceSource').textContent = content.voice.source;
+
+    // --- Section 6: The Bigger Picture ---
+    document.getElementById('histBigPicture').textContent = content.biggerPicture;
     document.getElementById('histKeyFact').textContent = content.keyFact;
 
-    // Reset visibility - only show overview
-    document.getElementById('narrativeOverview').style.display = 'block';
-    document.getElementById('narrativePerspective').style.display = 'none';
-    document.getElementById('narrativeExperience').style.display = 'none';
-    document.getElementById('narrativeAftermath').style.display = 'none';
+    // --- Section 7: Reflect ---
+    document.getElementById('histReflectPrompt').textContent = content.reflection;
+    document.getElementById('histReflectInput').value = '';
+
+    // Reset visibility - only show intel (step 0)
+    document.getElementById('sectionIntel').style.display = 'block';
+    document.getElementById('sectionSituation').style.display = 'none';
+    document.getElementById('sectionWWYD').style.display = 'none';
+    document.getElementById('sectionHappened').style.display = 'none';
+    document.getElementById('sectionVoice').style.display = 'none';
+    document.getElementById('sectionBigPicture').style.display = 'none';
+    document.getElementById('sectionReflect').style.display = 'none';
 
     // Button text
-    document.getElementById('narrativeContinueBtn').textContent = 'Continue Reading';
+    document.getElementById('narrativeContinueBtn').textContent = 'Continue';
+    document.getElementById('narrativeContinueBtn').disabled = false;
 
     showScreen('historicalScreen');
     showGameActions(true);
     showCampaignLogBtn(false);
 }
 
-function advanceNarrative() {
-    narrativeStep++;
+function selectWwydOption(idx) {
+    wwydSelected = idx;
 
-    var sections = ['narrativeOverview', 'narrativePerspective', 'narrativeExperience', 'narrativeAftermath'];
-
-    if (narrativeStep < sections.length) {
-        // Reveal next section
-        var section = document.getElementById(sections[narrativeStep]);
-        section.style.display = 'block';
-        section.scrollIntoView({ behavior: 'smooth', block: 'start' });
-
-        if (narrativeStep === sections.length - 1) {
-            // Last section - change button to "Next Battle"
-            var isLast = gameState.currentBattle >= battles.length - 1;
-            document.getElementById('narrativeContinueBtn').textContent =
-                isLast ? 'Complete Historical Mode' : 'Next Battle';
-        }
-    } else {
-        // Done with this battle, advance
-        var done = advanceHistorical();
-        if (done) {
-            renderHistoricalComplete();
+    // Highlight selected, dim others
+    var buttons = document.querySelectorAll('#histWWYDOptions .wwyd-option-btn');
+    buttons.forEach(function(btn, i) {
+        if (i === idx) {
+            btn.classList.add('selected');
+            btn.setAttribute('aria-checked', 'true');
         } else {
-            renderHistoricalBattle();
+            btn.classList.add('dimmed');
+            btn.setAttribute('aria-checked', 'false');
         }
+    });
+
+    // If narrative is waiting at step 2 (WWYD), enable the continue button
+    var continueBtn = document.getElementById('narrativeContinueBtn');
+    if (narrativeStep === 2) {
+        continueBtn.disabled = false;
+        continueBtn.classList.add('pulse-hint');
+    }
+}
+
+function advanceNarrative() {
+    var continueBtn = document.getElementById('narrativeContinueBtn');
+
+    // Step 2 is WWYD - block if no option selected
+    if (narrativeStep === 2 && wwydSelected === -1) {
+        // Don't advance; the student must pick an option first
+        continueBtn.disabled = true;
+        return;
+    }
+
+    narrativeStep++;
+    var targetSection = null;
+
+    switch (narrativeStep) {
+        case 1:
+            // Show Situation
+            targetSection = document.getElementById('sectionSituation');
+            targetSection.style.display = 'block';
+            break;
+
+        case 2:
+            // Show WWYD - block continue until student picks an option
+            targetSection = document.getElementById('sectionWWYD');
+            targetSection.style.display = 'block';
+            if (wwydSelected === -1) {
+                continueBtn.disabled = true;
+            }
+            break;
+
+        case 3:
+            // Show What Happened (WWYD must have been selected to reach here)
+            targetSection = document.getElementById('sectionHappened');
+            targetSection.style.display = 'block';
+            continueBtn.disabled = false;
+            continueBtn.classList.remove('pulse-hint');
+            break;
+
+        case 4:
+            // Show Voice
+            targetSection = document.getElementById('sectionVoice');
+            targetSection.style.display = 'block';
+            break;
+
+        case 5:
+            // Show Bigger Picture
+            targetSection = document.getElementById('sectionBigPicture');
+            targetSection.style.display = 'block';
+            break;
+
+        case 6:
+            // Show Reflect, change button text
+            targetSection = document.getElementById('sectionReflect');
+            targetSection.style.display = 'block';
+            var isLast = gameState.currentBattle >= battles.length - 1;
+            continueBtn.textContent = isLast ? 'Complete Historical Mode' : 'Next Battle';
+            break;
+
+        case 7:
+            // Save response and advance to next battle
+            var wwydChoiceText = '';
+            if (wwydSelected >= 0) {
+                var content = getHistoricalContent();
+                var opts = content.whatWouldYouDo.options;
+                if (opts && opts[wwydSelected]) {
+                    wwydChoiceText = opts[wwydSelected];
+                }
+            }
+            var reflectionText = document.getElementById('histReflectInput').value.trim();
+            saveHistoricalResponse(wwydChoiceText, reflectionText);
+
+            var done = advanceHistorical();
+            if (done) {
+                renderHistoricalComplete();
+            } else {
+                renderHistoricalBattle();
+            }
+            return; // exit early, no scroll needed
+    }
+
+    // Smooth scroll to the newly revealed section
+    if (targetSection) {
+        targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 }
 
@@ -226,7 +366,7 @@ function renderHistoricalComplete() {
 
     document.getElementById('endTitle').textContent = 'Historical Mode Complete!';
     document.getElementById('endSubtitle').textContent =
-        'You\'ve experienced all 10 major battles of the Civil War';
+        'You\'ve experienced all ' + battles.length + ' major battles of the Civil War';
 
     var side = gameState.side;
     var sideLabel = side === 'union' ? 'Union' : 'Confederate';
@@ -235,7 +375,7 @@ function renderHistoricalComplete() {
         '<div class="end-summary">' +
         '<h3>Your Journey Through History</h3>' +
         '<p>You experienced the Civil War from the <strong>' + sideLabel + '</strong> perspective, ' +
-        'following the real events of 10 major battles from 1861 to 1865.</p>' +
+        'following the real events of ' + battles.length + ' major battles from 1861 to 1865.</p>' +
         '<div class="historical-timeline-summary">' +
         battles.map(function(b, i) {
             var winnerIcon = b.historical.winner === 'union' ? '&#x1F1FA;&#x1F1F8;'
@@ -255,12 +395,102 @@ function renderHistoricalComplete() {
         '</div>' +
         '</div>';
 
+    // Show PDF export section
+    var pdfExportSection = document.getElementById('pdfExportSection');
+    if (pdfExportSection) {
+        pdfExportSection.style.display = 'block';
+
+        // Wire up the export button
+        var exportBtn = document.getElementById('exportPdfBtn');
+        if (exportBtn) {
+            // Remove old listeners by replacing the node
+            var newBtn = exportBtn.cloneNode(true);
+            exportBtn.parentNode.replaceChild(newBtn, exportBtn);
+            newBtn.addEventListener('click', function() {
+                generatePdfReport();
+            });
+        }
+    }
+
     // Hide scoreboard for historical mode
     document.getElementById('scoreboardSection').style.display = 'none';
 
     showScreen('endGameScreen');
     showGameActions(false);
     showCampaignLogBtn(false);
+}
+
+// ============================================================
+// PDF Report Generation (Historical Mode)
+// ============================================================
+
+function generatePdfReport() {
+    var studentName = gameState.studentName || 'Student';
+    var sideLabel = gameState.side === 'union' ? 'Union' : 'Confederacy';
+    var today = new Date().toLocaleDateString();
+    var responses = gameState.responses || [];
+
+    var html = '<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">' +
+        '<title>Civil War Response Sheet - ' + escapeHtml(studentName) + '</title>' +
+        '<style>' +
+        'body { font-family: Georgia, "Times New Roman", serif; max-width: 800px; margin: 0 auto; padding: 20px; color: #222; line-height: 1.5; }' +
+        'h1 { text-align: center; font-size: 1.6em; margin-bottom: 4px; border-bottom: 2px solid #333; padding-bottom: 8px; }' +
+        '.header-info { text-align: center; margin-bottom: 24px; color: #555; font-size: 0.95em; }' +
+        '.battle-entry { margin-bottom: 24px; page-break-inside: avoid; border: 1px solid #ccc; border-radius: 6px; padding: 16px; }' +
+        '.battle-entry h2 { font-size: 1.15em; margin: 0 0 8px 0; color: #1a3a5c; }' +
+        '.label { font-weight: bold; color: #444; margin-top: 8px; display: block; }' +
+        '.response-text { background: #f9f9f9; border: 1px solid #ddd; border-radius: 4px; padding: 8px 12px; margin-top: 4px; min-height: 1.5em; white-space: pre-wrap; }' +
+        '.no-response { color: #999; font-style: italic; }' +
+        '@media print { body { padding: 0; } .battle-entry { border-color: #999; } }' +
+        '</style></head><body>';
+
+    html += '<h1>Civil War Battle Simulation - Response Sheet</h1>';
+    html += '<div class="header-info">';
+    html += '<strong>Student:</strong> ' + escapeHtml(studentName);
+    html += ' &nbsp;|&nbsp; <strong>Side:</strong> ' + escapeHtml(sideLabel);
+    html += ' &nbsp;|&nbsp; <strong>Date:</strong> ' + escapeHtml(today);
+    html += '</div>';
+
+    if (responses.length === 0) {
+        html += '<p style="text-align:center;color:#999;">No responses recorded.</p>';
+    } else {
+        responses.forEach(function(resp, i) {
+            html += '<div class="battle-entry">';
+            html += '<h2>Battle ' + (i + 1) + ': ' + escapeHtml(resp.battleName || resp.battleId || 'Unknown') + '</h2>';
+
+            html += '<span class="label">What Would You Do?</span>';
+            if (resp.wwydChoice) {
+                html += '<div class="response-text">' + escapeHtml(resp.wwydChoice) + '</div>';
+            } else {
+                html += '<div class="response-text no-response">No choice recorded</div>';
+            }
+
+            html += '<span class="label">Reflection</span>';
+            if (resp.reflectionText) {
+                html += '<div class="response-text">' + escapeHtml(resp.reflectionText) + '</div>';
+            } else {
+                html += '<div class="response-text no-response">No reflection written</div>';
+            }
+
+            html += '</div>';
+        });
+    }
+
+    html += '</body></html>';
+
+    var printWindow = window.open('', '_blank');
+    if (printWindow) {
+        printWindow.document.write(html);
+        printWindow.document.close();
+        // Trigger print dialog after content loads
+        printWindow.onload = function() {
+            printWindow.print();
+        };
+        // Fallback: try print after a short delay in case onload already fired
+        setTimeout(function() {
+            try { printWindow.print(); } catch(e) { /* ignore */ }
+        }, 500);
+    }
 }
 
 // ============================================================
@@ -301,6 +531,18 @@ function renderFreeplayBriefing() {
     // Briefing
     document.getElementById('fpBriefing').textContent = battle.freeplay.briefing;
 
+    // Historical event notice
+    var histEventNotice = document.getElementById('fpHistEventNotice');
+    if (histEventNotice) {
+        var histEvt = battle.freeplay.historicalEvent;
+        if (histEvt && histEvt.text) {
+            document.getElementById('fpHistEventText').textContent = histEvt.text;
+            histEventNotice.style.display = 'block';
+        } else {
+            histEventNotice.style.display = 'none';
+        }
+    }
+
     // Strategies - single click to choose
     var list = document.getElementById('strategyList');
     list.innerHTML = '';
@@ -336,10 +578,6 @@ function renderFreeplayBriefing() {
 }
 
 function selectStrategy(index) {
-    // Confirm before committing
-    var battle = battles[gameState.currentBattle];
-    var strategy = battle.freeplay.strategies[index];
-
     // Highlight selected card
     var cards = document.querySelectorAll('.strategy-card');
     cards.forEach(function(c, i) {
@@ -367,6 +605,61 @@ function renderFreeplayResults(result) {
 
     // Outcome text
     document.getElementById('resultOutcome').textContent = result.outcomeText;
+
+    // Fog of War / Historical Event display
+    var fogSection = document.getElementById('fogOfWarSection');
+    if (fogSection) {
+        if (result.fogEvent || result.histEvent) {
+            fogSection.style.display = 'block';
+
+            // Fog of war event
+            var fogDisplay = document.getElementById('fogEventDisplay');
+            if (result.fogEvent) {
+                document.getElementById('fogEventText').textContent = result.fogEvent.text;
+                var fogModStr = result.fogMod >= 0 ? '+' + result.fogMod : '' + result.fogMod;
+                document.getElementById('fogEventMod').textContent = fogModStr;
+                fogDisplay.style.display = 'flex';
+            } else {
+                fogDisplay.style.display = 'none';
+            }
+
+            // Historical event
+            var histDisplay = document.getElementById('histEventDisplay');
+            if (result.histEvent && result.histEvent.text) {
+                document.getElementById('histEventText').textContent = result.histEvent.text;
+                var histModStr = result.histMod >= 0 ? '+' + result.histMod : '' + result.histMod;
+                document.getElementById('histEventMod').textContent = histModStr;
+                histDisplay.style.display = 'flex';
+            } else {
+                histDisplay.style.display = 'none';
+            }
+        } else {
+            fogSection.style.display = 'none';
+        }
+    }
+
+    // Power breakdown
+    var powerItems = document.getElementById('powerItems');
+    if (powerItems) {
+        var breakdownHtml = '';
+        breakdownHtml += '<div class="power-item"><span>Strategy Base</span><span>' + result.basePower + '</span></div>';
+        breakdownHtml += '<div class="power-item"><span>Momentum Bonus</span><span>' +
+            (result.momentumBonus >= 0 ? '+' : '') + result.momentumBonus + '</span></div>';
+        if (result.fogEvent) {
+            breakdownHtml += '<div class="power-item"><span>Fog of War</span><span>' +
+                (result.fogMod >= 0 ? '+' : '') + result.fogMod + '</span></div>';
+        }
+        if (result.histEvent && result.histMod !== 0) {
+            breakdownHtml += '<div class="power-item"><span>Historical Event</span><span>' +
+                (result.histMod >= 0 ? '+' : '') + result.histMod + '</span></div>';
+        }
+        powerItems.innerHTML = breakdownHtml;
+    }
+
+    var powerTotal = document.getElementById('powerTotal');
+    if (powerTotal) powerTotal.textContent = result.effectivePower;
+    var powerDifficulty = document.getElementById('powerDifficulty');
+    if (powerDifficulty) powerDifficulty.textContent = result.difficulty;
 
     // Stats
     document.getElementById('resultCasualties').textContent =
@@ -452,6 +745,10 @@ function renderFreeplayEnd(advancement) {
         }).join('') +
         '</div>' +
         '</div>';
+
+    // Hide PDF export for freeplay
+    var pdfExportSection = document.getElementById('pdfExportSection');
+    if (pdfExportSection) pdfExportSection.style.display = 'none';
 
     // Show scoreboard
     var scoreboardSection = document.getElementById('scoreboardSection');
