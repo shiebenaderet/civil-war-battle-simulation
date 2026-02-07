@@ -1054,6 +1054,23 @@ img {
     to { opacity: 1; transform: translateY(0); }
 }
 
+/* Staggered reveal for progressive sections */
+.reveal-stagger {
+    opacity: 0;
+    transform: translateY(16px);
+    animation: revealUp 0.5s var(--ease-out) forwards;
+}
+
+.reveal-stagger-1 { animation-delay: 0s; }
+.reveal-stagger-2 { animation-delay: 0.15s; }
+.reveal-stagger-3 { animation-delay: 0.3s; }
+.reveal-stagger-4 { animation-delay: 0.45s; }
+
+@keyframes revealUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
 .narrative-heading {
     font-family: var(--font-sans);
     font-size: var(--font-size-lg);
@@ -1357,6 +1374,39 @@ img {
 
 .result-stat-value.positive { color: var(--color-success); }
 .result-stat-value.negative { color: var(--color-error); }
+
+/* Historical context in freeplay results */
+.historical-context-box {
+    background: linear-gradient(135deg, rgba(var(--color-primary-rgb), 0.08), rgba(var(--color-primary-rgb), 0.03));
+    border: 1px solid rgba(var(--color-primary-rgb), 0.25);
+    border-radius: var(--radius-xl);
+    padding: var(--space-5);
+    margin-top: var(--space-4);
+}
+
+.hist-context-label {
+    font-family: var(--font-sans);
+    font-size: var(--font-size-sm);
+    font-weight: 700;
+    color: var(--color-primary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: var(--space-3);
+}
+
+.hist-context-text {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-primary);
+    line-height: 1.7;
+    margin-bottom: var(--space-3);
+}
+
+.hist-context-outcome {
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    color: var(--color-text-secondary);
+    font-style: italic;
+}
 
 /* Momentum meter */
 .momentum-meter {
@@ -1960,6 +2010,10 @@ img {
         padding: var(--space-3) var(--space-3) var(--space-12);
     }
 
+    .section-title {
+        font-size: var(--font-size-xl);
+    }
+
     .war-stats {
         grid-template-columns: repeat(2, 1fr);
     }
@@ -1979,11 +2033,92 @@ img {
     .narrative-section {
         padding: var(--space-4);
     }
+
+    /* Step pills: smaller on mobile */
+    .step-pills {
+        gap: var(--space-1);
+    }
+
+    .step-pill {
+        font-size: 0.7rem;
+        padding: var(--space-1) var(--space-2);
+    }
+
+    /* WWYD options: full width, bigger touch targets */
+    .wwyd-option-btn {
+        padding: var(--space-4);
+        font-size: var(--font-size-sm);
+        min-height: 48px;
+    }
+
+    /* Feedback card: reduce padding */
+    .wwyd-feedback {
+        padding: var(--space-4);
+        margin: var(--space-4) auto;
+    }
+
+    /* Battle header: tighter on mobile */
+    .battle-name {
+        font-size: var(--font-size-xl);
+    }
+
+    /* Side cards: bigger touch targets */
+    .side-card {
+        padding: var(--space-4);
+    }
+
+    /* Name fields: stack vertically on very small screens */
+    .name-fields {
+        flex-direction: column;
+        gap: var(--space-3);
+    }
+
+    .name-field-initial {
+        flex: none;
+        width: 100%;
+    }
+
+    /* Splash screen tweaks */
+    .splash-title {
+        font-size: var(--font-size-xl);
+    }
+
+    /* Difficulty pills: smaller */
+    .difficulty-pill {
+        padding: var(--space-2) var(--space-3);
+        font-size: var(--font-size-xs);
+    }
+
+    /* Continue button: always full width on mobile */
+    .narrative-nav .btn-primary {
+        width: 100%;
+    }
+
+    /* Letter: tighter */
+    .letter-paper {
+        padding: var(--space-4);
+    }
+
+    /* Reflection textarea: taller on mobile for thumb typing */
+    .reflect-input {
+        min-height: 120px;
+    }
+
+    /* Teacher tip: bigger touch target */
+    .teacher-tip-toggle {
+        padding: var(--space-3) var(--space-4);
+        font-size: var(--font-size-sm);
+    }
 }
 
 /* ===============================================
    STUDENT NAME SCREEN
    =============================================== */
+
+.name-inline {
+    max-width: 480px;
+    margin: 0 auto var(--space-4);
+}
 
 .name-screen-content {
     max-width: 480px;

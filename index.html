@@ -356,41 +356,30 @@
             </div>
         </div>
 
-        <!-- ============================== -->
-        <!-- STUDENT NAME SCREEN            -->
-        <!-- ============================== -->
-        <div class="screen" id="studentNameScreen" style="display:none;" role="region" aria-label="Enter your name">
-            <div class="name-screen-content">
-                <div class="name-screen-icon" aria-hidden="true">&#x1F4CB;</div>
-                <h2 class="section-title">Welcome, Historian</h2>
-                <p class="subtitle">Enter your name for your official response sheet</p>
-
-                <div class="name-form">
-                    <div class="name-fields">
-                        <div class="name-field">
-                            <label for="firstNameInput" class="name-field-label">First Name</label>
-                            <input type="text" id="firstNameInput" class="name-field-input" placeholder="Sarah" maxlength="20" autocomplete="given-name" aria-label="Your first name">
-                        </div>
-                        <div class="name-field name-field-initial">
-                            <label for="lastInitialInput" class="name-field-label">Last Initial</label>
-                            <input type="text" id="lastInitialInput" class="name-field-input initial-input" placeholder="J" maxlength="1" aria-label="Your last initial">
-                        </div>
-                    </div>
-                    <button class="btn-primary name-continue-btn" id="nameContinueBtn">Continue</button>
-                </div>
-            </div>
-            <button class="back-btn" id="backToModeFromName">&#x2190; Back to Mode Selection</button>
-        </div>
-
         <!-- ======================== -->
         <!-- SIDE SELECTION SCREEN    -->
+        <!-- (includes name entry for historical mode) -->
         <!-- ======================== -->
         <div class="screen" id="sideSelection" style="display:none;" role="region" aria-label="Choose your side">
-            <h2 class="section-title">Choose Your Side</h2>
+            <h2 class="section-title" id="sideSelectionTitle">Choose Your Side</h2>
             <p class="subtitle" id="sideSelectionSubtitle">Experience these battles from the perspective you choose</p>
 
-            <!-- Difficulty / Reading Level Toggle -->
-            <div class="difficulty-selector">
+            <!-- Name entry (historical mode only) -->
+            <div class="name-inline" id="nameInlineSection" style="display:none;">
+                <div class="name-fields">
+                    <div class="name-field">
+                        <label for="firstNameInput" class="name-field-label">First Name</label>
+                        <input type="text" id="firstNameInput" class="name-field-input" placeholder="Sarah" maxlength="20" autocomplete="given-name" aria-label="Your first name">
+                    </div>
+                    <div class="name-field name-field-initial">
+                        <label for="lastInitialInput" class="name-field-label">Last Initial</label>
+                        <input type="text" id="lastInitialInput" class="name-field-input initial-input" placeholder="J" maxlength="1" aria-label="Your last initial">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Difficulty / Reading Level Toggle (historical mode only) -->
+            <div class="difficulty-selector" id="difficultySelectorSection">
                 <div class="difficulty-label">Reading Level</div>
                 <div class="difficulty-pills" role="radiogroup" aria-label="Select reading level">
                     <button class="difficulty-pill" data-level="beginner" role="radio" aria-checked="false">Beginner</button>
@@ -738,6 +727,13 @@
                     </div>
                 </div>
 
+                <!-- Historical context - what really happened -->
+                <div class="historical-context-box" id="histContextBox" style="display:none;">
+                    <div class="hist-context-label">&#x1F4D6; What Really Happened</div>
+                    <p class="hist-context-text" id="histContextText"></p>
+                    <div class="hist-context-outcome" id="histContextOutcome"></div>
+                </div>
+
                 <div class="momentum-meter">
                     <div class="momentum-label">War Momentum</div>
                     <div class="momentum-bar">
@@ -858,7 +854,7 @@
 
     <!-- Version Display -->
     <div class="version-info">
-        <span>Civil War Battle Simulation v3.6.0</span>
+        <span>Civil War Battle Simulation v3.7.0</span>
     </div>
 </body>
 </html>
