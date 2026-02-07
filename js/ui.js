@@ -525,7 +525,7 @@ function renderHistoricalBattle() {
 
     showScreen('historicalScreen');
     showGameActions(true);
-    showCampaignLogBtn(false);
+    showCampaignLogBtn(true);
 
     // Show tutorial on first battle only
     if (gameState.currentBattle === 0) {
@@ -1672,34 +1672,106 @@ function escapeHtml(text) {
 // Campaign Log Modal
 // ============================================================
 
-function showCampaignLog() {
-    document.getElementById('logBattlesFought').textContent = gameState.battleHistory.length;
-    document.getElementById('logWins').textContent = gameState.wins;
-    document.getElementById('logScore').textContent = gameState.score.toLocaleString();
-    document.getElementById('logMomentum').textContent =
-        (gameState.momentum >= 0 ? '+' : '') + gameState.momentum;
+var warmapLoaded = false;
 
-    var timeline = document.getElementById('logTimeline');
-    if (gameState.battleHistory.length === 0) {
-        timeline.innerHTML = '<p style="text-align:center;color:#888;padding:20px;">No battles fought yet.</p>';
+function showCampaignLog() {
+    // Populate progress tab
+    if (gameState.mode === 'freeplay') {
+        document.getElementById('logBattlesFought').textContent = gameState.battleHistory.length;
+        document.getElementById('logWins').textContent = gameState.wins;
+        document.getElementById('logScore').textContent = gameState.score.toLocaleString();
+        document.getElementById('logMomentum').textContent =
+            (gameState.momentum >= 0 ? '+' : '') + gameState.momentum;
+
+        var timeline = document.getElementById('logTimeline');
+        if (gameState.battleHistory.length === 0) {
+            timeline.innerHTML = '<p style="text-align:center;color:#888;padding:20px;">No battles fought yet.</p>';
+        } else {
+            timeline.innerHTML = gameState.battleHistory.map(function(b) {
+                return '<div class="timeline-item ' + (b.won ? 'victory' : 'defeat') + '">' +
+                    '<div class="timeline-battle">Battle ' + (b.battleIndex + 1) + ': ' + b.name + '</div>' +
+                    '<div class="timeline-details">' +
+                    'Strategy: ' + b.strategy + '<br>' +
+                    'Result: ' + (b.won ? '&#x2705; Victory' : '&#x274C; Defeat') + '<br>' +
+                    'Casualties: ' + b.casualties.toLocaleString() + '<br>' +
+                    'Momentum: ' + (b.momentumAfter >= 0 ? '+' : '') + b.momentumAfter +
+                    '</div></div>';
+            }).join('');
+        }
     } else {
-        timeline.innerHTML = gameState.battleHistory.map(function(b) {
-            return '<div class="timeline-item ' + (b.won ? 'victory' : 'defeat') + '">' +
-                '<div class="timeline-battle">Battle ' + (b.battleIndex + 1) + ': ' + b.name + '</div>' +
-                '<div class="timeline-details">' +
-                'Strategy: ' + b.strategy + '<br>' +
-                'Result: ' + (b.won ? '&#x2705; Victory' : '&#x274C; Defeat') + '<br>' +
-                'Casualties: ' + b.casualties.toLocaleString() + '<br>' +
-                'Momentum: ' + (b.momentumAfter >= 0 ? '+' : '') + b.momentumAfter +
-                '</div></div>';
-        }).join('');
+        // Historical mode: show progress as battle list
+        var progressContent = document.getElementById('logProgressContent');
+        var summary = document.querySelector('.campaign-overview');
+        if (summary) summary.style.display = 'none';
+
+        var timeline = document.getElementById('logTimeline');
+        var completedCount = gameState.responses ? gameState.responses.length : 0;
+        var timelineHtml = '';
+        for (var i = 0; i < battles.length; i++) {
+            var isCompleted = i < completedCount;
+            var isCurrent = i === gameState.currentBattle;
+            var cssClass = isCompleted ? 'victory' : (isCurrent ? '' : '');
+            var status = isCompleted ? '&#x2705; Complete' : (isCurrent ? '&#x25B6; Current' : '&#x23F3; Upcoming');
+            timelineHtml += '<div class="timeline-item ' + cssClass + '">' +
+                '<div class="timeline-battle">' + (i + 1) + '. ' + battles[i].name + '</div>' +
+                '<div class="timeline-details">' + battles[i].date + ' &mdash; ' + status + '</div>' +
+                '</div>';
+        }
+        timeline.innerHTML = timelineHtml;
     }
+
+    // Reset to progress tab
+    switchLogTab('progress');
 
     screens.campaignLogModal.style.display = 'block';
 }
 
+function switchLogTab(tabName) {
+    var progressTab = document.getElementById('logTabProgress');
+    var warMapTab = document.getElementById('logTabWarMap');
+    var progressContent = document.getElementById('logProgressContent');
+    var warMapContent = document.getElementById('logWarMapContent');
+
+    if (tabName === 'warmap') {
+        progressTab.classList.remove('active');
+        warMapTab.classList.add('active');
+        progressContent.style.display = 'none';
+        warMapContent.style.display = 'block';
+        loadWarMap();
+    } else {
+        progressTab.classList.add('active');
+        warMapTab.classList.remove('active');
+        progressContent.style.display = 'block';
+        warMapContent.style.display = 'none';
+    }
+}
+
+function loadWarMap() {
+    if (warmapLoaded) return;
+
+    var wrapper = document.getElementById('warmapFrameWrapper');
+    // Check if we're likely online (file:// won't have ArcGIS access)
+    if (window.location.protocol === 'file:') {
+        wrapper.innerHTML = '<div class="warmap-offline-msg">The interactive war map requires an internet connection.<br>Visit the game on GitHub Pages to use this feature.</div>';
+        warmapLoaded = true;
+        return;
+    }
+
+    var iframe = document.createElement('iframe');
+    iframe.src = 'https://www.arcgis.com/apps/Embed/index.html?webmap=bd513e724e0e4a81b09790c6a47a072a&zoom=true&scale=true&legend=true';
+    iframe.title = 'Interactive Civil War Battle Map';
+    iframe.setAttribute('loading', 'lazy');
+    iframe.setAttribute('allowfullscreen', 'true');
+    wrapper.innerHTML = '';
+    wrapper.appendChild(iframe);
+    warmapLoaded = true;
+}
+
 function closeCampaignLog() {
     screens.campaignLogModal.style.display = 'none';
+    // Restore summary visibility for next open
+    var summary = document.querySelector('.campaign-overview');
+    if (summary) summary.style.display = '';
 }
 
 // ============================================================

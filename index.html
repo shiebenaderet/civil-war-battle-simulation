@@ -762,27 +762,47 @@
                     <button class="modal-close" id="closeLogBtn">&times;</button>
                 </div>
                 <div class="modal-body">
-                    <div class="campaign-overview">
-                        <div class="progress-summary">
-                            <div class="summary-stat">
-                                <div class="stat-number" id="logBattlesFought">0</div>
-                                <div class="stat-label">Battles</div>
-                            </div>
-                            <div class="summary-stat">
-                                <div class="stat-number" id="logWins">0</div>
-                                <div class="stat-label">Wins</div>
-                            </div>
-                            <div class="summary-stat">
-                                <div class="stat-number" id="logScore">0</div>
-                                <div class="stat-label">Score</div>
-                            </div>
-                            <div class="summary-stat">
-                                <div class="stat-number" id="logMomentum">0</div>
-                                <div class="stat-label">Momentum</div>
+                    <!-- Tab switcher: Progress / War Map -->
+                    <div class="log-tabs" id="logTabs">
+                        <button class="log-tab active" data-log-tab="progress" id="logTabProgress">Progress</button>
+                        <button class="log-tab" data-log-tab="warmap" id="logTabWarMap">War Map</button>
+                    </div>
+
+                    <!-- Progress tab -->
+                    <div class="log-tab-content" id="logProgressContent">
+                        <div class="campaign-overview">
+                            <div class="progress-summary">
+                                <div class="summary-stat">
+                                    <div class="stat-number" id="logBattlesFought">0</div>
+                                    <div class="stat-label">Battles</div>
+                                </div>
+                                <div class="summary-stat">
+                                    <div class="stat-number" id="logWins">0</div>
+                                    <div class="stat-label">Wins</div>
+                                </div>
+                                <div class="summary-stat">
+                                    <div class="stat-number" id="logScore">0</div>
+                                    <div class="stat-label">Score</div>
+                                </div>
+                                <div class="summary-stat">
+                                    <div class="stat-number" id="logMomentum">0</div>
+                                    <div class="stat-label">Momentum</div>
+                                </div>
                             </div>
                         </div>
+                        <div class="battle-timeline" id="logTimeline"></div>
                     </div>
-                    <div class="battle-timeline" id="logTimeline"></div>
+
+                    <!-- War Map tab (ArcGIS embed) -->
+                    <div class="log-tab-content" id="logWarMapContent" style="display:none;">
+                        <div class="warmap-container" id="warmapContainer">
+                            <p class="warmap-hint">Interactive map of Civil War battle locations. Zoom and click markers for details.</p>
+                            <div class="warmap-frame-wrapper" id="warmapFrameWrapper">
+                                <!-- iframe loaded on first tab click to save bandwidth -->
+                            </div>
+                            <p class="warmap-credit">Map data: <a href="https://www.arcgis.com/apps/mapviewer/index.html?webmap=bd513e724e0e4a81b09790c6a47a072a" target="_blank" rel="noopener">ArcGIS / Esri</a></p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

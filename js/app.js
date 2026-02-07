@@ -151,6 +151,14 @@ function setupEventListeners() {
     document.getElementById('campaignLogNavBtn').addEventListener('click', showCampaignLog);
     document.getElementById('closeLogBtn').addEventListener('click', closeCampaignLog);
 
+    // Campaign log tabs (Progress / War Map)
+    document.getElementById('logTabProgress').addEventListener('click', function() {
+        switchLogTab('progress');
+    });
+    document.getElementById('logTabWarMap').addEventListener('click', function() {
+        switchLogTab('warmap');
+    });
+
     // End game buttons
     document.getElementById('playAgainBtn').addEventListener('click', function() {
         resetGameState();
