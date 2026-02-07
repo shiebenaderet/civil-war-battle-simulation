@@ -47,7 +47,7 @@ var firebaseLeaderboard = (function() {
 
     function saveRoomCode(code) {
         try {
-            localStorage.setItem(ROOM_CODE_KEY, code.toUpperCase().trim());
+            localStorage.setItem(ROOM_CODE_KEY, code.toLowerCase().trim());
         } catch (e) {
             // ignore
         }
@@ -68,13 +68,13 @@ var firebaseLeaderboard = (function() {
             return;
         }
 
-        var code = roomCode.toUpperCase().trim();
+        var code = roomCode.toLowerCase().trim();
         if (!code || code.length < 3 || code.length > 12) {
             callback(false, 'Enter a valid room code (3-12 characters).');
             return;
         }
 
-        db.ref('rooms/' + code + '/created').once('value')
+        db.ref('rooms/' + code).once('value')
             .then(function(snapshot) {
                 if (snapshot.exists()) {
                     callback(true, '');
@@ -94,7 +94,7 @@ var firebaseLeaderboard = (function() {
             return;
         }
 
-        var code = roomCode.toUpperCase().trim();
+        var code = roomCode.toLowerCase().trim();
         var entry = {
             name: String(scoreData.name || 'Anonymous').substring(0, 30),
             score: Number(scoreData.score) || 0,
@@ -122,7 +122,7 @@ var firebaseLeaderboard = (function() {
             return;
         }
 
-        var code = roomCode.toUpperCase().trim();
+        var code = roomCode.toLowerCase().trim();
 
         db.ref('rooms/' + code + '/scores')
             .orderByChild('score')

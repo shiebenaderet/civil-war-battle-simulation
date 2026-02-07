@@ -236,9 +236,9 @@ function setupEventListeners() {
         this.style.borderColor = '';
         document.getElementById('roomCodeError').style.display = 'none';
     });
-    // Auto-uppercase room code input
+    // Auto-lowercase room code input (Firebase keys are lowercase)
     document.getElementById('roomCodeInput').addEventListener('input', function() {
-        this.value = this.value.toUpperCase();
+        this.value = this.value.toLowerCase();
     });
     document.getElementById('leaveRoomBtn').addEventListener('click', function() {
         leaveRoom();
