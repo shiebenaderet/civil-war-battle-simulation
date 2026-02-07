@@ -258,6 +258,79 @@ function renderBattleMap(container, battle) {
 var narrativeStep = 0;   // 0-7: tracks which section is visible
 var wwydSelected = -1;   // tracks which WWYD option the student picked
 
+// Grouped reflections: students reflect every 3-4 battles on bigger themes
+var reflectionBattles = [2, 5, 8, 12]; // Shiloh, Chancellorsville, Chickamauga, Appomattox
+
+var groupedReflections = [
+    {
+        theme: 'The War Begins',
+        battleRange: 'Fort Sumter, Bull Run, and Shiloh',
+        prompt: {
+            beginner: "You've seen the first three battles. At Fort Sumter, both sides said they were just defending themselves. At Bull Run, people thought the war would be quick. By Shiloh, thousands were dying in a single day. Why did the war get so much worse so fast? What changed between the first shots and the bloodbath at Shiloh?",
+            intermediate: "From Fort Sumter through Shiloh, the war escalated from a symbolic standoff to massive bloodshed. Both sides initially expected a short war \u2014 civilians even picnicked at Bull Run. What caused this rapid escalation? How did the reality of battle change what people expected and how the war was fought?",
+            advanced: "Trace the escalation from Fort Sumter's relatively bloodless standoff through Bull Run's shocking rout to Shiloh's unprecedented carnage. How did each battle reshape assumptions about the war's nature and cost? After Shiloh, Grant concluded that only 'complete conquest' could end the war \u2014 what evidence from these three battles supports or complicates that conclusion?"
+        },
+        teacherTip: {
+            beginner: "Think about what people expected before each battle vs. what actually happened. You could compare the civilians picnicking at Bull Run to the soldiers at Shiloh. What surprised people the most?",
+            intermediate: "Consider how expectations changed from battle to battle. What did people assume about war at first? What details from the primary sources proved those assumptions wrong?",
+            advanced: "Examine the gap between political rhetoric and battlefield reality. How did each side's justification for war hold up against escalating violence? Use specific evidence from the primary sources."
+        }
+    },
+    {
+        theme: 'The Human Cost',
+        battleRange: 'Antietam, Fredericksburg, and Chancellorsville',
+        prompt: {
+            beginner: "Over these three battles, you've seen how the war hurt everyone \u2014 soldiers, nurses, immigrants, and regular families. Clara Barton treated the wounded. Irish soldiers charged a wall 14 times. Lincoln freed enslaved people to help win the war. Pick one person or group and explain how the war changed their life.",
+            intermediate: "Antietam through Chancellorsville reveals the war's devastating human toll. The Emancipation Proclamation transformed the war's purpose. Fredericksburg exposed the cost of poor leadership. Chancellorsville showed that even victories have terrible prices. Choose one of these themes and explain how it changed the conflict.",
+            advanced: "These three battles illustrate the intersection of military strategy, political calculation, and human suffering. Lincoln weaponized Antietam's outcome for the Emancipation Proclamation. Fredericksburg's futile charges raise questions about command responsibility. Chancellorsville's Pyrrhic victory cost Lee his most irreplaceable general. Drawing on primary sources, analyze how the relationship between military action and political purpose evolved. Who bore the greatest cost?"
+        },
+        teacherTip: {
+            beginner: "Pick one person you read about \u2014 Clara Barton, an Irish soldier, an enslaved person. What was their experience? How was the war personal for them?",
+            intermediate: "Think about who had power and who didn't. Who made the big decisions, and who paid the price? The Emancipation Proclamation is a good example \u2014 who did it help, and who was left out?",
+            advanced: "Consider whose voices are centered in traditional war narratives and whose are marginalized. How do the primary source quotes complicate simple moral judgments about the war's purpose?"
+        }
+    },
+    {
+        theme: 'Turning Points',
+        battleRange: 'Vicksburg, Gettysburg, and Chickamauga',
+        prompt: {
+            beginner: "Vicksburg and Gettysburg happened at almost the same time and changed the whole war. People in Vicksburg hid in caves. At Gettysburg, 12,000 men charged across an open field. What made this the moment the war started to turn? Would you have kept fighting if you were on the losing side?",
+            intermediate: "The summer of 1863 \u2014 Vicksburg, Gettysburg, and Chickamauga \u2014 was the war's turning point. The Confederacy was split in two and suffered its worst defeat, yet won one last major victory at Chickamauga. What made these battles decisive? Consider both the military results and the human cost.",
+            advanced: "July 1863 represents the war's strategic inflection point. Vicksburg split the Confederacy. Gettysburg ended Lee's offensive capacity. Yet Chickamauga proved the war was far from over. Analyze how these battles collectively transformed the war's trajectory, and examine the ethical questions they raise: civilian suffering at Vicksburg, the futility of Pickett's Charge, and the role of chance at Chickamauga."
+        },
+        teacherTip: {
+            beginner: "What was different about the war before and after these battles? Try comparing who was winning before to who was winning after.",
+            intermediate: "A 'turning point' doesn't mean the war was over \u2014 Chickamauga proved that. What changed strategically, and what stayed the same? Think about both sides.",
+            advanced: "Interrogate the concept of 'turning point.' Was it the military outcomes, political consequences, or psychological impact that mattered most? Argue your position with evidence."
+        }
+    },
+    {
+        theme: "The War's Legacy",
+        battleRange: 'Wilderness, Atlanta, Sherman\'s March, and Appomattox',
+        prompt: {
+            beginner: "The last four battles show how the war ended \u2014 and raise big questions about what came next. Grant kept fighting no matter the cost. Sherman destroyed homes and farms. Then Grant let the Confederates go home in peace, and Lincoln was killed five days later. Was the way the war ended fair? What should happen after a war this terrible?",
+            intermediate: "The war's final chapter raises questions that still matter today. Grant's relentless strategy, Sherman's total war, and the generous surrender terms all shaped what came next. Was Grant a hero or a butcher? Was Sherman's destruction justified? How did Lincoln's assassination change Reconstruction?",
+            advanced: "The war's endgame crystallizes its most enduring moral questions. Grant accepted devastating casualties for strategic objectives. Sherman deliberately targeted civilian infrastructure. Appomattox embodied reconciliation \u2014 yet Lincoln's assassination five days later derailed that vision. Evaluate the ethical frameworks at work and the tension between reconciliation and justice for four million freed people. How do these unresolved tensions continue to shape American society?"
+        },
+        teacherTip: {
+            beginner: "Think about different people \u2014 a Union soldier, a freed person, a Southern family. How would each of them answer: 'Was the war worth it?'",
+            intermediate: "Consider the tension between ending the war quickly and ending it fairly. Were the surrender terms fair to everyone, including the four million freed people?",
+            advanced: "How do the decisions from 1864\u20131865 still affect American society? Think about the relationship between the generous surrender terms and the failures of Reconstruction."
+        }
+    }
+];
+
+function getReflectionGroupIndex(battleIndex) {
+    if (battleIndex <= 2) return 0;
+    if (battleIndex <= 5) return 1;
+    if (battleIndex <= 8) return 2;
+    return 3;
+}
+
+function isReflectionBattle(battleIndex) {
+    return reflectionBattles.indexOf(battleIndex) !== -1;
+}
+
 function renderHistoricalBattle() {
     var content = getHistoricalContent();
     narrativeStep = 0;
@@ -269,7 +342,20 @@ function renderHistoricalBattle() {
     document.getElementById('historicalProgressFill').style.width =
         (content.battleNumber / content.totalBattles * 100) + '%';
 
-    // Step pills - reset to step 0
+    // Step pills - dynamic based on whether this battle has a reflection
+    var stepPillsEl = document.getElementById('stepPills');
+    if (isReflectionBattle(gameState.currentBattle)) {
+        stepPillsEl.innerHTML =
+            '<span class="step-pill active">1. Briefing</span>' +
+            '<span class="step-pill">2. Your Call</span>' +
+            '<span class="step-pill">3. What Happened</span>' +
+            '<span class="step-pill">4. Reflect</span>';
+    } else {
+        stepPillsEl.innerHTML =
+            '<span class="step-pill active">1. Briefing</span>' +
+            '<span class="step-pill">2. Your Call</span>' +
+            '<span class="step-pill">3. What Happened</span>';
+    }
     updateStepPills(0);
 
     // Header
@@ -427,6 +513,7 @@ function renderHistoricalBattle() {
     document.getElementById('sectionVoice').style.display = 'none';
     document.getElementById('sectionBigPicture').style.display = 'none';
     document.getElementById('sectionReflect').style.display = 'none';
+    document.getElementById('teacherTip').style.display = 'none';
 
     // Button text
     document.getElementById('narrativeContinueBtn').textContent = 'Continue';
@@ -558,6 +645,52 @@ function insertStarter(text, chipEl) {
 
     // Mark chip as used
     if (chipEl) chipEl.classList.add('used');
+}
+
+// ============================================================
+// Grouped Reflection Display
+// ============================================================
+
+function showGroupedReflection() {
+    var groupIdx = getReflectionGroupIndex(gameState.currentBattle);
+    var group = groupedReflections[groupIdx];
+
+    // Set the themed reflection prompt
+    var promptEl = document.getElementById('histReflectPrompt');
+    promptEl.innerHTML =
+        '<span class="reflect-theme">' + escapeHtml(group.theme) + '</span><br>' +
+        '<span class="reflect-battles">Thinking across: ' + escapeHtml(group.battleRange) + '</span><br><br>' +
+        escapeHtml(getContent(group.prompt));
+
+    // Clear textarea
+    document.getElementById('histReflectInput').value = '';
+
+    // Show teacher tip
+    var tipSection = document.getElementById('teacherTip');
+    var tipText = document.getElementById('teacherTipText');
+    var tipContent = document.getElementById('teacherTipContent');
+    var tipToggle = document.getElementById('teacherTipToggle');
+    if (tipSection && tipText) {
+        tipText.textContent = getContent(group.teacherTip);
+        tipSection.style.display = 'block';
+        tipContent.style.display = 'none';
+        tipToggle.setAttribute('aria-expanded', 'false');
+    }
+}
+
+function toggleTeacherTip() {
+    var tipContent = document.getElementById('teacherTipContent');
+    var tipToggle = document.getElementById('teacherTipToggle');
+    if (!tipContent || !tipToggle) return;
+
+    var expanded = tipToggle.getAttribute('aria-expanded') === 'true';
+    if (expanded) {
+        tipContent.style.display = 'none';
+        tipToggle.setAttribute('aria-expanded', 'false');
+    } else {
+        tipContent.style.display = 'block';
+        tipToggle.setAttribute('aria-expanded', 'true');
+    }
 }
 
 // ============================================================
@@ -802,12 +935,14 @@ function maybeStartTutorial(mode) {
 function advanceNarrative() {
     var continueBtn = document.getElementById('narrativeContinueBtn');
 
-    // STREAMLINED 4-STEP FLOW:
+    // FLOW: 3 steps for most battles, 4 steps for reflection battles
     // Step 0: Briefing (Intel + Situation shown)
     // Step 1: Your Call (WWYD - blocks until selection)
-    // Step 2: What Happened (outcome + tech + voice + bigger picture - all at once)
-    // Step 3: Reflect (writing prompt)
-    // Step 4: Save & advance
+    // Step 2: What Happened (feedback + outcome + tech + voice + bigger picture)
+    //   Non-reflection: button says "Next Battle", case 3 saves & advances
+    //   Reflection: button says "Continue", case 3 shows grouped reflection
+    // Step 3: Reflect (grouped prompt, only on battles 3, 6, 9, 13)
+    // Step 4: Save & advance (reflection battles only)
 
     // Step 1 is WWYD - block if no option selected
     if (narrativeStep === 1 && wwydSelected === -1) {
@@ -835,13 +970,40 @@ function advanceNarrative() {
             continueBtn.disabled = false;
             continueBtn.classList.remove('pulse-hint');
 
-            // Show WWYD feedback for the student's specific choice
+            // Show redesigned WWYD feedback with choice comparison
             var feedbackEl = document.getElementById('wwydFeedback');
             var content = getHistoricalContent();
             var feedbackList = content.whatWouldYouDo.feedback;
+            var optionsList = content.whatWouldYouDo.options;
+
             if (feedbackList && feedbackList[wwydSelected]) {
-                document.getElementById('feedbackIcon').textContent = '\uD83D\uDCAC';
-                document.getElementById('feedbackText').textContent = feedbackList[wwydSelected];
+                // Show student's choice
+                document.getElementById('feedbackChoiceText').textContent =
+                    optionsList[wwydSelected] || '';
+
+                // Comparison badge + historical decision
+                var badge = document.getElementById('feedbackBadge');
+                var histSection = document.getElementById('feedbackHistorical');
+                if (wwydSelected === 0) {
+                    // Matches the historical decision
+                    var commander = getContent(
+                        battles[gameState.currentBattle].historical.intel[gameState.side].commander
+                    );
+                    commander = commander.split('(')[0].split(',')[0].trim();
+                    badge.className = 'feedback-badge badge-match';
+                    badge.textContent = '\u2714 Same call as ' + commander;
+                    histSection.style.display = 'none';
+                } else {
+                    // Different from history
+                    badge.className = 'feedback-badge badge-different';
+                    badge.textContent = '\u2194 You chose a different path';
+                    document.getElementById('feedbackHistoricalText').textContent =
+                        optionsList[0] || '';
+                    histSection.style.display = 'block';
+                }
+
+                // Detailed feedback text
+                document.getElementById('feedbackDetail').textContent = feedbackList[wwydSelected];
                 feedbackEl.style.display = 'block';
                 targetSection = feedbackEl;
             }
@@ -853,20 +1015,42 @@ function advanceNarrative() {
 
             document.getElementById('sectionVoice').style.display = 'block';
             document.getElementById('sectionBigPicture').style.display = 'block';
+
+            // Set button text: if no reflection follows, go straight to next battle
+            if (!isReflectionBattle(gameState.currentBattle)) {
+                var isLast = gameState.currentBattle >= battles.length - 1;
+                continueBtn.textContent = isLast ? 'Complete Historical Mode' : 'Next Battle \u2192';
+            }
             break;
 
         case 3:
-            // Show Reflect, change button text
-            updateStepPills(3);
-            targetSection = document.getElementById('sectionReflect');
-            targetSection.style.display = 'block';
-            showReflectScaffolding();
-            var isLast = gameState.currentBattle >= battles.length - 1;
-            continueBtn.textContent = isLast ? 'Complete Historical Mode' : 'Next Battle \u2192';
+            if (isReflectionBattle(gameState.currentBattle)) {
+                // Show grouped reflection
+                updateStepPills(3);
+                targetSection = document.getElementById('sectionReflect');
+                targetSection.style.display = 'block';
+                showGroupedReflection();
+                showReflectScaffolding();
+                var isLast = gameState.currentBattle >= battles.length - 1;
+                continueBtn.textContent = isLast ? 'Complete Historical Mode' : 'Next Battle \u2192';
+            } else {
+                // No reflection for this battle - save WWYD choice and advance
+                var wwydChoiceText = '';
+                if (wwydSelected >= 0) {
+                    var c = getHistoricalContent();
+                    var opts = c.whatWouldYouDo.options;
+                    if (opts && opts[wwydSelected]) wwydChoiceText = opts[wwydSelected];
+                }
+                saveHistoricalResponse(wwydChoiceText, '');
+                var done = advanceHistorical();
+                if (done) renderHistoricalComplete();
+                else renderHistoricalBattle();
+                return;
+            }
             break;
 
         case 4:
-            // Save response and advance to next battle
+            // Save response and advance to next battle (reflection battles only)
             var wwydChoiceText = '';
             if (wwydSelected >= 0) {
                 var content = getHistoricalContent();
@@ -1003,11 +1187,12 @@ function generatePdfReport() {
                 html += '<div class="response-text no-response">No choice recorded</div>';
             }
 
-            html += '<span class="label">Reflection</span>';
+            // Only show reflection for battles that had a reflection prompt
             if (resp.reflectionText) {
+                var groupIdx = getReflectionGroupIndex(i);
+                var group = groupedReflections[groupIdx];
+                html += '<span class="label">Reflection: ' + escapeHtml(group.theme) + ' (' + escapeHtml(group.battleRange) + ')</span>';
                 html += '<div class="response-text">' + escapeHtml(resp.reflectionText) + '</div>';
-            } else {
-                html += '<div class="response-text no-response">No reflection written</div>';
             }
 
             html += '</div>';

@@ -515,8 +515,17 @@
 
                 <!-- WWYD Feedback (shown after choice, before What Happened) -->
                 <div class="wwyd-feedback" id="wwydFeedback" style="display:none;">
-                    <div class="feedback-icon" id="feedbackIcon"></div>
-                    <p class="feedback-text" id="feedbackText"></p>
+                    <h4 class="feedback-heading">Your Choice vs. History</h4>
+                    <div class="feedback-your-choice">
+                        <div class="feedback-label">You chose:</div>
+                        <div class="feedback-choice-text" id="feedbackChoiceText"></div>
+                    </div>
+                    <div class="feedback-badge" id="feedbackBadge"></div>
+                    <div class="feedback-historical" id="feedbackHistorical" style="display:none;">
+                        <div class="feedback-label">The historical decision:</div>
+                        <div class="feedback-choice-text" id="feedbackHistoricalText"></div>
+                    </div>
+                    <p class="feedback-detail" id="feedbackDetail"></p>
                 </div>
 
                 <!-- Section 4: What Really Happened + Tech -->
@@ -583,6 +592,16 @@
                                 <div class="race-step"><span class="race-letter">E</span><span class="race-desc">Explain your thinking</span></div>
                             </div>
                             <div class="race-note">Write in complete sentences.</div>
+                        </div>
+                    </div>
+
+                    <!-- Teacher tip - expandable coaching hint -->
+                    <div class="teacher-tip" id="teacherTip" style="display:none;">
+                        <button class="teacher-tip-toggle" id="teacherTipToggle" type="button" aria-expanded="false" aria-controls="teacherTipContent">
+                            Need a hint?
+                        </button>
+                        <div class="teacher-tip-content" id="teacherTipContent" style="display:none;">
+                            <p class="teacher-tip-text" id="teacherTipText"></p>
                         </div>
                     </div>
 
@@ -839,7 +858,7 @@
 
     <!-- Version Display -->
     <div class="version-info">
-        <span>Civil War Battle Simulation v3.5.1</span>
+        <span>Civil War Battle Simulation v3.6.0</span>
     </div>
 </body>
 </html>

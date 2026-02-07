@@ -226,6 +226,9 @@ function setupEventListeners() {
     document.getElementById('tutorialNext').addEventListener('click', nextTutorialStep);
     document.getElementById('tutorialSkip').addEventListener('click', endTutorial);
 
+    // Teacher tip toggle
+    document.getElementById('teacherTipToggle').addEventListener('click', toggleTeacherTip);
+
     // Credits toggle
     setupCreditsToggle();
 }
