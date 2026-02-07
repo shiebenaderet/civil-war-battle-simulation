@@ -130,6 +130,8 @@ function renderSideSelection() {
 function getStudentNameFromForm() {
     var first = (document.getElementById('firstNameInput').value || '').trim();
     var last = (document.getElementById('lastInitialInput').value || '').trim().toUpperCase();
+    // Capitalize first letter of first name
+    if (first) first = first.charAt(0).toUpperCase() + first.slice(1);
     if (!first) return 'Student';
     return last ? first + ' ' + last + '.' : first;
 }
@@ -1517,12 +1519,15 @@ function renderFreeplayBriefing() {
         card.className = 'strategy-card';
         card.setAttribute('role', 'button');
         card.setAttribute('tabindex', '0');
-        card.setAttribute('aria-label', 'Choose strategy: ' + strategy.name);
+        var sName = getSideText(strategy.name);
+        var sDesc = getSideText(strategy.description);
+        var sDetail = getSideText(strategy.detail);
+        card.setAttribute('aria-label', 'Choose strategy: ' + sName);
 
         card.innerHTML =
-            '<div class="strategy-name">' + strategy.name + '</div>' +
-            '<div class="strategy-description">' + strategy.description + '</div>' +
-            '<div class="strategy-detail">' + strategy.detail + '</div>';
+            '<div class="strategy-name">' + sName + '</div>' +
+            '<div class="strategy-description">' + sDesc + '</div>' +
+            '<div class="strategy-detail">' + sDetail + '</div>';
 
         card.addEventListener('click', function() {
             selectStrategy(index);
@@ -2120,8 +2125,8 @@ function loadWarMap() {
     }
 
     var iframe = document.createElement('iframe');
-    iframe.src = 'https://www.arcgis.com/apps/Embed/index.html?webmap=bd513e724e0e4a81b09790c6a47a072a&zoom=true&scale=true&legend=true';
-    iframe.title = 'Interactive Civil War Battle Map';
+    iframe.src = 'https://storymaps.esri.com/stories/civilwar/';
+    iframe.title = 'Civil War Interactive StoryMap';
     iframe.setAttribute('loading', 'lazy');
     iframe.setAttribute('allowfullscreen', 'true');
     wrapper.innerHTML = '';

@@ -109,36 +109,36 @@ const battles = [
             momentumValue: 1,
             strategies: [
                 {
-                    name: "Hold and Endure",
-                    description: "Hunker down in the fort and withstand the bombardment as long as possible.",
-                    detail: "Fort Sumter's thick walls can absorb a lot of punishment. Holding out buys time for reinforcements and makes the Confederacy look like the aggressor. But you're badly outgunned.",
+                    name: { union: "Hold and Endure", confederacy: "Sustained Bombardment" },
+                    description: { union: "Hunker down in the fort and withstand the bombardment as long as possible.", confederacy: "Maintain steady fire from all batteries to wear down the fort's defenses." },
+                    detail: { union: "Fort Sumter's thick walls can absorb a lot of punishment. Holding out buys time for reinforcements and makes the Confederacy look like the aggressor. But you're badly outgunned.", confederacy: "Keep all batteries firing around the clock. The fort can't hold out forever against sustained bombardment from every direction. Patience will crack their walls and their will." },
                     power: { union: 4, confederacy: 6 },
                     casualties: { union: 15, confederacy: 0 },
                     outcome: {
-                        win: "Your stubborn defense rallies the North! The fort holds long enough for supply ships to arrive, and the garrison is reinforced.",
-                        lose: "The bombardment is overwhelming. With the fort burning and ammunition gone, you're forced to surrender after a heroic stand."
+                        win: { union: "Your stubborn defense rallies the North! The fort holds long enough for supply ships to arrive, and the garrison is reinforced.", confederacy: "The sustained bombardment cracks the fort's walls and sets fires inside. The garrison is forced to surrender after 34 hours of shelling." },
+                        lose: { union: "The bombardment is overwhelming. With the fort burning and ammunition gone, you're forced to surrender after a heroic stand.", confederacy: "The fort's thick walls hold up better than expected. Supply ships slip through your ring, and the garrison is reinforced." }
                     }
                 },
                 {
-                    name: "Concentrate Fire",
-                    description: "Focus all your cannons on the most dangerous enemy battery.",
-                    detail: "You can't match the enemy's firepower, but concentrating your shots on one battery might knock it out. If you silence one position, it changes the math.",
+                    name: { union: "Concentrate Fire", confederacy: "Targeted Fire" },
+                    description: { union: "Focus all your cannons on the most dangerous enemy battery.", confederacy: "Concentrate fire from your best batteries on the fort's weakest wall." },
+                    detail: { union: "You can't match the enemy's firepower, but concentrating your shots on one battery might knock it out. If you silence one position, it changes the math.", confederacy: "Focus your heaviest guns on one section of the fort. A breach in the wall could force a quick surrender without a long siege." },
                     power: { union: 5, confederacy: 5 },
                     casualties: { union: 10, confederacy: 5 },
                     outcome: {
-                        win: "Your concentrated fire disables the key enemy battery! With a gap in their ring of fire, supply ships can slip through.",
-                        lose: "Your shots hit home but the battery is quickly repaired. Meanwhile, the other batteries pound your fort without opposition."
+                        win: { union: "Your concentrated fire disables the key enemy battery! With a gap in their ring of fire, supply ships can slip through.", confederacy: "Your focused fire breaches the fort wall! With a gaping hole in their defenses, the garrison has no choice but to surrender." },
+                        lose: { union: "Your shots hit home but the battery is quickly repaired. Meanwhile, the other batteries pound your fort without opposition.", confederacy: "The fort's walls prove stronger than expected. Your focused fire chips away but fails to create a breach before reinforcements arrive." }
                     }
                 },
                 {
-                    name: "Aggressive Bombardment",
-                    description: "Open fire with everything you have to inflict maximum damage.",
-                    detail: "Go down swinging. Use every cannon and shell to punish the enemy batteries. You won't win a slugging match, but you'll make them pay for every shot.",
+                    name: { union: "Aggressive Bombardment", confederacy: "Storm the Fort" },
+                    description: { union: "Open fire with everything you have to inflict maximum damage.", confederacy: "Send assault boats across the harbor to storm Fort Sumter directly." },
+                    detail: { union: "Go down swinging. Use every cannon and shell to punish the enemy batteries. You won't win a slugging match, but you'll make them pay for every shot.", confederacy: "A bold direct assault could capture the fort in hours instead of days. But crossing open water under fire is extremely dangerous." },
                     power: { union: 3, confederacy: 7 },
                     casualties: { union: 20, confederacy: 10 },
                     outcome: {
-                        win: "Your aggressive fire surprises the enemy and damages several batteries! The ferocity of your defense forces them to reconsider their assault.",
-                        lose: "You burn through ammunition too quickly. The enemy batteries absorb your fire and keep pounding. Soon you have nothing left to shoot."
+                        win: { union: "Your aggressive fire surprises the enemy and damages several batteries! The ferocity of your defense forces them to reconsider their assault.", confederacy: "Your assault boats reach the fort and your soldiers pour over the walls! The garrison is overwhelmed and surrenders." },
+                        lose: { union: "You burn through ammunition too quickly. The enemy batteries absorb your fire and keep pounding. Soon you have nothing left to shoot.", confederacy: "The fort's cannons devastate your assault boats in the open water. The attack is repulsed with heavy losses." }
                     }
                 }
             ],
@@ -409,36 +409,36 @@ const battles = [
             momentumValue: 2,
             strategies: [
                 {
-                    name: "Immediate Counterattack",
-                    description: "Rally your surprised troops and attack back as quickly as possible.",
-                    detail: "When surprised, a quick counterattack can regain the initiative. It shows leadership and stops enemy momentum, but your troops are confused.",
+                    name: { union: "Immediate Counterattack", confederacy: "Press the Attack" },
+                    description: { union: "Rally your surprised troops and attack back as quickly as possible.", confederacy: "Keep the pressure on before the enemy can recover from the surprise." },
+                    detail: { union: "When surprised, a quick counterattack can regain the initiative. It shows leadership and stops enemy momentum, but your troops are confused.", confederacy: "Your dawn attack has the enemy reeling. Push hard now before they can organize. Every hour of delay lets them dig in and bring reinforcements." },
                     power: { union: 7, confederacy: 4 },
                     casualties: { union: 40000, confederacy: 55000 },
                     outcome: {
-                        win: "Your quick counterattack catches the enemy off-balance! Showing decisive leadership, you turn chaos into a fighting retreat that becomes an advance.",
-                        lose: "Your counterattack falters as confused troops can't organize fast enough. The enemy's momentum proves too strong to stop with a hasty response."
+                        win: { union: "Your quick counterattack catches the enemy off-balance! Decisive leadership turns chaos into an organized advance that reclaims lost ground.", confederacy: "Your relentless pressure smashes through the confused enemy camp! Before they can recover from the surprise, your troops overrun position after position." },
+                        lose: { union: "Your counterattack falters as confused troops can't organize fast enough. The enemy's momentum proves too strong to stop with a hasty response.", confederacy: "The initial shock wears off and the enemy rallies faster than expected. Your exhausted troops can't sustain the attack, and reinforcements arrive to turn the tide." }
                     }
                 },
                 {
-                    name: "Form Defensive Lines",
-                    description: "Organize scattered forces into strong defensive positions and hold.",
-                    detail: "Getting organized stops panic and creates solid resistance. It buys time for reinforcements but surrenders the initiative to the enemy.",
+                    name: { union: "Form Defensive Lines", confederacy: "Focus on the Strongpoint" },
+                    description: { union: "Organize scattered forces into strong defensive positions and hold.", confederacy: "Concentrate your forces against the toughest enemy position blocking your advance." },
+                    detail: { union: "Getting organized stops panic and creates solid resistance. It buys time for reinforcements but surrenders the initiative to the enemy.", confederacy: "A stubborn pocket of resistance is holding up your whole advance. Throw everything at it to break through, even though it will cost time and men." },
                     power: { union: 6, confederacy: 5 },
                     casualties: { union: 35000, confederacy: 45000 },
                     outcome: {
-                        win: "Your defensive lines hold! The organized resistance bleeds the enemy's attack dry, and when reinforcements arrive, you launch a decisive counterattack.",
-                        lose: "Your defensive lines were overwhelmed before reinforcements could arrive. The enemy's relentless pressure eventually broke through."
+                        win: { union: "Your defensive lines hold firm! The organized resistance bleeds the enemy's attack dry, and when reinforcements arrive, you launch a decisive counterattack.", confederacy: "Your concentrated assault shatters the strongpoint! With the toughest resistance broken, the rest of the enemy line begins to collapse." },
+                        lose: { union: "Your defensive lines were overwhelmed before reinforcements could arrive. The enemy's relentless pressure eventually broke through.", confederacy: "The strongpoint absorbs your best assault and holds firm. The delay costs precious hours, and by nightfall fresh enemy reinforcements are pouring in." }
                     }
                 },
                 {
-                    name: "Strategic Retreat",
-                    description: "Pull back to a stronger position and regroup your forces.",
-                    detail: "Retreating to better ground can save lives and set up a stronger defense. But it looks like giving up and is hard to reverse.",
+                    name: { union: "Strategic Retreat", confederacy: "Consolidate and Regroup" },
+                    description: { union: "Pull back to a stronger position and regroup your forces.", confederacy: "Halt the attack, reorganize your scattered units, and resume with fresh coordination." },
+                    detail: { union: "Retreating to better ground can save lives and set up a stronger defense. But it looks like giving up and is hard to reverse.", confederacy: "Your troops are scattered and disorganized after hours of fighting. Pausing to regroup risks losing momentum, but a coordinated attack could finish the job." },
                     power: { union: 3, confederacy: 7 },
                     casualties: { union: 30000, confederacy: 25000 },
                     outcome: {
-                        win: "Your retreat to strong ground pays off! The enemy overextends trying to pursue, and your rested troops smash their tired advance.",
-                        lose: "The retreat turned into a rout. Once soldiers started running, momentum was lost and the battle slipped away."
+                        win: { union: "Your retreat to strong ground pays off! The enemy overextends trying to pursue, and your rested troops smash their tired advance.", confederacy: "The pause to regroup proves decisive. Your reorganized forces launch a coordinated assault that overwhelms the battered enemy before nightfall." },
+                        lose: { union: "The retreat turned into a rout. Once soldiers started running, momentum was lost and the battle slipped away.", confederacy: "The halt kills your momentum. The enemy uses the breathing room to dig in and bring up reinforcements. When you resume the attack, the element of surprise is gone." }
                     }
                 }
             ],
@@ -571,36 +571,36 @@ const battles = [
             momentumValue: 3,
             strategies: [
                 {
-                    name: "Coordinated Assault",
-                    description: "Use your intelligence advantage to attack all Confederate positions simultaneously.",
-                    detail: "Since you know where the enemy is, hit them everywhere at once so they can't shift reinforcements. This requires excellent coordination.",
+                    name: { union: "Coordinated Assault", confederacy: "Defend the Creek Line" },
+                    description: { union: "Use your intelligence advantage to attack all enemy positions simultaneously.", confederacy: "Anchor your defense along Antietam Creek, using every ridge and fence line to hold against superior numbers." },
+                    detail: { union: "You know where the enemy is positioned. Hit them everywhere at once so they can't shift reinforcements. This requires excellent coordination but could shatter their thin line.", confederacy: "Antietam Creek and the rolling terrain give your outnumbered army natural defensive barriers. Dig in, use every stone wall and sunken road, and make the enemy pay for every yard." },
                     power: { union: 8, confederacy: 4 },
                     casualties: { union: 50000, confederacy: 45000 },
                     outcome: {
-                        win: "Your coordinated attack overwhelms the enemy at multiple points! They can't reinforce any sector, and the line begins to crumble.",
-                        lose: "The coordination broke down, and your attacks went in piecemeal. The enemy shifted reinforcements to each threatened point."
+                        win: { union: "Your coordinated assault overwhelms the enemy at multiple points! Their thin line can't reinforce every sector, and it begins to crumble.", confederacy: "Your defensive line holds like iron! The enemy's attacks are beaten back at every point, and the creek runs red with their losses." },
+                        lose: { union: "The coordination broke down and your attacks went in piecemeal. The enemy shifted reserves to each threatened point and held firm.", confederacy: "The simultaneous assault is too much for your thin line. One sector breaks, then another, and the defensive position unravels." }
                     }
                 },
                 {
-                    name: "Cautious Advance",
-                    description: "Move slowly and carefully, securing each position before advancing.",
-                    detail: "Even with enemy plans, battles are dangerous. A careful advance reduces risk but gives the enemy time to react and reposition.",
+                    name: { union: "Cautious Advance", confederacy: "Flexible Defense" },
+                    description: { union: "Move slowly and carefully, securing each position before pressing forward.", confederacy: "Keep reserves mobile and shift troops to wherever the enemy attacks hardest." },
+                    detail: { union: "Even with the enemy's plans, battles are dangerous. A careful advance reduces risk but gives the enemy time to react and reposition.", confederacy: "You're outnumbered, so every soldier counts. Keep a reserve force ready to rush to any threatened sector. If you can blunt each attack in turn, the enemy's caution will work against them." },
                     power: { union: 6, confederacy: 6 },
                     casualties: { union: 35000, confederacy: 35000 },
                     outcome: {
-                        win: "Your steady advance pushes the enemy back step by step. The methodical approach means you never overextend, and eventually the pressure tells.",
-                        lose: "Your cautious approach gave the enemy too much time. They repositioned and reinforced, turning your careful advance into a bloody stalemate."
+                        win: { union: "Your steady advance pushes the enemy back step by step. The methodical approach means you never overextend, and the pressure eventually tells.", confederacy: "Your reserves arrive at each crisis point just in time! The enemy's cautious, piecemeal attacks let you shift your outnumbered forces to meet each thrust." },
+                        lose: { union: "Your cautious approach gave the enemy too much time. They repositioned and reinforced, turning your careful advance into a bloody stalemate.", confederacy: "Your reserves are stretched too thin. When the enemy finally commits in force, there's no one left to plug the gaps in your line." }
                     }
                 },
                 {
-                    name: "Cut Off Retreat",
-                    description: "Try to get behind the enemy and trap their entire army.",
-                    detail: "Instead of a frontal battle, try to cut off Lee's escape route back to Virginia. If it works, you could capture his whole army and end the war.",
+                    name: { union: "Cut Off Retreat", confederacy: "Counterattack" },
+                    description: { union: "Maneuver to trap the enemy army against the river with no escape.", confederacy: "Launch a bold counterattack to throw the larger enemy force off balance." },
+                    detail: { union: "Instead of a frontal battle, cut off the enemy's escape route across the river. If it works, you could capture the entire army and end the war.", confederacy: "The enemy expects you to defend. A sudden counterattack against their flank could create chaos in their larger but poorly coordinated army." },
                     power: { union: 7, confederacy: 3 },
                     casualties: { union: 60000, confederacy: 55000 },
                     outcome: {
-                        win: "You've cut off the enemy's retreat! Trapped with the river at their back, their army begins to surrender in large numbers.",
-                        lose: "The flanking march was detected, and the enemy reacted before you could close the trap. Your forces were caught spread out and vulnerable."
+                        win: { union: "You've sealed the river crossings! Trapped with the water at their back, the enemy army begins to surrender in large numbers.", confederacy: "Your bold counterattack catches the enemy completely off guard! Their larger force stumbles backward in confusion, buying you time and space." },
+                        lose: { union: "The flanking march was detected, and the enemy reacted before you could close the trap. Your forces were caught spread out and vulnerable.", confederacy: "Your counterattack runs headlong into the enemy's overwhelming numbers. The audacious gamble fails, and your battered troops fall back to the creek." }
                     }
                 }
             ],
@@ -733,36 +733,36 @@ const battles = [
             momentumValue: 2,
             strategies: [
                 {
-                    name: "Direct Assault",
-                    description: "Charge straight at the stone wall on Marye's Heights.",
-                    detail: "Sometimes courage and determination can overcome defensive advantages. A massive frontal assault might break through by sheer weight of numbers.",
+                    name: { union: "Direct Assault", confederacy: "Let Them Come" },
+                    description: { union: "Charge straight at the stone wall on Marye's Heights.", confederacy: "Hold your fire until the enemy is in the open, then unleash everything." },
+                    detail: { union: "Sometimes courage and determination can overcome defensive advantages. A massive frontal assault might break through by sheer weight of numbers.", confederacy: "Your position behind the stone wall is nearly impregnable. Let the enemy cross the river and advance into the open killing ground, then mow them down with concentrated rifle fire." },
                     power: { union: 3, confederacy: 8 },
                     casualties: { union: 70000, confederacy: 10000 },
                     outcome: {
-                        win: "Against all odds, your assault breaks through! The sheer determination of your soldiers carries the wall.",
-                        lose: "Your brave soldiers fall in rows before the stone wall. Wave after wave is repulsed. The assault is a disaster."
+                        win: { union: "Against all odds, your assault breaks through the stone wall! The sheer determination of your troops carries the position.", confederacy: "The enemy charges into your killing field and is cut to pieces. Wave after wave falls before the stone wall. The victory is total." },
+                        lose: { union: "Your brave soldiers fall in rows before the stone wall. Wave after wave is repulsed with devastating losses.", confederacy: "The enemy's sheer numbers finally tell. After absorbing terrible losses, they breach the wall and your position crumbles." }
                     }
                 },
                 {
-                    name: "Artillery Bombardment",
-                    description: "Use your cannons to soften the defenses before sending infantry.",
-                    detail: "Heavy artillery fire can damage fortifications and suppress defenders. But stone walls are hard to destroy, and the bombardment warns the enemy of your intentions.",
+                    name: { union: "Artillery Bombardment", confederacy: "Artillery From the Heights" },
+                    description: { union: "Use your cannons to soften the defenses before sending infantry.", confederacy: "Use your commanding elevation to rain artillery fire on the enemy as they cross the river and advance." },
+                    detail: { union: "Heavy artillery fire can damage fortifications and suppress defenders. But stone walls are hard to destroy, and the bombardment warns the enemy of your intentions.", confederacy: "Your guns on Marye's Heights have a perfect view of the town and the open ground below. Pound the enemy with artillery as they form up, then let the infantry finish whatever makes it to the wall." },
                     power: { union: 5, confederacy: 7 },
                     casualties: { union: 55000, confederacy: 15000 },
                     outcome: {
-                        win: "Your artillery bombardment creates gaps in the enemy's defenses, and your infantry charges through before they can recover!",
-                        lose: "The stone wall survived the bombardment largely intact. Your infantry charges into the same deadly fire, just slightly delayed."
+                        win: { union: "Your artillery bombardment creates gaps in the enemy's defenses, and your infantry charges through before they can recover!", confederacy: "Your artillery devastates the enemy formations as they advance across the open ground. By the time they reach the wall, they are too shattered to fight." },
+                        lose: { union: "The stone wall survived the bombardment largely intact. Your infantry charges into the same deadly fire, just slightly delayed.", confederacy: "The enemy's counter-battery fire suppresses your guns long enough for their infantry to close the distance. Your artillery advantage is neutralized." }
                     }
                 },
                 {
-                    name: "Find Alternative Crossing",
-                    description: "Look for a different river crossing to avoid the strongest defenses.",
-                    detail: "Instead of attacking the strongest point, find a way around it. This takes more time but might let you avoid the killing ground entirely.",
+                    name: { union: "Find Alternative Crossing", confederacy: "Extend the Line" },
+                    description: { union: "Look for a different river crossing to avoid the strongest defenses.", confederacy: "Spread your forces along the ridge to cover every possible approach and river crossing." },
+                    detail: { union: "Instead of attacking the strongest point, find a way around it. This takes more time but might let you avoid the killing ground entirely.", confederacy: "The enemy might try to avoid the stone wall by crossing upriver or downriver. Extend your defensive line to cover alternative crossings so there is no way around your position." },
                     power: { union: 6, confederacy: 6 },
                     casualties: { union: 40000, confederacy: 20000 },
                     outcome: {
-                        win: "You find a crossing downstream and hit the enemy's flank! Caught between two forces, their defensive line unravels.",
-                        lose: "The alternative crossing was also defended, and the delay gave the enemy time to reinforce. You end up in the same terrible position."
+                        win: { union: "You find a crossing downstream and hit the enemy's flank! Caught between two forces, their defensive line unravels.", confederacy: "Your extended line covers every approach. When the enemy tries to flank you, they run into prepared defenses and are thrown back with heavy losses." },
+                        lose: { union: "The alternative crossing was also defended, and the delay gave the enemy time to reinforce. You end up in the same terrible position.", confederacy: "Spreading your forces too thin leaves gaps in the line. The enemy finds a weak point and breaks through where you least expected." }
                     }
                 }
             ],
@@ -882,36 +882,36 @@ const battles = [
             momentumValue: 2,
             strategies: [
                 {
-                    name: "Hold Defensive Positions",
-                    description: "Stay in your strong positions and use your numbers advantage.",
-                    detail: "You have twice the enemy's troops and good positions. Let them make the risky moves while you stay safe. But the dense forest makes it hard to use your advantage.",
+                    name: { union: "Hold Defensive Positions", confederacy: "Flanking March" },
+                    description: { union: "Stay in your strong positions and use your numbers advantage.", confederacy: "Split your army and send a flanking column on a secret march through the forest to strike the enemy's exposed side." },
+                    detail: { union: "You have twice the enemy's troops and good positions. Let them make the risky moves while you stay safe. But the dense forest makes it hard to use your advantage.", confederacy: "It's the boldest gamble of the war: divide your already outnumbered army and send half on a 12-mile march through dense forest. If you achieve surprise, the enemy's flank will shatter. If you're detected, both halves could be destroyed." },
                     power: { union: 4, confederacy: 7 },
                     casualties: { union: 45000, confederacy: 30000 },
                     outcome: {
-                        win: "Your defensive positions hold against the enemy's attacks. Your numerical advantage slowly grinds them down.",
-                        lose: "You held your positions, but the enemy found a way around you. The surprise flank attack shattered your defensive line."
+                        win: { union: "Your defensive positions hold firm against every attack. Your numerical advantage slowly grinds the enemy down until they can fight no more.", confederacy: "Your flanking column bursts from the forest at dusk and shatters the enemy's exposed flank! Panic spreads through their ranks as your troops roll up the line." },
+                        lose: { union: "You held your positions, but the enemy found a way around you through the forest. The surprise flank attack shattered your defensive line.", confederacy: "The flanking march is detected, and the enemy strikes your divided forces before they can reunite. The bold gamble ends in disaster." }
                     }
                 },
                 {
-                    name: "Attack While Divided",
-                    description: "Strike hard while the enemy's army is split in two.",
-                    detail: "The enemy has taken a huge risk by dividing their smaller army. If you attack quickly, you might destroy each half before they can reunite.",
+                    name: { union: "Attack While Divided", confederacy: "Concentrated Assault" },
+                    description: { union: "Strike hard while the enemy's army is split in two.", confederacy: "Keep your army together and throw everything at the enemy's center to punch through their line." },
+                    detail: { union: "The enemy has taken a huge risk by dividing their smaller army. If you attack quickly, you might destroy each half before they can reunite.", confederacy: "Instead of dividing your outnumbered forces, concentrate everything for one powerful blow. The dense forest will mask your approach and even the odds at the point of contact." },
                     power: { union: 7, confederacy: 4 },
                     casualties: { union: 40000, confederacy: 35000 },
                     outcome: {
-                        win: "You catch the divided enemy force and destroy one half before the other can help! The gamble of splitting their army backfires catastrophically.",
-                        lose: "The dense wilderness slowed your attack, giving the enemy time to reunite. Their flanking force hit you from behind while you were committed."
+                        win: { union: "You catch the divided enemy and destroy one half before the other can help! The gamble of splitting their army backfires catastrophically.", confederacy: "Your concentrated assault punches through the enemy center! The dense forest funnels your attack perfectly, and superior numbers mean nothing in the tangled undergrowth." },
+                        lose: { union: "The dense wilderness slowed your attack, giving the enemy time to reunite. Their flanking force hit you from an unexpected direction while you were committed.", confederacy: "Your concentrated force runs headlong into the enemy's massive numerical advantage. Without the element of surprise, your outnumbered troops are overwhelmed." }
                     }
                 },
                 {
-                    name: "Withdraw to Open Ground",
-                    description: "Pull back out of the wilderness to fight in open terrain.",
-                    detail: "The dense forest helps the smaller army hide their movements. In open ground, your larger army would have a huge advantage.",
+                    name: { union: "Withdraw to Open Ground", confederacy: "Aggressive Pursuit" },
+                    description: { union: "Pull back out of the wilderness to fight in open terrain.", confederacy: "Press the enemy aggressively, using the dense forest to negate their advantages in numbers and artillery." },
+                    detail: { union: "The dense forest helps the smaller army hide their movements. In open ground, your larger army and artillery would have a decisive advantage.", confederacy: "The Wilderness is your ally. In this tangled forest, the enemy can't deploy their superior numbers or use their artillery effectively. Stay close and keep the pressure on." },
                     power: { union: 5, confederacy: 6 },
                     casualties: { union: 35000, confederacy: 25000 },
                     outcome: {
-                        win: "In open ground, your superior numbers and artillery dominate. The enemy can't hide their movements anymore.",
-                        lose: "The withdrawal was mistaken for a retreat. Enemy forces pressed your rearguard, and the orderly pullback became chaotic."
+                        win: { union: "In open ground, your superior numbers and artillery dominate. The enemy can no longer hide their movements in the forest.", confederacy: "Your aggressive pursuit catches the enemy in a disorganized withdrawal. In the tangled forest, their retreat turns into chaos as your troops press every advantage." },
+                        lose: { union: "The withdrawal was mistaken for a retreat. Enemy forces pressed your rearguard through the forest, and the orderly pullback became chaotic.", confederacy: "The enemy's rearguard holds firm, and their army escapes to open ground where their numbers and guns can be brought to bear. The forest advantage is lost." }
                     }
                 }
             ],
@@ -1032,36 +1032,36 @@ const battles = [
             momentumValue: 4,
             strategies: [
                 {
-                    name: "Direct Assault",
-                    description: "Storm the fortifications with overwhelming numbers.",
-                    detail: "A massive frontal assault could end the siege quickly. But attacking uphill against strong fortifications is the most dangerous option. Two assaults have already failed.",
+                    name: { union: "Direct Assault", confederacy: "Repel the Assault" },
+                    description: { union: "Storm the fortifications with overwhelming numbers.", confederacy: "Hold your fortified bluffs against the enemy's frontal attack." },
+                    detail: { union: "A massive frontal assault could end the siege quickly. But attacking uphill against strong fortifications is the most dangerous option. Two assaults have already failed.", confederacy: "The enemy is throwing troops at your walls again. Your high bluffs and strong fortifications have repelled two assaults already. Man the defenses and make them pay for every yard." },
                     power: { union: 4, confederacy: 8 },
                     casualties: { union: 50000, confederacy: 20000 },
                     outcome: {
-                        win: "Your troops find a weak point in the defenses and pour through! The garrison is overwhelmed before they can react.",
-                        lose: "The assault is thrown back with terrible losses, just like the two before it. The bluffs and fortifications are simply too strong."
+                        win: { union: "Your troops find a weak point in the defenses and pour through! The garrison is overwhelmed before they can react.", confederacy: "Your defenders hurl back the attackers with devastating fire from the bluffs. The assault collapses with terrible enemy losses, just like the two before it." },
+                        lose: { union: "The assault is thrown back with terrible losses, just like the two before it. The bluffs and fortifications are simply too strong.", confederacy: "The enemy finds a weak point in your fortifications and pours through before reserves can plug the gap. Your line crumbles under the weight of numbers." }
                     }
                 },
                 {
-                    name: "Siege and Starve",
-                    description: "Tighten the ring and wait for starvation to force surrender.",
-                    detail: "Cut off all supplies and wait. Time is on your side. The garrison and civilians will eventually run out of food. It's slow but almost certain to work.",
+                    name: { union: "Siege and Starve", confederacy: "Hold Out for Relief" },
+                    description: { union: "Tighten the ring and wait for starvation to force surrender.", confederacy: "Ration supplies and endure the siege until a relief force arrives." },
+                    detail: { union: "Cut off all supplies and wait. Time is on your side. The garrison and civilians will eventually run out of food. It's slow but almost certain to work.", confederacy: "The enemy has surrounded the city, but General Johnston is gathering a relief force. Stretch your food and ammunition as far as possible. If you can hold on long enough, help will come." },
                     power: { union: 8, confederacy: 4 },
                     casualties: { union: 15000, confederacy: 35000 },
                     outcome: {
-                        win: "After weeks of starvation, the garrison has no choice. The white flag goes up and the entire army surrenders. The Mississippi is yours.",
-                        lose: "A Confederate relief force breaks through your siege lines and resupplies the garrison. You'll have to start the siege all over again."
+                        win: { union: "After weeks of starvation, the garrison has no choice. The white flag goes up and the entire army surrenders. The Mississippi is yours.", confederacy: "Your troops endure weeks of deprivation, but the relief force finally breaks through the enemy siege lines! Fresh supplies and reinforcements pour into the city." },
+                        lose: { union: "A relief force breaks through your siege lines and resupplies the garrison. You'll have to start the siege all over again.", confederacy: "The relief force never comes. After weeks of starvation, your troops are too weak to fight. With soldiers eating rats and shoe leather, you have no choice but to surrender." }
                     }
                 },
                 {
-                    name: "Naval Bombardment",
-                    description: "Use Union gunboats to pound the city from the river.",
-                    detail: "The Union Navy has powerful ironclad gunboats on the Mississippi. Concentrated naval fire could weaken the defenses enough for ground troops to break through.",
+                    name: { union: "Naval Bombardment", confederacy: "Counter-Battery Fire" },
+                    description: { union: "Use gunboats to pound the city from the river.", confederacy: "Turn your heavy guns on the enemy gunboats to drive them off the river." },
+                    detail: { union: "The Navy has powerful ironclad gunboats on the Mississippi. Concentrated naval fire could weaken the defenses enough for ground troops to break through.", confederacy: "Enemy gunboats are bombarding the city from the river. Your batteries on the 200-foot bluffs have the advantage of height. Concentrate fire on the ironclads to sink them or drive them downstream." },
                     power: { union: 6, confederacy: 6 },
                     casualties: { union: 30000, confederacy: 30000 },
                     outcome: {
-                        win: "The naval bombardment breaches the river-facing fortifications. Combined with a ground attack, the city's defenses crumble.",
-                        lose: "The high bluffs make it nearly impossible for naval guns to hit the fortifications effectively. The bombardment causes damage but doesn't break the defenses."
+                        win: { union: "The naval bombardment breaches the river-facing fortifications. Combined with a ground attack, the city's defenses crumble.", confederacy: "Your plunging fire from the high bluffs smashes through the ironclads' deck armor. Several gunboats are sunk and the rest retreat downstream, ending the river threat." },
+                        lose: { union: "The high bluffs make it nearly impossible for naval guns to hit the fortifications effectively. The bombardment causes damage but doesn't break the defenses.", confederacy: "The ironclads absorb your fire and keep pounding the city. The naval bombardment breaches your river-facing walls, and enemy troops surge through the gap." }
                     }
                 }
             ],
@@ -1194,36 +1194,36 @@ const battles = [
             momentumValue: 4,
             strategies: [
                 {
-                    name: "Hold the High Ground",
-                    description: "Keep your forces on the ridges and hills, forcing the enemy to attack uphill.",
-                    detail: "High ground gives enormous advantages: better visibility, artillery range, and the enemy must charge uphill into your fire. Cemetery Ridge and Little Round Top are key.",
+                    name: { union: "Hold the High Ground", confederacy: "Storm the Heights" },
+                    description: { union: "Dig in on Cemetery Ridge and the surrounding hills, forcing the enemy to attack uphill.", confederacy: "Launch your veterans uphill against the enemy positions on the ridge and hilltops." },
+                    detail: { union: "High ground gives enormous advantages: better visibility, artillery range, and the enemy must charge uphill into your fire. Cemetery Ridge and Little Round Top are key positions to hold at all costs.", confederacy: "The enemy holds the high ground on Cemetery Ridge, but your veterans have won against the odds before. A determined uphill assault could drive them off the heights and win a decisive victory on Northern soil." },
                     power: { union: 8, confederacy: 4 },
                     casualties: { union: 35000, confederacy: 50000 },
                     outcome: {
-                        win: "From the high ground, your artillery and rifles devastate the attacking enemy. They charge uphill into a wall of fire and are thrown back with terrible losses.",
-                        lose: "Despite your elevated position, the enemy finds a weakness in your line. A breakthrough on your flank forces you off the high ground."
+                        win: { union: "From the high ground, your artillery and rifles devastate the attacking enemy. They charge uphill into a wall of fire and are thrown back with terrible losses.", confederacy: "Your veterans surge up the slopes with a fearsome Rebel Yell! The enemy line buckles and breaks under the ferocity of your assault. The heights are yours." },
+                        lose: { union: "Despite your elevated position, the enemy finds a weakness in your line. A breakthrough on your flank forces you off the high ground.", confederacy: "Your troops charge uphill with incredible bravery, but the enemy fire from the heights is murderous. The attack stalls and your men fall back, leaving the hillside covered with casualties." }
                     }
                 },
                 {
-                    name: "Massive Frontal Assault",
-                    description: "Launch your best troops in a grand charge against the enemy center.",
-                    detail: "A bold gamble: throw everything at the enemy's center and split their army in two. But crossing open ground under fire is devastating.",
+                    name: { union: "Massive Counterattack", confederacy: "Grand Charge" },
+                    description: { union: "Leave the high ground and launch a bold counterattack against the enemy center.", confederacy: "Send your best troops in a grand charge across the open fields to split the enemy line." },
+                    detail: { union: "Instead of waiting, throw everything at the enemy before they're fully organized. It's risky to leave your strong defensive position, but a counterattack could catch them off guard and end the invasion.", confederacy: "A bold gamble: march your finest division across a mile of open ground and smash through the center of the enemy line. If you break through, their army splits in two. But crossing open fields under massed artillery is devastating." },
                     power: { union: 5, confederacy: 3 },
                     casualties: { union: 40000, confederacy: 60000 },
                     outcome: {
-                        win: "Your charge breaks through the center! The enemy line splits and their army begins to collapse on both sides of the breach.",
-                        lose: "The charge across open ground is a bloodbath. Enemy artillery and rifles cut your men down before they ever reach the line. Thousands fall."
+                        win: { union: "Your counterattack catches the enemy off balance! Before they can form proper lines, your troops slam into them and drive them back in confusion.", confederacy: "Your charge breaks through the center! The enemy line splits and their army begins to collapse on both sides of the breach. A glorious victory on Northern soil!" },
+                        lose: { union: "Leaving the high ground was a mistake. The enemy's veterans rally and drive your counterattack back with heavy losses. You scramble to reoccupy your defensive positions.", confederacy: "The charge across open ground is a bloodbath. Enemy artillery and rifles from the heights cut your men down before they ever reach the line. Thousands fall in the open fields." }
                     }
                 },
                 {
-                    name: "Flanking Maneuver",
-                    description: "Try to get around the enemy's sides and attack from an unexpected direction.",
-                    detail: "Instead of attacking where the enemy is strongest, find their weak point. This requires more time and coordination but avoids the strongest defenses.",
+                    name: { union: "Flanking Maneuver", confederacy: "Flanking Maneuver" },
+                    description: { union: "Extend your line to protect your flanks and look for a chance to envelop the enemy.", confederacy: "Send troops around the enemy's flanks to attack from an unexpected direction." },
+                    detail: { union: "The enemy may try to get around your flanks at Little Round Top or Culp's Hill. Reinforce the flanks and look for an opportunity to swing around and hit the enemy from the side.", confederacy: "Instead of attacking where the enemy is strongest, find the weak ends of their line. Without Jackson, coordination will be harder, but a successful flank attack could roll up their entire position." },
                     power: { union: 7, confederacy: 5 },
                     casualties: { union: 30000, confederacy: 45000 },
                     outcome: {
-                        win: "Your flanking maneuver catches the enemy off guard! Attacked from an unexpected direction, their defensive line unravels.",
-                        lose: "The flanking march was detected, and the enemy repositioned to meet your attack. You end up in a fight you didn't plan for."
+                        win: { union: "Your troops secure the flanks and then swing around to catch the enemy in a devastating crossfire. Their line unravels from the edges inward.", confederacy: "Your flanking column finds the end of the enemy line undefended! Attacked from an unexpected direction, their defensive position unravels as troops flee in panic." },
+                        lose: { union: "While extending your flanks, the enemy punches through your thinned center. The line stretches too far and snaps.", confederacy: "The flanking march takes too long and is detected. The enemy repositions to meet your attack, and you end up in a costly fight on ground they chose." }
                     }
                 }
             ],
@@ -1344,36 +1344,36 @@ const battles = [
             momentumValue: 2,
             strategies: [
                 {
-                    name: "Exploit the Gap",
-                    description: "Pour troops through the opening in the enemy line.",
-                    detail: "A gap in the enemy line is like an open door. Rush troops through it to attack from behind and cause a collapse. But the dense forest makes coordination difficult.",
+                    name: { union: "Plug the Gap", confederacy: "Exploit the Gap" },
+                    description: { union: "Rush reserves to close the hole in your line before the enemy pours through.", confederacy: "Pour troops through the opening in the enemy line and attack from behind." },
+                    detail: { union: "A confused order has pulled a division out of your line, leaving a dangerous gap. Rush every available reserve to plug the hole before the enemy discovers it. In this dense forest, a breakthrough could be catastrophic.", confederacy: "A gap has appeared in the enemy line -- an open door. Rush Longstreet's veterans through it to hit the enemy from behind and cause a total collapse. The dense forest makes coordination difficult, but the opportunity is too good to miss." },
                     power: { union: 3, confederacy: 8 },
                     casualties: { union: 55000, confederacy: 35000 },
                     outcome: {
-                        win: "Your troops pour through the gap and hit the enemy from behind! Their line collapses in confusion as soldiers flee in every direction.",
-                        lose: "The gap closed before you could exploit it. Now your troops are tangled in the forest with the enemy on all sides."
+                        win: { union: "Your reserves reach the gap just in time! The line holds together, and the enemy attack slams into a reformed wall of defenders instead of an open breach.", confederacy: "Your troops pour through the gap and hit the enemy from behind! Their line collapses in confusion as soldiers flee in every direction. Two-thirds of the enemy army is routed." },
+                        lose: { union: "Your reserves arrive too late. The enemy pours through the gap and hits your troops from behind. The line collapses and your soldiers flee in confusion through the forest.", confederacy: "The gap closed before you could exploit it. The enemy rushed reserves into the breach, and now your troops are tangled in the forest with the enemy on all sides." }
                     }
                 },
                 {
-                    name: "Steady Pressure",
-                    description: "Attack all along the enemy line with coordinated pressure.",
-                    detail: "Instead of gambling on one breakthrough, apply pressure everywhere. This is safer and might find other weak points as the battle develops.",
+                    name: { union: "Consolidate the Line", confederacy: "Steady Pressure" },
+                    description: { union: "Pull your scattered units together into a tighter, more defensible formation.", confederacy: "Attack all along the enemy line with coordinated pressure." },
+                    detail: { union: "Your army is spread across miles of dense forest. Pull units back to form a shorter, stronger line that can't be easily broken. Give up ground to gain cohesion -- in this forest, a compact line is worth more than a long one.", confederacy: "Instead of gambling on one breakthrough, apply pressure everywhere along the enemy line. The forest makes coordination hard, but your numerical advantage means you can probe for weak points while keeping the enemy off balance." },
                     power: { union: 5, confederacy: 6 },
                     casualties: { union: 40000, confederacy: 30000 },
                     outcome: {
-                        win: "Your steady pressure finds a weak point and you break through! The enemy's entire line begins to buckle under the sustained assault.",
-                        lose: "Your pressure was spread too thin. The enemy concentrated forces at key points and repulsed each of your attacks in turn."
+                        win: { union: "Your consolidated line holds firm against repeated attacks. With units supporting each other, the enemy's assaults break against your reformed defenses.", confederacy: "Your steady pressure finds a weak point and you break through! The enemy's entire line begins to buckle under the sustained assault from multiple directions." },
+                        lose: { union: "While pulling back to consolidate, the enemy catches your units in mid-movement. The withdrawal turns into a rout in the tangled forest.", confederacy: "Your pressure was spread too thin across the forest. The enemy concentrated forces at key points and repulsed each of your attacks in turn." }
                     }
                 },
                 {
-                    name: "Defensive Stand",
-                    description: "Form a strong defensive line and make the enemy come to you.",
-                    detail: "The confusion affects both sides. Get organized and make the enemy attack your prepared positions. Defense in the forest gives you cover.",
+                    name: { union: "Defensive Stand", confederacy: "All-Out Assault" },
+                    description: { union: "Fall back to strong ground and form an unbreakable defensive line.", confederacy: "Throw everything you have at the enemy before they can recover from the confusion." },
+                    detail: { union: "Find the best defensive terrain available and dig in. The confusion affects both sides, and defense in the forest gives you cover. Hold your ground like a rock and let the enemy waste their strength attacking.", confederacy: "The enemy is confused and disorganized in the forest. Now is the time to strike with everything. Mass your troops for an overwhelming assault before they can pull their scattered forces together." },
                     power: { union: 6, confederacy: 5 },
                     casualties: { union: 35000, confederacy: 25000 },
                     outcome: {
-                        win: "Your defensive stand holds firm! Using the forest as natural cover, you repulse every enemy attack and gradually push them back.",
-                        lose: "Your defensive positions were outflanked in the dense forest. The enemy found a way around you that you couldn't see coming."
+                        win: { union: "Your defensive stand holds firm! Using the forest as natural cover, you repulse every enemy attack and save the army from destruction.", confederacy: "Your all-out assault overwhelms the disorganized enemy! Their scattered units can't form a coherent defense, and your troops sweep through the forest driving them before you." },
+                        lose: { union: "Your defensive positions are outflanked in the dense forest. The enemy found a way around you that you couldn't see coming through the trees.", confederacy: "Your assault runs into unexpectedly fierce resistance. The enemy has found strong ground and your troops exhaust themselves attacking prepared positions in the thick forest." }
                     }
                 }
             ],
@@ -1494,36 +1494,36 @@ const battles = [
             momentumValue: 2,
             strategies: [
                 {
-                    name: "Push Through Despite Losses",
-                    description: "Keep attacking relentlessly, accepting heavy casualties to maintain pressure.",
-                    detail: "Grant's strategy: use the Union's advantage in numbers and supplies. Keep fighting and never give Lee time to rest or maneuver. Brutal but effective.",
+                    name: { union: "Push Through Despite Losses", confederacy: "Bleed Them in the Thickets" },
+                    description: { union: "Keep attacking relentlessly, accepting heavy casualties to maintain pressure.", confederacy: "Let the enemy throw themselves into the tangled forest and make them pay for every yard." },
+                    detail: { union: "Use your advantage in numbers and supplies to keep fighting and never give the enemy time to rest or maneuver. The losses will be brutal, but you can replace them and the enemy cannot.", confederacy: "The dense forest turns every advance into a bloody crawl. Let your veterans use the terrain to ambush, flank, and punish the enemy's massed attacks. They have more men, but the forest makes numbers meaningless." },
                     power: { union: 7, confederacy: 5 },
                     casualties: { union: 55000, confederacy: 35000 },
                     outcome: {
-                        win: "Your relentless pressure breaks the enemy's will. They can't sustain the constant combat and begin falling back.",
-                        lose: "Despite your determination, the losses mount faster than you can replace them. The relentless attacks exhaust your army without breaking through."
+                        win: { union: "Your relentless pressure breaks the enemy's will. They cannot sustain the constant combat and begin falling back.", confederacy: "The forest becomes a killing ground. Your veterans shatter every assault, and the enemy's losses mount beyond what they can bear." },
+                        lose: { union: "Despite your determination, the losses mount faster than you can replace them. The relentless attacks exhaust your troops without breaking through.", confederacy: "The enemy's sheer numbers overwhelm your defenders despite the terrain advantage. They absorb your punishing fire and keep coming." }
                     }
                 },
                 {
-                    name: "Outmaneuver in the Forest",
-                    description: "Try to find the enemy's flanks in the dense wilderness.",
-                    detail: "Even in thick forest, there might be ways to get around the enemy instead of fighting through them head-on. But the dense terrain makes coordination extremely difficult.",
+                    name: { union: "Outmaneuver in the Forest", confederacy: "Forest Flank Attack" },
+                    description: { union: "Try to find the enemy's flanks in the dense wilderness.", confederacy: "Use your knowledge of the terrain to strike the enemy's exposed flank." },
+                    detail: { union: "Even in thick forest, there might be ways around the enemy instead of fighting through them head-on. But the dense terrain makes coordination extremely difficult.", confederacy: "Your troops know these woods from last year's victory over Hooker. Use hidden trails and local knowledge to slip around the enemy's flank and hit them where they least expect it." },
                     power: { union: 5, confederacy: 7 },
                     casualties: { union: 45000, confederacy: 30000 },
                     outcome: {
-                        win: "Your flanking column finds a gap in the enemy's line! Emerging from the dense forest, they strike the enemy's side with devastating effect.",
-                        lose: "The dense forest made flanking impossible. Your troops got lost, separated, and were defeated in detail by an enemy who knew the terrain."
+                        win: { union: "Your flanking column finds a gap in the enemy's line! Emerging from the dense forest, they strike the enemy's side with devastating effect.", confederacy: "Your troops navigate the familiar forest paths perfectly. The enemy never sees the flank attack coming, and their line crumbles under the surprise assault." },
+                        lose: { union: "The dense forest made flanking impossible. Your troops got lost, separated, and were defeated in detail by an enemy who knew the terrain.", confederacy: "The enemy detected your flanking movement and repositioned to meet it. Your attack hits a prepared defense instead of an exposed flank." }
                     }
                 },
                 {
-                    name: "Bypass to Open Ground",
-                    description: "March around the enemy to fight in terrain that favors your larger army.",
-                    detail: "The Wilderness helps the smaller army. Get out of the forest and into open ground where your numbers and artillery will dominate.",
+                    name: { union: "Bypass to Open Ground", confederacy: "Pin and Counterattack" },
+                    description: { union: "March around the enemy to fight in terrain that favors your larger army.", confederacy: "Pin the enemy in the forest, then counterattack when they try to disengage." },
+                    detail: { union: "The Wilderness helps the smaller army. Get out of the forest and into open ground where your numbers and artillery will dominate.", confederacy: "The enemy wants open ground where their numbers matter. Keep them tangled in the forest with aggressive skirmishing, and if they try to slip away, hit their exposed columns hard." },
                     power: { union: 4, confederacy: 6 },
                     casualties: { union: 35000, confederacy: 25000 },
                     outcome: {
-                        win: "You successfully disengage and move to open ground. The enemy is forced to follow, fighting on your terms now.",
-                        lose: "The enemy harassed your march and caught your rearguard. The attempted bypass turned into a costly running battle."
+                        win: { union: "You successfully disengage and move to open ground. The enemy is forced to follow, fighting on your terms now.", confederacy: "Your aggressive pursuit catches the enemy's columns strung out on the forest roads. The attempted bypass turns into a costly rout." },
+                        lose: { union: "The enemy harassed your march and caught your rearguard. The attempted bypass turned into a costly running battle.", confederacy: "The enemy disengages faster than you can pursue. They reach open ground where their numbers and artillery give them the advantage." }
                     }
                 }
             ],
@@ -1645,36 +1645,36 @@ const battles = [
             momentumValue: 3,
             strategies: [
                 {
-                    name: "Siege and Cut Railroads",
-                    description: "Surround the city and cut its supply lines one by one.",
-                    detail: "Don't attack the city directly. Instead, cut the railroads that bring in food, weapons, and reinforcements. Starve the city into submission.",
+                    name: { union: "Siege and Cut Railroads", confederacy: "Defend the Rail Lines" },
+                    description: { union: "Surround the city and cut its supply lines one by one.", confederacy: "Protect the railroads that keep the city alive at all costs." },
+                    detail: { union: "Don't attack the city directly. Instead, cut the railroads that bring in food, weapons, and reinforcements. Starve the city into submission.", confederacy: "The railroads are your lifeline. Without them, the city starves. Deploy your forces to guard every rail approach and keep at least one line open no matter what." },
                     power: { union: 7, confederacy: 5 },
                     casualties: { union: 30000, confederacy: 45000 },
                     outcome: {
-                        win: "One by one, the railroads are cut. The city slowly starves and is forced to evacuate. Victory without a devastating assault.",
-                        lose: "The enemy breaks out of the siege and reopens a supply line. Your forces are stretched too thin around the perimeter to hold."
+                        win: { union: "One by one, the railroads are cut. The city slowly starves and is forced to evacuate. Victory without a devastating assault.", confederacy: "Your troops hold the rail lines open against every attempt to cut them. Supplies keep flowing and the city endures, forcing the enemy into a costly stalemate." },
+                        lose: { union: "The enemy concentrates forces to defend the railroads and reopens a supply line. Your forces are stretched too thin around the perimeter to hold.", confederacy: "The enemy's forces are too numerous. They cut the railroads one by one, and no amount of fighting can reopen them. The city begins to starve." }
                     }
                 },
                 {
-                    name: "Attack Supply Lines",
-                    description: "Send cavalry to destroy the enemy's supply and communication lines deep behind their army.",
-                    detail: "Armies need constant supplies. Cut the flow of food and ammunition, and even the strongest position becomes untenable.",
+                    name: { union: "Attack Supply Lines", confederacy: "Aggressive Sortie" },
+                    description: { union: "Send cavalry to destroy the enemy's supply and communication lines deep behind their army.", confederacy: "Launch aggressive attacks from the city to disrupt the enemy and break the siege." },
+                    detail: { union: "Armies need constant supplies. Cut the flow of food and ammunition, and even the strongest position becomes untenable.", confederacy: "Hood's orders are to attack. Strike hard from behind the fortifications to catch the enemy off guard and drive them away from the city before they can tighten the noose." },
                     power: { union: 6, confederacy: 6 },
                     casualties: { union: 25000, confederacy: 35000 },
                     outcome: {
-                        win: "Your raids destroy critical supply depots and tear up railroad tracks. The enemy army can't sustain itself and must retreat.",
-                        lose: "Your raiders are intercepted and scattered. The enemy's supply lines remain intact, and you've wasted valuable cavalry."
+                        win: { union: "Your raids destroy critical supply depots and tear up railroad tracks. The enemy army can't sustain itself and must retreat.", confederacy: "Your sortie catches the enemy off balance! The aggressive attack disrupts their siege operations and forces them to pull back and regroup." },
+                        lose: { union: "Your raiders are intercepted and scattered. The enemy's supply lines remain intact, and you've wasted valuable cavalry.", confederacy: "The sortie runs into the enemy's superior numbers in the open. Your troops take heavy casualties and are driven back behind the fortifications, weaker than before." }
                     }
                 },
                 {
-                    name: "Direct Assault",
-                    description: "Storm the city's defenses with overwhelming force.",
-                    detail: "The quickest way to take the city is a direct assault. You have the numbers, but attacking prepared urban defenses is always costly.",
+                    name: { union: "Direct Assault", confederacy: "Fortress Defense" },
+                    description: { union: "Storm the city's defenses with overwhelming force.", confederacy: "Man the fortifications and make the enemy pay dearly for every assault." },
+                    detail: { union: "The quickest way to take the city is a direct assault. You have the numbers, but attacking prepared urban defenses is always costly.", confederacy: "Your fortifications are strong and your soldiers determined. Let the enemy waste their strength attacking your walls. Every failed assault weakens them and buys time." },
                     power: { union: 5, confederacy: 4 },
                     casualties: { union: 35000, confederacy: 50000 },
                     outcome: {
-                        win: "Your massive assault overwhelms the city's defenders! The Confederate line breaks and your troops pour into Atlanta.",
-                        lose: "The city's fortifications prove too strong. Your assault is thrown back with heavy losses, and the siege drags on."
+                        win: { union: "Your massive assault overwhelms the city's defenders! The defensive line breaks and your troops pour into the city.", confederacy: "The enemy charges into your prepared defenses and is cut to pieces. Wave after wave is repulsed, and the failed assault forces them to reconsider their approach." },
+                        lose: { union: "The city's fortifications prove too strong. Your assault is thrown back with heavy losses, and the siege drags on.", confederacy: "The enemy's overwhelming numbers eventually tell. Despite fierce resistance, they breach the fortifications and your defenders are pushed back." }
                     }
                 }
             ],
@@ -1796,36 +1796,36 @@ const battles = [
             momentumValue: 3,
             strategies: [
                 {
-                    name: "Total Destruction",
-                    description: "Destroy everything in your path: railroads, factories, farms, and supplies.",
-                    detail: "Wage total war on the South's infrastructure. Burn anything that could support the Confederate war effort. Brutal, but it breaks the enemy's ability to fight.",
+                    name: { union: "Total Destruction", confederacy: "Scorched Earth Denial" },
+                    description: { union: "Destroy everything in your path: railroads, factories, farms, and supplies.", confederacy: "Destroy your own resources before the enemy can seize them, denying them the supplies they need to march." },
+                    detail: { union: "Wage total war on the enemy's infrastructure. Burn anything that could support their war effort. Brutal, but it breaks their ability to fight.", confederacy: "If the enemy is living off the land, take the land away. Burn crops, drive off livestock, and destroy bridges before the enemy arrives. Deny them everything, even if it means sacrificing your own countryside." },
                     power: { union: 8, confederacy: 3 },
                     casualties: { union: 15000, confederacy: 30000 },
                     outcome: {
-                        win: "The scorched-earth campaign devastates the enemy's heartland. With no supplies, no railroads, and no factories, their war effort collapses.",
-                        lose: "The widespread destruction scatters your forces and enrages local resistance. Guerrilla attacks multiply as civilians fight back with nothing left to lose."
+                        win: { union: "The scorched-earth campaign devastates the enemy's heartland. With no supplies, no railroads, and no factories, their war effort collapses.", confederacy: "Your denial strategy works. The enemy finds nothing but ashes and empty fields. Without forage, their army weakens and the march grinds to a halt." },
+                        lose: { union: "The widespread destruction scatters your forces and enrages local resistance. Guerrilla attacks multiply as civilians fight back with nothing left to lose.", confederacy: "You can't destroy enough fast enough. The enemy's foraging parties range far and wide, finding supplies you missed. Your own people suffer more than the invaders." }
                     }
                 },
                 {
-                    name: "Targeted Military Strikes",
-                    description: "Focus destruction on military targets: railroads, arsenals, and supply depots.",
-                    detail: "Destroy what the enemy needs to fight, but leave civilian property alone when possible. This is slower but keeps discipline and reduces resistance.",
+                    name: { union: "Targeted Military Strikes", confederacy: "Harass and Delay" },
+                    description: { union: "Focus destruction on military targets: railroads, arsenals, and supply depots.", confederacy: "Use cavalry and militia to harass the enemy's columns, slow their march, and pick off stragglers." },
+                    detail: { union: "Destroy what the enemy needs to fight, but leave civilian property alone when possible. This is slower but keeps discipline and reduces resistance.", confederacy: "You can't stop 60,000 troops head-on with 13,000, but you can make them bleed. Raid their flanks, burn bridges ahead of them, ambush foraging parties, and make every mile cost them." },
                     power: { union: 6, confederacy: 5 },
                     casualties: { union: 20000, confederacy: 35000 },
                     outcome: {
-                        win: "Your targeted strikes cripple the enemy's military infrastructure while maintaining discipline. Key rail junctions and depots go up in flames.",
-                        lose: "By limiting your destruction, you leave the enemy enough resources to organize resistance. Militia units regroup and harass your columns."
+                        win: { union: "Your targeted strikes cripple the enemy's military infrastructure while maintaining discipline. Key rail junctions and depots go up in flames.", confederacy: "Your constant harassment bleeds the enemy's strength. Burned bridges and destroyed roads slow their advance to a crawl, and raiding parties pick off isolated units daily." },
+                        lose: { union: "By limiting your destruction, you leave the enemy enough resources to organize resistance. Militia units regroup and harass your columns.", confederacy: "The enemy's massive columns brush aside your harassment like gnats. Your small forces can't inflict enough damage to slow their relentless advance." }
                     }
                 },
                 {
-                    name: "Speed March",
-                    description: "Move as fast as possible, taking only what you need to survive.",
-                    detail: "Speed is your weapon. March so fast the enemy can't organize a defense. Take food and supplies but don't waste time burning everything. Reach Savannah before anyone can stop you.",
+                    name: { union: "Speed March", confederacy: "Concentrate and Block" },
+                    description: { union: "Move as fast as possible, taking only what you need to survive.", confederacy: "Gather every available soldier and try to block the enemy at a river crossing or narrow pass." },
+                    detail: { union: "Speed is your weapon. March so fast the enemy can't organize a defense. Take food and supplies but don't waste time burning everything. Reach Savannah before anyone can stop you.", confederacy: "Scattered forces can't stop a 60,000-man army, but concentrated at a chokepoint — a river, a swamp, a narrow bridge — even 13,000 might hold long enough for reinforcements to arrive." },
                     power: { union: 7, confederacy: 4 },
                     casualties: { union: 18000, confederacy: 25000 },
                     outcome: {
-                        win: "Your rapid advance outpaces every attempt to organize a defense. Before the enemy can react, you've reached the coast and split the Confederacy again.",
-                        lose: "Moving too fast stretches your columns thin. Enemy cavalry strikes your supply wagons and isolated units, forcing costly delays."
+                        win: { union: "Your rapid advance outpaces every attempt to organize a defense. Before the enemy can react, you've reached the coast and split the Confederacy again.", confederacy: "You find the perfect chokepoint and dig in. The enemy's advance stalls at the blocked crossing, buying precious time and forcing them to find another route." },
+                        lose: { union: "Moving too fast stretches your columns thin. Enemy forces strike your supply wagons and isolated units, forcing costly delays.", confederacy: "The enemy simply goes around your blocking position. With only 13,000 troops, you can't cover every route, and the main column marches past untouched." }
                     }
                 }
             ],
@@ -1968,36 +1968,36 @@ const battles = [
             momentumValue: 3,
             strategies: [
                 {
-                    name: "Fight to the Last",
-                    description: "Continue fighting despite impossible odds.",
-                    detail: "Some believe surrender dishonors the sacrifices already made. Fighting to the end shows ultimate commitment, but means more death in a war already decided.",
+                    name: { union: "Crush All Resistance", confederacy: "Fight to the Last" },
+                    description: { union: "Close the ring and destroy the trapped enemy army with overwhelming force.", confederacy: "Continue fighting despite impossible odds rather than surrender." },
+                    detail: { union: "The enemy is surrounded and starving. Tighten the noose and finish the war on the battlefield. A decisive final blow will end all resistance and prevent any guerrilla campaign.", confederacy: "Some believe surrender dishonors the sacrifices already made. Fighting to the end shows ultimate commitment, but means more death in a war already decided." },
                     power: { union: 7, confederacy: 2 },
                     casualties: { union: 15000, confederacy: 25000 },
                     outcome: {
-                        win: "The remaining resistance collapses under your overwhelming force. The war ends on the battlefield.",
-                        lose: "Desperate fighters inflict surprising casualties, but the outcome was never in doubt. The resistance delays the inevitable at terrible cost."
+                        win: { union: "Your overwhelming force crushes the remaining resistance. The trapped enemy army is destroyed on the field, ending the war decisively.", confederacy: "Your desperate stand inflicts surprising casualties and delays the inevitable. The ferocity of your resistance forces the enemy to offer better terms than expected." },
+                        lose: { union: "The trapped enemy fights with desperate fury, inflicting unexpected casualties. The war ends, but the final bloodshed leaves deep scars.", confederacy: "Your troops are too starved and exhausted to mount effective resistance. The fight is over almost before it begins, and the losses are for nothing." }
                     }
                 },
                 {
-                    name: "Attempt Breakout",
-                    description: "Try to punch through the encirclement and escape.",
-                    detail: "Maybe there's still a chance to break free and continue the fight elsewhere. But the odds are nearly impossible against such overwhelming numbers.",
+                    name: { union: "Seal the Escape Routes", confederacy: "Attempt Breakout" },
+                    description: { union: "Ensure no part of the enemy army escapes to fight as guerrillas.", confederacy: "Try to punch through the encirclement and escape to continue the fight." },
+                    detail: { union: "Some enemy officers want to scatter into the hills and wage guerrilla war for years. Seal every escape route and force a complete surrender. A clean end to the war is worth more than a quick one.", confederacy: "Maybe there's still a chance to break free and link up with other forces. The odds are terrible, but escape means the fight continues. Failure means surrender or destruction." },
                     power: { union: 6, confederacy: 3 },
                     casualties: { union: 10000, confederacy: 20000 },
                     outcome: {
-                        win: "The breakout attempt fails as your forces close every escape route. The enemy's last gamble ends in futility.",
-                        lose: "A small force breaks through, but most are captured or scattered. The escape succeeds only in prolonging suffering."
+                        win: { union: "Every escape route is sealed. The enemy's last gamble fails as your forces close in from all sides. There is nowhere left to run.", confederacy: "A gap in the encirclement! Your lead elements break through and escape into the countryside. The army survives to fight another day." },
+                        lose: { union: "A small force slips through your cordon and escapes into the hills. The war drags on as scattered bands wage guerrilla resistance.", confederacy: "The encirclement is airtight. Your breakout attempt is thrown back with heavy losses, and your exhausted troops have nothing left to give." }
                     }
                 },
                 {
-                    name: "Honorable Surrender",
-                    description: "Negotiate generous terms to end the war with dignity.",
-                    detail: "The war is decided. An honorable surrender saves lives on both sides and begins the healing process. It takes more courage than fighting.",
+                    name: { union: "Offer Generous Terms", confederacy: "Honorable Surrender" },
+                    description: { union: "Offer generous surrender terms to end the war quickly and begin healing the nation.", confederacy: "Negotiate the best possible terms to end the war with dignity and save your soldiers' lives." },
+                    detail: { union: "The war is won. Crushing the enemy completely might feel satisfying, but generous terms will encourage other armies to surrender too and help reunite the country faster.", confederacy: "The war is decided. An honorable surrender saves your soldiers' lives and begins the healing process. It takes more courage to accept defeat with dignity than to throw away lives in a hopeless fight." },
                     power: { union: 8, confederacy: 4 },
                     casualties: { union: 0, confederacy: 0 },
                     outcome: {
-                        win: "The surrender is handled with dignity and respect. Generous terms are offered, and the nation begins to heal. The war is truly over.",
-                        lose: "Surrender terms are harsh and punitive. The war ends, but bitterness will poison the peace for decades."
+                        win: { union: "Your generous terms are accepted with gratitude. Enemy soldiers keep their horses, officers keep their sidearms. The dignity of the surrender helps heal the nation.", confederacy: "The terms are generous beyond expectation. Your soldiers keep their horses and are paroled to go home. The surrender preserves your army's honor and begins the long road to peace." },
+                        lose: { union: "Your generous terms are rejected. The enemy chooses to fight on, prolonging the bloodshed unnecessarily and delaying the peace.", confederacy: "The terms offered are harsh and humiliating. Your soldiers are treated as criminals rather than honorable combatants. The bitterness will poison the peace for generations." }
                     }
                 }
             ],
