@@ -2403,6 +2403,112 @@ img {
 }
 
 /* ===============================================
+   DIFFICULTY SELECTOR
+   =============================================== */
+
+.difficulty-selector {
+    text-align: center;
+    margin-bottom: var(--space-8);
+    padding: var(--space-5) var(--space-6);
+    background: var(--color-surface-secondary);
+    border-radius: var(--radius-2xl);
+    border: 1px solid var(--color-border-secondary);
+}
+
+.difficulty-label {
+    font-size: var(--font-size-sm);
+    font-weight: 800;
+    color: var(--color-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: var(--space-3);
+}
+
+.difficulty-pills {
+    display: flex;
+    gap: var(--space-2);
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.difficulty-pill {
+    padding: var(--space-3) var(--space-6);
+    border: 2px solid var(--color-border-primary);
+    border-radius: var(--radius-pill);
+    background: var(--color-surface-primary);
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-sm);
+    font-weight: 700;
+    cursor: pointer;
+    transition: all var(--transition-base) var(--ease-out);
+}
+
+.difficulty-pill:hover {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+    transform: translateY(-1px);
+}
+
+.difficulty-pill.active {
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+    color: white;
+    box-shadow: 0 3px 0 0 var(--color-primary-active), 0 2px 8px rgba(var(--color-primary-rgb), 0.3);
+}
+
+.difficulty-pill.active:hover {
+    transform: none;
+}
+
+.difficulty-hint {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-tertiary);
+    margin-top: var(--space-2);
+    font-style: italic;
+}
+
+/* ===============================================
+   WWYD FEEDBACK
+   =============================================== */
+
+.wwyd-feedback {
+    background: linear-gradient(135deg, rgba(var(--color-primary-rgb), 0.1), rgba(124, 58, 237, 0.08));
+    border: 2px solid rgba(var(--color-primary-rgb), 0.25);
+    border-radius: var(--radius-xl);
+    padding: var(--space-5) var(--space-6);
+    margin-bottom: var(--space-4);
+    text-align: center;
+}
+
+.feedback-icon {
+    font-size: 2rem;
+    margin-bottom: var(--space-2);
+}
+
+.feedback-text {
+    font-size: var(--font-size-base);
+    font-weight: 600;
+    color: var(--color-text-primary);
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* ===============================================
+   VOICE EXPLAINER (Beginner level)
+   =============================================== */
+
+.voice-explainer {
+    background: rgba(var(--color-primary-rgb), 0.08);
+    border-left: 3px solid var(--color-primary);
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+    padding: var(--space-3) var(--space-4);
+    margin-top: var(--space-3);
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+}
+
+/* ===============================================
    BATTLE VISUALS (Artwork + Map Tabs)
    =============================================== */
 

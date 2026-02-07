@@ -80,6 +80,27 @@ function setupEventListeners() {
         renderModeSelection();
     });
 
+    // Difficulty toggle
+    var difficultyPills = document.querySelectorAll('.difficulty-pill');
+    var difficultyHints = {
+        beginner: 'Simpler language, shorter sentences',
+        intermediate: '8th grade reading level',
+        advanced: 'High school reading level (9-10th grade)'
+    };
+    difficultyPills.forEach(function(pill) {
+        pill.addEventListener('click', function() {
+            difficultyPills.forEach(function(p) {
+                p.classList.remove('active');
+                p.setAttribute('aria-checked', 'false');
+            });
+            pill.classList.add('active');
+            pill.setAttribute('aria-checked', 'true');
+            gameState.difficulty = pill.getAttribute('data-level');
+            document.getElementById('difficultyHint').textContent =
+                difficultyHints[gameState.difficulty] || '';
+        });
+    });
+
     // Side selection
     document.getElementById('unionCard').addEventListener('click', function() {
         startWithSide('union');

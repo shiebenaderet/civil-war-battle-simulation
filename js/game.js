@@ -8,6 +8,7 @@
 let gameState = {
     mode: null,           // 'historical' or 'freeplay'
     side: null,           // 'union' or 'confederacy'
+    difficulty: 'intermediate', // 'beginner', 'intermediate', 'advanced'
     currentBattle: 0,
     studentName: '',
     // Historical mode - response tracking
@@ -20,6 +21,21 @@ let gameState = {
     momentum: 0,
     battleHistory: []
 };
+
+// ============================================================
+// Difficulty Content Resolver
+// ============================================================
+
+// Returns the appropriate text for the current difficulty level.
+// If field is a {beginner, intermediate, advanced} object, returns the right level.
+// If field is a plain string/array, returns it unchanged (backwards compatible).
+function getContent(field) {
+    if (field && typeof field === 'object' && !Array.isArray(field) &&
+        ('beginner' in field || 'intermediate' in field || 'advanced' in field)) {
+        return field[gameState.difficulty] || field.intermediate || '';
+    }
+    return field;
+}
 
 // ============================================================
 // Save / Load / Progress
@@ -126,6 +142,14 @@ function getHistoricalContent() {
     const side = gameState.side;
     const h = battle.historical;
 
+    // Resolve the WWYD block for the current side
+    var wwydRaw = h.whatWouldYouDo[side];
+    var wwydResolved = {
+        prompt: getContent(wwydRaw.prompt),
+        options: getContent(wwydRaw.options),
+        feedback: wwydRaw.feedback ? getContent(wwydRaw.feedback) : []
+    };
+
     return {
         id: battle.id,
         name: battle.name,
@@ -134,18 +158,26 @@ function getHistoricalContent() {
         location: battle.location,
         image: battle.image,
         imageCredit: battle.imageCredit,
-        situation: h.situation[side],
+        situation: getContent(h.situation[side]),
         intel: h.intel,
-        whatWouldYouDo: h.whatWouldYouDo[side],
-        whatHappened: h.whatHappened,
-        tech: h.tech,
-        voice: h.voice,
-        biggerPicture: h.biggerPicture,
-        reflection: h.reflection,
+        whatWouldYouDo: wwydResolved,
+        whatHappened: getContent(h.whatHappened),
+        tech: {
+            name: h.tech.name,
+            description: getContent(h.tech.description)
+        },
+        voice: {
+            quote: h.voice.quote,
+            attribution: h.voice.attribution,
+            source: h.voice.source,
+            explainer: h.voice.explainer ? getContent(h.voice.explainer) : ''
+        },
+        biggerPicture: getContent(h.biggerPicture),
+        reflection: getContent(h.reflection),
         winner: h.winner,
         outcome: h.outcome,
         casualties: h.casualties,
-        keyFact: h.keyFact,
+        keyFact: getContent(h.keyFact),
         perspectives: h.perspectives || [],
         battleNumber: gameState.currentBattle + 1,
         totalBattles: battles.length

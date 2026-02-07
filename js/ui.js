@@ -355,6 +355,15 @@ function renderHistoricalBattle() {
     document.getElementById('histVoiceAttribution').textContent = '\u2014 ' + content.voice.attribution;
     document.getElementById('histVoiceSource').textContent = content.voice.source;
 
+    // Voice explainer (beginner level)
+    var explainerEl = document.getElementById('histVoiceExplainer');
+    if (content.voice.explainer && gameState.difficulty === 'beginner') {
+        explainerEl.textContent = '\uD83D\uDCA1 In simpler words: ' + content.voice.explainer;
+        explainerEl.style.display = 'block';
+    } else {
+        explainerEl.style.display = 'none';
+    }
+
     // --- Section 6: The Bigger Picture ---
     document.getElementById('histBigPicture').textContent = content.biggerPicture;
     document.getElementById('histKeyFact').textContent = content.keyFact;
@@ -388,6 +397,7 @@ function renderHistoricalBattle() {
     document.getElementById('sectionIntel').style.display = 'block';
     document.getElementById('sectionSituation').style.display = 'block';
     document.getElementById('sectionWWYD').style.display = 'none';
+    document.getElementById('wwydFeedback').style.display = 'none';
     document.getElementById('sectionHappened').style.display = 'none';
     document.getElementById('sectionVoice').style.display = 'none';
     document.getElementById('sectionBigPicture').style.display = 'none';
@@ -466,15 +476,26 @@ function advanceNarrative() {
             break;
 
         case 2:
-            // THE REVEAL: Show What Happened + Voice + Bigger Picture all at once
+            // THE REVEAL: Show feedback + What Happened + Voice + Bigger Picture
             updateStepPills(2);
             continueBtn.disabled = false;
             continueBtn.classList.remove('pulse-hint');
 
+            // Show WWYD feedback for the student's specific choice
+            var feedbackEl = document.getElementById('wwydFeedback');
+            var content = getHistoricalContent();
+            var feedbackList = content.whatWouldYouDo.feedback;
+            if (feedbackList && feedbackList[wwydSelected]) {
+                document.getElementById('feedbackIcon').textContent = '\uD83D\uDCAC';
+                document.getElementById('feedbackText').textContent = feedbackList[wwydSelected];
+                feedbackEl.style.display = 'block';
+                targetSection = feedbackEl;
+            }
+
             // Show all three "reveal" sections together
             var happened = document.getElementById('sectionHappened');
             happened.style.display = 'block';
-            targetSection = happened;
+            if (!targetSection) targetSection = happened;
 
             document.getElementById('sectionVoice').style.display = 'block';
             document.getElementById('sectionBigPicture').style.display = 'block';
