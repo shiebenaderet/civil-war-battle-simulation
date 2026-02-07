@@ -322,18 +322,38 @@
             </div>
         </div>
 
+        <!-- ============================== -->
+        <!-- STUDENT NAME SCREEN            -->
+        <!-- ============================== -->
+        <div class="screen" id="studentNameScreen" style="display:none;" role="region" aria-label="Enter your name">
+            <div class="name-screen-content">
+                <div class="name-screen-icon" aria-hidden="true">&#x1F4CB;</div>
+                <h2 class="section-title">Welcome, Historian</h2>
+                <p class="subtitle">Enter your name for your official response sheet</p>
+
+                <div class="name-form">
+                    <div class="name-fields">
+                        <div class="name-field">
+                            <label for="firstNameInput" class="name-field-label">First Name</label>
+                            <input type="text" id="firstNameInput" class="name-field-input" placeholder="Sarah" maxlength="20" autocomplete="given-name" aria-label="Your first name">
+                        </div>
+                        <div class="name-field name-field-initial">
+                            <label for="lastInitialInput" class="name-field-label">Last Initial</label>
+                            <input type="text" id="lastInitialInput" class="name-field-input initial-input" placeholder="J" maxlength="1" aria-label="Your last initial">
+                        </div>
+                    </div>
+                    <button class="btn-primary name-continue-btn" id="nameContinueBtn">Continue</button>
+                </div>
+            </div>
+            <button class="back-btn" id="backToModeFromName">&#x2190; Back to Mode Selection</button>
+        </div>
+
         <!-- ======================== -->
         <!-- SIDE SELECTION SCREEN    -->
         <!-- ======================== -->
         <div class="screen" id="sideSelection" style="display:none;" role="region" aria-label="Choose your side">
             <h2 class="section-title">Choose Your Side</h2>
             <p class="subtitle" id="sideSelectionSubtitle">Experience these battles from the perspective you choose</p>
-
-            <!-- Student name input (shown in historical mode) -->
-            <div class="student-name-section" id="studentNameSection">
-                <label for="studentNameInput" class="student-name-label">Your Name (for your response sheet)</label>
-                <input type="text" id="studentNameInput" class="student-name-input" placeholder="First name and last initial" maxlength="30" aria-label="Your name">
-            </div>
 
             <div class="sides-container">
                 <div class="side-card union-card" id="unionCard" role="button" tabindex="0" aria-label="Play as the Union">
@@ -358,6 +378,29 @@
             </div>
 
             <button class="back-btn" id="backToModeBtn">&#x2190; Back to Mode Selection</button>
+        </div>
+
+        <!-- ============================== -->
+        <!-- LEADER LETTER SCREEN           -->
+        <!-- ============================== -->
+        <div class="screen" id="leaderLetterScreen" style="display:none;" role="region" aria-label="Message from your leader">
+            <div class="letter-wrapper">
+                <div class="letter-paper">
+                    <div class="letter-header-section">
+                        <div class="letter-seal" id="letterSeal" aria-hidden="true"></div>
+                        <div class="letter-from" id="letterFrom"></div>
+                        <div class="letter-date" id="letterDate"></div>
+                    </div>
+                    <div class="letter-salutation" id="letterSalutation"></div>
+                    <div class="letter-body" id="letterBody"></div>
+                    <div class="letter-closing" id="letterClosing"></div>
+                    <div class="letter-signature" id="letterSignature"></div>
+                    <div class="letter-title" id="letterTitle"></div>
+                </div>
+            </div>
+            <div class="letter-actions">
+                <button class="btn-primary letter-begin-btn" id="beginJourneyBtn">Begin Your Journey</button>
+            </div>
         </div>
 
         <!-- ================================= -->
