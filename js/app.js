@@ -1,4 +1,4 @@
-// App initialization and event wiring for Civil War Battle Simulation v3.1
+// App initialization and event wiring for Civil War Battle Simulation v3.7
 
 function boot() {
     cacheScreens();
@@ -20,10 +20,10 @@ function setupEventListeners() {
         renderModeSelection();
     });
 
-    // Mode selection
+    // Mode selection - both go directly to side selection (name is inline now)
     document.getElementById('historicalModeCard').addEventListener('click', function() {
         gameState.mode = 'historical';
-        renderStudentNameScreen();
+        renderSideSelection();
     });
 
     document.getElementById('freeplayModeCard').addEventListener('click', function() {
@@ -37,7 +37,7 @@ function setupEventListeners() {
         if (e.key === 'Enter' || e.key === ' ') {
             e.preventDefault();
             gameState.mode = 'historical';
-            renderStudentNameScreen();
+            renderSideSelection();
         }
     });
 
@@ -68,12 +68,7 @@ function setupEventListeners() {
         document.getElementById('resumePrompt').style.display = 'none';
     });
 
-    // Student name screen - continue button
-    document.getElementById('nameContinueBtn').addEventListener('click', function() {
-        proceedFromNameScreen();
-    });
-
-    // Student name screen - Enter key advances
+    // Name fields - Enter key moves between fields
     document.getElementById('firstNameInput').addEventListener('keydown', function(e) {
         if (e.key === 'Enter') {
             e.preventDefault();
@@ -84,13 +79,9 @@ function setupEventListeners() {
     document.getElementById('lastInitialInput').addEventListener('keydown', function(e) {
         if (e.key === 'Enter') {
             e.preventDefault();
-            proceedFromNameScreen();
+            // Focus blurs to let user pick a side
+            this.blur();
         }
-    });
-
-    // Back from student name screen
-    document.getElementById('backToModeFromName').addEventListener('click', function() {
-        renderModeSelection();
     });
 
     // Difficulty toggle
@@ -138,11 +129,7 @@ function setupEventListeners() {
 
     // Back to mode selection (from side selection)
     document.getElementById('backToModeBtn').addEventListener('click', function() {
-        if (gameState.mode === 'historical') {
-            renderStudentNameScreen();
-        } else {
-            renderModeSelection();
-        }
+        renderModeSelection();
     });
 
     // Leader letter - begin journey
@@ -233,12 +220,12 @@ function setupEventListeners() {
     setupCreditsToggle();
 }
 
-function proceedFromNameScreen() {
-    gameState.studentName = getStudentNameFromForm();
-    renderSideSelection();
-}
-
 function startWithSide(side) {
+    // Read student name from inline fields (historical mode only)
+    if (gameState.mode === 'historical') {
+        gameState.studentName = getStudentNameFromForm();
+    }
+
     initializeGame(gameState.mode, side);
 
     if (gameState.mode === 'historical') {

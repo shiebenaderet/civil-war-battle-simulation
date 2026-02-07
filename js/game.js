@@ -109,6 +109,7 @@ function resetGameState() {
     gameState = {
         mode: null,
         side: null,
+        difficulty: 'intermediate',
         currentBattle: 0,
         studentName: '',
         responses: [],
@@ -127,6 +128,7 @@ function restoreGameState(saved) {
     // Ensure new fields exist for saves from older versions
     if (!gameState.responses) gameState.responses = [];
     if (!gameState.studentName) gameState.studentName = '';
+    if (!gameState.difficulty) gameState.difficulty = 'intermediate';
 }
 
 // ============================================================
@@ -184,12 +186,13 @@ function getHistoricalContent() {
     };
 }
 
-function saveHistoricalResponse(wwydChoice, reflectionText) {
+function saveHistoricalResponse(wwydChoice, reflectionText, wwydIndex) {
     const battle = battles[gameState.currentBattle];
     gameState.responses.push({
         battleId: battle.id,
         battleName: battle.name,
         wwydChoice: wwydChoice,
+        wwydMatchedHistory: wwydIndex === 0,
         reflectionText: reflectionText || ''
     });
     saveProgress();

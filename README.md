@@ -106,6 +106,7 @@ civil-war-battle-simulation/
 
 ## Version History
 
+- **v3.7.0** - Progressive reveal animation for What Happened sections (staggered cascade instead of wall of text), PDF export now tracks match history (summary box + per-battle badges), free-play results show historical context ("What Really Happened"), combined name + side + difficulty into single setup screen, comprehensive mobile responsive improvements (step pills, touch targets, button sizing)
 - **v3.6.0** - Redesigned WWYD feedback (shows student's choice vs. historical decision with match/different badge), grouped reflections every 3-4 battles around bigger themes (4 reflections instead of 13), expandable "Need a hint?" teacher tips on reflection prompts
 - **v3.5.1** - Intro splash screen explaining both game modes and learning objectives (shown on first visit), difficulty level descriptions no longer mention grade levels (avoids stigma)
 - **v3.5.0** - Guided tutorial system (auto-plays on first battle, highlights UI elements with explanatory tooltips), toggleable help bar with contextual tips per step, help button in navbar, fixed WWYD re-selection bug (students can now change their choice)

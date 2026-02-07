@@ -10,7 +10,6 @@ var screens = {};
 function cacheScreens() {
     screens.introSplash = document.getElementById('introSplash');
     screens.modeSelection = document.getElementById('modeSelection');
-    screens.studentNameScreen = document.getElementById('studentNameScreen');
     screens.sideSelection = document.getElementById('sideSelection');
     screens.leaderLetterScreen = document.getElementById('leaderLetterScreen');
     screens.historicalScreen = document.getElementById('historicalScreen');
@@ -83,18 +82,35 @@ function renderModeSelection() {
 // ============================================================
 
 function renderSideSelection() {
+    var title = document.getElementById('sideSelectionTitle');
     var subtitle = document.getElementById('sideSelectionSubtitle');
     var unionCount = document.getElementById('unionSoldierCount');
     var confCount = document.getElementById('confederacySoldierCount');
+    var nameSection = document.getElementById('nameInlineSection');
+    var difficultySection = document.getElementById('difficultySelectorSection');
 
     if (gameState.mode === 'historical') {
-        subtitle.textContent = 'Experience these battles from the perspective you choose';
+        title.textContent = 'Set Up Your Journey';
+        subtitle.textContent = 'Enter your name, choose a reading level, and pick your side';
         unionCount.textContent = '';
         confCount.textContent = '';
+        nameSection.style.display = 'block';
+        difficultySection.style.display = '';
+
+        // Clear inputs
+        var firstName = document.getElementById('firstNameInput');
+        var lastInitial = document.getElementById('lastInitialInput');
+        if (firstName) firstName.value = '';
+        if (lastInitial) lastInitial.value = '';
+        // Auto-focus first name
+        if (firstName) setTimeout(function() { firstName.focus(); }, 100);
     } else {
+        title.textContent = 'Choose Your Side';
         subtitle.textContent = 'Command your chosen side through ' + battles.length + ' major battles';
         unionCount.textContent = 'Starting Army: 1,500,000 soldiers';
         confCount.textContent = 'Starting Army: 1,000,000 soldiers';
+        nameSection.style.display = 'none';
+        difficultySection.style.display = 'none';
     }
 
     showScreen('sideSelection');
@@ -103,18 +119,6 @@ function renderSideSelection() {
 // ============================================================
 // Student Name Screen (Historical Mode)
 // ============================================================
-
-function renderStudentNameScreen() {
-    // Clear any previous values
-    var firstName = document.getElementById('firstNameInput');
-    var lastInitial = document.getElementById('lastInitialInput');
-    if (firstName) firstName.value = '';
-    if (lastInitial) lastInitial.value = '';
-
-    showScreen('studentNameScreen');
-    // Auto-focus the first name field
-    if (firstName) setTimeout(function() { firstName.focus(); }, 100);
-}
 
 function getStudentNameFromForm() {
     var first = (document.getElementById('firstNameInput').value || '').trim();
@@ -976,45 +980,65 @@ function advanceNarrative() {
             var feedbackList = content.whatWouldYouDo.feedback;
             var optionsList = content.whatWouldYouDo.options;
 
-            if (feedbackList && feedbackList[wwydSelected]) {
+            if (feedbackList && Array.isArray(feedbackList) && wwydSelected >= 0 && feedbackList[wwydSelected]) {
                 // Show student's choice
-                document.getElementById('feedbackChoiceText').textContent =
-                    optionsList[wwydSelected] || '';
+                var choiceTextEl = document.getElementById('feedbackChoiceText');
+                if (choiceTextEl) choiceTextEl.textContent = optionsList[wwydSelected] || '';
 
                 // Comparison badge + historical decision
                 var badge = document.getElementById('feedbackBadge');
                 var histSection = document.getElementById('feedbackHistorical');
-                if (wwydSelected === 0) {
-                    // Matches the historical decision
-                    var commander = getContent(
-                        battles[gameState.currentBattle].historical.intel[gameState.side].commander
-                    );
-                    commander = commander.split('(')[0].split(',')[0].trim();
-                    badge.className = 'feedback-badge badge-match';
-                    badge.textContent = '\u2714 Same call as ' + commander;
-                    histSection.style.display = 'none';
-                } else {
-                    // Different from history
-                    badge.className = 'feedback-badge badge-different';
-                    badge.textContent = '\u2194 You chose a different path';
-                    document.getElementById('feedbackHistoricalText').textContent =
-                        optionsList[0] || '';
-                    histSection.style.display = 'block';
+                if (badge && histSection) {
+                    if (wwydSelected === 0) {
+                        // Matches the historical decision
+                        var commanderRaw = battles[gameState.currentBattle].historical.intel[gameState.side].commander;
+                        var commander = (typeof commanderRaw === 'string') ? commanderRaw : getContent(commanderRaw);
+                        commander = String(commander).split('(')[0].split(',')[0].trim();
+                        badge.className = 'feedback-badge badge-match';
+                        badge.textContent = '\u2714 Same call as ' + commander;
+                        histSection.style.display = 'none';
+                    } else {
+                        // Different from history
+                        badge.className = 'feedback-badge badge-different';
+                        badge.textContent = '\u2194 You chose a different path';
+                        var histTextEl = document.getElementById('feedbackHistoricalText');
+                        if (histTextEl) histTextEl.textContent = optionsList[0] || '';
+                        histSection.style.display = 'block';
+                    }
                 }
 
                 // Detailed feedback text
-                document.getElementById('feedbackDetail').textContent = feedbackList[wwydSelected];
+                var detailEl = document.getElementById('feedbackDetail');
+                if (detailEl) detailEl.textContent = feedbackList[wwydSelected];
                 feedbackEl.style.display = 'block';
                 targetSection = feedbackEl;
             }
 
-            // Show all three "reveal" sections together
+            // Progressive reveal: stagger the three sections
             var happened = document.getElementById('sectionHappened');
+            var voice = document.getElementById('sectionVoice');
+            var bigPicture = document.getElementById('sectionBigPicture');
+
+            // Remove old stagger classes before re-applying
+            [happened, voice, bigPicture].forEach(function(el) {
+                el.classList.remove('reveal-stagger', 'reveal-stagger-1', 'reveal-stagger-2', 'reveal-stagger-3', 'reveal-stagger-4');
+            });
+
+            var staggerIdx = 1;
+            if (feedbackEl.style.display === 'block') {
+                feedbackEl.classList.add('reveal-stagger', 'reveal-stagger-1');
+                staggerIdx = 2;
+            }
+
+            happened.classList.add('reveal-stagger', 'reveal-stagger-' + staggerIdx);
             happened.style.display = 'block';
             if (!targetSection) targetSection = happened;
 
-            document.getElementById('sectionVoice').style.display = 'block';
-            document.getElementById('sectionBigPicture').style.display = 'block';
+            voice.classList.add('reveal-stagger', 'reveal-stagger-' + (staggerIdx + 1));
+            voice.style.display = 'block';
+
+            bigPicture.classList.add('reveal-stagger', 'reveal-stagger-' + (staggerIdx + 2));
+            bigPicture.style.display = 'block';
 
             // Set button text: if no reflection follows, go straight to next battle
             if (!isReflectionBattle(gameState.currentBattle)) {
@@ -1041,7 +1065,7 @@ function advanceNarrative() {
                     var opts = c.whatWouldYouDo.options;
                     if (opts && opts[wwydSelected]) wwydChoiceText = opts[wwydSelected];
                 }
-                saveHistoricalResponse(wwydChoiceText, '');
+                saveHistoricalResponse(wwydChoiceText, '', wwydSelected);
                 var done = advanceHistorical();
                 if (done) renderHistoricalComplete();
                 else renderHistoricalBattle();
@@ -1060,7 +1084,7 @@ function advanceNarrative() {
                 }
             }
             var reflectionText = document.getElementById('histReflectInput').value.trim();
-            saveHistoricalResponse(wwydChoiceText, reflectionText);
+            saveHistoricalResponse(wwydChoiceText, reflectionText, wwydSelected);
 
             var done = advanceHistorical();
             if (done) {
@@ -1163,6 +1187,12 @@ function generatePdfReport() {
         '.label { font-weight: bold; color: #444; margin-top: 8px; display: block; }' +
         '.response-text { background: #f9f9f9; border: 1px solid #ddd; border-radius: 4px; padding: 8px 12px; margin-top: 4px; min-height: 1.5em; white-space: pre-wrap; }' +
         '.no-response { color: #999; font-style: italic; }' +
+        '.match-badge { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 0.85em; font-weight: bold; margin-left: 8px; }' +
+        '.match-badge.matched { background: #d1fae5; color: #065f46; }' +
+        '.match-badge.different { background: #fef3c7; color: #92400e; }' +
+        '.summary-box { background: #eef2ff; border: 1px solid #c7d2fe; border-radius: 6px; padding: 12px 16px; margin-bottom: 20px; text-align: center; }' +
+        '.summary-stat { display: inline-block; margin: 0 16px; }' +
+        '.summary-stat strong { font-size: 1.3em; display: block; }' +
         '@media print { body { padding: 0; } .battle-entry { border-color: #999; } }' +
         '</style></head><body>';
 
@@ -1176,11 +1206,38 @@ function generatePdfReport() {
     if (responses.length === 0) {
         html += '<p style="text-align:center;color:#999;">No responses recorded.</p>';
     } else {
+        // Summary box: count matches vs. different
+        var matchCount = 0;
+        var totalChoices = 0;
+        responses.forEach(function(resp) {
+            if (resp.wwydChoice) {
+                totalChoices++;
+                if (resp.wwydMatchedHistory) matchCount++;
+            }
+        });
+
+        if (totalChoices > 0) {
+            html += '<div class="summary-box">';
+            html += '<div class="summary-stat"><strong>' + totalChoices + '</strong>Decisions Made</div>';
+            html += '<div class="summary-stat"><strong>' + matchCount + '</strong>Matched History</div>';
+            html += '<div class="summary-stat"><strong>' + (totalChoices - matchCount) + '</strong>Chose Differently</div>';
+            html += '</div>';
+        }
+
         responses.forEach(function(resp, i) {
             html += '<div class="battle-entry">';
             html += '<h2>Battle ' + (i + 1) + ': ' + escapeHtml(resp.battleName || resp.battleId || 'Unknown') + '</h2>';
 
-            html += '<span class="label">What Would You Do?</span>';
+            html += '<span class="label">What Would You Do?';
+            if (resp.wwydChoice) {
+                if (resp.wwydMatchedHistory) {
+                    html += ' <span class="match-badge matched">&#x2714; Same as history</span>';
+                } else {
+                    html += ' <span class="match-badge different">&#x2194; Different path</span>';
+                }
+            }
+            html += '</span>';
+
             if (resp.wwydChoice) {
                 html += '<div class="response-text">' + escapeHtml(resp.wwydChoice) + '</div>';
             } else {
@@ -1410,6 +1467,20 @@ function renderFreeplayResults(result) {
     var momentumEl = document.getElementById('resultMomentum');
     momentumEl.className = 'result-stat-value' +
         (result.momentumChange > 0 ? ' positive' : ' negative');
+
+    // Historical context
+    var histContextBox = document.getElementById('histContextBox');
+    if (histContextBox) {
+        var battleData = battles[gameState.currentBattle];
+        var histOutcome = battleData.historical.outcome;
+        var histWinner = battleData.historical.winner;
+        var winnerLabel = histWinner === 'union' ? 'Union' : histWinner === 'confederacy' ? 'Confederate' : 'Draw';
+
+        document.getElementById('histContextText').textContent = getContent(battleData.historical.whatHappened);
+        document.getElementById('histContextOutcome').textContent =
+            'Historical result: ' + histOutcome + ' (' + winnerLabel + ' victory)';
+        histContextBox.style.display = 'block';
+    }
 
     // Momentum meter - map momentum to percentage (center = 0, range -25 to +25)
     var markerPos = Math.min(Math.max((gameState.momentum + 25) / 50 * 100, 2), 98);
