@@ -396,6 +396,17 @@
             <h2 class="section-title">Choose Your Side</h2>
             <p class="subtitle" id="sideSelectionSubtitle">Experience these battles from the perspective you choose</p>
 
+            <!-- Difficulty / Reading Level Toggle -->
+            <div class="difficulty-selector">
+                <div class="difficulty-label">Reading Level</div>
+                <div class="difficulty-pills" role="radiogroup" aria-label="Select reading level">
+                    <button class="difficulty-pill" data-level="beginner" role="radio" aria-checked="false">Beginner</button>
+                    <button class="difficulty-pill active" data-level="intermediate" role="radio" aria-checked="true">Intermediate</button>
+                    <button class="difficulty-pill" data-level="advanced" role="radio" aria-checked="false">Advanced</button>
+                </div>
+                <div class="difficulty-hint" id="difficultyHint">8th grade reading level</div>
+            </div>
+
             <div class="sides-container">
                 <div class="side-card union-card" id="unionCard" role="button" tabindex="0" aria-label="Play as the Union">
                     <span class="side-flag" aria-hidden="true">&#x1F1FA;&#x1F1F8;</span>
@@ -509,6 +520,12 @@
                     </div>
                 </div>
 
+                <!-- WWYD Feedback (shown after choice, before What Happened) -->
+                <div class="wwyd-feedback" id="wwydFeedback" style="display:none;">
+                    <div class="feedback-icon" id="feedbackIcon"></div>
+                    <p class="feedback-text" id="feedbackText"></p>
+                </div>
+
                 <!-- Section 4: What Really Happened + Tech -->
                 <div class="narrative-section happened-section" id="sectionHappened" style="display:none;">
                     <h3 class="narrative-heading">&#x1F4D6; What Really Happened</h3>
@@ -533,6 +550,7 @@
                     <blockquote class="voice-quote" id="histVoiceQuote"></blockquote>
                     <div class="voice-attribution" id="histVoiceAttribution"></div>
                     <div class="voice-source" id="histVoiceSource"></div>
+                    <div class="voice-explainer" id="histVoiceExplainer" style="display:none;"></div>
                 </div>
 
                 <!-- Section 6: The Bigger Picture -->
