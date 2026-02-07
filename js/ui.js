@@ -9,7 +9,9 @@ var screens = {};
 
 function cacheScreens() {
     screens.modeSelection = document.getElementById('modeSelection');
+    screens.studentNameScreen = document.getElementById('studentNameScreen');
     screens.sideSelection = document.getElementById('sideSelection');
+    screens.leaderLetterScreen = document.getElementById('leaderLetterScreen');
     screens.historicalScreen = document.getElementById('historicalScreen');
     screens.freeplayBriefing = document.getElementById('freeplayBriefing');
     screens.freeplayResults = document.getElementById('freeplayResults');
@@ -83,21 +85,89 @@ function renderSideSelection() {
     var subtitle = document.getElementById('sideSelectionSubtitle');
     var unionCount = document.getElementById('unionSoldierCount');
     var confCount = document.getElementById('confederacySoldierCount');
-    var studentNameSection = document.getElementById('studentNameSection');
 
     if (gameState.mode === 'historical') {
         subtitle.textContent = 'Experience these battles from the perspective you choose';
         unionCount.textContent = '';
         confCount.textContent = '';
-        if (studentNameSection) studentNameSection.style.display = 'block';
     } else {
         subtitle.textContent = 'Command your chosen side through ' + battles.length + ' major battles';
         unionCount.textContent = 'Starting Army: 1,500,000 soldiers';
         confCount.textContent = 'Starting Army: 1,000,000 soldiers';
-        if (studentNameSection) studentNameSection.style.display = 'none';
     }
 
     showScreen('sideSelection');
+}
+
+// ============================================================
+// Student Name Screen (Historical Mode)
+// ============================================================
+
+function renderStudentNameScreen() {
+    // Clear any previous values
+    var firstName = document.getElementById('firstNameInput');
+    var lastInitial = document.getElementById('lastInitialInput');
+    if (firstName) firstName.value = '';
+    if (lastInitial) lastInitial.value = '';
+
+    showScreen('studentNameScreen');
+    // Auto-focus the first name field
+    if (firstName) setTimeout(function() { firstName.focus(); }, 100);
+}
+
+function getStudentNameFromForm() {
+    var first = (document.getElementById('firstNameInput').value || '').trim();
+    var last = (document.getElementById('lastInitialInput').value || '').trim().toUpperCase();
+    if (!first) return 'Student';
+    return last ? first + ' ' + last + '.' : first;
+}
+
+// ============================================================
+// Leader Letter Screen (Transition into Historical Mode)
+// ============================================================
+
+function renderLeaderLetter() {
+    var side = gameState.side;
+    var studentName = gameState.studentName || 'Student';
+
+    var seal = document.getElementById('letterSeal');
+    var from = document.getElementById('letterFrom');
+    var date = document.getElementById('letterDate');
+    var salutation = document.getElementById('letterSalutation');
+    var body = document.getElementById('letterBody');
+    var closing = document.getElementById('letterClosing');
+    var signature = document.getElementById('letterSignature');
+    var title = document.getElementById('letterTitle');
+
+    if (side === 'union') {
+        seal.textContent = '\uD83C\uDDFA\uD83C\uDDF8';
+        from.textContent = 'Executive Mansion, Washington';
+        date.textContent = 'April 1861';
+        salutation.textContent = 'Dear ' + escapeHtml(studentName) + ',';
+        body.innerHTML =
+            '<p>The nation faces its gravest hour. As your President, I write to ask something of you that requires both courage and careful thought.</p>' +
+            '<p>I need you on the ground \u2014 someone who can witness the events of this war firsthand, from the first shots at Fort Sumter to whatever end Providence has in store. You will visit <strong>13 battlefields</strong> across our divided nation.</p>' +
+            '<p>At each site, you will review the intelligence available to our commanders, weigh the decisions they faced, learn what actually happened, and hear from the people who lived through it. I ask that you record your honest thoughts at every step.</p>' +
+            '<p>This will not be easy. War never is. But understanding what happened \u2014 and why \u2014 is the duty of every citizen who wishes to preserve this Union and the idea that all people are created equal.</p>';
+        closing.textContent = 'With great confidence in your judgment,';
+        signature.textContent = 'Abraham Lincoln';
+        title.textContent = 'President of the United States';
+    } else {
+        seal.textContent = '\uD83C\uDFF4';
+        from.textContent = 'Executive Office, Richmond';
+        date.textContent = 'April 1861';
+        salutation.textContent = 'Dear ' + escapeHtml(studentName) + ',';
+        body.innerHTML =
+            '<p>The Confederate States of America stand at a crossroads, and I require a trusted correspondent to document what unfolds on our battlefields.</p>' +
+            '<p>You will observe <strong>13 pivotal engagements</strong> across the breadth of this war, from the first shots at Fort Sumter to the final chapter at Appomattox Court House.</p>' +
+            '<p>At each battlefield, you will study the intelligence available to commanders on both sides, consider the decisions they faced, and record your own reflections on what this war means for the people caught in its path.</p>' +
+            '<p>I ask that you witness these events honestly and completely. Your observations will be invaluable to understanding the true cost and meaning of this conflict for all who lived through it.</p>';
+        closing.textContent = 'May Providence guide your journey,';
+        signature.textContent = 'Jefferson Davis';
+        title.textContent = 'President of the Confederate States';
+    }
+
+    showScreen('leaderLetterScreen');
 }
 
 // ============================================================

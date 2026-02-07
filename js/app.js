@@ -10,7 +10,7 @@ function setupEventListeners() {
     // Mode selection
     document.getElementById('historicalModeCard').addEventListener('click', function() {
         gameState.mode = 'historical';
-        renderSideSelection();
+        renderStudentNameScreen();
     });
 
     document.getElementById('freeplayModeCard').addEventListener('click', function() {
@@ -24,7 +24,7 @@ function setupEventListeners() {
         if (e.key === 'Enter' || e.key === ' ') {
             e.preventDefault();
             gameState.mode = 'historical';
-            renderSideSelection();
+            renderStudentNameScreen();
         }
     });
 
@@ -55,6 +55,31 @@ function setupEventListeners() {
         document.getElementById('resumePrompt').style.display = 'none';
     });
 
+    // Student name screen - continue button
+    document.getElementById('nameContinueBtn').addEventListener('click', function() {
+        proceedFromNameScreen();
+    });
+
+    // Student name screen - Enter key advances
+    document.getElementById('firstNameInput').addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            document.getElementById('lastInitialInput').focus();
+        }
+    });
+
+    document.getElementById('lastInitialInput').addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            proceedFromNameScreen();
+        }
+    });
+
+    // Back from student name screen
+    document.getElementById('backToModeFromName').addEventListener('click', function() {
+        renderModeSelection();
+    });
+
     // Side selection
     document.getElementById('unionCard').addEventListener('click', function() {
         startWithSide('union');
@@ -77,9 +102,18 @@ function setupEventListeners() {
         }
     });
 
-    // Back to mode selection
+    // Back to mode selection (from side selection)
     document.getElementById('backToModeBtn').addEventListener('click', function() {
-        renderModeSelection();
+        if (gameState.mode === 'historical') {
+            renderStudentNameScreen();
+        } else {
+            renderModeSelection();
+        }
+    });
+
+    // Leader letter - begin journey
+    document.getElementById('beginJourneyBtn').addEventListener('click', function() {
+        renderHistoricalBattle();
     });
 
     // Historical mode - narrative continue
@@ -153,17 +187,17 @@ function setupEventListeners() {
     setupCreditsToggle();
 }
 
-function startWithSide(side) {
-    // Capture student name for historical mode PDF export
-    var nameInput = document.getElementById('studentNameInput');
-    if (nameInput && gameState.mode === 'historical') {
-        gameState.studentName = nameInput.value.trim() || 'Student';
-    }
+function proceedFromNameScreen() {
+    gameState.studentName = getStudentNameFromForm();
+    renderSideSelection();
+}
 
+function startWithSide(side) {
     initializeGame(gameState.mode, side);
 
     if (gameState.mode === 'historical') {
-        renderHistoricalBattle();
+        // Show the leader's letter before diving into battles
+        renderLeaderLetter();
     } else {
         renderFreeplayBriefing();
     }
