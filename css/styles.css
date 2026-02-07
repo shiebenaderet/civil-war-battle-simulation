@@ -2127,6 +2127,68 @@ img {
 }
 
 /* ===============================================
+   PERSPECTIVES SIDEBAR (BIGGER PICTURE)
+   =============================================== */
+
+.perspectives-container {
+    margin-top: var(--space-6);
+}
+
+.perspectives-heading {
+    font-family: var(--font-serif);
+    font-size: var(--font-size-base);
+    font-weight: 600;
+    color: var(--color-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: var(--space-4);
+    padding-bottom: var(--space-2);
+    border-bottom: 1px solid var(--color-border-secondary);
+}
+
+.perspective-card {
+    display: flex;
+    gap: var(--space-4);
+    padding: var(--space-4);
+    margin-bottom: var(--space-3);
+    background: var(--color-surface-primary);
+    border: 1px solid var(--color-border-primary);
+    border-left: 3px solid var(--color-primary);
+    border-radius: var(--radius-md);
+}
+
+.perspective-card:last-child {
+    margin-bottom: 0;
+}
+
+.perspective-icon {
+    font-size: 1.5rem;
+    flex-shrink: 0;
+    line-height: 1;
+    padding-top: 2px;
+}
+
+.perspective-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.perspective-title {
+    font-family: var(--font-serif);
+    font-size: var(--font-size-base);
+    font-weight: 600;
+    color: var(--color-primary);
+    margin-bottom: var(--space-2);
+}
+
+.perspective-text {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* ===============================================
    REFLECT SECTION
    =============================================== */
 
