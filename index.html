@@ -537,29 +537,41 @@
 
                 <!-- Section 5: A Voice From the War -->
                 <div class="narrative-section voice-section" id="sectionVoice" style="display:none;">
-                    <h3 class="narrative-heading">&#x1F4AC; A Voice From the War</h3>
-                    <blockquote class="voice-quote" id="histVoiceQuote"></blockquote>
-                    <div class="voice-attribution" id="histVoiceAttribution"></div>
-                    <div class="voice-source" id="histVoiceSource"></div>
-                    <div class="voice-explainer" id="histVoiceExplainer" style="display:none;"></div>
+                    <h3 class="narrative-heading collapsible-heading" id="voiceHeading">&#x1F4AC; A Voice From the War <span class="collapse-icon"></span></h3>
+                    <div class="collapsible-body" id="voiceBody">
+                        <blockquote class="voice-quote" id="histVoiceQuote"></blockquote>
+                        <div class="voice-attribution" id="histVoiceAttribution"></div>
+                        <div class="voice-source" id="histVoiceSource"></div>
+                        <div class="voice-explainer" id="histVoiceExplainer" style="display:none;"></div>
+                    </div>
                 </div>
 
                 <!-- Section 6: The Bigger Picture -->
                 <div class="narrative-section bigger-picture-section" id="sectionBigPicture" style="display:none;">
-                    <h3 class="narrative-heading">&#x1F30D; The Bigger Picture</h3>
-                    <p class="narrative-text" id="histBigPicture"></p>
+                    <h3 class="narrative-heading collapsible-heading" id="bigPictureHeading">&#x1F30D; The Bigger Picture <span class="collapse-icon"></span></h3>
+                    <div class="collapsible-body" id="bigPictureBody">
+                        <p class="narrative-text" id="histBigPicture"></p>
 
-                    <div class="key-fact-box">
-                        <div class="key-fact-label">&#x1F4A1; Did You Know?</div>
-                        <p class="key-fact-text" id="histKeyFact"></p>
+                        <div class="key-fact-box">
+                            <div class="key-fact-label">&#x1F4A1; Did You Know?</div>
+                            <p class="key-fact-text" id="histKeyFact"></p>
+                        </div>
+
+                        <div class="perspectives-container" id="histPerspectives"></div>
                     </div>
-
-                    <div class="perspectives-container" id="histPerspectives"></div>
                 </div>
 
                 <!-- Section 7: Reflect -->
                 <div class="narrative-section reflect-section" id="sectionReflect" style="display:none;">
                     <h3 class="narrative-heading">&#x270D;&#xFE0F; Reflect</h3>
+
+                    <!-- Battle review buttons - quick recap of recent battles -->
+                    <div class="battle-review" id="battleReview" style="display:none;">
+                        <div class="battle-review-label">Review what happened:</div>
+                        <div class="battle-review-buttons" id="battleReviewButtons"></div>
+                        <div class="battle-review-panel" id="battleReviewPanel" style="display:none;"></div>
+                    </div>
+
                     <p class="reflect-prompt" id="histReflectPrompt"></p>
 
                     <!-- Reflection scaffolding - shown based on difficulty level -->
