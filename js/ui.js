@@ -455,6 +455,9 @@ function renderHistoricalBattle() {
 
     document.getElementById('histTechName').textContent = content.tech.name;
     document.getElementById('histTechDesc').textContent = content.tech.description;
+    // Tech Spotlight: hide at beginner to reduce cognitive load
+    var techBox = document.getElementById('histTechBox');
+    if (techBox) techBox.style.display = (difficulty === 'beginner') ? 'none' : '';
 
     // --- Section 5: A Voice From the War ---
     document.getElementById('histVoiceQuote').textContent = content.voice.quote;
@@ -473,13 +476,14 @@ function renderHistoricalBattle() {
     // --- Section 6: The Bigger Picture ---
     document.getElementById('histBigPicture').textContent = content.biggerPicture;
 
-    // Key Fact: hide at beginner level to reduce reading
+    // Key Fact: hide entire box at beginner level to reduce reading
     var keyFactEl = document.getElementById('histKeyFact');
+    var keyFactBox = keyFactEl ? keyFactEl.closest('.key-fact-box') : null;
     if (difficulty === 'beginner') {
-        keyFactEl.style.display = 'none';
+        if (keyFactBox) keyFactBox.style.display = 'none';
     } else {
         keyFactEl.textContent = content.keyFact;
-        keyFactEl.style.display = '';
+        if (keyFactBox) keyFactBox.style.display = '';
     }
 
     // Perspectives: only show at advanced level
@@ -659,6 +663,9 @@ function showGroupedReflection() {
     var groupIdx = getReflectionGroupIndex(gameState.currentBattle);
     var group = groupedReflections[groupIdx];
 
+    // Build battle review buttons for this group's battles
+    buildBattleReview(groupIdx);
+
     // Set the themed reflection prompt
     var promptEl = document.getElementById('histReflectPrompt');
     promptEl.innerHTML =
@@ -695,6 +702,104 @@ function toggleTeacherTip() {
         tipContent.style.display = 'block';
         tipToggle.setAttribute('aria-expanded', 'true');
     }
+}
+
+// ============================================================
+// Battle Review (quick recap buttons in reflection screens)
+// ============================================================
+
+function buildBattleReview(groupIdx) {
+    var reviewSection = document.getElementById('battleReview');
+    var buttonsEl = document.getElementById('battleReviewButtons');
+    var panelEl = document.getElementById('battleReviewPanel');
+    if (!reviewSection || !buttonsEl || !panelEl) return;
+
+    // Determine battle range for this reflection group
+    var ranges = [[0, 2], [3, 5], [6, 8], [9, 12]];
+    var range = ranges[groupIdx] || [0, 2];
+    var startIdx = range[0];
+    var endIdx = range[1];
+
+    buttonsEl.innerHTML = '';
+    panelEl.style.display = 'none';
+    panelEl.innerHTML = '';
+
+    for (var i = startIdx; i <= endIdx; i++) {
+        var battle = battles[i];
+        if (!battle) continue;
+        var btn = document.createElement('button');
+        btn.className = 'battle-review-btn';
+        btn.textContent = battle.name.replace('Battle of ', '').replace('Siege of ', '');
+        btn.setAttribute('data-battle-idx', i);
+        btn.addEventListener('click', (function(idx) {
+            return function() {
+                toggleBattleReviewPanel(idx, groupIdx);
+            };
+        })(i));
+        buttonsEl.appendChild(btn);
+    }
+
+    reviewSection.style.display = 'block';
+}
+
+function toggleBattleReviewPanel(battleIdx, groupIdx) {
+    var panelEl = document.getElementById('battleReviewPanel');
+    var buttons = document.querySelectorAll('.battle-review-btn');
+    if (!panelEl) return;
+
+    // If clicking the same battle, toggle off
+    if (panelEl.getAttribute('data-showing') === String(battleIdx) && panelEl.style.display === 'block') {
+        panelEl.style.display = 'none';
+        panelEl.removeAttribute('data-showing');
+        buttons.forEach(function(b) { b.classList.remove('active'); });
+        return;
+    }
+
+    // Highlight active button
+    buttons.forEach(function(b) {
+        b.classList.toggle('active', b.getAttribute('data-battle-idx') === String(battleIdx));
+    });
+
+    var battle = battles[battleIdx];
+    var h = battle.historical;
+
+    // Get what happened text (difficulty-resolved)
+    var whatHappened = getContent(h.whatHappened);
+    var outcome = h.outcome;
+
+    // Find student's response for this battle
+    var response = null;
+    for (var i = 0; i < gameState.responses.length; i++) {
+        if (gameState.responses[i].battleId === battle.id) {
+            response = gameState.responses[i];
+            break;
+        }
+    }
+
+    var html = '<div class="review-panel-title">' + escapeHtml(battle.name) +
+        ' <span class="review-panel-date">' + escapeHtml(battle.date) + '</span></div>';
+
+    // Student's choice
+    if (response) {
+        var matchClass = response.wwydMatchedHistory ? 'badge-match' : 'badge-different';
+        var matchText = response.wwydMatchedHistory ? 'Matched history' : 'Different path';
+        html += '<div class="review-choice">' +
+            '<span class="review-choice-label">Your call:</span> ' +
+            escapeHtml(response.wwydChoice) +
+            ' <span class="review-badge ' + matchClass + '">' + matchText + '</span>' +
+            '</div>';
+    }
+
+    // What happened summary
+    html += '<div class="review-happened">' +
+        '<span class="review-happened-label">What happened:</span> ' +
+        escapeHtml(whatHappened) +
+        '</div>';
+    html += '<div class="review-outcome">' + escapeHtml(outcome) + '</div>';
+
+    panelEl.innerHTML = html;
+    panelEl.setAttribute('data-showing', String(battleIdx));
+    panelEl.style.display = 'block';
 }
 
 // ============================================================
@@ -1039,6 +1144,11 @@ function advanceNarrative() {
 
             bigPicture.classList.add('reveal-stagger', 'reveal-stagger-' + (staggerIdx + 2));
             bigPicture.style.display = 'block';
+
+            // At beginner: collapse Voice and Bigger Picture to reduce wall-of-text
+            var isBeginner = (gameState.difficulty === 'beginner');
+            setupCollapsibleSection('voiceHeading', 'voiceBody', !isBeginner);
+            setupCollapsibleSection('bigPictureHeading', 'bigPictureBody', !isBeginner);
 
             // Set button text: if no reflection follows, go straight to next battle
             if (!isReflectionBattle(gameState.currentBattle)) {
@@ -1814,6 +1924,43 @@ function escapeHtml(text) {
     var div = document.createElement('div');
     div.textContent = text;
     return div.innerHTML;
+}
+
+// ============================================================
+// Collapsible Sections (used to reduce wall-of-text at beginner)
+// ============================================================
+
+function setupCollapsibleSection(headingId, bodyId, startExpanded) {
+    var heading = document.getElementById(headingId);
+    var body = document.getElementById(bodyId);
+    if (!heading || !body) return;
+
+    // Remove previous listener by cloning
+    var newHeading = heading.cloneNode(true);
+    heading.parentNode.replaceChild(newHeading, heading);
+
+    var icon = newHeading.querySelector('.collapse-icon');
+
+    function setExpanded(expanded) {
+        if (expanded) {
+            body.style.display = '';
+            newHeading.classList.remove('collapsed');
+            newHeading.setAttribute('aria-expanded', 'true');
+            if (icon) icon.textContent = '';
+        } else {
+            body.style.display = 'none';
+            newHeading.classList.add('collapsed');
+            newHeading.setAttribute('aria-expanded', 'false');
+            if (icon) icon.textContent = '(tap to read)';
+        }
+    }
+
+    setExpanded(startExpanded);
+    newHeading.style.cursor = 'pointer';
+    newHeading.addEventListener('click', function() {
+        var isCollapsed = newHeading.classList.contains('collapsed');
+        setExpanded(isCollapsed);
+    });
 }
 
 // ============================================================
