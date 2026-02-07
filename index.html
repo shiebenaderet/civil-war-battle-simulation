@@ -762,27 +762,47 @@
                     <button class="modal-close" id="closeLogBtn">&times;</button>
                 </div>
                 <div class="modal-body">
-                    <div class="campaign-overview">
-                        <div class="progress-summary">
-                            <div class="summary-stat">
-                                <div class="stat-number" id="logBattlesFought">0</div>
-                                <div class="stat-label">Battles</div>
-                            </div>
-                            <div class="summary-stat">
-                                <div class="stat-number" id="logWins">0</div>
-                                <div class="stat-label">Wins</div>
-                            </div>
-                            <div class="summary-stat">
-                                <div class="stat-number" id="logScore">0</div>
-                                <div class="stat-label">Score</div>
-                            </div>
-                            <div class="summary-stat">
-                                <div class="stat-number" id="logMomentum">0</div>
-                                <div class="stat-label">Momentum</div>
+                    <!-- Tab switcher: Progress / War Map -->
+                    <div class="log-tabs" id="logTabs">
+                        <button class="log-tab active" data-log-tab="progress" id="logTabProgress">Progress</button>
+                        <button class="log-tab" data-log-tab="warmap" id="logTabWarMap">War Map</button>
+                    </div>
+
+                    <!-- Progress tab -->
+                    <div class="log-tab-content" id="logProgressContent">
+                        <div class="campaign-overview">
+                            <div class="progress-summary">
+                                <div class="summary-stat">
+                                    <div class="stat-number" id="logBattlesFought">0</div>
+                                    <div class="stat-label">Battles</div>
+                                </div>
+                                <div class="summary-stat">
+                                    <div class="stat-number" id="logWins">0</div>
+                                    <div class="stat-label">Wins</div>
+                                </div>
+                                <div class="summary-stat">
+                                    <div class="stat-number" id="logScore">0</div>
+                                    <div class="stat-label">Score</div>
+                                </div>
+                                <div class="summary-stat">
+                                    <div class="stat-number" id="logMomentum">0</div>
+                                    <div class="stat-label">Momentum</div>
+                                </div>
                             </div>
                         </div>
+                        <div class="battle-timeline" id="logTimeline"></div>
                     </div>
-                    <div class="battle-timeline" id="logTimeline"></div>
+
+                    <!-- War Map tab (ArcGIS embed) -->
+                    <div class="log-tab-content" id="logWarMapContent" style="display:none;">
+                        <div class="warmap-container" id="warmapContainer">
+                            <p class="warmap-hint">Interactive map of Civil War battle locations. Zoom and click markers for details.</p>
+                            <div class="warmap-frame-wrapper" id="warmapFrameWrapper">
+                                <!-- iframe loaded on first tab click to save bandwidth -->
+                            </div>
+                            <p class="warmap-credit">Map data: <a href="https://www.arcgis.com/apps/mapviewer/index.html?webmap=bd513e724e0e4a81b09790c6a47a072a" target="_blank" rel="noopener">ArcGIS / Esri</a></p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -806,6 +826,37 @@
 
             <!-- Scoreboard (free-play only) -->
             <div id="scoreboardSection" class="scoreboard-section" style="display:none;"></div>
+
+            <!-- Class Leaderboard (free-play, Firebase) -->
+            <div id="classLeaderboardSection" class="class-leaderboard-section" style="display:none;">
+                <!-- Room code entry -->
+                <div class="room-code-form" id="roomCodeForm">
+                    <h3 class="room-code-title">&#x1F3EB; Join Class Leaderboard</h3>
+                    <p class="room-code-desc">Enter the room code your teacher gave you to see the class rankings.</p>
+                    <div class="room-code-input-row">
+                        <input type="text" id="roomCodeInput" class="room-code-input"
+                               placeholder="e.g. CWPER1" maxlength="12"
+                               autocomplete="off" spellcheck="false"
+                               aria-label="Class room code">
+                        <button class="btn-primary room-code-join-btn" id="roomCodeJoinBtn">Join</button>
+                    </div>
+                    <div class="room-code-error" id="roomCodeError" style="display:none;"></div>
+                </div>
+
+                <!-- Class leaderboard display (shown after joining) -->
+                <div class="class-leaderboard-display" id="classLeaderboardDisplay" style="display:none;">
+                    <div class="class-leaderboard-header">
+                        <h3 class="class-leaderboard-title">&#x1F3C6; Class Leaderboard</h3>
+                        <div class="class-room-info">
+                            <span class="class-room-label">Room:</span>
+                            <span class="class-room-code" id="classRoomCodeLabel"></span>
+                            <button class="class-room-leave" id="leaveRoomBtn" title="Leave room">&times;</button>
+                        </div>
+                    </div>
+                    <div class="class-leaderboard-status" id="classLeaderboardStatus"></div>
+                    <div class="class-leaderboard-table-wrapper" id="classLeaderboardTable"></div>
+                </div>
+            </div>
 
             <!-- Image Credits -->
             <div class="image-credits-section">
@@ -844,11 +895,16 @@
 
     </main>
 
+    <!-- Firebase SDK (compat for non-module use) - game works without it -->
+    <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"></script>
+
     <!-- JavaScript - Data files first, then logic, then UI, then app init -->
     <script src="js/data/battles.js"></script>
     <script src="js/data/leaders.js"></script>
     <script src="js/data/maps.js"></script>
     <script src="js/game.js"></script>
+    <script src="js/firebase-leaderboard.js"></script>
     <script src="js/ui.js"></script>
     <script src="js/app.js"></script>
 

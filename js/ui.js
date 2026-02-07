@@ -525,7 +525,7 @@ function renderHistoricalBattle() {
 
     showScreen('historicalScreen');
     showGameActions(true);
-    showCampaignLogBtn(false);
+    showCampaignLogBtn(true);
 
     // Show tutorial on first battle only
     if (gameState.currentBattle === 0) {
@@ -1158,8 +1158,9 @@ function renderHistoricalComplete() {
         }
     }
 
-    // Hide scoreboard for historical mode
+    // Hide scoreboard and class leaderboard for historical mode
     document.getElementById('scoreboardSection').style.display = 'none';
+    document.getElementById('classLeaderboardSection').style.display = 'none';
 
     showScreen('endGameScreen');
     showGameActions(false);
@@ -1567,7 +1568,7 @@ function renderFreeplayEnd(advancement) {
 }
 
 // ============================================================
-// Scoreboard UI
+// Scoreboard UI (Local + Firebase Class Leaderboard)
 // ============================================================
 
 function renderScoreboardSection() {
@@ -1578,7 +1579,7 @@ function renderScoreboardSection() {
 
     container.innerHTML =
         '<div class="scoreboard-entry-form" id="scoreEntryForm">' +
-        '<h3 class="scoreboard-form-title">&#x1F3C6; Add Your Score to the Leaderboard</h3>' +
+        '<h3 class="scoreboard-form-title">&#x1F3C6; Save Your Score</h3>' +
         '<div class="scoreboard-input-row">' +
         '<input type="text" id="playerNameInput" class="player-name-input" ' +
         'placeholder="Enter your name (e.g. first name + last initial)" ' +
@@ -1586,12 +1587,15 @@ function renderScoreboardSection() {
         '<button class="save-score-btn" id="saveScoreBtn">Save Score</button>' +
         '</div></div>' +
         '<div class="scoreboard-table-wrapper">' +
-        '<h3 class="scoreboard-title">&#x1F4CA; Class Leaderboard</h3>' +
+        '<h3 class="scoreboard-title">&#x1F4CA; Device Leaderboard</h3>' +
         renderScoreboardTable(scoreboard) +
         (scoreboard.length > 0 ? '<button class="clear-scores-btn" id="clearScoresBtn">Clear All Scores</button>' : '') +
         '</div>';
 
     wireUpScoreboardEvents();
+
+    // Show class leaderboard section
+    showClassLeaderboard();
 }
 
 function wireUpScoreboardEvents() {
@@ -1607,12 +1611,15 @@ function wireUpScoreboardEvents() {
             }
             var updated = saveToScoreboard(name);
             document.getElementById('scoreEntryForm').innerHTML =
-                '<p class="score-saved-msg">&#x2705; Score saved!</p>';
+                '<p class="score-saved-msg">&#x2705; Score saved locally!</p>';
             document.querySelector('.scoreboard-table-wrapper').innerHTML =
-                '<h3 class="scoreboard-title">&#x1F4CA; Class Leaderboard</h3>' +
+                '<h3 class="scoreboard-title">&#x1F4CA; Device Leaderboard</h3>' +
                 renderScoreboardTable(updated) +
                 '<button class="clear-scores-btn" id="clearScoresBtn">Clear All Scores</button>';
             wireUpClearButton();
+
+            // Also submit to Firebase if room code is active
+            submitToClassLeaderboard(name);
         });
 
         nameInput.addEventListener('keydown', function(e) {
@@ -1628,10 +1635,10 @@ function wireUpClearButton() {
     var clearBtn = document.getElementById('clearScoresBtn');
     if (clearBtn) {
         clearBtn.addEventListener('click', function() {
-            if (confirm('Clear all scores from the leaderboard?')) {
+            if (confirm('Clear all scores from the device leaderboard?')) {
                 clearScoreboard();
                 document.querySelector('.scoreboard-table-wrapper').innerHTML =
-                    '<h3 class="scoreboard-title">&#x1F4CA; Class Leaderboard</h3>' +
+                    '<h3 class="scoreboard-title">&#x1F4CA; Device Leaderboard</h3>' +
                     renderScoreboardTable([]);
             }
         });
@@ -1662,6 +1669,147 @@ function renderScoreboardTable(scoreboard) {
         '</tr></thead><tbody>' + rows + '</tbody></table>';
 }
 
+// ============================================================
+// Class Leaderboard (Firebase)
+// ============================================================
+
+function showClassLeaderboard() {
+    var section = document.getElementById('classLeaderboardSection');
+    if (!section) return;
+
+    section.style.display = 'block';
+
+    var savedCode = firebaseLeaderboard.getSavedRoomCode();
+    if (savedCode && firebaseLeaderboard.isAvailable()) {
+        // Already joined a room - show leaderboard directly
+        showJoinedRoom(savedCode);
+    } else {
+        // Show room code entry form
+        document.getElementById('roomCodeForm').style.display = 'block';
+        document.getElementById('classLeaderboardDisplay').style.display = 'none';
+
+        // Pre-fill saved code if any
+        var input = document.getElementById('roomCodeInput');
+        if (input && savedCode) input.value = savedCode;
+
+        if (!firebaseLeaderboard.isAvailable()) {
+            var errorEl = document.getElementById('roomCodeError');
+            if (errorEl) {
+                errorEl.textContent = 'Class leaderboard requires an internet connection.';
+                errorEl.style.display = 'block';
+            }
+        }
+    }
+}
+
+function joinRoom() {
+    var input = document.getElementById('roomCodeInput');
+    var errorEl = document.getElementById('roomCodeError');
+    var joinBtn = document.getElementById('roomCodeJoinBtn');
+    if (!input) return;
+
+    var code = input.value.toUpperCase().trim();
+    if (!code) {
+        input.focus();
+        input.style.borderColor = '#dc2626';
+        return;
+    }
+
+    joinBtn.disabled = true;
+    joinBtn.textContent = 'Checking...';
+    errorEl.style.display = 'none';
+
+    firebaseLeaderboard.validateRoom(code, function(valid, errMsg) {
+        joinBtn.disabled = false;
+        joinBtn.textContent = 'Join';
+
+        if (valid) {
+            firebaseLeaderboard.saveRoomCode(code);
+            showJoinedRoom(code);
+        } else {
+            errorEl.textContent = errMsg;
+            errorEl.style.display = 'block';
+            input.style.borderColor = '#dc2626';
+        }
+    });
+}
+
+function showJoinedRoom(roomCode) {
+    document.getElementById('roomCodeForm').style.display = 'none';
+    document.getElementById('classLeaderboardDisplay').style.display = 'block';
+    document.getElementById('classRoomCodeLabel').textContent = roomCode;
+
+    var statusEl = document.getElementById('classLeaderboardStatus');
+    statusEl.textContent = 'Loading class scores...';
+
+    firebaseLeaderboard.loadLeaderboard(roomCode, function(entries, errMsg) {
+        if (entries) {
+            statusEl.textContent = '';
+            renderClassLeaderboardTable(entries);
+        } else {
+            statusEl.textContent = errMsg || 'Could not load leaderboard.';
+        }
+    });
+}
+
+function leaveRoom() {
+    firebaseLeaderboard.clearRoomCode();
+    document.getElementById('roomCodeForm').style.display = 'block';
+    document.getElementById('classLeaderboardDisplay').style.display = 'none';
+    document.getElementById('roomCodeInput').value = '';
+    document.getElementById('roomCodeError').style.display = 'none';
+}
+
+function submitToClassLeaderboard(playerName) {
+    var roomCode = firebaseLeaderboard.getSavedRoomCode();
+    if (!roomCode || !firebaseLeaderboard.isAvailable()) return;
+
+    var scoreData = {
+        name: playerName,
+        score: gameState.score,
+        side: gameState.side,
+        wins: gameState.wins,
+        losses: gameState.losses,
+        momentum: gameState.momentum,
+        victory: gameState.momentum > 0 || (gameState.momentum === 0 && gameState.wins > gameState.losses)
+    };
+
+    firebaseLeaderboard.submitScore(roomCode, scoreData, function(success, errMsg) {
+        if (success) {
+            // Refresh the class leaderboard display
+            showJoinedRoom(roomCode);
+        }
+    });
+}
+
+function renderClassLeaderboardTable(entries) {
+    var wrapper = document.getElementById('classLeaderboardTable');
+    if (!wrapper) return;
+
+    if (!entries || entries.length === 0) {
+        wrapper.innerHTML = '<p class="scoreboard-empty">No class scores yet. Save your score above to be the first!</p>';
+        return;
+    }
+
+    var rows = entries.map(function(entry, i) {
+        var medal = i === 0 ? '&#x1F947;' : i === 1 ? '&#x1F948;' : i === 2 ? '&#x1F949;' : (i + 1);
+        var sideIcon = entry.side === 'union' ? '&#x1F1FA;&#x1F1F8;' : '&#x1F3F4;';
+        var victoryIcon = entry.victory ? '&#x2705;' : '&#x274C;';
+        return '<tr class="scoreboard-row' + (i < 3 ? ' top-three' : '') + '">' +
+            '<td class="rank-cell">' + medal + '</td>' +
+            '<td class="name-cell">' + escapeHtml(String(entry.name || 'Anonymous')) + '</td>' +
+            '<td class="score-cell">' + (entry.score || 0).toLocaleString() + '</td>' +
+            '<td class="side-cell">' + sideIcon + '</td>' +
+            '<td class="record-cell">' + (entry.wins || 0) + 'W-' + (entry.losses || 0) + 'L</td>' +
+            '<td class="victory-cell">' + victoryIcon + '</td>' +
+            '</tr>';
+    }).join('');
+
+    wrapper.innerHTML = '<table class="scoreboard-table"><thead><tr>' +
+        '<th>#</th><th>Name</th><th>Score</th><th>Side</th><th>Record</th><th>Won?</th>' +
+        '</tr></thead><tbody>' + rows + '</tbody></table>';
+}
+
 function escapeHtml(text) {
     var div = document.createElement('div');
     div.textContent = text;
@@ -1672,34 +1820,106 @@ function escapeHtml(text) {
 // Campaign Log Modal
 // ============================================================
 
-function showCampaignLog() {
-    document.getElementById('logBattlesFought').textContent = gameState.battleHistory.length;
-    document.getElementById('logWins').textContent = gameState.wins;
-    document.getElementById('logScore').textContent = gameState.score.toLocaleString();
-    document.getElementById('logMomentum').textContent =
-        (gameState.momentum >= 0 ? '+' : '') + gameState.momentum;
+var warmapLoaded = false;
 
-    var timeline = document.getElementById('logTimeline');
-    if (gameState.battleHistory.length === 0) {
-        timeline.innerHTML = '<p style="text-align:center;color:#888;padding:20px;">No battles fought yet.</p>';
+function showCampaignLog() {
+    // Populate progress tab
+    if (gameState.mode === 'freeplay') {
+        document.getElementById('logBattlesFought').textContent = gameState.battleHistory.length;
+        document.getElementById('logWins').textContent = gameState.wins;
+        document.getElementById('logScore').textContent = gameState.score.toLocaleString();
+        document.getElementById('logMomentum').textContent =
+            (gameState.momentum >= 0 ? '+' : '') + gameState.momentum;
+
+        var timeline = document.getElementById('logTimeline');
+        if (gameState.battleHistory.length === 0) {
+            timeline.innerHTML = '<p style="text-align:center;color:#888;padding:20px;">No battles fought yet.</p>';
+        } else {
+            timeline.innerHTML = gameState.battleHistory.map(function(b) {
+                return '<div class="timeline-item ' + (b.won ? 'victory' : 'defeat') + '">' +
+                    '<div class="timeline-battle">Battle ' + (b.battleIndex + 1) + ': ' + b.name + '</div>' +
+                    '<div class="timeline-details">' +
+                    'Strategy: ' + b.strategy + '<br>' +
+                    'Result: ' + (b.won ? '&#x2705; Victory' : '&#x274C; Defeat') + '<br>' +
+                    'Casualties: ' + b.casualties.toLocaleString() + '<br>' +
+                    'Momentum: ' + (b.momentumAfter >= 0 ? '+' : '') + b.momentumAfter +
+                    '</div></div>';
+            }).join('');
+        }
     } else {
-        timeline.innerHTML = gameState.battleHistory.map(function(b) {
-            return '<div class="timeline-item ' + (b.won ? 'victory' : 'defeat') + '">' +
-                '<div class="timeline-battle">Battle ' + (b.battleIndex + 1) + ': ' + b.name + '</div>' +
-                '<div class="timeline-details">' +
-                'Strategy: ' + b.strategy + '<br>' +
-                'Result: ' + (b.won ? '&#x2705; Victory' : '&#x274C; Defeat') + '<br>' +
-                'Casualties: ' + b.casualties.toLocaleString() + '<br>' +
-                'Momentum: ' + (b.momentumAfter >= 0 ? '+' : '') + b.momentumAfter +
-                '</div></div>';
-        }).join('');
+        // Historical mode: show progress as battle list
+        var progressContent = document.getElementById('logProgressContent');
+        var summary = document.querySelector('.campaign-overview');
+        if (summary) summary.style.display = 'none';
+
+        var timeline = document.getElementById('logTimeline');
+        var completedCount = gameState.responses ? gameState.responses.length : 0;
+        var timelineHtml = '';
+        for (var i = 0; i < battles.length; i++) {
+            var isCompleted = i < completedCount;
+            var isCurrent = i === gameState.currentBattle;
+            var cssClass = isCompleted ? 'victory' : (isCurrent ? '' : '');
+            var status = isCompleted ? '&#x2705; Complete' : (isCurrent ? '&#x25B6; Current' : '&#x23F3; Upcoming');
+            timelineHtml += '<div class="timeline-item ' + cssClass + '">' +
+                '<div class="timeline-battle">' + (i + 1) + '. ' + battles[i].name + '</div>' +
+                '<div class="timeline-details">' + battles[i].date + ' &mdash; ' + status + '</div>' +
+                '</div>';
+        }
+        timeline.innerHTML = timelineHtml;
     }
+
+    // Reset to progress tab
+    switchLogTab('progress');
 
     screens.campaignLogModal.style.display = 'block';
 }
 
+function switchLogTab(tabName) {
+    var progressTab = document.getElementById('logTabProgress');
+    var warMapTab = document.getElementById('logTabWarMap');
+    var progressContent = document.getElementById('logProgressContent');
+    var warMapContent = document.getElementById('logWarMapContent');
+
+    if (tabName === 'warmap') {
+        progressTab.classList.remove('active');
+        warMapTab.classList.add('active');
+        progressContent.style.display = 'none';
+        warMapContent.style.display = 'block';
+        loadWarMap();
+    } else {
+        progressTab.classList.add('active');
+        warMapTab.classList.remove('active');
+        progressContent.style.display = 'block';
+        warMapContent.style.display = 'none';
+    }
+}
+
+function loadWarMap() {
+    if (warmapLoaded) return;
+
+    var wrapper = document.getElementById('warmapFrameWrapper');
+    // Check if we're likely online (file:// won't have ArcGIS access)
+    if (window.location.protocol === 'file:') {
+        wrapper.innerHTML = '<div class="warmap-offline-msg">The interactive war map requires an internet connection.<br>Visit the game on GitHub Pages to use this feature.</div>';
+        warmapLoaded = true;
+        return;
+    }
+
+    var iframe = document.createElement('iframe');
+    iframe.src = 'https://www.arcgis.com/apps/Embed/index.html?webmap=bd513e724e0e4a81b09790c6a47a072a&zoom=true&scale=true&legend=true';
+    iframe.title = 'Interactive Civil War Battle Map';
+    iframe.setAttribute('loading', 'lazy');
+    iframe.setAttribute('allowfullscreen', 'true');
+    wrapper.innerHTML = '';
+    wrapper.appendChild(iframe);
+    warmapLoaded = true;
+}
+
 function closeCampaignLog() {
     screens.campaignLogModal.style.display = 'none';
+    // Restore summary visibility for next open
+    var summary = document.querySelector('.campaign-overview');
+    if (summary) summary.style.display = '';
 }
 
 // ============================================================
