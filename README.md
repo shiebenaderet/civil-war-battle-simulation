@@ -106,6 +106,7 @@ civil-war-battle-simulation/
 
 ## Version History
 
+- **v3.4.1** - Fixed broken battle map URLs (Vicksburg, Wilderness, Atlanta, Sherman's March), reduced reading load by difficulty level (beginner hides Intel grid + Key Fact + Perspectives; intermediate hides Perspectives; advanced shows all), removed Fort Sumter map tab (no battle map exists)
 - **v3.4.0** - 3-level difficulty system (Beginner/Intermediate/Advanced) with adaptive content for all 13 battles, WWYD personalized feedback, voice explainers for beginners, reflection scaffolding (sentence starters + RACE method reminders), battle maps from Wikimedia Commons (Hal Jespersen), removed Google Translate (non-functional), fixed name entry alignment
 - **v3.3.0** - Blooket-inspired UI redesign (Nunito font, vibrant colors, bold rounded cards, pill buttons), streamlined Historical Mode (4 steps per battle instead of 7), step indicator pills
 - **v3.2.0** - Diverse primary source voices, Perspectives sidebars (race, class, gender, Indigenous), strengthened reflection prompts
