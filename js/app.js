@@ -150,8 +150,9 @@ function setupEventListeners() {
         proceedFromResults();
     });
 
-    // Campaign log
+    // Campaign log + war map shortcut
     document.getElementById('campaignLogNavBtn').addEventListener('click', showCampaignLog);
+    document.getElementById('warMapNavBtn').addEventListener('click', showWarMapDirect);
     document.getElementById('closeLogBtn').addEventListener('click', closeCampaignLog);
 
     // Campaign log tabs (Progress / War Map)

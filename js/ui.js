@@ -39,6 +39,13 @@ function showGameActions(show) {
 function showCampaignLogBtn(show) {
     var btn = document.getElementById('campaignLogNavBtn');
     if (btn) btn.style.display = show ? 'block' : 'none';
+    var mapBtn = document.getElementById('warMapNavBtn');
+    if (mapBtn) mapBtn.style.display = show ? 'block' : 'none';
+}
+
+function showWarMapDirect() {
+    showCampaignLog();
+    switchLogTab('warmap');
 }
 
 // ============================================================
