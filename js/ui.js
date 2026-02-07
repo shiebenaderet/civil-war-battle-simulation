@@ -285,29 +285,44 @@ function renderHistoricalBattle() {
         document.getElementById('histMap'),
         battles[gameState.currentBattle]
     );
-    // Reset tabs to show artwork by default
+    // Reset tabs to show artwork by default; hide Map tab if no map
     var histTabs = document.querySelectorAll('#historicalScreen .visual-tab');
     histTabs.forEach(function(tab) { tab.classList.remove('active'); });
     if (histTabs[0]) histTabs[0].classList.add('active');
     document.getElementById('histArtwork').style.display = 'block';
     document.getElementById('histMap').style.display = 'none';
+    var battle = battles[gameState.currentBattle];
+    var assets = getAssetManifest();
+    var asset = assets.find(function(a) { return a.id === battle.id; }) || assets[gameState.currentBattle];
+    var mapTab = document.querySelector('#historicalScreen .visual-tab[data-tab="map"]');
+    if (mapTab) mapTab.style.display = (asset && asset.mapUrl) ? '' : 'none';
+
+    // --- Difficulty-based section visibility ---
+    var difficulty = gameState.difficulty || 'intermediate';
 
     // --- Section 1: Intel Report ---
+    // Beginner: hide Intel grid (situation text covers what they need)
+    var intelSection = document.getElementById('sectionIntel');
     var intelGrid = document.getElementById('histIntelGrid');
-    var intel = content.intel;
-    intelGrid.innerHTML =
-        '<div class="intel-card union-intel">' +
-            '<h4>Union</h4>' +
-            '<div>Forces: ' + escapeHtml(intel.union.forces) + '</div>' +
-            '<div>Commander: ' + escapeHtml(intel.union.commander) + '</div>' +
-            '<div>Advantage: ' + escapeHtml(intel.union.advantage) + '</div>' +
-        '</div>' +
-        '<div class="intel-card confederacy-intel">' +
-            '<h4>Confederacy</h4>' +
-            '<div>Forces: ' + escapeHtml(intel.confederacy.forces) + '</div>' +
-            '<div>Commander: ' + escapeHtml(intel.confederacy.commander) + '</div>' +
-            '<div>Advantage: ' + escapeHtml(intel.confederacy.advantage) + '</div>' +
-        '</div>';
+    if (difficulty === 'beginner') {
+        if (intelSection) intelSection.style.display = 'none';
+    } else {
+        if (intelSection) intelSection.style.display = '';
+        var intel = content.intel;
+        intelGrid.innerHTML =
+            '<div class="intel-card union-intel">' +
+                '<h4>Union</h4>' +
+                '<div>Forces: ' + escapeHtml(intel.union.forces) + '</div>' +
+                '<div>Commander: ' + escapeHtml(intel.union.commander) + '</div>' +
+                '<div>Advantage: ' + escapeHtml(intel.union.advantage) + '</div>' +
+            '</div>' +
+            '<div class="intel-card confederacy-intel">' +
+                '<h4>Confederacy</h4>' +
+                '<div>Forces: ' + escapeHtml(intel.confederacy.forces) + '</div>' +
+                '<div>Commander: ' + escapeHtml(intel.confederacy.commander) + '</div>' +
+                '<div>Advantage: ' + escapeHtml(intel.confederacy.advantage) + '</div>' +
+            '</div>';
+    }
 
     // --- Section 2: The Situation ---
     document.getElementById('histSituation').textContent = content.situation;
@@ -366,11 +381,19 @@ function renderHistoricalBattle() {
 
     // --- Section 6: The Bigger Picture ---
     document.getElementById('histBigPicture').textContent = content.biggerPicture;
-    document.getElementById('histKeyFact').textContent = content.keyFact;
 
-    // Perspectives (if available for this battle)
+    // Key Fact: hide at beginner level to reduce reading
+    var keyFactEl = document.getElementById('histKeyFact');
+    if (difficulty === 'beginner') {
+        keyFactEl.style.display = 'none';
+    } else {
+        keyFactEl.textContent = content.keyFact;
+        keyFactEl.style.display = '';
+    }
+
+    // Perspectives: only show at advanced level
     var perspectivesEl = document.getElementById('histPerspectives');
-    if (content.perspectives && content.perspectives.length > 0) {
+    if (difficulty === 'advanced' && content.perspectives && content.perspectives.length > 0) {
         var pHtml = '<h4 class="perspectives-heading">Perspectives You Should Know</h4>';
         content.perspectives.forEach(function(p) {
             pHtml +=
