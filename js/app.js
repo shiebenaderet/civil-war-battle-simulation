@@ -3,10 +3,23 @@
 function boot() {
     cacheScreens();
     setupEventListeners();
-    renderModeSelection();
+
+    // Show intro splash on first visit, mode selection on return
+    var hasSeenIntro = localStorage.getItem('civilWarIntroSeen');
+    if (hasSeenIntro) {
+        renderModeSelection();
+    } else {
+        showScreen('introSplash');
+    }
 }
 
 function setupEventListeners() {
+    // Intro splash - proceed to mode selection
+    document.getElementById('splashStartBtn').addEventListener('click', function() {
+        localStorage.setItem('civilWarIntroSeen', '1');
+        renderModeSelection();
+    });
+
     // Mode selection
     document.getElementById('historicalModeCard').addEventListener('click', function() {
         gameState.mode = 'historical';
@@ -83,9 +96,9 @@ function setupEventListeners() {
     // Difficulty toggle
     var difficultyPills = document.querySelectorAll('.difficulty-pill');
     var difficultyHints = {
-        beginner: 'Simpler language, shorter sentences',
-        intermediate: '8th grade reading level',
-        advanced: 'High school reading level (9-10th grade)'
+        beginner: 'Shorter text, extra help with writing',
+        intermediate: 'Standard text, some writing help',
+        advanced: 'More detail, deeper questions, full challenge'
     };
     difficultyPills.forEach(function(pill) {
         pill.addEventListener('click', function() {

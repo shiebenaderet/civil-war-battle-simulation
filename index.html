@@ -267,6 +267,49 @@
     <main class="game-container" id="main-content" role="main" aria-label="Civil War Battle Simulation Game">
 
         <!-- ======================== -->
+        <!-- INTRO SPLASH SCREEN      -->
+        <!-- ======================== -->
+        <div class="screen" id="introSplash" style="display:none;" role="region" aria-label="Welcome to the Civil War Simulation">
+            <div class="splash-hero">
+                <div class="splash-icon" aria-hidden="true">&#x2694;&#xFE0F;</div>
+                <h2 class="splash-title">Civil War Battle Simulation</h2>
+                <p class="splash-tagline">Step into American history and experience the decisions that shaped a nation.</p>
+            </div>
+
+            <div class="splash-overview">
+                <p class="splash-intro">From 1861 to 1865, the United States fought its deadliest war. Over 13 major battles, you'll make real decisions, hear from the people who lived through it, and discover how this war changed America forever.</p>
+            </div>
+
+            <div class="splash-modes">
+                <div class="splash-mode-card">
+                    <div class="splash-mode-icon" aria-hidden="true">&#x1F4DC;</div>
+                    <h3 class="splash-mode-title">Historical Mode</h3>
+                    <p class="splash-mode-desc">Walk through each battle step by step. Read real accounts from soldiers, nurses, and civilians. Make the same choices commanders faced, then reflect on what you've learned.</p>
+                </div>
+                <div class="splash-mode-card">
+                    <div class="splash-mode-icon" aria-hidden="true">&#x1F3AF;</div>
+                    <h3 class="splash-mode-title">Free-play Mode</h3>
+                    <p class="splash-mode-desc">Take command and make your own strategic choices. Build momentum, face unpredictable events, and see if you can change the course of history.</p>
+                </div>
+            </div>
+
+            <div class="splash-learn">
+                <h3 class="splash-learn-title">What You'll Discover</h3>
+                <ul class="splash-learn-list">
+                    <li>Why people on both sides chose to fight &mdash; and at what cost</li>
+                    <li>Which battles turned the tide of the war and why they mattered</li>
+                    <li>How new technology and tactics changed warfare forever</li>
+                    <li>The stories of soldiers, women, Black Americans, and Indigenous peoples</li>
+                    <li>How military events shaped political decisions that still affect us today</li>
+                </ul>
+            </div>
+
+            <div class="splash-actions">
+                <button class="btn-primary splash-start-btn" id="splashStartBtn">Let's Get Started</button>
+            </div>
+        </div>
+
+        <!-- ======================== -->
         <!-- MODE SELECTION SCREEN    -->
         <!-- ======================== -->
         <div class="screen" id="modeSelection" role="region" aria-label="Choose game mode">
@@ -354,7 +397,7 @@
                     <button class="difficulty-pill active" data-level="intermediate" role="radio" aria-checked="true">Intermediate</button>
                     <button class="difficulty-pill" data-level="advanced" role="radio" aria-checked="false">Advanced</button>
                 </div>
-                <div class="difficulty-hint" id="difficultyHint">8th grade reading level</div>
+                <div class="difficulty-hint" id="difficultyHint">Standard text, some writing help</div>
             </div>
 
             <div class="sides-container">
@@ -796,7 +839,7 @@
 
     <!-- Version Display -->
     <div class="version-info">
-        <span>Civil War Battle Simulation v3.5.0</span>
+        <span>Civil War Battle Simulation v3.5.1</span>
     </div>
 </body>
 </html>
