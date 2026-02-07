@@ -8,6 +8,7 @@
 var screens = {};
 
 function cacheScreens() {
+    screens.introSplash = document.getElementById('introSplash');
     screens.modeSelection = document.getElementById('modeSelection');
     screens.studentNameScreen = document.getElementById('studentNameScreen');
     screens.sideSelection = document.getElementById('sideSelection');
