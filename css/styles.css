@@ -1692,26 +1692,32 @@ img {
    =============================================== */
 
 .student-name-section {
-    max-width: 400px;
-    margin: 0 auto var(--spacing-6);
+    max-width: 500px;
+    margin: 0 auto var(--space-8);
     text-align: center;
+    padding: var(--space-5);
+    background: var(--color-surface-secondary);
+    border: 1px solid var(--color-border-secondary);
+    border-radius: var(--radius-xl);
 }
 
 .student-name-label {
     display: block;
-    font-size: var(--font-size-sm);
-    color: var(--color-text-secondary);
-    margin-bottom: var(--spacing-2);
+    font-size: var(--font-size-base);
+    font-weight: 500;
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-3);
 }
 
 .student-name-input {
     width: 100%;
-    padding: var(--spacing-3) var(--spacing-4);
-    background: var(--color-surface);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-md);
+    padding: var(--space-4) var(--space-5);
+    background: var(--color-surface-primary);
+    border: 2px solid var(--color-border-primary);
+    border-radius: var(--radius-lg);
     color: var(--color-text-primary);
-    font-size: var(--font-size-base);
+    font-size: var(--font-size-lg);
+    font-family: var(--font-sans);
     text-align: center;
     transition: border-color 0.2s;
 }
@@ -1719,12 +1725,12 @@ img {
 .student-name-input:focus {
     outline: none;
     border-color: var(--color-primary);
-    box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.15);
+    box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.2);
 }
 
 .student-name-input::placeholder {
-    color: var(--color-text-secondary);
-    opacity: 0.6;
+    color: var(--color-text-tertiary);
+    opacity: 0.7;
 }
 
 /* ===============================================
@@ -1738,7 +1744,7 @@ img {
 .intel-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: var(--spacing-4);
+    gap: var(--space-4);
 }
 
 @media (max-width: 600px) {
@@ -1748,14 +1754,14 @@ img {
 }
 
 .intel-card {
-    padding: var(--spacing-4);
+    padding: var(--space-4);
     border-radius: var(--radius-md);
-    border: 1px solid var(--color-border);
-    background: var(--color-surface);
+    border: 1px solid var(--color-border-primary);
+    background: var(--color-surface-primary);
 }
 
 .intel-card h4 {
-    margin: 0 0 var(--spacing-3);
+    margin: 0 0 var(--space-3);
     font-size: var(--font-size-base);
     font-weight: 600;
 }
@@ -1763,7 +1769,7 @@ img {
 .intel-card div {
     font-size: var(--font-size-sm);
     color: var(--color-text-secondary);
-    margin-bottom: var(--spacing-1);
+    margin-bottom: var(--space-1);
 }
 
 .union-intel {
@@ -1801,22 +1807,22 @@ img {
 .wwyd-prompt {
     font-size: var(--font-size-base);
     color: var(--color-text-primary);
-    margin-bottom: var(--spacing-4);
+    margin-bottom: var(--space-4);
     font-weight: 500;
 }
 
 .wwyd-options {
     display: flex;
     flex-direction: column;
-    gap: var(--spacing-3);
+    gap: var(--space-3);
 }
 
 .wwyd-option-btn {
     display: block;
     width: 100%;
-    padding: var(--spacing-4);
-    background: var(--color-surface);
-    border: 2px solid var(--color-border);
+    padding: var(--space-4);
+    background: var(--color-surface-primary);
+    border: 2px solid var(--color-border-primary);
     border-radius: var(--radius-md);
     color: var(--color-text-primary);
     font-size: var(--font-size-sm);
@@ -1849,8 +1855,8 @@ img {
 }
 
 .wwyd-option-btn.dimmed:hover {
-    border-color: var(--color-border);
-    background: var(--color-surface);
+    border-color: var(--color-border-primary);
+    background: var(--color-surface-primary);
 }
 
 /* ===============================================
@@ -1862,8 +1868,8 @@ img {
 }
 
 .tech-highlight {
-    margin-top: var(--spacing-4);
-    padding: var(--spacing-4);
+    margin-top: var(--space-4);
+    padding: var(--space-4);
     background: rgba(52, 152, 219, 0.08);
     border: 1px solid rgba(52, 152, 219, 0.2);
     border-radius: var(--radius-md);
@@ -1873,14 +1879,14 @@ img {
     font-size: var(--font-size-sm);
     font-weight: 600;
     color: var(--color-blue-500);
-    margin-bottom: var(--spacing-2);
+    margin-bottom: var(--space-2);
 }
 
 .tech-name {
     font-size: var(--font-size-base);
     font-weight: 600;
     color: var(--color-text-primary);
-    margin-bottom: var(--spacing-2);
+    margin-bottom: var(--space-2);
 }
 
 .tech-description {
@@ -1904,8 +1910,8 @@ img {
     font-style: italic;
     color: var(--color-text-primary);
     line-height: 1.6;
-    margin: 0 0 var(--spacing-3);
-    padding: var(--spacing-4);
+    margin: 0 0 var(--space-3);
+    padding: var(--space-4);
     background: rgba(230, 126, 34, 0.06);
     border-radius: var(--radius-md);
     border: 1px solid rgba(230, 126, 34, 0.15);
@@ -1954,15 +1960,15 @@ img {
 .reflect-prompt {
     font-size: var(--font-size-base);
     color: var(--color-text-primary);
-    margin-bottom: var(--spacing-3);
+    margin-bottom: var(--space-3);
     font-weight: 500;
 }
 
 .reflect-input {
     width: 100%;
-    padding: var(--spacing-3) var(--spacing-4);
-    background: var(--color-surface);
-    border: 1px solid var(--color-border);
+    padding: var(--space-3) var(--space-4);
+    background: var(--color-surface-primary);
+    border: 1px solid var(--color-border-primary);
     border-radius: var(--radius-md);
     color: var(--color-text-primary);
     font-size: var(--font-size-sm);
@@ -1989,8 +1995,8 @@ img {
    =============================================== */
 
 .fog-of-war-section {
-    margin-bottom: var(--spacing-4);
-    padding: var(--spacing-4);
+    margin-bottom: var(--space-4);
+    padding: var(--space-4);
     background: rgba(52, 73, 94, 0.15);
     border: 1px solid rgba(52, 73, 94, 0.3);
     border-radius: var(--radius-md);
@@ -1999,9 +2005,9 @@ img {
 .fog-event, .hist-event {
     display: flex;
     align-items: baseline;
-    gap: var(--spacing-2);
+    gap: var(--space-2);
     flex-wrap: wrap;
-    margin-bottom: var(--spacing-2);
+    margin-bottom: var(--space-2);
 }
 
 .fog-event:last-child, .hist-event:last-child {
@@ -2034,10 +2040,10 @@ img {
    =============================================== */
 
 .power-breakdown {
-    margin-bottom: var(--spacing-4);
-    padding: var(--spacing-4);
-    background: var(--color-surface);
-    border: 1px solid var(--color-border);
+    margin-bottom: var(--space-4);
+    padding: var(--space-4);
+    background: var(--color-surface-primary);
+    border: 1px solid var(--color-border-primary);
     border-radius: var(--radius-md);
 }
 
@@ -2045,7 +2051,7 @@ img {
     font-size: var(--font-size-sm);
     font-weight: 600;
     color: var(--color-text-secondary);
-    margin-bottom: var(--spacing-3);
+    margin-bottom: var(--space-3);
     text-transform: uppercase;
     letter-spacing: 0.05em;
 }
@@ -2053,7 +2059,7 @@ img {
 .power-item {
     display: flex;
     justify-content: space-between;
-    padding: var(--spacing-1) 0;
+    padding: var(--space-1) 0;
     font-size: var(--font-size-sm);
     color: var(--color-text-secondary);
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
@@ -2066,10 +2072,10 @@ img {
 .power-total {
     display: flex;
     align-items: center;
-    gap: var(--spacing-2);
-    margin-top: var(--spacing-3);
-    padding-top: var(--spacing-3);
-    border-top: 2px solid var(--color-border);
+    gap: var(--space-2);
+    margin-top: var(--space-3);
+    padding-top: var(--space-3);
+    border-top: 2px solid var(--color-border-primary);
     font-weight: 600;
     font-size: var(--font-size-base);
     color: var(--color-text-primary);
@@ -2078,7 +2084,7 @@ img {
 .power-vs {
     color: var(--color-text-secondary);
     font-weight: 400;
-    margin-left: var(--spacing-2);
+    margin-left: var(--space-2);
 }
 
 /* ===============================================
@@ -2086,8 +2092,8 @@ img {
    =============================================== */
 
 .historical-event-notice {
-    margin-bottom: var(--spacing-4);
-    padding: var(--spacing-4);
+    margin-bottom: var(--space-4);
+    padding: var(--space-4);
     background: rgba(230, 126, 34, 0.08);
     border: 1px solid rgba(230, 126, 34, 0.2);
     border-radius: var(--radius-md);
@@ -2097,7 +2103,7 @@ img {
     font-size: var(--font-size-sm);
     font-weight: 600;
     color: #e67e22;
-    margin-bottom: var(--spacing-2);
+    margin-bottom: var(--space-2);
 }
 
 .hist-event-text {
@@ -2113,22 +2119,22 @@ img {
 
 .pdf-export-section {
     text-align: center;
-    margin: var(--spacing-6) 0;
-    padding: var(--spacing-6);
-    background: var(--color-surface);
-    border: 1px solid var(--color-border);
+    margin: var(--space-6) 0;
+    padding: var(--space-6);
+    background: var(--color-surface-primary);
+    border: 1px solid var(--color-border-primary);
     border-radius: var(--radius-lg);
 }
 
 .pdf-export-btn {
     font-size: var(--font-size-lg) !important;
-    padding: var(--spacing-4) var(--spacing-8) !important;
+    padding: var(--space-4) var(--space-8) !important;
 }
 
 .pdf-hint {
     font-size: var(--font-size-xs);
     color: var(--color-text-secondary);
-    margin-top: var(--spacing-2);
+    margin-top: var(--space-2);
 }
 
 /* ===============================================

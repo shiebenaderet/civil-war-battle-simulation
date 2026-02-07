@@ -146,24 +146,26 @@
                 var script = document.createElement('script');
                 script.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
                 script.async = true;
-                document.head.appendChild(script);
-
-                script.onload = function() {
-                    setTimeout(function() {
-                        var select = document.querySelector('.goog-te-combo');
-                        if (select) {
-                            select.value = langCode;
-                            select.dispatchEvent(new Event('change'));
-                        }
-                    }, 1000);
+                script.onerror = function() {
+                    console.warn('Google Translate requires internet access.');
                 };
-            } else {
+                document.head.appendChild(script);
+            }
+
+            // Poll for the Google Translate combo box (more reliable than fixed timeout)
+            var attempts = 0;
+            var pollInterval = setInterval(function() {
+                attempts++;
                 var select = document.querySelector('.goog-te-combo');
                 if (select) {
+                    clearInterval(pollInterval);
                     select.value = langCode;
                     select.dispatchEvent(new Event('change'));
+                } else if (attempts >= 20) {
+                    clearInterval(pollInterval);
+                    console.warn('Google Translate did not load. Translation requires internet access.');
                 }
-            }
+            }, 500);
         }
 
         function getLanguageCode(language) {
@@ -244,7 +246,7 @@
                             </button>
                             <div class="settings-item translate-item">
                                 <span class="menu-icon">&#x1F310;</span>
-                                <select class="translate-select-nav" id="translateSelect" onchange="if(this.value) translateWithGoogle(this.value); this.value='';" aria-label="Change language">
+                                <select class="translate-select-nav" id="translateSelect" onchange="if(this.value) translateWithGoogle(this.value);" aria-label="Change language">
                                     <option value="">English</option>
                                     <option value="Spanish">Espa&#xF1;ol</option>
                                     <option value="French">Fran&#xE7;ais</option>
