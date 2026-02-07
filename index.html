@@ -168,61 +168,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Crimson+Pro:wght@400;500;600&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
     <noscript><link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Crimson+Pro:wght@400;500;600&display=swap" rel="stylesheet"></noscript>
 
-    <!-- Google Translate Integration -->
     <script>
-        function googleTranslateElementInit() {
-            new google.translate.TranslateElement({
-                pageLanguage: 'en',
-                includedLanguages: 'es,fr,pt,zh,ko,uk,ja,ru,ar',
-                layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
-                autoDisplay: false
-            }, 'google_translate_element');
-        }
-
-        function translateWithGoogle(targetLanguage) {
-            updateLanguageAttribute(targetLanguage);
-            var langCode = getLanguageCode(targetLanguage);
-
-            if (!document.querySelector('script[src*="translate.google.com"]')) {
-                var script = document.createElement('script');
-                script.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
-                script.async = true;
-                script.onerror = function() {
-                    console.warn('Google Translate requires internet access.');
-                };
-                document.head.appendChild(script);
-            }
-
-            // Poll for the Google Translate combo box (more reliable than fixed timeout)
-            var attempts = 0;
-            var pollInterval = setInterval(function() {
-                attempts++;
-                var select = document.querySelector('.goog-te-combo');
-                if (select) {
-                    clearInterval(pollInterval);
-                    select.value = langCode;
-                    select.dispatchEvent(new Event('change'));
-                } else if (attempts >= 20) {
-                    clearInterval(pollInterval);
-                    console.warn('Google Translate did not load. Translation requires internet access.');
-                }
-            }, 500);
-        }
-
-        function getLanguageCode(language) {
-            var languageCodes = {
-                'Spanish': 'es', 'French': 'fr', 'Portuguese': 'pt',
-                'Chinese': 'zh', 'Korean': 'ko', 'Ukrainian': 'uk',
-                'Japanese': 'ja', 'Russian': 'ru', 'Arabic': 'ar'
-            };
-            return languageCodes[language] || 'en';
-        }
-
-        function updateLanguageAttribute(language) {
-            document.documentElement.setAttribute('lang', getLanguageCode(language));
-        }
-
-        // Theme functions
+    // Theme functions
         function toggleTheme() {
             var html = document.documentElement;
             var currentTheme = html.getAttribute('data-theme');
@@ -259,9 +206,6 @@
     <!-- Skip Navigation Link -->
     <a href="#main-content" class="skip-link">Skip to main content</a>
 
-    <!-- Google Translate Element -->
-    <div id="google_translate_element"></div>
-
     <!-- Main Navigation Bar -->
     <nav class="main-navbar" role="navigation" aria-label="Main navigation">
         <div class="navbar-content">
@@ -285,20 +229,6 @@
                             <button class="settings-item theme-toggle-item" id="themeToggle" onclick="toggleTheme()" role="menuitem" aria-label="Switch theme">
                                 <span class="menu-icon theme-icon">&#x2600;&#xFE0F;</span> <span class="theme-text">Light Theme</span>
                             </button>
-                            <div class="settings-item translate-item">
-                                <span class="menu-icon">&#x1F310;</span>
-                                <select class="translate-select-nav" id="translateSelect" onchange="if(this.value) translateWithGoogle(this.value);" aria-label="Change language">
-                                    <option value="">English</option>
-                                    <option value="Spanish">Espa&#xF1;ol</option>
-                                    <option value="French">Fran&#xE7;ais</option>
-                                    <option value="Korean">&#xD55C;&#xAD6D;&#xC5B4;</option>
-                                    <option value="Ukrainian">&#x423;&#x43A;&#x440;&#x430;&#x457;&#x43D;&#x441;&#x44C;&#x43A;&#x430;</option>
-                                    <option value="Russian">&#x420;&#x443;&#x441;&#x441;&#x43A;&#x438;&#x439;</option>
-                                    <option value="Portuguese">Portugu&#xEA;s</option>
-                                    <option value="Chinese">&#x4E2D;&#x6587;</option>
-                                    <option value="Japanese">&#x65E5;&#x672C;&#x8A9E;</option>
-                                </select>
-                            </div>
                         </div>
 
                         <div class="settings-divider" id="gameActionsDiv" style="display: none;"></div>
@@ -570,6 +500,29 @@
                 <div class="narrative-section reflect-section" id="sectionReflect" style="display:none;">
                     <h3 class="narrative-heading">&#x270D;&#xFE0F; Reflect</h3>
                     <p class="reflect-prompt" id="histReflectPrompt"></p>
+
+                    <!-- Reflection scaffolding - shown based on difficulty level -->
+                    <div class="reflect-scaffolding" id="reflectScaffolding" style="display:none;">
+                        <!-- Beginner/Intermediate: clickable sentence starters -->
+                        <div class="starter-chips" id="starterChips" style="display:none;">
+                            <div class="starter-label" id="starterLabel">Click a sentence starter to begin:</div>
+                            <div class="starter-chip-list" id="starterChipList" role="group" aria-label="Sentence starters">
+                                <!-- Populated by JS -->
+                            </div>
+                        </div>
+                        <!-- Advanced: RACE reminder -->
+                        <div class="race-reminder" id="raceReminder" style="display:none;">
+                            <div class="race-title">Use the RACE method:</div>
+                            <div class="race-steps">
+                                <div class="race-step"><span class="race-letter">R</span><span class="race-desc">Restate the question</span></div>
+                                <div class="race-step"><span class="race-letter">A</span><span class="race-desc">Answer the question</span></div>
+                                <div class="race-step"><span class="race-letter">C</span><span class="race-desc">Cite evidence from what you read</span></div>
+                                <div class="race-step"><span class="race-letter">E</span><span class="race-desc">Explain your thinking</span></div>
+                            </div>
+                            <div class="race-note">Write in complete sentences.</div>
+                        </div>
+                    </div>
+
                     <textarea class="reflect-input" id="histReflectInput" rows="4" placeholder="Write your thoughts here..." aria-label="Your reflection"></textarea>
                 </div>
             </div>
@@ -823,7 +776,7 @@
 
     <!-- Version Display -->
     <div class="version-info">
-        <span>Civil War Battle Simulation v3.3.0</span>
+        <span>Civil War Battle Simulation v3.4.0</span>
     </div>
 </body>
 </html>
