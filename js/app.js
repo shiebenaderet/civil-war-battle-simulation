@@ -4,6 +4,9 @@ function boot() {
     cacheScreens();
     setupEventListeners();
 
+    // Initialize Firebase leaderboard (no-op if SDK didn't load)
+    firebaseLeaderboard.init();
+
     // Show intro splash on first visit, mode selection on return
     var hasSeenIntro = localStorage.getItem('civilWarIntroSeen');
     if (hasSeenIntro) {
@@ -223,6 +226,23 @@ function setupEventListeners() {
 
     // Teacher tip toggle
     document.getElementById('teacherTipToggle').addEventListener('click', toggleTeacherTip);
+
+    // Class leaderboard - room code join
+    document.getElementById('roomCodeJoinBtn').addEventListener('click', function() {
+        joinRoom();
+    });
+    document.getElementById('roomCodeInput').addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') joinRoom();
+        this.style.borderColor = '';
+        document.getElementById('roomCodeError').style.display = 'none';
+    });
+    // Auto-uppercase room code input
+    document.getElementById('roomCodeInput').addEventListener('input', function() {
+        this.value = this.value.toUpperCase();
+    });
+    document.getElementById('leaveRoomBtn').addEventListener('click', function() {
+        leaveRoom();
+    });
 
     // Credits toggle
     setupCreditsToggle();

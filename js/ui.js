@@ -1158,8 +1158,9 @@ function renderHistoricalComplete() {
         }
     }
 
-    // Hide scoreboard for historical mode
+    // Hide scoreboard and class leaderboard for historical mode
     document.getElementById('scoreboardSection').style.display = 'none';
+    document.getElementById('classLeaderboardSection').style.display = 'none';
 
     showScreen('endGameScreen');
     showGameActions(false);
@@ -1567,7 +1568,7 @@ function renderFreeplayEnd(advancement) {
 }
 
 // ============================================================
-// Scoreboard UI
+// Scoreboard UI (Local + Firebase Class Leaderboard)
 // ============================================================
 
 function renderScoreboardSection() {
@@ -1578,7 +1579,7 @@ function renderScoreboardSection() {
 
     container.innerHTML =
         '<div class="scoreboard-entry-form" id="scoreEntryForm">' +
-        '<h3 class="scoreboard-form-title">&#x1F3C6; Add Your Score to the Leaderboard</h3>' +
+        '<h3 class="scoreboard-form-title">&#x1F3C6; Save Your Score</h3>' +
         '<div class="scoreboard-input-row">' +
         '<input type="text" id="playerNameInput" class="player-name-input" ' +
         'placeholder="Enter your name (e.g. first name + last initial)" ' +
@@ -1586,12 +1587,15 @@ function renderScoreboardSection() {
         '<button class="save-score-btn" id="saveScoreBtn">Save Score</button>' +
         '</div></div>' +
         '<div class="scoreboard-table-wrapper">' +
-        '<h3 class="scoreboard-title">&#x1F4CA; Class Leaderboard</h3>' +
+        '<h3 class="scoreboard-title">&#x1F4CA; Device Leaderboard</h3>' +
         renderScoreboardTable(scoreboard) +
         (scoreboard.length > 0 ? '<button class="clear-scores-btn" id="clearScoresBtn">Clear All Scores</button>' : '') +
         '</div>';
 
     wireUpScoreboardEvents();
+
+    // Show class leaderboard section
+    showClassLeaderboard();
 }
 
 function wireUpScoreboardEvents() {
@@ -1607,12 +1611,15 @@ function wireUpScoreboardEvents() {
             }
             var updated = saveToScoreboard(name);
             document.getElementById('scoreEntryForm').innerHTML =
-                '<p class="score-saved-msg">&#x2705; Score saved!</p>';
+                '<p class="score-saved-msg">&#x2705; Score saved locally!</p>';
             document.querySelector('.scoreboard-table-wrapper').innerHTML =
-                '<h3 class="scoreboard-title">&#x1F4CA; Class Leaderboard</h3>' +
+                '<h3 class="scoreboard-title">&#x1F4CA; Device Leaderboard</h3>' +
                 renderScoreboardTable(updated) +
                 '<button class="clear-scores-btn" id="clearScoresBtn">Clear All Scores</button>';
             wireUpClearButton();
+
+            // Also submit to Firebase if room code is active
+            submitToClassLeaderboard(name);
         });
 
         nameInput.addEventListener('keydown', function(e) {
@@ -1628,10 +1635,10 @@ function wireUpClearButton() {
     var clearBtn = document.getElementById('clearScoresBtn');
     if (clearBtn) {
         clearBtn.addEventListener('click', function() {
-            if (confirm('Clear all scores from the leaderboard?')) {
+            if (confirm('Clear all scores from the device leaderboard?')) {
                 clearScoreboard();
                 document.querySelector('.scoreboard-table-wrapper').innerHTML =
-                    '<h3 class="scoreboard-title">&#x1F4CA; Class Leaderboard</h3>' +
+                    '<h3 class="scoreboard-title">&#x1F4CA; Device Leaderboard</h3>' +
                     renderScoreboardTable([]);
             }
         });
@@ -1658,6 +1665,147 @@ function renderScoreboardTable(scoreboard) {
     }).join('');
 
     return '<table class="scoreboard-table"><thead><tr>' +
+        '<th>#</th><th>Name</th><th>Score</th><th>Side</th><th>Record</th><th>Won?</th>' +
+        '</tr></thead><tbody>' + rows + '</tbody></table>';
+}
+
+// ============================================================
+// Class Leaderboard (Firebase)
+// ============================================================
+
+function showClassLeaderboard() {
+    var section = document.getElementById('classLeaderboardSection');
+    if (!section) return;
+
+    section.style.display = 'block';
+
+    var savedCode = firebaseLeaderboard.getSavedRoomCode();
+    if (savedCode && firebaseLeaderboard.isAvailable()) {
+        // Already joined a room - show leaderboard directly
+        showJoinedRoom(savedCode);
+    } else {
+        // Show room code entry form
+        document.getElementById('roomCodeForm').style.display = 'block';
+        document.getElementById('classLeaderboardDisplay').style.display = 'none';
+
+        // Pre-fill saved code if any
+        var input = document.getElementById('roomCodeInput');
+        if (input && savedCode) input.value = savedCode;
+
+        if (!firebaseLeaderboard.isAvailable()) {
+            var errorEl = document.getElementById('roomCodeError');
+            if (errorEl) {
+                errorEl.textContent = 'Class leaderboard requires an internet connection.';
+                errorEl.style.display = 'block';
+            }
+        }
+    }
+}
+
+function joinRoom() {
+    var input = document.getElementById('roomCodeInput');
+    var errorEl = document.getElementById('roomCodeError');
+    var joinBtn = document.getElementById('roomCodeJoinBtn');
+    if (!input) return;
+
+    var code = input.value.toUpperCase().trim();
+    if (!code) {
+        input.focus();
+        input.style.borderColor = '#dc2626';
+        return;
+    }
+
+    joinBtn.disabled = true;
+    joinBtn.textContent = 'Checking...';
+    errorEl.style.display = 'none';
+
+    firebaseLeaderboard.validateRoom(code, function(valid, errMsg) {
+        joinBtn.disabled = false;
+        joinBtn.textContent = 'Join';
+
+        if (valid) {
+            firebaseLeaderboard.saveRoomCode(code);
+            showJoinedRoom(code);
+        } else {
+            errorEl.textContent = errMsg;
+            errorEl.style.display = 'block';
+            input.style.borderColor = '#dc2626';
+        }
+    });
+}
+
+function showJoinedRoom(roomCode) {
+    document.getElementById('roomCodeForm').style.display = 'none';
+    document.getElementById('classLeaderboardDisplay').style.display = 'block';
+    document.getElementById('classRoomCodeLabel').textContent = roomCode;
+
+    var statusEl = document.getElementById('classLeaderboardStatus');
+    statusEl.textContent = 'Loading class scores...';
+
+    firebaseLeaderboard.loadLeaderboard(roomCode, function(entries, errMsg) {
+        if (entries) {
+            statusEl.textContent = '';
+            renderClassLeaderboardTable(entries);
+        } else {
+            statusEl.textContent = errMsg || 'Could not load leaderboard.';
+        }
+    });
+}
+
+function leaveRoom() {
+    firebaseLeaderboard.clearRoomCode();
+    document.getElementById('roomCodeForm').style.display = 'block';
+    document.getElementById('classLeaderboardDisplay').style.display = 'none';
+    document.getElementById('roomCodeInput').value = '';
+    document.getElementById('roomCodeError').style.display = 'none';
+}
+
+function submitToClassLeaderboard(playerName) {
+    var roomCode = firebaseLeaderboard.getSavedRoomCode();
+    if (!roomCode || !firebaseLeaderboard.isAvailable()) return;
+
+    var scoreData = {
+        name: playerName,
+        score: gameState.score,
+        side: gameState.side,
+        wins: gameState.wins,
+        losses: gameState.losses,
+        momentum: gameState.momentum,
+        victory: gameState.momentum > 0 || (gameState.momentum === 0 && gameState.wins > gameState.losses)
+    };
+
+    firebaseLeaderboard.submitScore(roomCode, scoreData, function(success, errMsg) {
+        if (success) {
+            // Refresh the class leaderboard display
+            showJoinedRoom(roomCode);
+        }
+    });
+}
+
+function renderClassLeaderboardTable(entries) {
+    var wrapper = document.getElementById('classLeaderboardTable');
+    if (!wrapper) return;
+
+    if (!entries || entries.length === 0) {
+        wrapper.innerHTML = '<p class="scoreboard-empty">No class scores yet. Save your score above to be the first!</p>';
+        return;
+    }
+
+    var rows = entries.map(function(entry, i) {
+        var medal = i === 0 ? '&#x1F947;' : i === 1 ? '&#x1F948;' : i === 2 ? '&#x1F949;' : (i + 1);
+        var sideIcon = entry.side === 'union' ? '&#x1F1FA;&#x1F1F8;' : '&#x1F3F4;';
+        var victoryIcon = entry.victory ? '&#x2705;' : '&#x274C;';
+        return '<tr class="scoreboard-row' + (i < 3 ? ' top-three' : '') + '">' +
+            '<td class="rank-cell">' + medal + '</td>' +
+            '<td class="name-cell">' + escapeHtml(String(entry.name || 'Anonymous')) + '</td>' +
+            '<td class="score-cell">' + (entry.score || 0).toLocaleString() + '</td>' +
+            '<td class="side-cell">' + sideIcon + '</td>' +
+            '<td class="record-cell">' + (entry.wins || 0) + 'W-' + (entry.losses || 0) + 'L</td>' +
+            '<td class="victory-cell">' + victoryIcon + '</td>' +
+            '</tr>';
+    }).join('');
+
+    wrapper.innerHTML = '<table class="scoreboard-table"><thead><tr>' +
         '<th>#</th><th>Name</th><th>Score</th><th>Side</th><th>Record</th><th>Won?</th>' +
         '</tr></thead><tbody>' + rows + '</tbody></table>';
 }
