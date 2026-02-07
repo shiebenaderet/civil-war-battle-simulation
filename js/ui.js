@@ -171,6 +171,21 @@ function renderLeaderLetter() {
 }
 
 // ============================================================
+// Visual Tab Switcher
+// ============================================================
+
+function switchVisualTab(clickedTab, showId, hideId) {
+    // Update tab states
+    var tabs = clickedTab.parentElement.querySelectorAll('.visual-tab');
+    tabs.forEach(function(tab) { tab.classList.remove('active'); });
+    clickedTab.classList.add('active');
+
+    // Show/hide panels
+    document.getElementById(showId).style.display = 'block';
+    document.getElementById(hideId).style.display = 'none';
+}
+
+// ============================================================
 // Battle Image Helper
 // ============================================================
 
@@ -205,6 +220,37 @@ function renderBattleImage(container, battle) {
 }
 
 // ============================================================
+// Battle Map Helper
+// ============================================================
+
+function renderBattleMap(container, battle) {
+    var assets = getAssetManifest();
+    var asset = assets.find(function(a) { return a.id === battle.id; });
+
+    if (!asset) {
+        asset = assets[gameState.currentBattle] || assets[0];
+    }
+
+    if (asset && asset.mapUrl) {
+        var credit = escapeHtml(asset.mapCredit || 'Hal Jespersen');
+        var license = escapeHtml(asset.mapLicense || 'CC BY 3.0');
+
+        container.innerHTML =
+            '<img src="' + asset.mapUrl + '" alt="Tactical map of ' + escapeHtml(battle.name) + '" ' +
+            'loading="lazy" decoding="async" ' +
+            'onerror="this.parentElement.innerHTML=\'<div class=\\\'map-fallback\\\'>' +
+            '<div class=\\\'map-fallback-icon\\\'>&#x1F5FA;&#xFE0F;</div>' +
+            '<p>Map loading failed. Check your connection.</p></div>\';">' +
+            '<span class="map-credit">' + credit + ' &bull; ' + license + '</span>';
+    } else {
+        container.innerHTML =
+            '<div class="map-fallback">' +
+            '<div class="map-fallback-icon">&#x1F5FA;&#xFE0F;</div>' +
+            '<p>Tactical map not available for this battle</p></div>';
+    }
+}
+
+// ============================================================
 // Historical Mode Screens
 // ============================================================
 
@@ -230,11 +276,21 @@ function renderHistoricalBattle() {
     document.getElementById('histBattleDate').textContent = content.date;
     document.getElementById('histBattleLocation').textContent = content.location;
 
-    // Image
+    // Image + Map
     renderBattleImage(
-        document.getElementById('histBattleImage'),
+        document.getElementById('histArtwork'),
         battles[gameState.currentBattle]
     );
+    renderBattleMap(
+        document.getElementById('histMap'),
+        battles[gameState.currentBattle]
+    );
+    // Reset tabs to show artwork by default
+    var histTabs = document.querySelectorAll('#historicalScreen .visual-tab');
+    histTabs.forEach(function(tab) { tab.classList.remove('active'); });
+    if (histTabs[0]) histTabs[0].classList.add('active');
+    document.getElementById('histArtwork').style.display = 'block';
+    document.getElementById('histMap').style.display = 'none';
 
     // --- Section 1: Intel Report ---
     var intelGrid = document.getElementById('histIntelGrid');
@@ -626,8 +682,15 @@ function renderFreeplayBriefing() {
     document.getElementById('fpBattleDate').textContent = battle.date;
     document.getElementById('fpBattleLocation').textContent = battle.location;
 
-    // Image
-    renderBattleImage(document.getElementById('fpBattleImage'), battle);
+    // Image + Map
+    renderBattleImage(document.getElementById('fpArtwork'), battle);
+    renderBattleMap(document.getElementById('fpMap'), battle);
+    // Reset tabs to show artwork by default
+    var fpTabs = document.querySelectorAll('#freeplayBriefing .visual-tab');
+    fpTabs.forEach(function(tab) { tab.classList.remove('active'); });
+    if (fpTabs[0]) fpTabs[0].classList.add('active');
+    document.getElementById('fpArtwork').style.display = 'block';
+    document.getElementById('fpMap').style.display = 'none';
 
     // Briefing
     document.getElementById('fpBriefing').textContent = battle.freeplay.briefing;
