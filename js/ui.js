@@ -285,6 +285,19 @@ var groupedReflections = [
             beginner: "Think about what people expected before each battle vs. what actually happened. You could compare the civilians picnicking at Bull Run to the soldiers at Shiloh. What surprised people the most?",
             intermediate: "Consider how expectations changed from battle to battle. What did people assume about war at first? What details from the primary sources proved those assumptions wrong?",
             advanced: "Examine the gap between political rhetoric and battlefield reality. How did each side's justification for war hold up against escalating violence? Use specific evidence from the primary sources."
+        },
+        starters: {
+            beginner: [
+                'The war got worse so fast because...',
+                'At Bull Run, people expected..., but by Shiloh...',
+                'One thing that changed between the first battle and Shiloh was...',
+                'I was surprised that...'
+            ],
+            intermediate: [
+                'The war escalated from Fort Sumter to Shiloh because...',
+                'The reality of battle changed expectations when...',
+                'One primary source that shows this escalation is...'
+            ]
         }
     },
     {
@@ -299,6 +312,19 @@ var groupedReflections = [
             beginner: "Pick one person you read about \u2014 Clara Barton, an Irish soldier, an enslaved person. What was their experience? How was the war personal for them?",
             intermediate: "Think about who had power and who didn't. Who made the big decisions, and who paid the price? The Emancipation Proclamation is a good example \u2014 who did it help, and who was left out?",
             advanced: "Consider whose voices are centered in traditional war narratives and whose are marginalized. How do the primary source quotes complicate simple moral judgments about the war's purpose?"
+        },
+        starters: {
+            beginner: [
+                'I chose to write about... because...',
+                'The war changed their life by...',
+                'One detail that showed how the war hurt people was...',
+                'Before the war, this person... but after...'
+            ],
+            intermediate: [
+                'The Emancipation Proclamation changed the war because...',
+                'One theme that stands out across these battles is...',
+                'The human cost is shown by...'
+            ]
         }
     },
     {
@@ -313,6 +339,19 @@ var groupedReflections = [
             beginner: "What was different about the war before and after these battles? Try comparing who was winning before to who was winning after.",
             intermediate: "A 'turning point' doesn't mean the war was over \u2014 Chickamauga proved that. What changed strategically, and what stayed the same? Think about both sides.",
             advanced: "Interrogate the concept of 'turning point.' Was it the military outcomes, political consequences, or psychological impact that mattered most? Argue your position with evidence."
+        },
+        starters: {
+            beginner: [
+                'I think the war started to turn because...',
+                'If I were on the losing side, I would have...',
+                'The biggest change after these battles was...',
+                'What surprised me most about Vicksburg/Gettysburg was...'
+            ],
+            intermediate: [
+                'These battles were decisive because...',
+                'Chickamauga shows the war wasn\'t over because...',
+                'The military results and human cost connect when...'
+            ]
         }
     },
     {
@@ -327,6 +366,19 @@ var groupedReflections = [
             beginner: "Think about different people \u2014 a Union soldier, a freed person, a Southern family. How would each of them answer: 'Was the war worth it?'",
             intermediate: "Consider the tension between ending the war quickly and ending it fairly. Were the surrender terms fair to everyone, including the four million freed people?",
             advanced: "How do the decisions from 1864\u20131865 still affect American society? Think about the relationship between the generous surrender terms and the failures of Reconstruction."
+        },
+        starters: {
+            beginner: [
+                'I think the way the war ended was fair/unfair because...',
+                'After a war this terrible, I think people should...',
+                'Grant letting the Confederates go home shows...',
+                'Lincoln\'s assassination changed what came next because...'
+            ],
+            intermediate: [
+                'Grant\'s strategy was justified/not justified because...',
+                'Sherman\'s destruction raises the question of...',
+                'The surrender terms were fair/unfair to... because...'
+            ]
         }
     }
 ];
@@ -612,7 +664,15 @@ function showReflectScaffolding() {
     var difficulty = gameState.difficulty || 'intermediate';
 
     if (difficulty === 'beginner' || difficulty === 'intermediate') {
-        var starters = reflectionStarters[difficulty] || reflectionStarters.intermediate;
+        // Use group-specific starters if available, fallback to generic
+        var groupIdx = getReflectionGroupIndex(gameState.currentBattle);
+        var group = groupedReflections[groupIdx];
+        var starters;
+        if (group && group.starters && group.starters[difficulty]) {
+            starters = group.starters[difficulty];
+        } else {
+            starters = reflectionStarters[difficulty] || reflectionStarters.intermediate;
+        }
 
         chipList.innerHTML = '';
         starters.forEach(function(text) {
