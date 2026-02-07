@@ -190,7 +190,7 @@ const battles = [
             },
             whatHappened: "The Confederate surprise attack on April 6 nearly destroyed Grant's army. But stubborn Union resistance at the 'Hornets' Nest' bought precious hours. General Johnston was killed leading a charge that afternoon. Overnight, 25,000 Union reinforcements crossed the river. Grant counterattacked on April 7 and drove the Confederates from the field.",
             tech: { name: "Gunboats", description: "Two Union gunboats, the USS Tyler and USS Lexington, fired massive shells into Confederate positions all night. The booming guns terrified exhausted Southern soldiers and helped protect Grant's army while reinforcements crossed the river." },
-            voice: { quote: "I saw an open field, in our possession on the second day, over which the Confederates had made repeated charges the day before, so covered with dead that it would have been possible to walk across the clearing, in any direction, stepping on dead bodies, without a foot touching the ground.", attribution: "General Ulysses S. Grant", source: "Library of Congress, Personal Memoirs of U.S. Grant, 1885" },
+            voice: { quote: "They came pouring in at every avenue — footsore, in rags, with bundles on their heads, and terror and hope equally in their faces. Men, women, and children, all fleeing toward the sound of the Union guns. The questions they asked about freedom, and whether we would send them back, were heartbreaking beyond description.", attribution: "Chaplain John Eaton, who organized the first freedpeople's camps in the Western Theater", source: "John Eaton, 'Grant, Lincoln, and the Freedmen,' 1907 / Freedmen and Southern Society Project, National Archives" },
             biggerPicture: "Shiloh's 23,000 casualties in two days were more than all previous American wars combined. The nation was horrified. Dreams of a quick, glorious war died on that field. Grant was criticized for being unprepared, but Lincoln said: 'I can't spare this man. He fights.'",
             reflection: "After Shiloh, Grant wrote that he gave up all hope of saving the Union except by 'complete conquest.' Why do you think such a terrible battle changed his thinking about how the war needed to be fought?",
             winner: "union",
@@ -274,11 +274,23 @@ const battles = [
             tech: { name: "Battlefield Photography", description: "Photographer Alexander Gardner arrived at Antietam days after the battle and took the first photographs of American dead on a battlefield. When displayed in New York, viewers were shocked. For the first time, people at home could see the real horror of war." },
             voice: { quote: "A man lying upon the ground asked for a drink of water. I stooped to give it, and having raised him with my right hand, was holding the cup to his lips with my left, when I felt a sudden twitch of the sleeve of my dress. The poor fellow sprang from my hands and fell back quivering in the agonies of death. A ball had passed between my body and the right arm which supported him, cutting through the sleeve, and killing him.", attribution: "Clara Barton, volunteer nurse (later founder of the American Red Cross)", source: "Library of Congress, Clara Barton Papers" },
             biggerPicture: "Lincoln used the 'victory' at Antietam to issue the Emancipation Proclamation, declaring all enslaved people in rebel states to be free. This transformed the war from a fight to save the Union into a war to end slavery, and convinced Britain and France not to support the Confederacy.",
-            reflection: "McClellan had Lee's secret plans and twice his troops, but still didn't destroy Lee's army. What does this tell you about the difference between having an advantage and using it? Can you think of other examples where someone had every advantage but didn't follow through?",
+            reflection: "Lincoln used the battle to issue the Emancipation Proclamation. Was this primarily a moral decision or a military strategy \u2014 or both? If you were an enslaved person in a border state like Kentucky, which was NOT included in the Proclamation, how would you feel?",
             winner: "draw",
             outcome: "Tactical draw, strategic Union victory",
             casualties: { union: 12401, confederacy: 10316 },
-            keyFact: "September 17, 1862 remains the bloodiest single day in American history. Over 22,000 soldiers were killed or wounded in just 12 hours of fighting."
+            keyFact: "September 17, 1862 remains the bloodiest single day in American history. Over 22,000 soldiers were killed or wounded in just 12 hours of fighting.",
+            perspectives: [
+                {
+                    title: "The Emancipation Proclamation",
+                    icon: "\uD83D\uDCDC",
+                    text: "Lincoln's proclamation only freed enslaved people in rebel states \u2014 not in the border states (Missouri, Kentucky, Maryland, Delaware) that remained in the Union. This was a military strategy as much as a moral document: it turned the Union army into an army of liberation and opened the door for nearly 180,000 Black men to enlist as United States Colored Troops."
+                },
+                {
+                    title: "Cotton Diplomacy Fails",
+                    icon: "\uD83C\uDF0D",
+                    text: "The Confederacy had counted on 'King Cotton' to force Britain and France to intervene. But Antietam and the Emancipation Proclamation changed everything \u2014 no European democracy would support a nation fighting to preserve slavery. The Confederacy would fight alone."
+                }
+            ]
         },
 
         freeplay: {
@@ -354,13 +366,25 @@ const battles = [
             },
             whatHappened: "Burnside ordered 14 separate assaults against the stone wall on Marye's Heights. Not a single one reached it. Union soldiers fell in rows, mowed down by Confederate rifle fire. Over 12,000 Union soldiers were killed or wounded compared to about 5,000 Confederates. It was one of the most lopsided battles of the war.",
             tech: { name: "The Minié Ball", description: "The soft lead Minié ball expanded when fired from a rifled musket, making it accurate up to 500 yards. At Fredericksburg, defenders behind the stone wall fired Minié balls into charging troops with devastating accuracy. This technology made frontal assaults far deadlier than generals realized." },
-            voice: { quote: "It is well that war is so terrible, otherwise we should grow too fond of it.", attribution: "General Robert E. Lee, watching the Union assaults from Marye's Heights", source: "Recorded by staff officers; widely cited in Lee biographies and National Park Service records" },
+            voice: { quote: "We got the order — Irish Brigade, advance! Forward, double quick! And up that hill we went, right into the blaze of their guns, right up to the base of that stone wall. They mowed us down like grass. Of the whole brigade, barely two hundred and fifty walked off that field. We left our dead in heaps, wearing the green sprigs in their caps so they could be told from the rest.", attribution: "Captain William J. Nagle, 88th New York Volunteer Infantry, Irish Brigade", source: "Letters published in the New York Irish-American, December 1862 / Irish Brigade Association records" },
             biggerPicture: "The disaster at Fredericksburg fueled the growing peace movement in the North. 'Copperhead' Democrats demanded an end to the war. Morale in the Union army hit rock bottom, with soldiers openly questioning their commanders. Burnside was removed from command.",
             reflection: "Burnside ordered 14 charges against the stone wall, and every one failed with heavy losses. At what point should a commander call off an attack that isn't working? What pressures might make a general keep attacking even when it's clearly failing?",
             winner: "confederacy",
             outcome: "Decisive Confederate victory",
             casualties: { union: 12653, confederacy: 5377 },
-            keyFact: "A Confederate officer watching the slaughter said, 'A chicken could not live on that field.' Union soldiers later tried to use the bodies of fallen comrades as cover from the relentless fire."
+            keyFact: "A Confederate officer watching the slaughter said, 'A chicken could not live on that field.' Union soldiers later tried to use the bodies of fallen comrades as cover from the relentless fire.",
+            perspectives: [
+                {
+                    title: "The Irish Brigade at Marye's Heights",
+                    icon: "\u2618\uFE0F",
+                    text: "The Irish Brigade \u2014 mostly immigrants who had fled the Great Famine \u2014 charged the stone wall wearing sprigs of green in their caps. Of roughly 1,200 men, barely 250 walked off the field. Many fought for citizenship, to prove that Irish Catholics belonged in America. Their sacrifice became a defining moment in Irish-American identity."
+                },
+                {
+                    title: "Rich Man's War, Poor Man's Fight",
+                    icon: "\u2696\uFE0F",
+                    text: "By late 1862, the war's cost fell hardest on working-class families. In the North, wealthy men could pay $300 (a year's wages for a laborer) to avoid the coming draft. In the South, the 'Twenty Negro Law' exempted planters who owned 20 or more enslaved people. On both sides, common soldiers asked: whose war are we really fighting?"
+                }
+            ]
         },
 
         freeplay: {
@@ -449,7 +473,7 @@ const battles = [
             },
             whatHappened: "Lee made his boldest gamble, splitting his army to send Jackson on a secret flanking march. At dusk, Jackson's 28,000 men burst from the woods and shattered the Union right flank. But that night, Jackson was accidentally shot by his own men and died days later.",
             tech: { name: "Field Medicine / Ambulance Corps", description: "Dr. Jonathan Letterman created the first organized ambulance corps system, with trained stretcher-bearers and triage stations. His system saved thousands of lives and became the model for military medicine worldwide." },
-            voice: { quote: "He has lost his left arm, but I have lost my right arm.", attribution: "Robert E. Lee, on learning of Jackson's wounding", source: "Well-documented in multiple primary sources" },
+            voice: { quote: "I was enrolled as company laundress, but I did much more than wash. I taught the soldiers of the Thirty-Third to read and write — most had been enslaved and never held a book. When the wounded came in, I nursed them. I learned to handle a musket very well and could shoot straight. We were proving every day that colored troops could fight and serve as well as any in this army.", attribution: "Susie King Taylor, nurse and teacher with the 33rd United States Colored Troops", source: "Susie King Taylor, 'Reminiscences of My Life in Camp,' 1902 / Documenting the American South, University of North Carolina" },
             biggerPicture: "Lee's greatest victory gave him the confidence to invade the North again, leading directly to Gettysburg. But losing Stonewall Jackson was a wound the Confederacy never recovered from.",
             reflection: "Lee's greatest victory cost him Stonewall Jackson. When is a victory not worth the price?",
             winner: "confederacy",
@@ -643,11 +667,23 @@ const battles = [
             tech: { name: "Artillery", description: "Over 300 cannons fired in the bombardment before Pickett's Charge, the largest artillery barrage in North American history. The ground shook for miles. Despite the firepower, most Confederate shells overshot the Union line." },
             voice: { quote: "General, I have no division now.", attribution: "George Pickett to Robert E. Lee, after the failed charge", source: "Well-documented in multiple primary accounts" },
             biggerPicture: "The Confederate invasion of the North failed forever. Lincoln's Gettysburg Address redefined the war as a fight for equality. That same month, the 54th Massachusetts, a Black regiment, fought heroically at Fort Wagner, proving that African Americans would fight and die for their own freedom.",
-            reflection: "Pickett's Charge sent 12,000 men across open ground into cannon fire. Was this brave or reckless? Who bears responsibility?",
+            reflection: "Pickett's Charge sent 12,000 men across open ground against entrenched artillery. Two weeks later, the 54th Massachusetts charged Fort Wagner against similar odds. What do these two charges have in common? What makes them different? Who bears responsibility when leaders order soldiers into battles they cannot win?",
             winner: "union",
             outcome: "Decisive Union victory - turning point of the war",
             casualties: { union: 23049, confederacy: 28063 },
-            keyFact: "During Pickett's Charge, 12,000 Confederate soldiers marched nearly a mile across open ground. Union artillery and rifle fire cut them to pieces. Fewer than half made it back. Lee told his men, 'It is all my fault.'"
+            keyFact: "During Pickett's Charge, 12,000 Confederate soldiers marched nearly a mile across open ground. Union artillery and rifle fire cut them to pieces. Fewer than half made it back. Lee told his men, 'It is all my fault.'",
+            perspectives: [
+                {
+                    title: "The 54th Massachusetts at Fort Wagner",
+                    icon: "\u270A",
+                    text: "Two weeks after Gettysburg, the 54th Massachusetts Infantry \u2014 one of the first Black regiments \u2014 led a doomed assault on Fort Wagner, South Carolina. Sergeant William Carney, wounded twice, kept the American flag from touching the ground, becoming the first Black soldier to earn the Medal of Honor. The 54th's courage silenced doubters and led to the enlistment of nearly 180,000 Black soldiers by war's end."
+                },
+                {
+                    title: "The New York City Draft Riots",
+                    icon: "\uD83D\uDD25",
+                    text: "That same July, the first military draft in U.S. history sparked four days of violence in New York City. Working-class white men, many of them Irish immigrants, attacked draft offices, then turned their rage on Black New Yorkers \u2014 burning the Colored Orphan Asylum and lynching Black men in the streets. The riots revealed deep class and racial tensions within the North itself."
+                }
+            ]
         },
 
         freeplay: {
@@ -833,11 +869,7 @@ const battles = [
             },
             whatHappened: "Two days of savage fighting in dense forest so thick soldiers couldn't see 20 yards ahead. The woods caught fire, threatening to burn wounded men alive. Neither side won a clear victory. But unlike every Union general before him, Grant refused to retreat. He marched south, and his soldiers cheered.",
             tech: { name: "Repeating Rifles", description: "Spencer repeating rifles could fire 7 shots without reloading, giving some Union units devastating firepower compared to single-shot muskets." },
-            voice: {
-                quote: "Oh, I am heartily tired of hearing about what Lee is going to do. Go back to your command, and try to think what we are going to do ourselves, instead of what Lee is going to do.",
-                attribution: "Ulysses S. Grant, as recorded by aide Horace Porter",
-                source: "Horace Porter, Campaigning with Grant, 1897 / Library of Congress"
-            },
+            voice: { quote: "Now your Excellency, we have done a Soldier's Duty. Why can't we have a Soldier's pay? We have given the Government the best that could be offered — our lives. The patient, trusting descendants of Africa's clime have dyed the ground with their blood in defense of the Union. We appeal to you, Sir, as the Executive of the Nation, to have us justly dealt with.", attribution: "Corporal James Henry Gooding, 54th Massachusetts Infantry, in a letter to President Lincoln", source: "New Bedford Mercury, September 1863 / National Archives, Records of the Adjutant General" },
             biggerPicture: "Grant's refusal to retreat showed the war had entered its final phase. The Union would fight until the end.",
             reflection: "Grant kept fighting even with terrible casualties. Some called him a hero; others called him a butcher. Which do you think, and why?",
             winner: "draw",
@@ -1146,11 +1178,28 @@ const battles = [
                 source: "Joshua Chamberlain, The Passing of the Armies, 1915 / Library of Congress"
             },
             biggerPicture: "Lee chose surrender over guerrilla war. Grant's generous terms shaped how Reconstruction would unfold.",
-            reflection: "Lee chose surrender over guerrilla warfare. Grant offered generous terms. How did these choices affect what came after the war?",
+            reflection: "Grant offered generous surrender terms: Confederates could go home and would not be prosecuted. Five days later, Lincoln was assassinated. How might Reconstruction have been different if Lincoln had lived? What responsibilities does a nation have to its people when a war ends?",
             winner: "union",
             outcome: "Union victory - the Civil War ends",
             casualties: { union: 164, confederacy: 500 },
-            keyFact: "Grant's generous surrender terms set the tone for reconciliation. When Union troops began firing celebration cannons, Grant ordered them to stop: 'The war is over. The rebels are our countrymen again.'"
+            keyFact: "Grant's generous surrender terms set the tone for reconciliation. When Union troops began firing celebration cannons, Grant ordered them to stop: 'The war is over. The rebels are our countrymen again.'",
+            perspectives: [
+                {
+                    title: "Lincoln's Assassination",
+                    icon: "\uD83C\uDFAD",
+                    text: "Five days after Lee's surrender, President Lincoln was shot by John Wilkes Booth at Ford's Theatre in Washington. Lincoln had been planning a generous Reconstruction. His death put Vice President Andrew Johnson \u2014 a Tennessee Democrat with little sympathy for Black rights \u2014 in the White House. Many historians believe this single act changed the course of Reconstruction and delayed racial justice by generations."
+                },
+                {
+                    title: "The Last Confederate Surrender",
+                    icon: "\uD83E\uDEB6",
+                    text: "Lee surrendered at Appomattox, but the war wasn't truly over. Brigadier General Stand Watie, a Cherokee leader, was the last Confederate general to surrender \u2014 on June 23, 1865, more than two months later. The Civil War tore Indigenous nations apart just as it did the United States: the Cherokee, Choctaw, Chickasaw, Creek, and Seminole nations all split between Union and Confederate loyalties."
+                },
+                {
+                    title: "The 13th Amendment",
+                    icon: "\u2696\uFE0F",
+                    text: "The war's greatest legacy was the 13th Amendment, ratified in December 1865, abolishing slavery throughout the entire United States \u2014 not just in rebel states. But freedom on paper and freedom in practice were not the same thing. The struggle over what freedom meant for four million formerly enslaved people would define the next century of American history."
+                }
+            ]
         },
 
         freeplay: {

@@ -1,116 +1,127 @@
 # Civil War Battle Simulation - Educational Edition
 
-An interactive strategy game for learning about Civil War history through tactical decision-making. Designed for 8th grade history classes.
+An interactive educational game that takes students through 13 major battles of the American Civil War. Designed for 8th grade history classes.
 
 ## Play the Game
 
 **Live Demo:** https://shiebenaderet.github.io/civil-war-battle-simulation
 
-## Educational Goals
+## Learning Objectives
 
-- Learn major Civil War battles and their strategic significance
-- Understand military decision-making and its consequences
-- Experience the challenges faced by historical commanders
-- Build vocabulary around military and historical terms
+1. Compare motivations for fighting across race, class, and region
+2. Identify turning-point battles and explain their strategic significance
+3. Analyze the advantages and disadvantages that shaped the war
+4. Describe lived experiences using primary sources
+5. Examine the war across race, gender, social class (54th Massachusetts, women, enslaved people, Indigenous nations, conscription)
+6. Evaluate how technology and tactics transformed warfare
+7. Assess how battles influenced political decisions and legacy
+
+## Two Game Modes
+
+### Historical Mode (Guided)
+Students choose Union or Confederacy and experience all 13 battles through a 7-section interactive narrative:
+1. **Intel Report** - Forces, commanders, and advantages on each side
+2. **The Situation** - What you're facing, written from your side's perspective
+3. **What Would You Do?** - A genuine decision point before learning what really happened
+4. **What Really Happened** - The historical outcome, plus a Technology Spotlight
+5. **A Voice From the War** - A primary source quote from someone who lived through it
+6. **The Bigger Picture** - How this battle changed the war, plus Perspectives sidebars on race, class, gender, and Indigenous experiences
+7. **Reflect** - An open-ended writing prompt for Canvas submission
+
+Students receive a personalized letter from Lincoln (Union) or Davis (Confederacy) before their journey begins. At the end, they can export all their responses as a PDF.
+
+### Free-play Mode (Strategic)
+Unlocked after completing Historical Mode. Students make strategic choices with real consequences:
+- **Momentum system**: victories build power, defeats erode it
+- **Fog of war**: random events change battle outcomes unpredictably
+- **Historical events**: side-dependent modifiers based on real events (e.g., finding Lee's lost orders at Antietam)
+- **Class leaderboard**: top 10 scores saved locally
 
 ## For Educators
 
-- Designed for middle school history classes (8th grade)
-- Supports multiple languages (Spanish, French, Korean, Chinese, Japanese, Russian, Ukrainian, Portuguese, Arabic)
-- Includes vocabulary tooltips and historical context
+- Designed for 8th grade history classes (CCSS aligned)
 - No installation required - runs in any web browser
-- Takes about 15-20 minutes to complete
-- Works on classroom tablets and Chromebooks
+- Works offline on classroom tablets and Chromebooks (no server needed)
+- Supports 9 languages via Google Translate (Spanish, French, Korean, Chinese, Japanese, Russian, Ukrainian, Portuguese, Arabic)
+- Dark/light theme for different classroom environments
+- Screen reader support, keyboard navigation, accessibility compliant
+- Student responses exportable as PDF for Canvas/LMS submission
 
-## Features
+## The 13 Battles
 
-- **10 Historical Battles**: From Bull Run to Appomattox
-- **Side Selection**: Play as Union or Confederacy with different win conditions
-- **Strategy Choices**: 3 approaches per battle with pros/cons analysis
-- **Historical Context**: Real battle descriptions and educational notes
-- **Vocabulary Support**: Toggleable sidebar with key term definitions
-- **Campaign Log**: Track your battle history and strategy analysis
-- **Dark/Light Theme**: Adjustable for classroom environments
-- **Accessibility**: Screen reader support, keyboard navigation, reduced motion
+| # | Battle | Year | Key Theme |
+|---|--------|------|-----------|
+| 1 | Fort Sumter | 1861 | The war begins |
+| 2 | Bull Run | 1861 | The myth of a short war dies |
+| 3 | Shiloh | 1862 | Industrial-scale carnage |
+| 4 | Antietam | 1862 | Emancipation Proclamation |
+| 5 | Fredericksburg | 1862 | Irish Brigade, class tensions |
+| 6 | Chancellorsville | 1863 | Black troops and women serving |
+| 7 | Vicksburg | 1863 | The Confederacy split in two |
+| 8 | Gettysburg | 1863 | 54th Massachusetts, Draft Riots |
+| 9 | Chickamauga | 1863 | The bloodiest day in the West |
+| 10 | Wilderness | 1864 | Grant's relentless campaign |
+| 11 | Atlanta | 1864 | Lincoln's re-election secured |
+| 12 | Sherman's March | 1864 | Total war and its consequences |
+| 13 | Appomattox | 1865 | Surrender, assassination, 13th Amendment |
+
+## Primary Source Voices
+
+The game features primary source quotes from diverse perspectives:
+- **Chaplain John Eaton** - Freedpeople fleeing to Union lines (Shiloh)
+- **Sullivan Ballou** - Union officer's letter to his wife (Bull Run)
+- **Clara Barton** - Volunteer nurse on the battlefield (Antietam)
+- **Captain William J. Nagle** - Irish Brigade at Fredericksburg
+- **Susie King Taylor** - Black nurse and teacher with the 33rd USCT (Chancellorsville)
+- **Corporal James Henry Gooding** - 54th Massachusetts, letter to Lincoln demanding equal pay (Wilderness)
+- **Sam Watkins** - Confederate enlisted soldier (Chickamauga)
+- **Mary Chesnut** - Senator's wife, diarist (Fort Sumter)
+- **Dora Miller** - Civilian under siege (Vicksburg)
+- **Dolly Sumner Lunt** - Plantation owner during Sherman's March
+- And more...
 
 ## Project Structure
 
 ```
 civil-war-battle-simulation/
-├── index.html              # HTML markup and page structure
+├── index.html              # Markup, screens, inline theme/translate scripts
 ├── css/
 │   └── styles.css          # Design tokens, components, layouts, themes
 ├── js/
 │   ├── data/
-│   │   ├── battles.js      # 10 battle definitions with strategies & outcomes
-│   │   ├── leaders.js      # Lincoln & Davis messages and objectives
-│   │   └── maps.js         # SVG battle maps for visual display
-│   ├── game.js             # Game state, scoring logic, win conditions
-│   ├── ui.js               # DOM manipulation, screen transitions, modals
-│   └── app.js              # Initialization and event wiring
-├── images/                 # Public domain battle artwork (Library of Congress)
-│   ├── battle_of_bull_run.jpg
-│   ├── battle_of_shiloh.jpg
-│   ├── battle_of_antietam.jpg
-│   ├── battle_of_gettysburg.jpg
-│   ├── battle_of_fredericksburg.jpg
-│   ├── battle_of_chancellorsville.jpg
-│   ├── battle_of_chickamauga.jpg
-│   ├── battle_of_the_wilderness.jpg
-│   ├── battle_of_atlanta.jpg
-│   └── surrender_appomattox.jpg
+│   │   ├── battles.js      # 13 battles with historical + freeplay data
+│   │   ├── leaders.js      # Lincoln & Davis messages
+│   │   └── maps.js         # SVG battle maps
+│   ├── game.js             # State, save/load, momentum, fog of war, scoreboard
+│   ├── ui.js               # Screen management, rendering, DOM
+│   └── app.js              # Init, event wiring, screen flow
+├── images/                 # Public domain artwork (Library of Congress, National Archives)
 └── README.md
 ```
 
-## Game Mechanics
-
-| Side | Starting Army | Wins Needed | Guaranteed Wins | Swing Battles |
-|------|--------------|-------------|-----------------|---------------|
-| Union | 1,500,000 | 6 of 10 | 4 (Antietam, Gettysburg, Atlanta, Appomattox) | Shiloh, Chancellorsville, Wilderness |
-| Confederacy | 1,000,000 | 5 of 10 | 3 (Bull Run, Fredericksburg, Chickamauga) | Shiloh, Chancellorsville, Wilderness |
-
-The Union must win all 3 swing battles (choosing the right strategy). The Confederacy needs 2 of 3. This creates meaningful strategic tension while keeping outcomes historically grounded.
-
-## Development Roadmap
-
-### Phase 1: Core Improvements (Complete)
-- [x] Separate monolithic HTML into modular files (CSS, JS data, game logic, UI)
-- [x] Fix `shouldEndGame()` off-by-one bug in remaining battles calculation
-- [x] Persistent class leaderboard using localStorage (enter name, save score, top 10 rankings)
-- [x] "What Really Happened" historical mode after each battle (compares your result to real history)
-
-### Phase 2: Classroom Features
-- [ ] **Teacher Dashboard**: Simple page showing class-wide statistics (most popular strategies, average win rates per side)
-- [ ] **Difficulty Levels**: "Explorer" mode (hints + easier win conditions) and "Commander" mode (current difficulty)
-- [ ] **Reflection Prompts**: After each battle, ask students "Why do you think this strategy worked/failed?" with text input they can print or submit
-- [ ] **Print-friendly Summary**: Generate a one-page report card of the student's campaign for grading
-
-### Phase 3: Enhanced Learning
-- [ ] **Battle Maps for All 10 Battles**: Currently only Bull Run, Gettysburg, and Antietam have SVG maps
-- [ ] **Primary Source Integration**: Add quotes from soldiers' letters and commander reports
-- [ ] **Timeline View**: Visual timeline showing how battles connect to larger war events
-- [ ] **Cause and Effect**: Show how each battle's outcome affected the next battle's conditions
-
-### Phase 4: Engagement
-- [ ] **Sound Effects**: Optional battle sounds and period music (with mute button for classrooms)
-- [ ] **Animated Transitions**: Battle outcome animations to increase engagement
-- [ ] **Achievement System**: Unlock "historian badges" for learning milestones
-- [ ] **Multiplayer Mode**: Two students play opposing sides simultaneously
-
 ## Technical Notes
 
-- **No build tools required** - pure HTML, CSS, and vanilla JavaScript
-- **No external dependencies** - works offline after initial page load
+- **No frameworks, no build tools** - pure HTML, CSS, and vanilla JavaScript
+- **No ES modules** - works with `file://` protocol for offline classroom use
 - **GitHub Pages deployment** - push to main branch to deploy
-- Scripts load in order: data files → game logic → UI → app initialization
+- **localStorage** for persistence (game saves, leaderboard, theme preference)
+- Scripts load in dependency order: data files → game logic → UI → app init
 
-## Feedback Welcome
+## Version History
 
-This is an educational project in active development. Feedback from educators and students is greatly appreciated!
+- **v3.2.0** - Diverse primary source voices, Perspectives sidebars (race, class, gender, Indigenous), strengthened reflection prompts
+- **v3.1.0** - 13 battles, interactive Historical Mode (7-section narrative), fog of war, PDF export, student response tracking
+- **v3.0.0** - Two-mode system (Historical + Free-play), momentum system, complete rebuild
+- **v2.0.0** - Modular structure, scoreboard, historical comparison
+- **v1.0.0** - Original single-file prototype
 
-- **Issues**: Report bugs or suggestions using GitHub Issues
+## Feedback
+
+This is an educational project in active development.
+
+- **Issues**: Report bugs or suggestions via [GitHub Issues](https://github.com/shiebenaderet/civil-war-battle-simulation/issues)
 - **Contact**: shie@benaderet.com
 
-## Historical Note
+## Sources & Credits
 
-All battles and strategies are based on historical events. The game aims to help students understand the complexity of military decision-making during the American Civil War (1861-1865). Image sources include the Library of Congress and National Archives, all in the public domain.
+All battles and strategies are based on historical events. Primary source quotes are drawn from the Library of Congress, National Archives, Freedmen and Southern Society Project, and published memoirs. All images are in the public domain.

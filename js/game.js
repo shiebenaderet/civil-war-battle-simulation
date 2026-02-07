@@ -146,6 +146,7 @@ function getHistoricalContent() {
         outcome: h.outcome,
         casualties: h.casualties,
         keyFact: h.keyFact,
+        perspectives: h.perspectives || [],
         battleNumber: gameState.currentBattle + 1,
         totalBattles: battles.length
     };

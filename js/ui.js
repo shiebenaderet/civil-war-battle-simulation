@@ -300,6 +300,27 @@ function renderHistoricalBattle() {
     document.getElementById('histBigPicture').textContent = content.biggerPicture;
     document.getElementById('histKeyFact').textContent = content.keyFact;
 
+    // Perspectives (if available for this battle)
+    var perspectivesEl = document.getElementById('histPerspectives');
+    if (content.perspectives && content.perspectives.length > 0) {
+        var pHtml = '<h4 class="perspectives-heading">Perspectives You Should Know</h4>';
+        content.perspectives.forEach(function(p) {
+            pHtml +=
+                '<div class="perspective-card">' +
+                    '<div class="perspective-icon">' + p.icon + '</div>' +
+                    '<div class="perspective-content">' +
+                        '<div class="perspective-title">' + escapeHtml(p.title) + '</div>' +
+                        '<p class="perspective-text">' + escapeHtml(p.text) + '</p>' +
+                    '</div>' +
+                '</div>';
+        });
+        perspectivesEl.innerHTML = pHtml;
+        perspectivesEl.style.display = 'block';
+    } else {
+        perspectivesEl.innerHTML = '';
+        perspectivesEl.style.display = 'none';
+    }
+
     // --- Section 7: Reflect ---
     document.getElementById('histReflectPrompt').textContent = content.reflection;
     document.getElementById('histReflectInput').value = '';
