@@ -37,6 +37,15 @@ function getContent(field) {
     return field;
 }
 
+// Resolve side-specific fields: {union: "...", confederacy: "..."} or plain string
+function getSideText(field) {
+    if (field && typeof field === 'object' && !Array.isArray(field) &&
+        ('union' in field || 'confederacy' in field)) {
+        return field[gameState.side] || field.union || '';
+    }
+    return field;
+}
+
 // ============================================================
 // Save / Load / Progress
 // ============================================================
@@ -270,7 +279,7 @@ function resolveBattle(strategyIndex) {
     gameState.battleHistory.push({
         battleIndex: gameState.currentBattle,
         name: battle.name,
-        strategy: strategy.name,
+        strategy: getSideText(strategy.name),
         won: won,
         casualties: casualties,
         momentumAfter: gameState.momentum,
@@ -285,7 +294,7 @@ function resolveBattle(strategyIndex) {
         strategy: strategy,
         battle: battle,
         casualties: casualties,
-        outcomeText: won ? strategy.outcome.win : strategy.outcome.lose,
+        outcomeText: won ? getSideText(strategy.outcome.win) : getSideText(strategy.outcome.lose),
         momentum: gameState.momentum,
         momentumChange: won ? battle.freeplay.momentumValue : -battle.freeplay.momentumValue,
         fogEvent: fogEvent,
