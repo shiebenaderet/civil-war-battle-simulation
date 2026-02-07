@@ -445,6 +445,90 @@ function updateStepPills(step) {
     });
 }
 
+// ============================================================
+// Reflection Scaffolding (Sentence Starters / RACE Reminder)
+// ============================================================
+
+var reflectionStarters = {
+    beginner: [
+        'I think this is important because...',
+        'This makes me wonder...',
+        'One thing that surprised me was...',
+        'If I were there, I would have...',
+        'I agree / disagree because...',
+        'This reminds me of...'
+    ],
+    intermediate: [
+        'I think...',
+        'This shows that...',
+        'One reason is...',
+        'In my opinion...',
+        'The evidence suggests...'
+    ]
+};
+
+function showReflectScaffolding() {
+    var scaffolding = document.getElementById('reflectScaffolding');
+    var chipSection = document.getElementById('starterChips');
+    var chipList = document.getElementById('starterChipList');
+    var raceReminder = document.getElementById('raceReminder');
+    var starterLabel = document.getElementById('starterLabel');
+
+    if (!scaffolding) return;
+
+    var difficulty = gameState.difficulty || 'intermediate';
+
+    if (difficulty === 'beginner' || difficulty === 'intermediate') {
+        var starters = reflectionStarters[difficulty] || reflectionStarters.intermediate;
+
+        chipList.innerHTML = '';
+        starters.forEach(function(text) {
+            var chip = document.createElement('button');
+            chip.className = 'starter-chip';
+            chip.type = 'button';
+            chip.textContent = text;
+            chip.addEventListener('click', function() {
+                insertStarter(text, chip);
+            });
+            chipList.appendChild(chip);
+        });
+
+        starterLabel.textContent = difficulty === 'beginner'
+            ? 'Click a sentence starter to begin:'
+            : 'Need help getting started?';
+
+        chipSection.style.display = 'block';
+        raceReminder.style.display = 'none';
+    } else {
+        // Advanced: show RACE reminder
+        chipSection.style.display = 'none';
+        raceReminder.style.display = 'block';
+    }
+
+    scaffolding.style.display = 'block';
+}
+
+function insertStarter(text, chipEl) {
+    var textarea = document.getElementById('histReflectInput');
+    if (!textarea) return;
+
+    // Only insert if textarea is empty or has just a starter
+    if (textarea.value.trim() === '' || textarea.value.trim().endsWith('...')) {
+        textarea.value = text + ' ';
+    } else {
+        // Append on a new line if there's already content
+        textarea.value = textarea.value + '\n' + text + ' ';
+    }
+
+    textarea.focus();
+    // Move cursor to end
+    textarea.selectionStart = textarea.value.length;
+    textarea.selectionEnd = textarea.value.length;
+
+    // Mark chip as used
+    if (chipEl) chipEl.classList.add('used');
+}
+
 function advanceNarrative() {
     var continueBtn = document.getElementById('narrativeContinueBtn');
 
@@ -506,6 +590,7 @@ function advanceNarrative() {
             updateStepPills(3);
             targetSection = document.getElementById('sectionReflect');
             targetSection.style.display = 'block';
+            showReflectScaffolding();
             var isLast = gameState.currentBattle >= battles.length - 1;
             continueBtn.textContent = isLast ? 'Complete Historical Mode' : 'Next Battle \u2192';
             break;

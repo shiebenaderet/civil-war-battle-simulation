@@ -19,16 +19,13 @@ An interactive educational game that takes students through 13 major battles of 
 ## Two Game Modes
 
 ### Historical Mode (Guided)
-Students choose Union or Confederacy and experience all 13 battles through a 7-section interactive narrative:
-1. **Intel Report** - Forces, commanders, and advantages on each side
-2. **The Situation** - What you're facing, written from your side's perspective
-3. **What Would You Do?** - A genuine decision point before learning what really happened
-4. **What Really Happened** - The historical outcome, plus a Technology Spotlight
-5. **A Voice From the War** - A primary source quote from someone who lived through it
-6. **The Bigger Picture** - How this battle changed the war, plus Perspectives sidebars on race, class, gender, and Indigenous experiences
-7. **Reflect** - An open-ended writing prompt for Canvas submission
+Students choose Union or Confederacy, select a reading level (Beginner / Intermediate / Advanced), and experience all 13 battles through a streamlined 4-step flow per battle:
+1. **Briefing** - Intel report + situation context shown together
+2. **Your Call** - What Would You Do? with personalized feedback after choosing
+3. **What Happened** - Historical outcome, Technology Spotlight, A Voice From the War (with plain-English explainer at Beginner level), and The Bigger Picture with Perspectives sidebars
+4. **Reflect** - Writing prompt with scaffolding: clickable sentence starters (Beginner), shorter starters (Intermediate), or RACE method reminders (Advanced)
 
-Students receive a personalized letter from Lincoln (Union) or Davis (Confederacy) before their journey begins. At the end, they can export all their responses as a PDF.
+All text content adapts to the selected reading level across all 13 battles. Students receive a personalized letter from Lincoln (Union) or Davis (Confederacy) before their journey begins. At the end, they can export all their responses as a PDF.
 
 ### Free-play Mode (Strategic)
 Unlocked after completing Historical Mode. Students make strategic choices with real consequences:
@@ -42,7 +39,7 @@ Unlocked after completing Historical Mode. Students make strategic choices with 
 - Designed for 8th grade history classes (CCSS aligned)
 - No installation required - runs in any web browser
 - Works offline on classroom tablets and Chromebooks (no server needed)
-- Supports 9 languages via Google Translate (Spanish, French, Korean, Chinese, Japanese, Russian, Ukrainian, Portuguese, Arabic)
+- Three reading levels (Beginner, Intermediate, Advanced) with adaptive content
 - Dark/light theme for different classroom environments
 - Screen reader support, keyboard navigation, accessibility compliant
 - Student responses exportable as PDF for Canvas/LMS submission
@@ -84,7 +81,7 @@ The game features primary source quotes from diverse perspectives:
 
 ```
 civil-war-battle-simulation/
-├── index.html              # Markup, screens, inline theme/translate scripts
+├── index.html              # Markup, screens, inline theme script
 ├── css/
 │   └── styles.css          # Design tokens, components, layouts, themes
 ├── js/
@@ -109,6 +106,7 @@ civil-war-battle-simulation/
 
 ## Version History
 
+- **v3.4.0** - 3-level difficulty system (Beginner/Intermediate/Advanced) with adaptive content for all 13 battles, WWYD personalized feedback, voice explainers for beginners, reflection scaffolding (sentence starters + RACE method reminders), battle maps from Wikimedia Commons (Hal Jespersen), removed Google Translate (non-functional), fixed name entry alignment
 - **v3.3.0** - Blooket-inspired UI redesign (Nunito font, vibrant colors, bold rounded cards, pill buttons), streamlined Historical Mode (4 steps per battle instead of 7), step indicator pills
 - **v3.2.0** - Diverse primary source voices, Perspectives sidebars (race, class, gender, Indigenous), strengthened reflection prompts
 - **v3.1.0** - 13 battles, interactive Historical Mode (7-section narrative), fog of war, PDF export, student response tracking
