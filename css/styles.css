@@ -112,25 +112,6 @@
     --z-overlay: 1400;
 }
 
-/* Light Theme */
-[data-theme="light"] {
-    --color-surface-primary: #F8FAFC;
-    --color-surface-secondary: #FFFFFF;
-    --color-surface-tertiary: #F1F5F9;
-    --color-surface-elevated: #FFFFFF;
-
-    --color-text-primary: #0F172A;
-    --color-text-secondary: #475569;
-    --color-text-tertiary: #64748B;
-    --color-text-inverse: #F8FAFC;
-
-    --color-border-primary: #CBD5E1;
-    --color-border-secondary: #E2E8F0;
-
-    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
-    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.05);
-}
-
 @media (prefers-reduced-motion: reduce) {
     :root {
         --transition-fast: 0.01ms;
@@ -162,10 +143,6 @@ body {
     background: var(--color-navy-900);
     min-height: 100vh;
     overflow-x: hidden;
-}
-
-[data-theme="light"] body {
-    background: #F1F5F9;
 }
 
 img {
@@ -2427,10 +2404,6 @@ img {
     color: #2c2416;
 }
 
-[data-theme="light"] .letter-paper {
-    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.6);
-}
-
 .letter-header-section {
     text-align: center;
     margin-bottom: var(--space-6);
@@ -2888,14 +2861,6 @@ img {
 .review-badge.badge-different {
     background: #fef3c7;
     color: #92400e;
-}
-[data-theme="dark"] .review-badge.badge-match {
-    background: rgba(22, 101, 52, 0.3);
-    color: #86efac;
-}
-[data-theme="dark"] .review-badge.badge-different {
-    background: rgba(146, 64, 14, 0.3);
-    color: #fcd34d;
 }
 .review-happened {
     font-size: var(--font-size-sm);
