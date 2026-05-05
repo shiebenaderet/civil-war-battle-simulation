@@ -32,8 +32,10 @@ function showScreen(screenId) {
 function showGameActions(show) {
     var section = document.getElementById('gameActionsSection');
     var divider = document.getElementById('gameActionsDiv');
+    var dropdown = document.querySelector('.settings-dropdown');
     if (section) section.style.display = show ? 'block' : 'none';
     if (divider) divider.style.display = show ? 'block' : 'none';
+    if (dropdown) dropdown.style.display = show ? '' : 'none';
 }
 
 function showCampaignLogBtn(show) {
