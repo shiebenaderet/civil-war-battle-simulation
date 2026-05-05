@@ -176,10 +176,9 @@ img {
     position: sticky;
     top: 0;
     z-index: var(--z-header);
-    background: var(--color-surface-primary);
-    border-bottom: 1px solid var(--color-border-secondary);
-    backdrop-filter: blur(8px);
-    padding: var(--space-2) var(--space-4);
+    background: var(--color-paper-elev);
+    border-bottom: 4px double var(--color-ink);
+    padding: var(--space-3) var(--space-4);
 }
 
 .navbar-content {
@@ -198,15 +197,20 @@ img {
 }
 
 .nav-game-title {
-    font-size: var(--font-size-sm);
-    font-weight: 600;
-    color: var(--color-primary);
+    font-family: var(--font-serif);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: -0.005em;
+    color: var(--color-ink);
     white-space: nowrap;
 }
 
 .nav-subtitle {
+    font-family: var(--font-mono);
     font-size: var(--font-size-xs);
-    color: var(--color-text-tertiary);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--color-ink-muted);
     display: none;
 }
 
@@ -226,17 +230,19 @@ img {
     justify-content: center;
     width: 36px;
     height: 36px;
-    border: 1px solid var(--color-border-primary);
-    border-radius: var(--radius-lg);
     background: transparent;
-    color: var(--color-text-primary);
+    color: var(--color-ink);
+    border: 1px solid var(--color-rule);
+    border-radius: 0;
+    padding: var(--space-2) var(--space-3);
     cursor: pointer;
     font-size: 1.1rem;
     transition: background var(--transition-fast);
 }
 
 .nav-btn:hover {
-    background: var(--color-surface-tertiary);
+    background: var(--color-paper-deep);
+    border-color: var(--color-ink);
 }
 
 /* Settings Dropdown */
@@ -948,29 +954,31 @@ img {
    =============================================== */
 
 .battle-progress {
-    margin-bottom: var(--space-4);
+    margin-bottom: var(--space-3);
 }
 
 .progress-label {
-    font-size: var(--font-size-sm);
-    color: var(--color-text-secondary);
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--color-ink-muted);
     margin-bottom: var(--space-2);
-    text-align: center;
 }
 
 .progress-bar {
     width: 100%;
-    height: 10px;
-    background: var(--color-surface-tertiary);
-    border-radius: var(--radius-pill);
+    background: var(--color-paper-deep);
+    border: 1px solid var(--color-ink);
+    border-radius: 0;
+    height: 8px;
     overflow: hidden;
 }
 
 .progress-fill {
+    background: var(--color-ink);
     height: 100%;
-    background: linear-gradient(90deg, var(--color-primary), #7C3AED);
-    border-radius: var(--radius-pill);
-    transition: width var(--transition-slow) var(--ease-out);
+    transition: width var(--transition-base) var(--ease-out);
 }
 
 /* ===============================================
@@ -3545,31 +3553,34 @@ img {
 .step-pills {
     display: flex;
     gap: var(--space-2);
-    justify-content: center;
+    margin-bottom: var(--space-4);
     flex-wrap: wrap;
-    margin-bottom: var(--space-6);
 }
 
 .step-pill {
-    padding: var(--space-2) var(--space-4);
-    border-radius: var(--radius-pill);
+    background: var(--color-paper-card);
+    color: var(--color-ink-muted);
+    font-family: var(--font-mono);
     font-size: var(--font-size-xs);
-    font-weight: 700;
-    background: var(--color-surface-tertiary);
-    color: var(--color-text-tertiary);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    border: 1px solid var(--color-rule);
+    border-radius: 0;
+    padding: var(--space-1) var(--space-3);
     transition: all var(--transition-base) var(--ease-out);
     white-space: nowrap;
 }
 
 .step-pill.active {
-    background: var(--color-primary);
-    color: white;
-    box-shadow: 0 2px 8px rgba(var(--color-primary-rgb), 0.3);
+    background: var(--color-ink);
+    color: var(--color-paper);
+    border-color: var(--color-ink);
 }
 
 .step-pill.completed {
-    background: var(--color-success);
-    color: white;
+    background: var(--color-paper-card);
+    color: var(--color-ink);
+    border-color: var(--color-ink);
 }
 
 /* ===============================================
