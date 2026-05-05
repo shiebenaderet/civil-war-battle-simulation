@@ -490,6 +490,7 @@ function renderHistoricalBattle() {
     wwyd.options.forEach(function(optionText, idx) {
         var btn = document.createElement('button');
         btn.className = 'wwyd-option-btn';
+        btn.setAttribute('data-letter', String.fromCharCode(65 + idx));
         btn.textContent = optionText;
         btn.setAttribute('role', 'radio');
         btn.setAttribute('aria-checked', 'false');
