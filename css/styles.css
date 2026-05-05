@@ -2458,20 +2458,35 @@ img {
 }
 
 .letter-paper {
-    background: linear-gradient(135deg, #f5f0e1, #ede6d3);
-    border: 1px solid #c8b98a;
-    border-radius: var(--radius-xl);
-    padding: var(--space-10) var(--space-8);
-    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    background: var(--color-paper-card);
+    color: var(--color-ink);
+    font-family: var(--font-serif);
+    border: 1px solid var(--color-ink);
+    border-radius: 0;
+    padding: var(--space-8) var(--space-6);
+    box-shadow: 0 2px 0 rgba(26, 22, 17, 0.1);
+    max-width: 640px;
+    margin: 0 auto;
     position: relative;
-    color: #2c2416;
 }
+
+.letter-paper::before,
+.letter-paper::after {
+    content: '';
+    position: absolute;
+    left: var(--space-3);
+    right: var(--space-3);
+    height: 1px;
+    background: var(--color-rule);
+}
+.letter-paper::before { top: var(--space-2); }
+.letter-paper::after { bottom: var(--space-2); }
 
 .letter-header-section {
     text-align: center;
     margin-bottom: var(--space-6);
     padding-bottom: var(--space-4);
-    border-bottom: 1px solid rgba(139, 109, 63, 0.3);
+    border-bottom: 1px solid var(--color-rule);
 }
 
 .letter-seal {
@@ -2480,18 +2495,17 @@ img {
 }
 
 .letter-from {
-    font-family: var(--font-serif);
-    font-size: var(--font-size-sm);
-    font-weight: 600;
-    color: #5a4830;
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
     text-transform: uppercase;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.15em;
+    color: var(--color-ink-muted);
 }
 
 .letter-date {
     font-family: var(--font-serif);
     font-size: var(--font-size-xs);
-    color: #8b6d3f;
+    color: var(--color-ink-muted);
     font-style: italic;
     margin-top: var(--space-1);
 }
@@ -2499,16 +2513,16 @@ img {
 .letter-salutation {
     font-family: var(--font-serif);
     font-size: var(--font-size-lg);
-    font-weight: 600;
-    color: #2c2416;
+    color: var(--color-ink);
+    line-height: 1.7;
     margin-bottom: var(--space-4);
 }
 
 .letter-body {
     font-family: var(--font-serif);
     font-size: var(--font-size-base);
-    color: #3d3122;
-    line-height: 1.9;
+    color: var(--color-ink);
+    line-height: 1.7;
 }
 
 .letter-body p {
@@ -2522,23 +2536,25 @@ img {
 .letter-closing {
     font-family: var(--font-serif);
     font-size: var(--font-size-base);
-    color: #3d3122;
+    color: var(--color-ink);
+    line-height: 1.7;
     margin-top: var(--space-6);
 }
 
 .letter-signature {
     font-family: var(--font-serif);
     font-size: var(--font-size-xl);
-    font-weight: 600;
     font-style: italic;
-    color: #2c2416;
-    margin-top: var(--space-2);
+    color: var(--color-ink);
+    margin-top: var(--space-4);
 }
 
 .letter-title {
-    font-family: var(--font-serif);
-    font-size: var(--font-size-sm);
-    color: #5a4830;
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--color-ink-muted);
     margin-top: var(--space-1);
 }
 
@@ -2548,9 +2564,19 @@ img {
 }
 
 .letter-begin-btn {
-    min-width: 260px;
-    padding: var(--space-4) var(--space-8);
-    font-size: var(--font-size-lg);
+    background: var(--color-ink);
+    color: var(--color-paper);
+    font-family: var(--font-mono);
+    font-size: var(--font-size-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    border: 0;
+    border-radius: 0;
+    padding: var(--space-3) var(--space-6);
+    cursor: pointer;
+}
+.letter-begin-btn:hover {
+    background: var(--color-accent);
 }
 
 /* ===============================================
