@@ -1031,17 +1031,35 @@ img {
 }
 
 .narrative-heading {
-    font-family: var(--font-sans);
-    font-size: var(--font-size-lg);
-    font-weight: 800;
-    color: var(--color-primary);
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--color-paper);
+    background: var(--color-ink);
+    display: inline-block;
+    padding: var(--space-1) var(--space-3);
     margin-bottom: var(--space-3);
+    border-radius: 0;
+}
+
+/* Companion h2 directly under a narrative-heading — the actual "title" of the section */
+.narrative-section h2,
+.narrative-section .section-title-line {
+    font-family: var(--font-serif);
+    font-weight: 700;
+    font-size: var(--font-size-xl);
+    color: var(--color-ink);
+    margin-bottom: var(--space-3);
+    letter-spacing: -0.005em;
 }
 
 /* Collapsible headings (beginner wall-of-text reduction) */
 .collapsible-heading {
     user-select: none;
     -webkit-user-select: none;
+    cursor: pointer;
     transition: opacity 0.15s;
 }
 .collapsible-heading:hover {
@@ -1052,9 +1070,9 @@ img {
     opacity: 0.7;
 }
 .collapse-icon {
+    font-family: var(--font-mono);
     font-size: var(--font-size-xs);
-    font-weight: 600;
-    color: var(--color-text-secondary);
+    color: var(--color-paper);
     margin-left: var(--space-2);
 }
 
