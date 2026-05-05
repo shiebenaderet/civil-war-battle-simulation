@@ -164,44 +164,13 @@
     <!-- Google Fonts - Optimized Loading -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Crimson+Pro:wght@400;500;600&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-    <noscript><link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Crimson+Pro:wght@400;500;600&display=swap" rel="stylesheet"></noscript>
-
-    <script>
-    // Theme functions
-        function toggleTheme() {
-            var html = document.documentElement;
-            var currentTheme = html.getAttribute('data-theme');
-            var newTheme = currentTheme === 'light' ? 'dark' : 'light';
-
-            html.setAttribute('data-theme', newTheme);
-            localStorage.setItem('theme', newTheme);
-
-            var toggleBtn = document.getElementById('themeToggle');
-            if (toggleBtn) {
-                toggleBtn.querySelector('.theme-icon').textContent = newTheme === 'light' ? '\u{1F319}' : '\u2600\uFE0F';
-                toggleBtn.setAttribute('aria-label', 'Switch to ' + (newTheme === 'light' ? 'dark' : 'light') + ' theme');
-            }
-        }
-
-        function initializeTheme() {
-            var savedTheme = localStorage.getItem('theme') || 'dark';
-            var html = document.documentElement;
-
-            html.setAttribute('data-theme', savedTheme);
-
-            var toggleBtn = document.getElementById('themeToggle');
-            if (toggleBtn) {
-                toggleBtn.querySelector('.theme-icon').textContent = savedTheme === 'light' ? '\u{1F319}' : '\u2600\uFE0F';
-                toggleBtn.setAttribute('aria-label', 'Switch to ' + (savedTheme === 'light' ? 'dark' : 'light') + ' theme');
-            }
-        }
-    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Old+Standard+TT:ital,wght@0,400;0,700;1,400&family=Special+Elite&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Old+Standard+TT:ital,wght@0,400;0,700;1,400&family=Special+Elite&display=swap" rel="stylesheet"></noscript>
 
     <!-- Stylesheet -->
     <link rel="stylesheet" href="css/styles.css">
 </head>
-<body onload="initializeTheme()">
+<body>
     <!-- Skip Navigation Link -->
     <a href="#main-content" class="skip-link">Skip to main content</a>
 
@@ -229,13 +198,6 @@
                         &#x22EF;
                     </button>
                     <div class="settings-menu" id="settingsMenu" role="menu" aria-labelledby="settingsBtn">
-                        <div class="menu-section">
-                            <div class="menu-section-title">Appearance</div>
-                            <button class="settings-item theme-toggle-item" id="themeToggle" onclick="toggleTheme()" role="menuitem" aria-label="Switch theme">
-                                <span class="menu-icon theme-icon">&#x2600;&#xFE0F;</span> <span class="theme-text">Light Theme</span>
-                            </button>
-                        </div>
-
                         <div class="settings-divider" id="gameActionsDiv" style="display: none;"></div>
                         <div class="menu-section" id="gameActionsSection" style="display: none;">
                             <div class="menu-section-title">Game</div>
@@ -251,7 +213,6 @@
 
     <!-- Help Bar - contextual tips (toggleable) -->
     <div class="help-bar" id="helpBar" style="display:none;" role="status" aria-live="polite">
-        <span class="help-bar-icon">&#x1F4A1;</span>
         <span class="help-bar-text" id="helpBarText">Welcome! Click Continue to move through each battle step by step.</span>
         <button class="help-bar-close" id="helpBarClose" aria-label="Close help">&times;</button>
     </div>
@@ -287,12 +248,10 @@
 
             <div class="splash-modes">
                 <div class="splash-mode-card">
-                    <div class="splash-mode-icon" aria-hidden="true">&#x1F4DC;</div>
                     <h3 class="splash-mode-title">Historical Mode</h3>
                     <p class="splash-mode-desc">Walk through each battle step by step. Read real accounts from soldiers, nurses, and civilians. Make the same choices commanders faced, then reflect on what you've learned.</p>
                 </div>
                 <div class="splash-mode-card">
-                    <div class="splash-mode-icon" aria-hidden="true">&#x1F3AF;</div>
                     <h3 class="splash-mode-title">Free-play Mode</h3>
                     <p class="splash-mode-desc">Take command and make your own strategic choices. Build momentum, face unpredictable events, and see if you can change the course of history.</p>
                 </div>
@@ -323,7 +282,6 @@
 
             <div class="mode-cards">
                 <div class="mode-card historical-mode-card" id="historicalModeCard" role="button" tabindex="0">
-                    <div class="mode-icon">&#x1F4DC;</div>
                     <h3 class="mode-title">Historical Mode</h3>
                     <p class="mode-description">Experience the war as it actually happened. Make decisions, read primary sources, and reflect on what you learn.</p>
                     <ul class="mode-features">
@@ -336,7 +294,6 @@
                 </div>
 
                 <div class="mode-card freeplay-mode-card" id="freeplayModeCard" role="button" tabindex="0">
-                    <div class="mode-icon">&#x1F3AF;</div>
                     <h3 class="mode-title">Free-play Mode</h3>
                     <p class="mode-description">Make your own strategic decisions and change the course of history. Fog of war adds unpredictable events to every battle.</p>
                     <ul class="mode-features">
@@ -346,7 +303,7 @@
                         <li>Compete on the class leaderboard</li>
                     </ul>
                     <div class="mode-lock" id="freeplayLock">
-                        &#x1F512; Complete Historical Mode to unlock
+                        Complete Historical Mode to unlock
                     </div>
                 </div>
             </div>
@@ -399,7 +356,7 @@
                     <span class="side-flag" aria-hidden="true">&#x1F1FA;&#x1F1F8;</span>
                     <h2 class="side-name">Union (The North)</h2>
                     <p class="side-description">
-                        <strong>&#x1F3ED; Industrial Powerhouse</strong><br>
+                        <strong>Industrial Powerhouse</strong><br>
                         Command President Lincoln's forces fighting to keep America united and end slavery forever.
                     </p>
                     <p class="soldier-count" id="unionSoldierCount"></p>
@@ -409,7 +366,7 @@
                     <span class="side-flag" aria-hidden="true">&#x1F3F4;</span>
                     <h2 class="side-name">Confederacy (The South)</h2>
                     <p class="side-description">
-                        <strong>&#x2694;&#xFE0F; Defending the South</strong><br>
+                        <strong>Defending the South</strong><br>
                         Fight for Southern independence. Outnumbered but with skilled generals and home territory advantage.
                     </p>
                     <p class="soldier-count" id="confederacySoldierCount"></p>
@@ -486,7 +443,7 @@
 
                 <!-- Section 1: Intel Report -->
                 <div class="narrative-section intel-section" id="sectionIntel">
-                    <h3 class="narrative-heading">&#x1F4CB; Intel Report</h3>
+                    <h3 class="narrative-heading">Intel Report</h3>
                     <div class="intel-grid" id="histIntelGrid">
                         <!-- Rendered by JS -->
                     </div>
@@ -494,13 +451,13 @@
 
                 <!-- Section 2: The Situation -->
                 <div class="narrative-section situation-section" id="sectionSituation" style="display:none;">
-                    <h3 class="narrative-heading">&#x1F5FA;&#xFE0F; The Situation</h3>
+                    <h3 class="narrative-heading">The Situation</h3>
                     <p class="narrative-text" id="histSituation"></p>
                 </div>
 
-                <!-- Section 3: What Would You Do? -->
+                <!-- Section 3: Your Call -->
                 <div class="narrative-section wwyd-section" id="sectionWWYD" style="display:none;">
-                    <h3 class="narrative-heading">&#x1F914; What Would You Do?</h3>
+                    <h3 class="narrative-heading">Your Call</h3>
                     <p class="wwyd-prompt" id="histWWYDPrompt"></p>
                     <div class="wwyd-options" id="histWWYDOptions" role="group" aria-label="Choose what you would do">
                         <!-- Rendered by JS -->
@@ -524,7 +481,7 @@
 
                 <!-- Section 4: What Really Happened + Tech -->
                 <div class="narrative-section happened-section" id="sectionHappened" style="display:none;">
-                    <h3 class="narrative-heading">&#x1F4D6; What Really Happened</h3>
+                    <h3 class="narrative-heading">What Really Happened</h3>
                     <p class="narrative-text" id="histWhatHappened"></p>
 
                     <div class="outcome-box" id="histOutcomeBox">
@@ -534,15 +491,15 @@
                     </div>
 
                     <div class="tech-highlight" id="histTechBox">
-                        <div class="tech-label">&#x2699;&#xFE0F; Technology Spotlight</div>
+                        <div class="tech-label">Technology Spotlight</div>
                         <div class="tech-name" id="histTechName"></div>
                         <p class="tech-description" id="histTechDesc"></p>
                     </div>
                 </div>
 
-                <!-- Section 5: A Voice From the War -->
+                <!-- Section 5: A Voice From the Field -->
                 <div class="narrative-section voice-section" id="sectionVoice" style="display:none;">
-                    <h3 class="narrative-heading collapsible-heading" id="voiceHeading">&#x1F4AC; A Voice From the War <span class="collapse-icon"></span></h3>
+                    <h3 class="narrative-heading collapsible-heading" id="voiceHeading">A Voice From the Field <span class="collapse-icon"></span></h3>
                     <div class="collapsible-body" id="voiceBody">
                         <blockquote class="voice-quote" id="histVoiceQuote"></blockquote>
                         <div class="voice-attribution" id="histVoiceAttribution"></div>
@@ -553,12 +510,12 @@
 
                 <!-- Section 6: The Bigger Picture -->
                 <div class="narrative-section bigger-picture-section" id="sectionBigPicture" style="display:none;">
-                    <h3 class="narrative-heading collapsible-heading" id="bigPictureHeading">&#x1F30D; The Bigger Picture <span class="collapse-icon"></span></h3>
+                    <h3 class="narrative-heading collapsible-heading" id="bigPictureHeading">The Bigger Picture <span class="collapse-icon"></span></h3>
                     <div class="collapsible-body" id="bigPictureBody">
                         <p class="narrative-text" id="histBigPicture"></p>
 
                         <div class="key-fact-box">
-                            <div class="key-fact-label">&#x1F4A1; Did You Know?</div>
+                            <div class="key-fact-label">Did You Know</div>
                             <p class="key-fact-text" id="histKeyFact"></p>
                         </div>
 
@@ -568,7 +525,7 @@
 
                 <!-- Section 7: Reflect -->
                 <div class="narrative-section reflect-section" id="sectionReflect" style="display:none;">
-                    <h3 class="narrative-heading">&#x270D;&#xFE0F; Reflect</h3>
+                    <h3 class="narrative-heading">Reflect</h3>
 
                     <!-- Battle review buttons - quick recap of recent battles -->
                     <div class="battle-review" id="battleReview" style="display:none;">
@@ -676,7 +633,7 @@
 
             <!-- Historical event notice (if applicable) -->
             <div class="historical-event-notice" id="fpHistEventNotice" style="display:none;">
-                <div class="hist-event-label">&#x1F4DC; Historical Event</div>
+                <div class="hist-event-label">Historical Event</div>
                 <p class="hist-event-text" id="fpHistEventText"></p>
             </div>
 
@@ -700,12 +657,12 @@
                 <!-- Fog of War / Historical Event display -->
                 <div class="fog-of-war-section" id="fogOfWarSection" style="display:none;">
                     <div class="fog-event" id="fogEventDisplay">
-                        <span class="fog-label">&#x1F32B;&#xFE0F; Fog of War:</span>
+                        <span class="fog-label">Fog of War:</span>
                         <span class="fog-text" id="fogEventText"></span>
                         <span class="fog-mod" id="fogEventMod"></span>
                     </div>
                     <div class="hist-event" id="histEventDisplay" style="display:none;">
-                        <span class="fog-label">&#x1F4DC; Historical Event:</span>
+                        <span class="fog-label">Historical Event:</span>
                         <span class="fog-text" id="histEventText"></span>
                         <span class="fog-mod" id="histEventMod"></span>
                     </div>
@@ -746,7 +703,7 @@
 
                 <!-- Historical context - what really happened -->
                 <div class="historical-context-box" id="histContextBox" style="display:none;">
-                    <div class="hist-context-label">&#x1F4D6; What Really Happened</div>
+                    <div class="hist-context-label">What Really Happened</div>
                     <p class="hist-context-text" id="histContextText"></p>
                     <div class="hist-context-outcome" id="histContextOutcome"></div>
                 </div>
@@ -837,7 +794,7 @@
 
             <!-- PDF export button (historical mode) -->
             <div id="pdfExportSection" class="pdf-export-section" style="display:none;">
-                <button class="btn-primary pdf-export-btn" id="exportPdfBtn">&#x1F4C4; Download Response Sheet (PDF)</button>
+                <button class="btn-primary pdf-export-btn" id="exportPdfBtn">Download Response Sheet (PDF)</button>
                 <p class="pdf-hint">Opens a printable page. Use Print &rarr; Save as PDF to submit on Canvas.</p>
             </div>
 
@@ -848,7 +805,7 @@
             <div id="classLeaderboardSection" class="class-leaderboard-section" style="display:none;">
                 <!-- Room code entry -->
                 <div class="room-code-form" id="roomCodeForm">
-                    <h3 class="room-code-title">&#x1F3EB; Join Class Leaderboard</h3>
+                    <h3 class="room-code-title">Join Class Leaderboard</h3>
                     <p class="room-code-desc">Enter the room code your teacher gave you to see the class rankings.</p>
                     <div class="room-code-input-row">
                         <input type="text" id="roomCodeInput" class="room-code-input"
@@ -863,7 +820,7 @@
                 <!-- Class leaderboard display (shown after joining) -->
                 <div class="class-leaderboard-display" id="classLeaderboardDisplay" style="display:none;">
                     <div class="class-leaderboard-header">
-                        <h3 class="class-leaderboard-title">&#x1F3C6; Class Leaderboard</h3>
+                        <h3 class="class-leaderboard-title">Class Leaderboard</h3>
                         <div class="class-room-info">
                             <span class="class-room-label">Room:</span>
                             <span class="class-room-code" id="classRoomCodeLabel"></span>
@@ -878,7 +835,6 @@
             <!-- Image Credits -->
             <div class="image-credits-section">
                 <button class="credits-toggle" id="creditsToggle" aria-expanded="false" aria-controls="creditsContent" type="button">
-                    <span class="credits-icon">&#x1F4F7;</span>
                     <span class="credits-text">View Image Credits</span>
                     <span class="credits-arrow">&#x25BC;</span>
                 </button>
@@ -927,7 +883,7 @@
 
     <!-- Version Display -->
     <div class="version-info">
-        <span>Civil War Battle Simulation v3.10.0</span>
+        <span>Civil War Battle Simulation v3.11.0</span>
     </div>
 </body>
 </html>

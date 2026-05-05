@@ -32,8 +32,10 @@ function showScreen(screenId) {
 function showGameActions(show) {
     var section = document.getElementById('gameActionsSection');
     var divider = document.getElementById('gameActionsDiv');
+    var dropdown = document.querySelector('.settings-dropdown');
     if (section) section.style.display = show ? 'block' : 'none';
     if (divider) divider.style.display = show ? 'block' : 'none';
+    if (dropdown) dropdown.style.display = show ? '' : 'none';
 }
 
 function showCampaignLogBtn(show) {
@@ -488,6 +490,7 @@ function renderHistoricalBattle() {
     wwyd.options.forEach(function(optionText, idx) {
         var btn = document.createElement('button');
         btn.className = 'wwyd-option-btn';
+        btn.setAttribute('data-letter', String.fromCharCode(65 + idx));
         btn.textContent = optionText;
         btn.setAttribute('role', 'radio');
         btn.setAttribute('aria-checked', 'false');
@@ -1169,12 +1172,12 @@ function advanceNarrative() {
                         var commander = (typeof commanderRaw === 'string') ? commanderRaw : getContent(commanderRaw);
                         commander = String(commander).split('(')[0].split(',')[0].trim();
                         badge.className = 'feedback-badge badge-match';
-                        badge.textContent = '\u2714 Same call as ' + commander;
+                        badge.textContent = 'Same call as ' + commander;
                         histSection.style.display = 'none';
                     } else {
                         // Different from history
                         badge.className = 'feedback-badge badge-different';
-                        badge.textContent = '\u2194 You chose a different path';
+                        badge.textContent = 'You chose a different path';
                         var histTextEl = document.getElementById('feedbackHistoricalText');
                         if (histTextEl) histTextEl.textContent = optionsList[0] || '';
                         histSection.style.display = 'block';
@@ -1314,7 +1317,7 @@ function renderHistoricalComplete() {
         }).join('') +
         '</div>' +
         '<div class="unlock-message">' +
-        '<h3>&#x1F513; Free-play Mode Unlocked!</h3>' +
+        '<h3>Free-play Mode Unlocked!</h3>' +
         '<p>Now that you know what really happened, try <strong>Free-play Mode</strong> ' +
         'to make your own strategic decisions and change the course of history!</p>' +
         '</div>' +
@@ -1411,9 +1414,9 @@ function generatePdfReport() {
             html += '<span class="label">What Would You Do?';
             if (resp.wwydChoice) {
                 if (resp.wwydMatchedHistory) {
-                    html += ' <span class="match-badge matched">&#x2714; Same as history</span>';
+                    html += ' <span class="match-badge matched">Same as history</span>';
                 } else {
-                    html += ' <span class="match-badge different">&#x2194; Different path</span>';
+                    html += ' <span class="match-badge different">Different path</span>';
                 }
             }
             html += '</span>';
@@ -1761,7 +1764,7 @@ function renderScoreboardSection() {
 
     container.innerHTML =
         '<div class="scoreboard-entry-form" id="scoreEntryForm">' +
-        '<h3 class="scoreboard-form-title">&#x1F3C6; Save Your Score</h3>' +
+        '<h3 class="scoreboard-form-title">Save Your Score</h3>' +
         '<div class="scoreboard-input-row">' +
         '<input type="text" id="playerNameInput" class="player-name-input" ' +
         'placeholder="Enter your name (e.g. first name + last initial)" ' +
@@ -1769,7 +1772,7 @@ function renderScoreboardSection() {
         '<button class="save-score-btn" id="saveScoreBtn">Save Score</button>' +
         '</div></div>' +
         '<div class="scoreboard-table-wrapper">' +
-        '<h3 class="scoreboard-title">&#x1F4CA; Device Leaderboard</h3>' +
+        '<h3 class="scoreboard-title">Device Leaderboard</h3>' +
         renderScoreboardTable(scoreboard) +
         (scoreboard.length > 0 ? '<button class="clear-scores-btn" id="clearScoresBtn">Clear All Scores</button>' : '') +
         '</div>';
@@ -1793,9 +1796,9 @@ function wireUpScoreboardEvents() {
             }
             var updated = saveToScoreboard(name);
             document.getElementById('scoreEntryForm').innerHTML =
-                '<p class="score-saved-msg">&#x2705; Score saved locally!</p>';
+                '<p class="score-saved-msg">Score saved locally!</p>';
             document.querySelector('.scoreboard-table-wrapper').innerHTML =
-                '<h3 class="scoreboard-title">&#x1F4CA; Device Leaderboard</h3>' +
+                '<h3 class="scoreboard-title">Device Leaderboard</h3>' +
                 renderScoreboardTable(updated) +
                 '<button class="clear-scores-btn" id="clearScoresBtn">Clear All Scores</button>';
             wireUpClearButton();
@@ -1820,7 +1823,7 @@ function wireUpClearButton() {
             if (confirm('Clear all scores from the device leaderboard?')) {
                 clearScoreboard();
                 document.querySelector('.scoreboard-table-wrapper').innerHTML =
-                    '<h3 class="scoreboard-title">&#x1F4CA; Device Leaderboard</h3>' +
+                    '<h3 class="scoreboard-title">Device Leaderboard</h3>' +
                     renderScoreboardTable([]);
             }
         });
@@ -2059,7 +2062,7 @@ function showCampaignLog() {
                     '<div class="timeline-battle">Battle ' + (b.battleIndex + 1) + ': ' + b.name + '</div>' +
                     '<div class="timeline-details">' +
                     'Strategy: ' + b.strategy + '<br>' +
-                    'Result: ' + (b.won ? '&#x2705; Victory' : '&#x274C; Defeat') + '<br>' +
+                    'Result: ' + (b.won ? 'Victory' : 'Defeat') + '<br>' +
                     'Casualties: ' + b.casualties.toLocaleString() + '<br>' +
                     'Momentum: ' + (b.momentumAfter >= 0 ? '+' : '') + b.momentumAfter +
                     '</div></div>';
@@ -2078,7 +2081,7 @@ function showCampaignLog() {
             var isCompleted = i < completedCount;
             var isCurrent = i === gameState.currentBattle;
             var cssClass = isCompleted ? 'victory' : (isCurrent ? '' : '');
-            var status = isCompleted ? '&#x2705; Complete' : (isCurrent ? '&#x25B6; Current' : '&#x23F3; Upcoming');
+            var status = isCompleted ? 'Complete' : (isCurrent ? 'Current' : 'Upcoming');
             timelineHtml += '<div class="timeline-item ' + cssClass + '">' +
                 '<div class="timeline-battle">' + (i + 1) + '. ' + battles[i].name + '</div>' +
                 '<div class="timeline-details">' + battles[i].date + ' &mdash; ' + status + '</div>' +
