@@ -1,82 +1,63 @@
 /* ===============================================
-   DESIGN TOKENS - Contemporary Classroom Theme
+   DESIGN TOKENS - Field Report Theme (v3.11)
    =============================================== */
 
 :root {
-    /* Color Palette - Dark Theme (Default) */
-    --color-navy-900: #0F172A;
-    --color-navy-800: #1E293B;
-    --color-navy-700: #334155;
-    --color-navy-600: #475569;
-    --color-navy-500: #64748B;
-    --color-navy-400: #94A3B8;
-    --color-navy-300: #CBD5E1;
-    --color-navy-200: #E2E8F0;
-    --color-navy-100: #F1F5F9;
-    --color-navy-50: #F8FAFC;
+    /* Sepia paper palette — single theme, no dark mode */
+    --color-paper: #f0e9d8;          /* page background */
+    --color-paper-elev: #ebe2cb;     /* elevated surface (cards, mastheads) */
+    --color-paper-card: #f5efde;     /* card body (lighter than elev) */
+    --color-paper-deep: #e2d6b3;     /* hover/active states */
 
-    --color-gold-900: #744210;
-    --color-gold-800: #975a16;
-    --color-gold-700: #b7791f;
-    --color-gold-600: #d4af37;
-    --color-gold-500: #ecc94b;
-    --color-gold-400: #f6e05e;
-    --color-gold-300: #faf089;
-    --color-gold-200: #fefcbf;
-    --color-gold-100: #fffff0;
+    --color-ink: #1a1611;            /* primary text */
+    --color-ink-muted: #4a3f2c;      /* secondary text */
+    --color-ink-faint: #7d6e54;      /* tertiary text, captions */
 
-    --color-blue-900: #1e3a8a;
-    --color-blue-800: #1e40af;
-    --color-blue-700: #1d4ed8;
-    --color-blue-600: #2563eb;
-    --color-blue-500: #3b82f6;
-    --color-blue-400: #60a5fa;
-    --color-blue-300: #93c5fd;
-    --color-blue-200: #bfdbfe;
+    --color-rule: #c4b89a;           /* borders, dividers */
+    --color-rule-strong: #8a7a5e;    /* heavier borders, masthead double-rules use --color-ink */
 
-    --color-cream-900: #8d7053;
-    --color-cream-800: #a0956b;
-    --color-cream-700: #b8ad85;
-    --color-cream-600: #d4c8a0;
-    --color-cream-500: #e8dcc0;
-    --color-cream-400: #f0e7d1;
-    --color-cream-300: #f5f1e8;
-    --color-cream-200: #faf8f3;
-    --color-cream-100: #ffffff;
+    --color-accent: #6b1a17;         /* vermillion — primary actions, key highlights */
+    --color-accent-hover: #8a2520;
+    --color-accent-active: #561411;
+    --color-accent-rgb: 107, 26, 23;
 
-    /* Semantic Colors - Vibrant Blooket-inspired */
-    --color-primary: #4361EE;
-    --color-primary-hover: #5B75F0;
-    --color-primary-active: #3651D4;
-    --color-primary-rgb: 67, 97, 238;
+    /* Side identity colors — kept distinct, harmonized to the sepia palette */
+    --color-union: #1e3a5f;          /* deep navy — Union */
+    --color-union-soft: #2a4d7a;
+    --color-confederacy: #5a2d28;    /* deep oxblood — Confederacy */
+    --color-confederacy-soft: #7a3d36;
 
-    --color-accent: #ecc94b;
-    --color-accent-hover: #f6e05e;
+    /* Status colors — muted for the period palette */
+    --color-success: #3d6b3a;
+    --color-warning: #a8741f;
+    --color-error: #8a2520;
+    --color-info: #2a4d7a;
 
-    --color-secondary: #7C3AED;
-    --color-secondary-hover: #8B5CF6;
-    --color-secondary-active: #6D28D9;
+    /* Aliases used throughout the existing codebase. Keep names; remap to Field Report values. */
+    --color-primary: var(--color-accent);
+    --color-primary-hover: var(--color-accent-hover);
+    --color-primary-active: var(--color-accent-active);
+    --color-primary-rgb: var(--color-accent-rgb);
 
-    --color-surface-primary: var(--color-navy-800);
-    --color-surface-secondary: var(--color-navy-700);
-    --color-surface-tertiary: var(--color-navy-600);
-    --color-surface-elevated: var(--color-navy-600);
+    --color-secondary: var(--color-ink-muted);
+    --color-secondary-hover: var(--color-ink);
+    --color-secondary-active: var(--color-ink);
 
-    --color-text-primary: #F1F5F9;
-    --color-text-secondary: #94A3B8;
-    --color-text-tertiary: #64748B;
-    --color-text-inverse: #0F172A;
+    --color-surface-primary: var(--color-paper);
+    --color-surface-secondary: var(--color-paper-card);
+    --color-surface-tertiary: var(--color-paper-elev);
+    --color-surface-elevated: var(--color-paper-card);
 
-    --color-border-primary: var(--color-navy-500);
-    --color-border-secondary: var(--color-navy-600);
-    --color-border-accent: var(--color-primary);
+    --color-text-primary: var(--color-ink);
+    --color-text-secondary: var(--color-ink-muted);
+    --color-text-tertiary: var(--color-ink-faint);
+    --color-text-inverse: var(--color-paper);
 
-    --color-success: #10b981;
-    --color-warning: #f59e0b;
-    --color-error: #ef4444;
-    --color-info: var(--color-blue-500);
+    --color-border-primary: var(--color-rule);
+    --color-border-secondary: var(--color-rule);
+    --color-border-accent: var(--color-ink);
 
-    /* Spacing */
+    /* Spacing — unchanged (8px grid) */
     --space-1: 0.25rem;
     --space-2: 0.5rem;
     --space-3: 0.75rem;
@@ -88,34 +69,35 @@
     --space-12: 3rem;
     --space-16: 4rem;
 
-    /* Border Radius - Generous, rounded, Blooket-inspired */
-    --radius-sm: 0.5rem;
-    --radius-md: 0.75rem;
-    --radius-lg: 1rem;
-    --radius-xl: 1.25rem;
-    --radius-2xl: 1.5rem;
-    --radius-pill: 50rem;
+    /* Radii — drastically reduced. Field Report uses sharp corners. */
+    --radius-sm: 0;
+    --radius-md: 2px;
+    --radius-lg: 2px;
+    --radius-xl: 2px;
+    --radius-2xl: 2px;
+    --radius-pill: 2px;
 
-    /* Shadows - Soft with depth */
-    --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
-    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.15), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
-    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.15), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
-    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.15), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
-    --shadow-glow: 0 0 24px rgba(var(--color-primary-rgb), 0.35);
+    /* Shadows — minimal. Period print didn't have soft shadows. */
+    --shadow-sm: 0 1px 0 rgba(26, 22, 17, 0.08);
+    --shadow-md: 0 1px 0 rgba(26, 22, 17, 0.1);
+    --shadow-lg: 0 2px 0 rgba(26, 22, 17, 0.1);
+    --shadow-xl: 0 2px 0 rgba(26, 22, 17, 0.12);
+    --shadow-glow: none;
 
-    /* Fonts - Nunito: rounded, friendly, Blooket-inspired */
-    --font-sans: 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    --font-serif: 'Crimson Pro', 'Times New Roman', serif;
+    /* Fonts */
+    --font-serif: 'Old Standard TT', 'Times New Roman', Georgia, serif;
+    --font-sans: 'Old Standard TT', 'Times New Roman', Georgia, serif;  /* deliberate: serif everywhere except typewriter chrome */
+    --font-mono: 'Special Elite', 'Courier New', monospace;             /* ONLY for chrome: top meta, captions, section labels, choice letters */
 
-    /* Typography */
-    --font-size-xs: clamp(0.75rem, 0.7rem + 0.2vw, 0.875rem);
-    --font-size-sm: clamp(0.875rem, 0.8rem + 0.3vw, 1rem);
-    --font-size-base: clamp(1rem, 0.9rem + 0.4vw, 1.125rem);
-    --font-size-lg: clamp(1.125rem, 1rem + 0.5vw, 1.25rem);
-    --font-size-xl: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem);
-    --font-size-2xl: clamp(1.5rem, 1.3rem + 0.8vw, 1.875rem);
-    --font-size-3xl: clamp(1.875rem, 1.6rem + 1vw, 2.25rem);
-    --font-size-4xl: clamp(2.25rem, 1.9rem + 1.4vw, 3rem);
+    /* Typography — slightly tightened for the serif body */
+    --font-size-xs: clamp(0.72rem, 0.68rem + 0.15vw, 0.82rem);
+    --font-size-sm: clamp(0.85rem, 0.78rem + 0.25vw, 0.95rem);
+    --font-size-base: clamp(0.95rem, 0.88rem + 0.3vw, 1.05rem);
+    --font-size-lg: clamp(1.05rem, 0.95rem + 0.4vw, 1.2rem);
+    --font-size-xl: clamp(1.2rem, 1.05rem + 0.55vw, 1.45rem);
+    --font-size-2xl: clamp(1.45rem, 1.25rem + 0.75vw, 1.8rem);
+    --font-size-3xl: clamp(1.8rem, 1.5rem + 1vw, 2.25rem);
+    --font-size-4xl: clamp(2.2rem, 1.8rem + 1.4vw, 3rem);
 
     /* Transitions */
     --transition-fast: 0.15s;
