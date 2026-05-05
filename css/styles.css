@@ -1006,10 +1006,12 @@ img {
     position: relative;
     width: 100%;
     height: 250px;
-    border-radius: var(--radius-xl);
     overflow: hidden;
-    margin-bottom: var(--space-6);
-    background: var(--color-surface-tertiary);
+    margin: 0;
+    padding: 0;
+    background: transparent;
+    border: 0;
+    border-radius: 0;
 }
 
 @media (min-width: 640px) {
@@ -3444,53 +3446,58 @@ img {
    =============================================== */
 
 .battle-visuals {
-    margin-bottom: var(--space-6);
+    margin-bottom: var(--space-5);
+    background: var(--color-paper-card);
+    border: 1px solid var(--color-ink);
+    padding: var(--space-2);
 }
 
 .visual-tabs {
     display: flex;
-    gap: var(--space-2);
-    margin-bottom: var(--space-3);
-    justify-content: center;
+    gap: 0;
+    border-bottom: 1px solid var(--color-ink);
+    margin-bottom: var(--space-2);
 }
 
 .visual-tab {
-    padding: var(--space-2) var(--space-5);
-    border: 2px solid var(--color-border-primary);
-    border-radius: var(--radius-pill);
-    background: var(--color-surface-secondary);
-    color: var(--color-text-secondary);
-    font-size: var(--font-size-sm);
-    font-weight: 700;
+    background: transparent;
+    color: var(--color-ink-muted);
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    border: 0;
+    padding: var(--space-2) var(--space-3);
     cursor: pointer;
-    transition: all var(--transition-base) var(--ease-out);
 }
 
 .visual-tab:hover {
-    border-color: var(--color-primary);
-    color: var(--color-primary);
+    color: var(--color-ink);
 }
 
 .visual-tab.active {
-    background: var(--color-primary);
-    border-color: var(--color-primary);
-    color: white;
-    box-shadow: 0 2px 8px rgba(var(--color-primary-rgb), 0.3);
+    color: var(--color-ink);
+    background: var(--color-paper-deep);
 }
 
 .battle-map-container {
     position: relative;
     width: 100%;
-    border-radius: var(--radius-xl);
     overflow: hidden;
-    background: var(--color-surface-secondary);
-    border: 1px solid var(--color-border-secondary);
+    margin: 0;
+    padding: 0;
+    background: transparent;
+    border: 0;
+    border-radius: 0;
 }
 
+.battle-image-container img,
 .battle-map-container img {
+    display: block;
     width: 100%;
     height: auto;
-    display: block;
+    /* Subtle period-photo treatment without distorting historical accuracy */
+    filter: sepia(0.15) contrast(1.05);
 }
 
 .map-credit {
@@ -3521,7 +3528,8 @@ img {
     justify-content: center;
     min-height: 200px;
     padding: var(--space-8);
-    color: var(--color-text-tertiary);
+    color: var(--color-ink-muted);
+    font-family: var(--font-serif);
     text-align: center;
 }
 
