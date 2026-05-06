@@ -423,6 +423,27 @@
         </div>
 
         <!-- ================================= -->
+        <!-- ACT RECALL SCREEN (v3.12.1)       -->
+        <!-- ================================= -->
+        <div class="screen act-recall-screen" id="actRecallScreen" style="display:none;" role="region" aria-label="Quick recall check">
+            <div class="act-recall-container">
+                <div class="act-recall-header">
+                    <div class="act-recall-eyebrow" id="actRecallEyebrow"></div>
+                    <h2 class="act-recall-title">Quick Recall</h2>
+                    <p class="act-recall-progress" id="actRecallProgress">Question 1 of 3</p>
+                </div>
+                <div class="act-recall-card">
+                    <p class="act-recall-question" id="actRecallQuestion"></p>
+                    <div class="act-recall-options" id="actRecallOptions" role="group" aria-label="Answer options"></div>
+                    <div class="act-recall-feedback" id="actRecallFeedback" style="display:none;"></div>
+                </div>
+                <div class="act-recall-actions">
+                    <button class="btn-primary act-recall-continue" id="actRecallContinueBtn" disabled>Next Question</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================================= -->
         <!-- HISTORICAL MODE: BATTLE SCREEN    -->
         <!-- ================================= -->
         <div class="screen" id="historicalScreen" style="display:none;" role="region" aria-label="Historical battle">
