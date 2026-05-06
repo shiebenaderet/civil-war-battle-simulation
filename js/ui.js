@@ -1580,7 +1580,9 @@ var helpTips = {
     historical: [
         'Read the intel report and situation, then click Continue.',
         'Choose what YOU would do \u2014 pick an option, then click Continue.',
-        'Read what really happened, the primary source quote, and the bigger picture. Take your time!',
+        'See how your choice compared to what really happened.',
+        'Read what actually unfolded on the battlefield. Take your time!',
+        'Hear from someone who was there \u2014 and what it meant in the bigger picture.',
         'Write your reflection using the prompt. Use the sentence starters if you need help getting started.'
     ],
     freeplay: [
