@@ -1235,7 +1235,16 @@ function selectWwydOption(idx) {
 }
 
 // Update step indicator pills
-function updateStepPills(step) {
+// v3.14: maps narrativeStep (0-5 after step-2 split) to pill index (0-3).
+// 0 = Briefing, 1 = Your Call, 2/3/4 = What Happened (3 sub-steps), 5 = Reflect.
+function narrativeStepToPillIndex(step) {
+    if (step <= 1) return step;
+    if (step >= 2 && step <= 4) return 2;
+    return 3;
+}
+
+function updateStepPills(narrStep) {
+    var step = narrativeStepToPillIndex(narrStep);
     var pills = document.querySelectorAll('.step-pill');
     pills.forEach(function(pill, i) {
         pill.classList.remove('active', 'completed');
