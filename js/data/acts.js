@@ -98,10 +98,129 @@ const acts = [
             ]
         },
         recall: {
-            // Populated in subsequent commits (Act I recall questions).
-            beginner: [],
-            intermediate: [],
-            advanced: []
+            beginner: [
+                {
+                    question: "Who fired first at Fort Sumter?",
+                    options: [
+                        "The Confederate batteries surrounding the fort",
+                        "The Union soldiers inside the fort",
+                        "The Union supply ship trying to reach the fort",
+                        "A reporter who fired a celebratory shot"
+                    ],
+                    correctIndex: 0,
+                    explanation: " Confederate batteries opened fire on Fort Sumter at 4:30 AM on April 12, 1861. Union forces inside the fort fired back, but the Confederates fired the first shot of the war.",
+                    nudge: " Think about which side surrounded the fort, and which side was inside it.",
+                    source: 'battles[0].historical.whatHappened.intermediate'
+                },
+                {
+                    question: "How many days did the Battle of Bull Run last?",
+                    options: [
+                        "One day",
+                        "Three days",
+                        "A week",
+                        "Most of the summer"
+                    ],
+                    correctIndex: 0,
+                    explanation: " Bull Run was fought on July 21, 1861. It started in the morning and was over by evening, ending in a Union rout.",
+                    nudge: " Look at the date the battle is associated with. Most early Civil War battles were single days, not extended campaigns.",
+                    source: 'battles[1].date'
+                },
+                {
+                    question: "What made Shiloh shocking to Americans?",
+                    options: [
+                        "It was the first battle of the war",
+                        "The huge number of soldiers killed and wounded in just two days",
+                        "The Union surrendered",
+                        "Confederate spies attacked Lincoln"
+                    ],
+                    correctIndex: 1,
+                    explanation: " Shiloh produced more than 23,000 casualties in two days, more than all previous American wars combined. The nation had not imagined this level of bloodshed possible.",
+                    nudge: " Think about what surprised the country. It was not who won or lost, it was a number.",
+                    source: 'battles[2].historical.keyFact.intermediate'
+                }
+            ],
+            intermediate: [
+                {
+                    question: "Why did the South attack Fort Sumter when they did?",
+                    options: [
+                        "They wanted to prevent a Union supply ship from resupplying the fort",
+                        "They needed the fort's cannons for their own army",
+                        "A Confederate general lost control of his troops",
+                        "Britain promised to recognize the Confederacy if they fired first"
+                    ],
+                    correctIndex: 0,
+                    explanation: " Confederate leaders concluded that letting the Union supply ship reach Fort Sumter would make their new government look powerless. They chose to fire before the resupply arrived, accepting the political cost of starting the war.",
+                    nudge: " Think about what was happening on the day they attacked, not the day the war started in their minds.",
+                    source: 'battles[0].historical.situation.intermediate'
+                },
+                {
+                    question: "Why did the Confederacy win at Bull Run despite being outnumbered?",
+                    options: [
+                        "They had better weapons",
+                        "Reinforcements arrived by railroad just in time",
+                        "A storm flooded the Union camp",
+                        "Most Union soldiers refused to fight"
+                    ],
+                    correctIndex: 1,
+                    explanation: " Confederate troops under General Johnston traveled by railroad from the Shenandoah Valley to reinforce Beauregard's line. This was the first decisive use of railroads in combat history, and it turned the battle.",
+                    nudge: " Think about the new technology that made it possible to move soldiers quickly. The Union did not have the same option in time.",
+                    source: 'battles[1].historical.tech.intermediate'
+                },
+                {
+                    question: "After Shiloh, why did Grant believe the war would have to be 'complete conquest'?",
+                    options: [
+                        "He was angry about being criticized",
+                        "The scale of the killing convinced him a peace deal was impossible",
+                        "He had received new orders from Lincoln",
+                        "He needed an excuse for being surprised at the start"
+                    ],
+                    correctIndex: 1,
+                    explanation: " Shiloh's casualties showed Grant that the war had become something much larger than either side imagined. He concluded that only the complete defeat of the Confederate armies could end it.",
+                    nudge: " Think about how the bloodshed at Shiloh shaped what was thinkable about the war's outcome.",
+                    source: 'battles[2].historical.biggerPicture.intermediate'
+                }
+            ],
+            advanced: [
+                {
+                    question: "What does it reveal about both sides that civilians brought picnic baskets to watch Bull Run?",
+                    options: [
+                        "Most people thought the war would be quick and not very costly",
+                        "Both armies welcomed civilian observers as honored guests",
+                        "It was a tradition borrowed from European armies",
+                        "The civilians were political officials with official roles"
+                    ],
+                    correctIndex: 0,
+                    explanation: " The picnic baskets reveal how thoroughly Americans on both sides had failed to imagine industrial-scale war. Spectators expected a single decisive battle that would settle the conflict, like an Independence Day parade with cannons.",
+                    nudge: " What does the act of bringing food to watch a battle suggest about the watchers' assumptions?",
+                    source: 'battles[1].historical.keyFact.intermediate'
+                },
+                {
+                    question: "Why did Fort Sumter unify the North even though Anderson's garrison surrendered?",
+                    options: [
+                        "Lincoln's call for volunteers turned a defeat into a national cause",
+                        "The South immediately offered peace terms",
+                        "Confederate sympathizers in the North quickly converted to the Union cause",
+                        "All of the above"
+                    ],
+                    correctIndex: 0,
+                    explanation: " Fort Sumter ended in Confederate victory militarily, but Lincoln used the attack to call for 75,000 volunteers. Northern enlistment became a moral response to the firing on the flag, not just a political response to secession.",
+                    nudge: " Think about how Lincoln responded politically, and how that response changed what Fort Sumter meant in Northern eyes.",
+                    source: 'battles[0].historical.biggerPicture.intermediate'
+                },
+                {
+                    question: "What pattern emerges across Fort Sumter, Bull Run, and Shiloh that would define the rest of the war?",
+                    options: [
+                        "Each battle revealed that this war would be far longer and bloodier than either side had imagined",
+                        "The North consistently won battles even when outnumbered",
+                        "The South's reliance on cavalry would prove decisive",
+                        "Foreign powers would intervene to end the war within months"
+                    ],
+                    correctIndex: 0,
+                    explanation: " Fort Sumter started the war that 'no one wanted.' Bull Run shattered the fantasy of a 90-day conflict. Shiloh showed bloodshed at a scale Americans had never imagined possible. The opening year established that this war would be unprecedented in length and cost.",
+                    nudge: " Read the three battles together as one arc, not three separate events. What did each one teach Americans they had not known before it?",
+                    source: 'battles[2].historical.biggerPicture.advanced'
+                }
+            ]
         }
     },
     {
