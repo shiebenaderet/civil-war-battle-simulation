@@ -1216,6 +1216,12 @@ function renderHistoricalBattle() {
     document.getElementById('sectionVoice').style.display = 'none';
     document.getElementById('sectionBigPicture').style.display = 'none';
     document.getElementById('sectionReflect').style.display = 'none';
+    var nudgeFeedback = document.getElementById('noteNudgeFeedback');
+    if (nudgeFeedback) nudgeFeedback.style.display = 'none';
+    var nudgeOutcome = document.getElementById('noteNudgeOutcome');
+    if (nudgeOutcome) nudgeOutcome.style.display = 'none';
+    var nudgeReflection = document.getElementById('noteNudgeReflection');
+    if (nudgeReflection) nudgeReflection.style.display = 'none';
     document.getElementById('teacherTip').style.display = 'none';
 
     // Button text
