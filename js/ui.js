@@ -660,6 +660,19 @@ function showReflectionStep() {
     if (targetSection) targetSection.style.display = 'block';
     if (typeof showGroupedReflection === 'function') showGroupedReflection();
     if (typeof showReflectScaffolding === 'function') showReflectScaffolding();
+    // v3.14: wire reflection's Review-the-act link
+    var reflReviewLink = document.getElementById('histReflectReviewLink');
+    if (reflReviewLink) {
+        var newReflReviewLink = reflReviewLink.cloneNode(true);
+        reflReviewLink.parentNode.replaceChild(newReflReviewLink, reflReviewLink);
+        var actIdx = (typeof getActForBattle === 'function') ? getActForBattle(gameState.currentBattle) : -1;
+        if (actIdx !== -1) {
+            newReflReviewLink.style.display = '';
+            newReflReviewLink.addEventListener('click', function() { openActReview(actIdx); });
+        } else {
+            newReflReviewLink.style.display = 'none';
+        }
+    }
     var isLast = gameState.currentBattle >= battles.length - 1;
     var continueBtn = document.getElementById('narrativeContinueBtn');
     if (continueBtn) {
