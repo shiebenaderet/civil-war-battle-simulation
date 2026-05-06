@@ -152,8 +152,8 @@ function setupEventListeners() {
     });
 
     // Campaign log + war map shortcut
-    document.getElementById('campaignLogNavBtn').addEventListener('click', showCampaignLog);
-    document.getElementById('warMapNavBtn').addEventListener('click', showWarMapDirect);
+    document.getElementById('campaignLogMenuBtn').addEventListener('click', showCampaignLog);
+    document.getElementById('warMapMenuBtn').addEventListener('click', showWarMapDirect);
     document.getElementById('closeLogBtn').addEventListener('click', closeCampaignLog);
 
     // Campaign log tabs (Progress / War Map)
@@ -175,7 +175,7 @@ function setupEventListeners() {
     });
 
     // Start over (nav menu)
-    document.getElementById('startOverNavBtn').addEventListener('click', function() {
+    document.getElementById('startOverMenuBtn').addEventListener('click', function() {
         if (confirm('Are you sure you want to start over? Your progress will be lost.')) {
             resetGameState();
             renderModeSelection();
@@ -221,7 +221,7 @@ function setupEventListeners() {
     });
 
     // Tutorial / Help
-    document.getElementById('helpToggleBtn').addEventListener('click', toggleHelpBar);
+    document.getElementById('helpToggleMenuBtn').addEventListener('click', toggleHelpBar);
     document.getElementById('helpBarClose').addEventListener('click', hideHelpBar);
     document.getElementById('tutorialNext').addEventListener('click', nextTutorialStep);
     document.getElementById('tutorialSkip').addEventListener('click', endTutorial);
@@ -248,6 +248,78 @@ function setupEventListeners() {
 
     // Credits toggle
     setupCreditsToggle();
+
+    // === v3.15: Accessibility panel (Aa button) ===
+    (function wireAccessibilityPanel() {
+        const btn = document.getElementById('accessibilityBtn');
+        const panel = document.getElementById('accessibilityPanel');
+        if (!btn || !panel) return;
+
+        btn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            const isOpen = !panel.hasAttribute('hidden');
+            if (isOpen) {
+                panel.setAttribute('hidden', '');
+                btn.setAttribute('aria-expanded', 'false');
+            } else {
+                panel.removeAttribute('hidden');
+                btn.setAttribute('aria-expanded', 'true');
+            }
+        });
+
+        document.addEventListener('click', function(e) {
+            if (panel.hasAttribute('hidden')) return;
+            if (panel.contains(e.target) || btn.contains(e.target)) return;
+            panel.setAttribute('hidden', '');
+            btn.setAttribute('aria-expanded', 'false');
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && !panel.hasAttribute('hidden')) {
+                panel.setAttribute('hidden', '');
+                btn.setAttribute('aria-expanded', 'false');
+                btn.focus();
+            }
+        });
+    })();
+
+    // === v3.15: Accessibility controls (toggle, size, rate) ===
+    (function wireAccessibilityControls() {
+        if (typeof Settings === 'undefined') return;
+        const settings = Settings.getAll();
+
+        const dToggle = document.getElementById('accDyslexicToggle');
+        if (dToggle) {
+            dToggle.checked = settings.fontFamily === 'dyslexic';
+            dToggle.addEventListener('change', function() {
+                Settings.set('fontFamily', dToggle.checked ? 'dyslexic' : 'serif');
+            });
+        }
+
+        document.querySelectorAll('.size-pill[data-size]').forEach(function(pill) {
+            const size = pill.getAttribute('data-size');
+            if (size === settings.fontSize) pill.setAttribute('aria-pressed', 'true');
+            pill.addEventListener('click', function() {
+                document.querySelectorAll('.size-pill[data-size]').forEach(function(p) {
+                    p.setAttribute('aria-pressed', p === pill ? 'true' : 'false');
+                });
+                Settings.set('fontSize', size);
+            });
+        });
+
+        document.querySelectorAll('.size-pill[data-rate]').forEach(function(pill) {
+            const rate = parseFloat(pill.getAttribute('data-rate'));
+            if (rate === settings.ttsRate) pill.setAttribute('aria-pressed', 'true');
+            pill.addEventListener('click', function() {
+                document.querySelectorAll('.size-pill[data-rate]').forEach(function(p) {
+                    p.setAttribute('aria-pressed', p === pill ? 'true' : 'false');
+                });
+                Settings.set('ttsRate', rate);
+            });
+        });
+
+        // Voice select wiring deferred to T11 (TTS module).
+    })();
 }
 
 function startWithSide(side) {

@@ -68,9 +68,9 @@ function showGameActions(show) {
 }
 
 function showCampaignLogBtn(show) {
-    var btn = document.getElementById('campaignLogNavBtn');
+    var btn = document.getElementById('campaignLogMenuBtn');
     if (btn) btn.style.display = show ? 'block' : 'none';
-    var mapBtn = document.getElementById('warMapNavBtn');
+    var mapBtn = document.getElementById('warMapMenuBtn');
     if (mapBtn) mapBtn.style.display = show ? 'block' : 'none';
 }
 
@@ -1729,7 +1729,7 @@ var helpBarVisible = false;
 
 function showHelpBar(mode) {
     var bar = document.getElementById('helpBar');
-    var btn = document.getElementById('helpToggleBtn');
+    var btn = document.getElementById('helpToggleMenuBtn');
 
     btn.style.display = '';
     helpBarVisible = true;
@@ -1741,7 +1741,7 @@ function showHelpBar(mode) {
 
 function hideHelpBar() {
     var bar = document.getElementById('helpBar');
-    var btn = document.getElementById('helpToggleBtn');
+    var btn = document.getElementById('helpToggleMenuBtn');
 
     helpBarVisible = false;
     bar.style.display = 'none';
@@ -1766,7 +1766,7 @@ function updateHelpBarText(mode, step) {
 
 // Initialize tutorial on first battle
 function maybeStartTutorial(mode) {
-    var btn = document.getElementById('helpToggleBtn');
+    var btn = document.getElementById('helpToggleMenuBtn');
     btn.style.display = '';
 
     if (shouldShowTutorial(mode)) {
