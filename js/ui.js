@@ -21,6 +21,22 @@ function cacheScreens() {
     screens.endGameScreen = document.getElementById('endGameScreen');
 }
 
+// v3.14: one-time wiring for the act review overlay (close button, backdrop, ESC key).
+function wireActReviewOverlay() {
+    var closeBtn = document.getElementById('actReviewCloseBtn');
+    var backdrop = document.getElementById('actReviewBackdrop');
+    if (closeBtn) closeBtn.addEventListener('click', closeActReview);
+    if (backdrop) backdrop.addEventListener('click', closeActReview);
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            var overlay = document.getElementById('actReviewOverlay');
+            if (overlay && overlay.style.display !== 'none') {
+                closeActReview();
+            }
+        }
+    });
+}
+
 function showScreen(screenId) {
     Object.values(screens).forEach(function(el) {
         if (el) el.style.display = 'none';
@@ -650,6 +666,110 @@ function showReflectionStep() {
         continueBtn.textContent = isLast ? 'Complete Historical Mode' : 'Next Battle →';
     }
     if (targetSection) targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// ============================================================
+// v3.14 - Act Review Overlay
+// ============================================================
+
+function openActReview(actIndex) {
+    if (typeof acts === 'undefined' || !acts[actIndex]) return;
+    var act = acts[actIndex];
+    var difficulty = gameState.difficulty || 'intermediate';
+    var overlay = document.getElementById('actReviewOverlay');
+    var eyebrow = document.getElementById('actReviewEyebrow');
+    var title = document.getElementById('actReviewTitle');
+    var thumbs = document.getElementById('actReviewThumbs');
+    var body = document.getElementById('actReviewBody');
+    if (!overlay || !eyebrow || !title || !thumbs || !body) return;
+
+    eyebrow.textContent = 'Act ' + act.number + ' · ' + act.years;
+    title.textContent = act.name;
+
+    // Battle thumbnails
+    while (thumbs.firstChild) thumbs.removeChild(thumbs.firstChild);
+    var indices = act.battleIndices || [];
+    indices.forEach(function(bi) {
+        var battle = battles[bi];
+        if (!battle) return;
+        var thumbDiv = document.createElement('div');
+        thumbDiv.className = 'act-review-thumb';
+        var img = document.createElement('img');
+        img.src = battle.image || '';
+        img.alt = battle.name || '';
+        img.onerror = function() { thumbDiv.style.display = 'none'; };
+        thumbDiv.appendChild(img);
+        var caption = document.createElement('div');
+        caption.textContent = (battle.name || '').replace(/^(Battle of |First |Siege of |Surrender at )/, '');
+        thumbDiv.appendChild(caption);
+        thumbs.appendChild(thumbDiv);
+    });
+
+    // Body content (markdown-lite to DOM)
+    while (body.firstChild) body.removeChild(body.firstChild);
+    var content = (act.review && act.review[difficulty]) || (act.review && act.review.intermediate) || '';
+    if (!content || !content.trim()) {
+        var empty = document.createElement('div');
+        empty.className = 'act-review-empty';
+        empty.textContent = 'Review content is being prepared. For now, take notes during the battle screens.';
+        body.appendChild(empty);
+    } else {
+        renderActReviewMarkdown(content, body);
+    }
+
+    overlay.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+    var closeBtn = document.getElementById('actReviewCloseBtn');
+    if (closeBtn) closeBtn.focus();
+}
+
+function closeActReview() {
+    var overlay = document.getElementById('actReviewOverlay');
+    if (overlay) overlay.style.display = 'none';
+    document.body.style.overflow = '';
+}
+
+// Minimal markdown-to-DOM converter for review content.
+// Recognizes: ### Heading, - List item, blank line = paragraph break.
+// All text rendered via textContent, no innerHTML.
+function renderActReviewMarkdown(text, container) {
+    var lines = text.split('\n');
+    var currentList = null;
+    var currentPara = null;
+    function closeList() { currentList = null; }
+    function closePara() {
+        if (currentPara) container.appendChild(currentPara);
+        currentPara = null;
+    }
+    lines.forEach(function(line) {
+        var trimmed = line.trim();
+        if (trimmed.indexOf('### ') === 0) {
+            closeList(); closePara();
+            var h3 = document.createElement('h3');
+            h3.textContent = trimmed.substring(4);
+            container.appendChild(h3);
+        } else if (trimmed.indexOf('- ') === 0) {
+            closePara();
+            if (!currentList) {
+                currentList = document.createElement('ul');
+                container.appendChild(currentList);
+            }
+            var li = document.createElement('li');
+            li.textContent = trimmed.substring(2);
+            currentList.appendChild(li);
+        } else if (trimmed === '') {
+            closeList(); closePara();
+        } else {
+            closeList();
+            if (!currentPara) {
+                currentPara = document.createElement('p');
+                currentPara.textContent = trimmed;
+            } else {
+                currentPara.textContent = currentPara.textContent + ' ' + trimmed;
+            }
+        }
+    });
+    closeList(); closePara();
 }
 
 // Renders the act recall screen with question state machine.

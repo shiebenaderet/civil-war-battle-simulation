@@ -2,6 +2,7 @@
 
 function boot() {
     cacheScreens();
+    wireActReviewOverlay();
     setupEventListeners();
 
     // Initialize Firebase leaderboard (no-op if SDK didn't load)
