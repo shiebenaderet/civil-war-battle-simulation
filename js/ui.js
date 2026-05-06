@@ -21,6 +21,22 @@ function cacheScreens() {
     screens.endGameScreen = document.getElementById('endGameScreen');
 }
 
+// v3.14: one-time wiring for the act review overlay (close button, backdrop, ESC key).
+function wireActReviewOverlay() {
+    var closeBtn = document.getElementById('actReviewCloseBtn');
+    var backdrop = document.getElementById('actReviewBackdrop');
+    if (closeBtn) closeBtn.addEventListener('click', closeActReview);
+    if (backdrop) backdrop.addEventListener('click', closeActReview);
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            var overlay = document.getElementById('actReviewOverlay');
+            if (overlay && overlay.style.display !== 'none') {
+                closeActReview();
+            }
+        }
+    });
+}
+
 function showScreen(screenId) {
     Object.values(screens).forEach(function(el) {
         if (el) el.style.display = 'none';
@@ -452,6 +468,28 @@ function getWwydDisplayOrder(battleIndex, side, n) {
     return order;
 }
 
+// v3.14: deterministic recall option shuffle. Same salt as WWYD; salt
+// is per-session. Keyed on (actIndex, qIdx) so each question gets its
+// own permutation but reroll is stable within a session.
+function getRecallDisplayOrder(actIndex, qIdx, n) {
+    if (!gameState.wwydShuffleSalt) {
+        gameState.wwydShuffleSalt = Math.floor(Math.random() * 1e9);
+        if (typeof saveProgress === 'function') saveProgress();
+    }
+    var seed = (gameState.wwydShuffleSalt * 1664525 + actIndex * 22695477 + qIdx * 1013904223) >>> 0;
+    function rand() {
+        seed ^= seed << 13; seed ^= seed >>> 17; seed ^= seed << 5;
+        return ((seed >>> 0) / 0x100000000);
+    }
+    var order = [];
+    for (var i = 0; i < n; i++) order.push(i);
+    for (var j = n - 1; j > 0; j--) {
+        var k = Math.floor(rand() * (j + 1));
+        var tmp = order[j]; order[j] = order[k]; order[k] = tmp;
+    }
+    return order;
+}
+
 function shouldShowActRecall(battleIndex) {
     if (!isReflectionBattle(battleIndex)) return false;
     var actIdx = getActForBattle(battleIndex);
@@ -644,12 +682,155 @@ function showReflectionStep() {
     if (targetSection) targetSection.style.display = 'block';
     if (typeof showGroupedReflection === 'function') showGroupedReflection();
     if (typeof showReflectScaffolding === 'function') showReflectScaffolding();
+    // v3.14: wire reflection's Review-the-act link
+    var reflReviewLink = document.getElementById('histReflectReviewLink');
+    if (reflReviewLink) {
+        var newReflReviewLink = reflReviewLink.cloneNode(true);
+        reflReviewLink.parentNode.replaceChild(newReflReviewLink, reflReviewLink);
+        var actIdx = (typeof getActForBattle === 'function') ? getActForBattle(gameState.currentBattle) : -1;
+        if (actIdx !== -1) {
+            newReflReviewLink.style.display = '';
+            newReflReviewLink.addEventListener('click', function() { openActReview(actIdx); });
+        } else {
+            newReflReviewLink.style.display = 'none';
+        }
+    }
     var isLast = gameState.currentBattle >= battles.length - 1;
     var continueBtn = document.getElementById('narrativeContinueBtn');
     if (continueBtn) {
         continueBtn.textContent = isLast ? 'Complete Historical Mode' : 'Next Battle →';
     }
     if (targetSection) targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// v3.14: populate a note-nudge element from current battle content. If no
+// nudge content is authored (Plan B not yet shipped, or this battle has
+// no nudge for this sub-step), the slot stays hidden.
+function populateNoteNudge(slotId, subStepKey) {
+    var slot = document.getElementById(slotId);
+    if (!slot) return;
+    var battle = battles[gameState.currentBattle];
+    var nudgeData = battle && battle.notes && battle.notes[subStepKey];
+    if (!nudgeData) {
+        slot.style.display = 'none';
+        return;
+    }
+    var difficulty = gameState.difficulty || 'intermediate';
+    var text = nudgeData[difficulty] || nudgeData.intermediate || '';
+    if (!text || !text.trim()) {
+        slot.style.display = 'none';
+        return;
+    }
+    while (slot.firstChild) slot.removeChild(slot.firstChild);
+    var strong = document.createElement('strong');
+    strong.textContent = 'Worth writing down:';
+    slot.appendChild(strong);
+    slot.appendChild(document.createTextNode(' ' + text));
+    slot.style.display = '';
+}
+
+// ============================================================
+// v3.14 - Act Review Overlay
+// ============================================================
+
+function openActReview(actIndex) {
+    if (typeof acts === 'undefined' || !acts[actIndex]) return;
+    var act = acts[actIndex];
+    var difficulty = gameState.difficulty || 'intermediate';
+    var overlay = document.getElementById('actReviewOverlay');
+    var eyebrow = document.getElementById('actReviewEyebrow');
+    var title = document.getElementById('actReviewTitle');
+    var thumbs = document.getElementById('actReviewThumbs');
+    var body = document.getElementById('actReviewBody');
+    if (!overlay || !eyebrow || !title || !thumbs || !body) return;
+
+    eyebrow.textContent = 'Act ' + act.number + ' · ' + act.years;
+    title.textContent = act.name;
+
+    // Battle thumbnails
+    while (thumbs.firstChild) thumbs.removeChild(thumbs.firstChild);
+    var indices = act.battleIndices || [];
+    indices.forEach(function(bi) {
+        var battle = battles[bi];
+        if (!battle) return;
+        var thumbDiv = document.createElement('div');
+        thumbDiv.className = 'act-review-thumb';
+        var img = document.createElement('img');
+        img.src = battle.image || '';
+        img.alt = battle.name || '';
+        img.onerror = function() { thumbDiv.style.display = 'none'; };
+        thumbDiv.appendChild(img);
+        var caption = document.createElement('div');
+        caption.textContent = (battle.name || '').replace(/^(Battle of |First |Siege of |Surrender at )/, '');
+        thumbDiv.appendChild(caption);
+        thumbs.appendChild(thumbDiv);
+    });
+
+    // Body content (markdown-lite to DOM)
+    while (body.firstChild) body.removeChild(body.firstChild);
+    var content = (act.review && act.review[difficulty]) || (act.review && act.review.intermediate) || '';
+    if (!content || !content.trim()) {
+        var empty = document.createElement('div');
+        empty.className = 'act-review-empty';
+        empty.textContent = 'Review content is being prepared. For now, take notes during the battle screens.';
+        body.appendChild(empty);
+    } else {
+        renderActReviewMarkdown(content, body);
+    }
+
+    overlay.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+    var closeBtn = document.getElementById('actReviewCloseBtn');
+    if (closeBtn) closeBtn.focus();
+}
+
+function closeActReview() {
+    var overlay = document.getElementById('actReviewOverlay');
+    if (overlay) overlay.style.display = 'none';
+    document.body.style.overflow = '';
+}
+
+// Minimal markdown-to-DOM converter for review content.
+// Recognizes: ### Heading, - List item, blank line = paragraph break.
+// All text rendered via textContent, no innerHTML.
+function renderActReviewMarkdown(text, container) {
+    var lines = text.split('\n');
+    var currentList = null;
+    var currentPara = null;
+    function closeList() { currentList = null; }
+    function closePara() {
+        if (currentPara) container.appendChild(currentPara);
+        currentPara = null;
+    }
+    lines.forEach(function(line) {
+        var trimmed = line.trim();
+        if (trimmed.indexOf('### ') === 0) {
+            closeList(); closePara();
+            var h3 = document.createElement('h3');
+            h3.textContent = trimmed.substring(4);
+            container.appendChild(h3);
+        } else if (trimmed.indexOf('- ') === 0) {
+            closePara();
+            if (!currentList) {
+                currentList = document.createElement('ul');
+                container.appendChild(currentList);
+            }
+            var li = document.createElement('li');
+            li.textContent = trimmed.substring(2);
+            currentList.appendChild(li);
+        } else if (trimmed === '') {
+            closeList(); closePara();
+        } else {
+            closeList();
+            if (!currentPara) {
+                currentPara = document.createElement('p');
+                currentPara.textContent = trimmed;
+            } else {
+                currentPara.textContent = currentPara.textContent + ' ' + trimmed;
+            }
+        }
+    });
+    closeList(); closePara();
 }
 
 // Renders the act recall screen with question state machine.
@@ -689,6 +870,14 @@ function renderActRecall(actIndex) {
     document.getElementById('actRecallEyebrow').textContent =
         'Act ' + act.number + ' · ' + act.name;
 
+    // v3.14: wire "Review the act" link (replace handler each render to avoid duplicates)
+    var reviewLink = document.getElementById('actRecallReviewLink');
+    if (reviewLink) {
+        var newReviewLink = reviewLink.cloneNode(true);
+        reviewLink.parentNode.replaceChild(newReviewLink, reviewLink);
+        newReviewLink.addEventListener('click', function() { openActReview(actIndex); });
+    }
+
     var questionIdx = 0;
     var wrongAttempts = 0;
     var questionResolved = false;
@@ -703,13 +892,15 @@ function renderActRecall(actIndex) {
         // Clear previous options via DOM API (no innerHTML)
         while (optionsEl.firstChild) optionsEl.removeChild(optionsEl.firstChild);
 
-        q.options.forEach(function(optText, i) {
+        var displayOrder = getRecallDisplayOrder(actIndex, questionIdx, q.options.length);
+        displayOrder.forEach(function(originalIdx, displayIdx) {
+            var optText = q.options[originalIdx];
             var btn = document.createElement('button');
             btn.className = 'act-recall-option';
             btn.textContent = optText;
-            btn.setAttribute('data-letter', String.fromCharCode(65 + i));
-            btn.setAttribute('data-index', String(i));
-            btn.addEventListener('click', function() { onOptionClick(i, btn); });
+            btn.setAttribute('data-letter', String.fromCharCode(65 + displayIdx));
+            btn.setAttribute('data-original-idx', String(originalIdx));
+            btn.addEventListener('click', function() { onOptionClick(originalIdx, btn); });
             optionsEl.appendChild(btn);
         });
 
@@ -775,14 +966,22 @@ function renderActRecall(actIndex) {
         } else {
             // Second wrong: reveal correct, require click to advance
             feedbackEl.className = 'act-recall-feedback feedback-revealed';
-            var correctLetter = String.fromCharCode(65 + q.correctIndex);
+            var displayPos = -1;
+            var allOptsList = document.querySelectorAll('.act-recall-option');
+            allOptsList.forEach(function(o, oi) {
+                if (parseInt(o.getAttribute('data-original-idx'), 10) === q.correctIndex) {
+                    displayPos = oi;
+                }
+            });
+            var correctLetter = (displayPos >= 0) ? String.fromCharCode(65 + displayPos) : '';
             setFeedback(feedbackEl,
                         'The answer is ' + correctLetter,
                         q.explanation || '',
                         'Click the highlighted answer to continue.');
             // Lock all options EXCEPT the correct one (which gets revealed-correct styling)
-            allOpts.forEach(function(o, i) {
-                if (i === q.correctIndex) {
+            allOpts.forEach(function(o) {
+                var oOrigIdx = parseInt(o.getAttribute('data-original-idx'), 10);
+                if (oOrigIdx === q.correctIndex) {
                     o.classList.add('revealed-correct');
                     o.disabled = false;
                 } else {
@@ -1017,6 +1216,12 @@ function renderHistoricalBattle() {
     document.getElementById('sectionVoice').style.display = 'none';
     document.getElementById('sectionBigPicture').style.display = 'none';
     document.getElementById('sectionReflect').style.display = 'none';
+    var nudgeFeedback = document.getElementById('noteNudgeFeedback');
+    if (nudgeFeedback) nudgeFeedback.style.display = 'none';
+    var nudgeOutcome = document.getElementById('noteNudgeOutcome');
+    if (nudgeOutcome) nudgeOutcome.style.display = 'none';
+    var nudgeReflection = document.getElementById('noteNudgeReflection');
+    if (nudgeReflection) nudgeReflection.style.display = 'none';
     document.getElementById('teacherTip').style.display = 'none';
 
     // Button text
@@ -1062,7 +1267,16 @@ function selectWwydOption(idx) {
 }
 
 // Update step indicator pills
-function updateStepPills(step) {
+// v3.14: maps narrativeStep (0-5 after step-2 split) to pill index (0-3).
+// 0 = Briefing, 1 = Your Call, 2/3/4 = What Happened (3 sub-steps), 5 = Reflect.
+function narrativeStepToPillIndex(step) {
+    if (step <= 1) return step;
+    if (step >= 2 && step <= 4) return 2;
+    return 3;
+}
+
+function updateStepPills(narrStep) {
+    var step = narrativeStepToPillIndex(narrStep);
     var pills = document.querySelectorAll('.step-pill');
     pills.forEach(function(pill, i) {
         pill.classList.remove('active', 'completed');
@@ -1366,7 +1580,9 @@ var helpTips = {
     historical: [
         'Read the intel report and situation, then click Continue.',
         'Choose what YOU would do \u2014 pick an option, then click Continue.',
-        'Read what really happened, the primary source quote, and the bigger picture. Take your time!',
+        'See how your choice compared to what really happened.',
+        'Read what actually unfolded on the battlefield. Take your time!',
+        'Hear from someone who was there \u2014 and what it meant in the bigger picture.',
         'Write your reflection using the prompt. Use the sentence starters if you need help getting started.'
     ],
     freeplay: [
@@ -1573,7 +1789,7 @@ function advanceNarrative() {
     switch (narrativeStep) {
         case 1:
             // Show WWYD - block continue until student picks an option
-            updateStepPills(1);
+            updateStepPills(narrativeStep);
             targetSection = document.getElementById('sectionWWYD');
             targetSection.style.display = 'block';
             if (wwydSelected === -1) {
@@ -1582,28 +1798,25 @@ function advanceNarrative() {
             break;
 
         case 2:
-            // THE REVEAL: Show feedback + What Happened + Voice + Bigger Picture
-            updateStepPills(2);
+            // FEEDBACK sub-step: show only WWYD feedback panel.
+            updateStepPills(narrativeStep);
             continueBtn.disabled = false;
             continueBtn.classList.remove('pulse-hint');
+            continueBtn.textContent = 'Continue';
 
-            // Show redesigned WWYD feedback with choice comparison
             var feedbackEl = document.getElementById('wwydFeedback');
-            var content = getHistoricalContent();
-            var feedbackList = content.whatWouldYouDo.feedback;
-            var optionsList = content.whatWouldYouDo.options;
+            var contentForFeedback = getHistoricalContent();
+            var feedbackList = contentForFeedback.whatWouldYouDo.feedback;
+            var optionsList = contentForFeedback.whatWouldYouDo.options;
 
             if (feedbackList && Array.isArray(feedbackList) && wwydSelected >= 0 && feedbackList[wwydSelected]) {
-                // Show student's choice
                 var choiceTextEl = document.getElementById('feedbackChoiceText');
                 if (choiceTextEl) choiceTextEl.textContent = optionsList[wwydSelected] || '';
 
-                // Comparison badge + historical decision
                 var badge = document.getElementById('feedbackBadge');
                 var histSection = document.getElementById('feedbackHistorical');
                 if (badge && histSection) {
                     if (wwydSelected === 0) {
-                        // Matches the historical decision
                         var commanderRaw = battles[gameState.currentBattle].historical.intel[gameState.side].commander;
                         var commander = (typeof commanderRaw === 'string') ? commanderRaw : getContent(commanderRaw);
                         commander = String(commander).split('(')[0].split(',')[0].trim();
@@ -1611,7 +1824,6 @@ function advanceNarrative() {
                         badge.textContent = 'Same call as ' + commander;
                         histSection.style.display = 'none';
                     } else {
-                        // Different from history
                         badge.className = 'feedback-badge badge-different';
                         badge.textContent = 'You chose a different path';
                         var histTextEl = document.getElementById('feedbackHistoricalText');
@@ -1620,63 +1832,67 @@ function advanceNarrative() {
                     }
                 }
 
-                // Detailed feedback text
                 var detailEl = document.getElementById('feedbackDetail');
                 if (detailEl) detailEl.textContent = feedbackList[wwydSelected];
                 feedbackEl.style.display = 'block';
                 targetSection = feedbackEl;
             }
 
-            // Progressive reveal: stagger the three sections
+            // Hide later sub-sections in case they were visible from a prior re-render
+            document.getElementById('sectionHappened').style.display = 'none';
+            document.getElementById('sectionVoice').style.display = 'none';
+            document.getElementById('sectionBigPicture').style.display = 'none';
+
+            populateNoteNudge('noteNudgeFeedback', 'feedback');
+            break;
+
+        case 3:
+            // OUTCOME sub-step: feedback stays, show What Really Happened + tech.
+            updateStepPills(narrativeStep);
+            continueBtn.textContent = 'Continue';
             var happened = document.getElementById('sectionHappened');
+            happened.style.display = 'block';
+            targetSection = happened;
+            populateNoteNudge('noteNudgeOutcome', 'outcome');
+            break;
+
+        case 4:
+            // REFLECTION FROM HISTORY sub-step: show Voice + Bigger Picture.
+            updateStepPills(narrativeStep);
+
             var voice = document.getElementById('sectionVoice');
             var bigPicture = document.getElementById('sectionBigPicture');
-
-            // Remove old stagger classes before re-applying
-            [happened, voice, bigPicture].forEach(function(el) {
-                el.classList.remove('reveal-stagger', 'reveal-stagger-1', 'reveal-stagger-2', 'reveal-stagger-3', 'reveal-stagger-4');
-            });
-
-            var staggerIdx = 1;
-            if (feedbackEl.style.display === 'block') {
-                feedbackEl.classList.add('reveal-stagger', 'reveal-stagger-1');
-                staggerIdx = 2;
-            }
-
-            happened.classList.add('reveal-stagger', 'reveal-stagger-' + staggerIdx);
-            happened.style.display = 'block';
-            if (!targetSection) targetSection = happened;
-
-            voice.classList.add('reveal-stagger', 'reveal-stagger-' + (staggerIdx + 1));
             voice.style.display = 'block';
-
-            bigPicture.classList.add('reveal-stagger', 'reveal-stagger-' + (staggerIdx + 2));
             bigPicture.style.display = 'block';
+            targetSection = voice;
 
-            // At beginner: collapse Voice and Bigger Picture to reduce wall-of-text
+            // At beginner: collapse Voice and Bigger Picture
             var isBeginner = (gameState.difficulty === 'beginner');
             setupCollapsibleSection('voiceHeading', 'voiceBody', !isBeginner);
             setupCollapsibleSection('bigPictureHeading', 'bigPictureBody', !isBeginner);
 
-            // Set button text: if no reflection follows, go straight to next battle
+            populateNoteNudge('noteNudgeReflection', 'reflectionFromHistory');
+
             if (!isReflectionBattle(gameState.currentBattle)) {
                 var isLast = gameState.currentBattle >= battles.length - 1;
                 continueBtn.textContent = isLast ? 'Complete Historical Mode' : 'Next Battle \u2192';
+            } else {
+                continueBtn.textContent = 'Continue';
             }
             break;
 
-        case 3:
+        case 5:
+            // RECALL or REFLECT (formerly case 3 reflection branch).
             if (isReflectionBattle(gameState.currentBattle)) {
-                // v3.12.1: insert recall check before reflection if not yet completed
                 if (typeof shouldShowActRecall === 'function' &&
                     shouldShowActRecall(gameState.currentBattle)) {
                     var actIdx = getActForBattle(gameState.currentBattle);
                     renderActRecall(actIdx);
-                    return;  // recall's onContinue will call showReflectionStep
+                    return;
                 }
                 showReflectionStep();
             } else {
-                // No reflection for this battle - save WWYD choice and advance
+                // Non-reflection battle: save WWYD choice and advance.
                 var wwydChoiceText = '';
                 if (wwydSelected >= 0) {
                     var c = getHistoricalContent();
@@ -1691,26 +1907,24 @@ function advanceNarrative() {
             }
             break;
 
-        case 4:
-            // Save response and advance to next battle (reflection battles only)
-            var wwydChoiceText = '';
+        case 6:
+            // SAVE AND ADVANCE (formerly case 4) - reflection battles only.
+            var wwydChoiceText2 = '';
             if (wwydSelected >= 0) {
-                var content = getHistoricalContent();
-                var opts = content.whatWouldYouDo.options;
-                if (opts && opts[wwydSelected]) {
-                    wwydChoiceText = opts[wwydSelected];
-                }
+                var content2 = getHistoricalContent();
+                var opts2 = content2.whatWouldYouDo.options;
+                if (opts2 && opts2[wwydSelected]) wwydChoiceText2 = opts2[wwydSelected];
             }
             var reflectionText = document.getElementById('histReflectInput').value.trim();
-            saveHistoricalResponse(wwydChoiceText, reflectionText, wwydSelected);
+            saveHistoricalResponse(wwydChoiceText2, reflectionText, wwydSelected);
 
-            var done = advanceHistorical();
-            if (done) {
+            var done2 = advanceHistorical();
+            if (done2) {
                 renderHistoricalComplete();
             } else {
                 enterBattleScreen();
             }
-            return; // exit early, no scroll needed
+            return;
     }
 
     // Smooth scroll to the newly revealed section

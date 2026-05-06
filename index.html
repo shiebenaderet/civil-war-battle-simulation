@@ -423,6 +423,21 @@
         </div>
 
         <!-- ================================= -->
+        <!-- ACT REVIEW OVERLAY (v3.14)         -->
+        <!-- Modal opened from recall and reflection; preserves underlying state. -->
+        <!-- ================================= -->
+        <div class="act-review-overlay" id="actReviewOverlay" style="display:none;" role="dialog" aria-modal="true" aria-label="Act review">
+            <div class="act-review-backdrop" id="actReviewBackdrop"></div>
+            <div class="act-review-card">
+                <button class="act-review-close" id="actReviewCloseBtn" type="button" aria-label="Close review">&times;</button>
+                <div class="act-review-eyebrow" id="actReviewEyebrow"></div>
+                <h2 class="act-review-title" id="actReviewTitle">Act Review</h2>
+                <div class="act-review-thumbs" id="actReviewThumbs"></div>
+                <div class="act-review-body" id="actReviewBody"></div>
+            </div>
+        </div>
+
+        <!-- ================================= -->
         <!-- ACT RECALL SCREEN (v3.12.1)       -->
         <!-- ================================= -->
         <div class="screen act-recall-screen" id="actRecallScreen" style="display:none;" role="region" aria-label="Quick recall check">
@@ -436,6 +451,7 @@
                     <p class="act-recall-question" id="actRecallQuestion"></p>
                     <div class="act-recall-options" id="actRecallOptions" role="group" aria-label="Answer options"></div>
                     <div class="act-recall-feedback" id="actRecallFeedback" style="display:none;"></div>
+                    <button class="act-review-link" id="actRecallReviewLink" type="button">Review the act</button>
                 </div>
                 <div class="act-recall-actions">
                     <button class="btn-primary act-recall-continue" id="actRecallContinueBtn" disabled>Next Question</button>
@@ -521,6 +537,7 @@
                         <div class="feedback-choice-text" id="feedbackHistoricalText"></div>
                     </div>
                     <p class="feedback-detail" id="feedbackDetail"></p>
+                    <div class="note-nudge" id="noteNudgeFeedback" style="display:none;"></div>
                 </div>
 
                 <!-- Section 4: What Really Happened + Tech -->
@@ -539,6 +556,7 @@
                         <div class="tech-name" id="histTechName"></div>
                         <p class="tech-description" id="histTechDesc"></p>
                     </div>
+                    <div class="note-nudge" id="noteNudgeOutcome" style="display:none;"></div>
                 </div>
 
                 <!-- Section 5: A Voice From the Field -->
@@ -565,6 +583,7 @@
 
                         <div class="perspectives-container" id="histPerspectives"></div>
                     </div>
+                    <div class="note-nudge" id="noteNudgeReflection" style="display:none;"></div>
                 </div>
 
                 <!-- Section 7: Reflect -->
@@ -613,6 +632,7 @@
                     </div>
 
                     <textarea class="reflect-input" id="histReflectInput" rows="4" placeholder="Write your thoughts here..." aria-label="Your reflection"></textarea>
+                    <button class="act-review-link" id="histReflectReviewLink" type="button" style="display:none;">Review the act</button>
                 </div>
             </div>
 
@@ -928,7 +948,7 @@
 
     <!-- Version Display -->
     <div class="version-info">
-        <span>Civil War Battle Simulation v3.12.1</span>
+        <span>Civil War Battle Simulation v3.14.0-alpha</span>
     </div>
 </body>
 </html>
