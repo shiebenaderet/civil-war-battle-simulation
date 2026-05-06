@@ -103,6 +103,28 @@ const battles = [
             }
         },
 
+        notes: {
+            feedback: {
+                beginner: "Anderson's choice to hold the fort, even when surrender was an option, shaped how the North reacted to the war.",
+                intermediate: "Anderson held the fort to force the Confederacy to fire first, which mattered more politically than any military outcome.",
+                advanced: "Anderson's decision turned a losing military position into a Northern political asset; firing first cost the Confederacy international support.",
+                source: 'battles[0].historical.whatHappened.intermediate'
+            },
+            outcome: {
+                beginner: "The bombardment lasted 34 hours. Almost no one died, but it started a war that killed over 600,000.",
+                intermediate: "34 hours of bombardment, no combat deaths, but the war that followed killed more Americans than any other before it.",
+                advanced: "34-hour Confederate bombardment with rifled artillery; zero combat fatalities; the only casualty came in the surrender-salute accident on April 14.",
+                source: 'battles[0].historical.keyFact.intermediate'
+            },
+            reflectionFromHistory: {
+                beginner: "After Fort Sumter, Lincoln asked for 75,000 volunteers, and four more states joined the Confederacy.",
+                intermediate: "The attack unified the North overnight; Lincoln's call for 75,000 volunteers was wildly oversubscribed.",
+                advanced: "Fort Sumter triggered both Northern unification and the secession of Virginia, Arkansas, Tennessee, and North Carolina, nearly doubling Confederate population.",
+                source: 'battles[0].historical.biggerPicture.intermediate'
+            },
+        },
+
+
         freeplay: {
             briefing: "The first shots of the Civil War! Confederate batteries ring Charleston Harbor, surrounding the Union-held Fort Sumter. Major Anderson's tiny garrison is running low on supplies. The Confederacy must decide how to handle this standoff, and the Union must decide how to survive it.",
             difficulty: 5,
@@ -253,6 +275,28 @@ const battles = [
             }
         },
 
+        notes: {
+            feedback: {
+                beginner: "McDowell's plan to attack from the side almost worked, but his soldiers were not ready for a long fight.",
+                intermediate: "McDowell's flanking maneuver was tactically sound; what failed was the green army's ability to execute it under pressure.",
+                advanced: "The flanking plan was militarily correct; what doomed it was Confederate reinforcement by railroad, the first decisive use of rail in war.",
+                source: 'battles[1].historical.whatHappened.intermediate'
+            },
+            outcome: {
+                beginner: "Confederate trains brought soldiers in just in time. The Union army panicked and ran back to Washington.",
+                intermediate: "Railroad reinforcements turned the battle. The Union retreat became a rout, with civilians fleeing alongside soldiers.",
+                advanced: "Johnston's railroad-borne reinforcements arriving from the Shenandoah turned a Union flanking success into a complete rout.",
+                source: 'battles[1].historical.keyFact.intermediate'
+            },
+            reflectionFromHistory: {
+                beginner: "After Bull Run, no one believed the war would be quick anymore. Lincoln signed up 500,000 more soldiers.",
+                intermediate: "Bull Run shattered the 90-day-war fantasy. Lincoln signed bills for 500,000 three-year enlistments and replaced McDowell with McClellan.",
+                advanced: "Bull Run forced both sides to recognize this would be a long war; ironically, the Confederate victory bred dangerous overconfidence that hampered Southern strategy for months.",
+                source: 'battles[1].historical.biggerPicture.intermediate'
+            },
+        },
+
+
         freeplay: {
             briefing: "The first major battle of the war! Both armies are raw and untrained. The Confederates are defending a position along Bull Run creek in Virginia, just 30 miles from Washington. Everyone thinks one big battle will decide the whole war.",
             difficulty: 6,
@@ -402,6 +446,28 @@ const battles = [
                 advanced: "Shiloh's 23,000 casualties in forty-eight hours exceeded the combined losses of every previous American conflict. The battle marked the moment when both sides recognized that the war would demand sacrifice on an industrial scale previously unimaginable in American warfare."
             }
         },
+
+        notes: {
+            feedback: {
+                beginner: "Grant did not expect an attack and had not built any defenses. The cost of that mistake was enormous.",
+                intermediate: "Grant's failure to fortify reflected an army-wide assumption that the Confederacy would not take the offensive in the West. Shiloh ended that assumption.",
+                advanced: "Grant's unfortified position reflected systemic Union complacency; the surprise attack nearly destroyed his army and reset Western theater operations.",
+                source: 'battles[2].historical.whatHappened.intermediate'
+            },
+            outcome: {
+                beginner: "23,000 soldiers were killed or wounded in two days. That is more than all previous American wars combined.",
+                intermediate: "23,000 casualties in two days exceeded the combined toll of every previous American war up to that moment.",
+                advanced: "23,000+ casualties in 48 hours, surpassing the cumulative toll of the Revolution, the War of 1812, and the Mexican-American War combined.",
+                source: 'battles[2].historical.keyFact.intermediate'
+            },
+            reflectionFromHistory: {
+                beginner: "After Shiloh, Grant decided the only way to win was to keep fighting until the South gave up completely.",
+                intermediate: "Grant emerged from Shiloh convinced that only 'complete conquest' could end the war. Lincoln backed him: 'I can't spare this man. He fights.'",
+                advanced: "Shiloh's scale convinced Grant that a negotiated peace was impossible; Lincoln's defense of him ('I can't spare this man') established the Grant-Lincoln partnership that would eventually win the war.",
+                source: 'battles[2].historical.biggerPicture.intermediate'
+            },
+        },
+
 
         freeplay: {
             briefing: "Grant's Union army is camped near Shiloh Church in Tennessee. Confederate forces are planning a surprise dawn attack. The question is whether the element of surprise can overcome the Union's numerical advantage, or whether Grant's reinforcements will arrive in time.",
