@@ -424,6 +424,34 @@ function shouldShowActIntro(battleIndex) {
     return shown.indexOf(actIdx) === -1;
 }
 
+// v3.12.1: returns a permutation of [0..n-1] used to shuffle WWYD options at
+// render time. Deterministic per (battleIndex, side) within a session: a tiny
+// seeded RNG derived from those keys plus a randomized session salt (set on
+// gameState init) produces the same order every time the same battle re-renders
+// in this playthrough, but a different order across playthroughs.
+function getWwydDisplayOrder(battleIndex, side, n) {
+    if (!gameState.wwydShuffleSalt) {
+        gameState.wwydShuffleSalt = Math.floor(Math.random() * 1e9);
+        if (typeof saveProgress === 'function') saveProgress();
+    }
+    // Stable seed: combine battle, side, salt
+    var sideKey = (side === 'union') ? 1 : (side === 'confederacy') ? 2 : 0;
+    var seed = (gameState.wwydShuffleSalt * 1664525 + battleIndex * 22695477 + sideKey * 1013904223) >>> 0;
+    // xorshift32 PRNG
+    function rand() {
+        seed ^= seed << 13; seed ^= seed >>> 17; seed ^= seed << 5;
+        return ((seed >>> 0) / 0x100000000);
+    }
+    var order = [];
+    for (var i = 0; i < n; i++) order.push(i);
+    // Fisher-Yates with seeded RNG
+    for (var j = n - 1; j > 0; j--) {
+        var k = Math.floor(rand() * (j + 1));
+        var tmp = order[j]; order[j] = order[k]; order[k] = tmp;
+    }
+    return order;
+}
+
 function shouldShowActRecall(battleIndex) {
     if (!isReflectionBattle(battleIndex)) return false;
     var actIdx = getActForBattle(battleIndex);
@@ -877,23 +905,35 @@ function renderHistoricalBattle() {
     var wwyd = content.whatWouldYouDo;
     document.getElementById('histWWYDPrompt').textContent = wwyd.prompt;
 
+    // v3.12.1: shuffle option display order so the historical choice (always at
+    // index 0 in the data) is not always option A. Internal indices are preserved:
+    // selectWwydOption(originalIndex) is still called with the data-file index,
+    // so wwydSelected === 0 continues to mean "matched history" everywhere in
+    // the codebase (feedback comparison, PDF export, battle review, etc).
+    //
+    // The shuffle is deterministic per battle per side per playthrough so that
+    // navigating back/forward inside one battle does not re-shuffle the options.
+    // It IS re-randomized across playthroughs (new gameState = new shuffle).
     var optionsContainer = document.getElementById('histWWYDOptions');
     optionsContainer.innerHTML = '';
-    wwyd.options.forEach(function(optionText, idx) {
+    var displayOrder = getWwydDisplayOrder(gameState.currentBattle, gameState.side, wwyd.options.length);
+    displayOrder.forEach(function(originalIdx, displayIdx) {
+        var optionText = wwyd.options[originalIdx];
         var btn = document.createElement('button');
         btn.className = 'wwyd-option-btn';
-        btn.setAttribute('data-letter', String.fromCharCode(65 + idx));
+        btn.setAttribute('data-letter', String.fromCharCode(65 + displayIdx));
+        btn.setAttribute('data-original-idx', String(originalIdx));
         btn.textContent = optionText;
         btn.setAttribute('role', 'radio');
         btn.setAttribute('aria-checked', 'false');
         btn.setAttribute('tabindex', '0');
         btn.addEventListener('click', function() {
-            selectWwydOption(idx);
+            selectWwydOption(originalIdx);
         });
         btn.addEventListener('keydown', function(e) {
             if (e.key === 'Enter' || e.key === ' ') {
                 e.preventDefault();
-                selectWwydOption(idx);
+                selectWwydOption(originalIdx);
             }
         });
         optionsContainer.appendChild(btn);
@@ -996,11 +1036,15 @@ function renderHistoricalBattle() {
 function selectWwydOption(idx) {
     wwydSelected = idx;
 
-    // Highlight selected, dim others (reset first so re-selection works)
+    // v3.12.1: with display-order shuffle, the clicked option's original (data)
+    // index is what matters for state. Match buttons via data-original-idx
+    // attribute, not their DOM position, so the right button highlights
+    // regardless of shuffle.
     var buttons = document.querySelectorAll('#histWWYDOptions .wwyd-option-btn');
-    buttons.forEach(function(btn, i) {
+    buttons.forEach(function(btn) {
         btn.classList.remove('selected', 'dimmed');
-        if (i === idx) {
+        var btnOriginalIdx = parseInt(btn.getAttribute('data-original-idx'), 10);
+        if (btnOriginalIdx === idx) {
             btn.classList.add('selected');
             btn.setAttribute('aria-checked', 'true');
         } else {
