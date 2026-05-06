@@ -223,9 +223,9 @@ const acts = [
             ]
         },
         review: {
-            beginner: '',
-            intermediate: '',
-            advanced: ''
+            beginner: "### How the war got worse, fast\n\n- Fort Sumter: Almost no one died. Both sides treated war like a show.\n- Bull Run: People brought picnic baskets to watch. The Union army ran for its life.\n- Shiloh: 23,000 killed or wounded in two days. More than all previous American wars combined.\n\n### What people expected vs. what they got\n\n- Before Sumter, most thought secession could be settled without much bloodshed.\n- After Bull Run, Lincoln signed up 500,000 soldiers for three years. The dream of a 90-day war was over.\n- After Shiloh, Grant decided the only way to win was to keep fighting until the South gave up completely.\n\n### What changed in how the war was fought\n\n- Trains carried soldiers faster than they could march (Bull Run).\n- Industrial-scale battle was real. Shiloh proved it.\n- Civilians stopped being spectators and started being witnesses.",
+            intermediate: "### The escalation\n\n- Fort Sumter: A symbolic standoff with almost no combat deaths. Both sides still believed war was theater.\n- Bull Run: Civilians brought picnic baskets to watch a single decisive battle. The Union army's panicked retreat shattered that fantasy.\n- Shiloh: 23,000 casualties in two days. The nation's first encounter with industrial-scale slaughter.\n\n### What changed in expectations\n\n- Before Sumter, both North and South believed the conflict could be brief and contained.\n- After Bull Run, Lincoln signed bills enlisting 500,000 soldiers for three years and replaced McDowell with McClellan.\n- After Shiloh, Grant concluded that only 'complete conquest' could end the war. Lincoln defended him: 'I can't spare this man. He fights.'\n\n### What changed in how the war was fought\n\n- Railroads moved Confederate reinforcements in time to win Bull Run, the first decisive use of rail in combat history.\n- Rifled artillery at Fort Sumter showed brick-and-stone coastal forts were obsolete.\n- Civilians transitioned from spectators to witnesses. The picnic baskets at Bull Run were the last gasp of the old way of thinking about war.",
+            advanced: "### The escalation\n\n- Fort Sumter (April 1861): A 34-hour bombardment producing zero combat fatalities, yet politically transformative. Lincoln converted a Confederate military victory into a Northern moral cause.\n- Bull Run (July 1861): A flanking maneuver tactically sound but undone by Confederate rail-borne reinforcements; the Union rout shattered the 90-day-war fantasy.\n- Shiloh (April 1862): 23,000 casualties in 48 hours, more than the cumulative toll of every previous American war combined. Industrial warfare became impossible to deny.\n\n### Expectations and political reality\n\n- Pre-Sumter, both Lincoln and Davis assumed the conflict could be brief and limited; Sumter's bloodless beginning seemed to confirm this.\n- Bull Run forced Lincoln to authorize 500,000 three-year enlistments and to replace McDowell with the methodical McClellan, signaling that the Union now planned for a multi-year war.\n- Shiloh shifted Grant's strategic philosophy decisively: only 'complete conquest' could resolve the war. Lincoln's public defense, 'I can't spare this man. He fights,' established the partnership that would direct Union grand strategy through 1865.\n\n### Transformations in the conduct of war\n\n- Railroads emerged at Bull Run as a decisive operational tool, allowing Johnston's Shenandoah forces to concentrate with Beauregard in time to turn the battle.\n- Rifled artillery at Fort Sumter rendered Third System masonry fortifications strategically obsolete.\n- The civilian-spectator phenomenon at Bull Run, with its picnic baskets and opera glasses, marked the last performance of the war-as-theater conception. After 1862, war became something witnessed, suffered, and survived, not consumed."
         }
     },
     {
@@ -401,9 +401,57 @@ const acts = [
             ]
         },
         review: {
-            beginner: '',
-            intermediate: '',
-            advanced: ''
+            beginner: `### What the war cost
+
+- Antietam: 22,000 killed or wounded in 12 hours. The bloodiest day in American history.
+- Fredericksburg: Union soldiers shot down in rows. 12,000 dead or wounded for nothing.
+- Chancellorsville: A Confederate win, but Stonewall Jackson was killed by his own men.
+
+### How the war changed because of these battles
+
+- Lincoln used Antietam to issue the Emancipation Proclamation. The war was now about ending slavery in the rebel states.
+- After Fredericksburg, many people in the North wanted to give up.
+- Lee's win at Chancellorsville convinced him to invade the North again, which led to Gettysburg.
+
+### Whose lives were changed
+
+- Soldiers like the Irish Brigade at Fredericksburg. Charged the wall and were cut down.
+- Black Americans, who learned the war was now also for their freedom.
+- Civilians, who started seeing photographs of dead soldiers for the first time.`,
+            intermediate: `### The human toll
+
+- Antietam: Over 22,000 casualties in 12 hours, the bloodiest single day in American history. Photographs of the dead reached Northern newspapers within weeks.
+- Fredericksburg: 14 Union assaults against a single stone wall. 12,000 Union casualties to about 5,000 Confederate.
+- Chancellorsville: Lee's tactical masterpiece against a Union force twice his size, won at the cost of Stonewall Jackson, killed by his own men.
+
+### How the war's purpose changed
+
+- Lincoln used Antietam's outcome to issue the Emancipation Proclamation, freeing enslaved people in Confederate-held territory and ending European hopes of recognizing the South.
+- Fredericksburg empowered the Copperhead peace movement; the Union's political will was no longer guaranteed.
+- Chancellorsville's outcome led directly to Gettysburg, but losing Jackson was a wound the Confederacy never recovered from.
+
+### Who bore the cost
+
+- Common soldiers on both sides, mowed down at unprecedented scale.
+- Enslaved people in rebel territory, whose status legally changed on January 1, 1863.
+- Northern civilians, suddenly forced to see what war actually looked like.`,
+            advanced: `### The bloodletting
+
+- Antietam (September 1862): 22,000+ casualties in 12 hours, the deadliest single day in American military history. Alexander Gardner's photographs of the dead, displayed in New York within weeks, marked the first time Americans saw their war made visual.
+- Fredericksburg (December 1862): Burnside's 14 successive frontal assaults against Marye's Heights produced a 2-to-1 casualty ratio favoring the Confederacy. A Confederate officer remarked that 'a chicken could not live on that field.'
+- Chancellorsville (May 1863): Lee divided his outnumbered army in defiance of military convention; Jackson's flanking march delivered Lee's tactical masterpiece and Jackson's death from friendly fire.
+
+### Political reckoning
+
+- Antietam's strategic ambiguity gave Lincoln sufficient cover to issue the Emancipation Proclamation, transforming the war's stated purpose and securing European nonintervention.
+- Fredericksburg's catastrophic Union losses energized the Copperhead movement; Northern peace sentiment became a real political threat through 1863.
+- Chancellorsville's result emboldened Lee to launch the Pennsylvania campaign that led to Gettysburg, while permanently degrading Confederate command capacity through the loss of Jackson.
+
+### Who bore the cost, and what it meant
+
+- The Irish Brigade at Fredericksburg, whose repeated charges into the stone wall came to symbolize the war's senseless slaughter for an immigrant community already bearing disproportionate combat losses.
+- Enslaved people in Confederate-held territory, whose legal status changed on January 1, 1863, even as the Proclamation's enforcement awaited Union military advance.
+- The American public, whose conception of warfare was decisively altered by photographic evidence of casualties on a scale no battlefield reportage had previously made visible.`
         }
     },
     {
@@ -578,9 +626,57 @@ const acts = [
             ]
         },
         review: {
-            beginner: '',
-            intermediate: '',
-            advanced: ''
+            beginner: `### What made these battles decisive
+
+- Vicksburg: The Union got the whole Mississippi River. The Confederacy was cut in half.
+- Gettysburg: Lee's attack on the North failed. He never tried again.
+- Chickamauga: A Confederate win, but they didn't follow up. Lincoln sent Grant to fix the West.
+
+### What changed politically
+
+- Lincoln's Gettysburg Address turned the war into a fight for equality.
+- Black soldiers proved they would fight for their own freedom (54th Massachusetts at Fort Wagner).
+- The South no longer had any real chance of winning a battle that would force the North to make peace.
+
+### What stayed dangerous
+
+- Chickamauga proved the Confederacy could still win battles. The war was not over.
+- The cost was still going up: tens of thousands of casualties at every major battle.
+- Grant was now the Union's most important commander, and he believed in fighting until the end.`,
+            intermediate: `### What made these battles decisive
+
+- Vicksburg (July 4, 1863): A 47-day siege ended with Confederate surrender, giving the Union control of the entire Mississippi River and splitting the Confederacy in two.
+- Gettysburg (July 1-3, 1863): Lee's invasion of Pennsylvania failed; Pickett's Charge ended Confederate offensive capacity in the Eastern Theater.
+- Chickamauga (September 1863): Confederate victory, but Bragg failed to pursue the beaten Union army, letting them fortify Chattanooga.
+
+### Military, political, or psychological?
+
+- Militarily, Vicksburg and Gettysburg together broke the Confederacy's strategic position.
+- Politically, Lincoln's Gettysburg Address redefined the war as a fight for equality, and the 54th Massachusetts at Fort Wagner proved Black soldiers' commitment to that cause.
+- Psychologically, Confederate confidence collapsed in the East but persisted in the West, where Chickamauga showed the South could still win battles.
+
+### Why the war was not yet over
+
+- Chickamauga was a real Confederate victory, large enough to prove the South still had fight left.
+- Lincoln responded by sending Grant to take overall Western command. The pattern of Confederate tactical wins without strategic follow-through was now visible enough that Lincoln moved to break it.
+- The cost of the war was still climbing. The casualty totals at every major battle of 1863 exceeded those of any battle in American history before 1862.`,
+            advanced: `### What made these battles decisive
+
+- Vicksburg (July 4, 1863): A 47-day siege producing civilian famine and Confederate surrender. The Union now controlled the Mississippi from Minnesota to the Gulf, fulfilling the Anaconda Plan's western objective and severing the Trans-Mississippi Confederacy.
+- Gettysburg (July 1-3, 1863): Meade's defense of Cemetery Ridge culminated in the failure of Pickett's Charge, ending Confederate offensive capacity in the Eastern Theater.
+- Chickamauga (September 1863): A Confederate tactical victory undone by Bragg's operational caution; Thomas's defense of Snodgrass Hill saved the Union army from destruction and preserved the strategic situation.
+
+### Decisiveness across three dimensions
+
+- Strategically: Vicksburg's geographic implications and Gettysburg's political ones collectively foreclosed Confederate paths to military or diplomatic victory.
+- Politically: Lincoln's Gettysburg Address transcended commemoration to reframe the Union cause as a struggle for 'a new birth of freedom'; the 54th Massachusetts at Fort Wagner that same month embodied that cause.
+- Psychologically and operationally: Chickamauga proved that Confederate tactical capacity remained intact, but Bragg's failure to exploit revealed the systemic command failure that would, in 1864, allow Grant's elevation to general-in-chief and the unified Union strategic offensive.
+
+### The interpretive question
+
+- Was 1863 the war's turning point? The conventional answer focuses on Vicksburg and Gettysburg. A more careful reading must include Chickamauga, which complicates any narrative of inevitable Confederate decline.
+- Lincoln's response to Chickamauga, sending Grant to overall Western command, suggests that contemporary observers understood the war's outcome as still genuinely contested in the late summer of 1863.
+- The decisive shift was less a single moment than a structural one: the North could now afford its losses, and the South increasingly could not.`
         }
     },
     {
@@ -764,9 +860,73 @@ const acts = [
             ]
         },
         review: {
-            beginner: '',
-            intermediate: '',
-            advanced: ''
+            beginner: `### How the war ended
+
+- Wilderness: Grant kept marching south even after a brutal fight. The war was now going to end one way or the other.
+- Atlanta: Sherman captured the city. Lincoln won the election because of it.
+- Sherman's March: 300 miles of destruction across Georgia. The Confederacy couldn't protect its own people.
+- Appomattox: Lee surrendered. Grant let Confederate soldiers keep their horses and go home.
+
+### What was settled, and what wasn't
+
+- The fighting ended. The Union was preserved.
+- Lincoln's Emancipation Proclamation in 1863 had only freed enslaved people in the rebel states. The 13th Amendment in December 1865 ended slavery everywhere in the country.
+- What freedom would mean for four million people just freed was a question the country still had to answer.
+
+### Hard questions students should think about
+
+- Was Sherman's destruction necessary to end the war? Historians still disagree.
+- Was Grant's choice to be generous to Lee right? It made reunion easier, but maybe also made full justice harder.
+- What did the country owe to four million formerly enslaved people? The next 100 years were the answer.`,
+            intermediate: `### How the war ended
+
+- Wilderness (May 1864): Grant refused to retreat after a brutal fight. Union soldiers cheered when they realized he was marching south, not north. The war's final phase had begun.
+- Atlanta (September 1864): Sherman captured the largest industrial city of the Confederacy. The political consequence was Lincoln's re-election in November.
+- Sherman's March (November-December 1864): 60,000 troops marched 300 miles to Savannah, destroying about $100 million in property. The South could no longer protect its own people.
+- Appomattox (April 9, 1865): Lee surrendered to Grant in a private parlor. Grant offered generous terms: soldiers could keep their horses and go home.
+
+### What was settled
+
+- The Union was preserved by force.
+- The Confederacy ceased to exist.
+- The Confederate army was paroled rather than imprisoned, allowing reunion to proceed without prolonged guerrilla resistance.
+
+### What was not settled at Appomattox
+
+- The Emancipation Proclamation (January 1863) had only applied to Confederate-held territory; slavery was not legally ended nationwide until the 13th Amendment, ratified in December 1865 (eight months after Appomattox).
+- Citizenship for formerly enslaved people came with the 14th Amendment (1868).
+- Voting rights for Black men came with the 15th Amendment (1870).
+- What freedom would actually mean in daily life — economic security, education, safety, full political participation — was the work of Reconstruction, and its failures define American life to this day.
+
+### The hard interpretive questions
+
+- Was Sherman's destruction justified? His defenders say it shortened the war and saved lives. His critics point to deliberate civilian suffering, especially among the enslaved people who followed his army and were left vulnerable.
+- Was Grant's leniency at Appomattox right? The generous terms made reunion possible, but may also have undercut the justice owed to four million people just freed from slavery.
+- What does the country owe? This is not a settled historical question.`,
+            advanced: `### How the war ended
+
+- Wilderness (May 1864): Grant's refusal to disengage after two days of indecisive carnage in dense forest signaled the Overland Campaign's continuous-pressure logic. The Union now accepted attrition as the price of decisive outcome.
+- Atlanta (September 2, 1864): Sherman's railroad-strangulation strategy forced Confederate evacuation; the political consequence in the November election was Lincoln's re-election against McClellan's peace platform, making the war's continued prosecution politically inevitable.
+- Sherman's March (November-December 1864): 60,000 troops, 300 miles in five weeks, approximately $100 million in destroyed property. The campaign established the doctrine that civilian-supporting infrastructure was a legitimate strategic target.
+- Appomattox (April 9, 1865): Lee chose formal surrender over dispersed guerrilla resistance; Grant's terms included parole rather than imprisonment, retention of sidearms by officers, and retention of horses by enlisted men. The terms framed how Reconstruction would unfold.
+
+### What was settled by the military victory
+
+- The Union was preserved by force. Secession was foreclosed as a constitutional possibility.
+- The Confederacy as a political entity ceased to exist; its army was paroled rather than imprisoned, preventing prolonged irregular warfare.
+- Lincoln's election to a second term, secured by Atlanta, made the war's continued prosecution politically irreversible.
+
+### What Appomattox did not settle
+
+- The 13th Amendment, ratified in December 1865, was required to legally end slavery nationwide; the Emancipation Proclamation had applied only to Confederate-held territory.
+- The 14th Amendment (1868) defined citizenship; the 15th Amendment (1870) protected Black male suffrage. Reconstruction enforced these protections variably and partially; their abandonment in the 1870s and the subsequent rise of Jim Crow shaped American race relations through the twentieth century.
+- The economic, educational, and political infrastructure required for genuine freedom for four million formerly enslaved people was never adequately provided. What that obligation was, and is, remains a live question of American politics.
+
+### Historians' debates that remain open
+
+- Sherman's reputation: defenders argue his march shortened the war and saved lives; critics emphasize deliberate civilian suffering, particularly among the enslaved people who followed his army and were often left vulnerable. Both readings draw on the same evidence and weigh it differently.
+- The terms of Appomattox: Grant's leniency made reunion possible without sustained guerrilla warfare, but may have undercut the moral and material justice owed to formerly enslaved people. The tradeoff between reconciliation and justice is, like the Sherman question, not resolved.
+- The meaning of Reconstruction's failure: whether the period's collapse was inevitable given Northern political exhaustion, or contingent on specific choices that could have gone otherwise. The answer shapes how Americans understand both the Civil War's legacy and the country's current obligations.`
         }
     }
 ];
