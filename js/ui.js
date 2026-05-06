@@ -589,9 +589,9 @@ function renderActIntro(actIndex) {
         later(afterMarkers + 1400, function() { continueBtn.style.display = ''; });
     }
 
-    var newContinue = continueBtn.cloneNode(true);
-    continueBtn.parentNode.replaceChild(newContinue, continueBtn);
-    newContinue.addEventListener('click', function() {
+    // Use { once: true } so the handler auto-removes after one click.
+    // (Avoids the cloneNode-before-timers bug where timers held a stale reference.)
+    continueBtn.addEventListener('click', function onContinue() {
         timers.forEach(function(t) { clearTimeout(t); });
         gameState.shownActIntros = (gameState.shownActIntros || []);
         if (gameState.shownActIntros.indexOf(actIndex) === -1) {
@@ -599,7 +599,7 @@ function renderActIntro(actIndex) {
         }
         if (typeof saveProgress === 'function') saveProgress();
         renderHistoricalBattle();
-    });
+    }, { once: true });
 }
 
 function renderHistoricalBattle() {
