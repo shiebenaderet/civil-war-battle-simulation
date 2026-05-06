@@ -400,6 +400,29 @@
         </div>
 
         <!-- ================================= -->
+        <!-- ACT INTRO SCREEN (v3.12)          -->
+        <!-- ================================= -->
+        <div class="screen act-intro-screen" id="actIntroScreen" style="display:none;" role="region" aria-label="Act introduction">
+            <div class="act-intro-container">
+                <div class="act-intro-dateline" id="actIntroDateline"></div>
+                <div class="act-intro-map-wrapper">
+                    <div class="act-intro-map" id="actIntroMap"></div>
+                    <button class="toggle-allegiance" id="actIntroToggleAllegiance" type="button">Show political alignment</button>
+                    <div class="act-intro-legend" id="actIntroLegend">
+                        <div class="legend-row"><span class="legend-swatch swatch-union"></span>Union</div>
+                        <div class="legend-row"><span class="legend-swatch swatch-confederate"></span>Confederate</div>
+                        <div class="legend-row"><span class="legend-swatch swatch-border"></span>Border state</div>
+                    </div>
+                </div>
+                <h2 class="act-intro-headline" id="actIntroHeadline"></h2>
+                <p class="act-intro-positioning" id="actIntroPositioning"></p>
+                <div class="act-intro-actions">
+                    <button class="btn-primary act-intro-continue" id="actIntroContinueBtn" style="display:none;">Continue</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================================= -->
         <!-- HISTORICAL MODE: BATTLE SCREEN    -->
         <!-- ================================= -->
         <div class="screen" id="historicalScreen" style="display:none;" role="region" aria-label="Historical battle">
@@ -876,6 +899,7 @@
     <script src="js/data/battles.js"></script>
     <script src="js/data/leaders.js"></script>
     <script src="js/data/maps.js"></script>
+    <script src="js/data/acts.js"></script>
     <script src="js/game.js"></script>
     <script src="js/firebase-leaderboard.js"></script>
     <script src="js/ui.js"></script>
@@ -883,7 +907,7 @@
 
     <!-- Version Display -->
     <div class="version-info">
-        <span>Civil War Battle Simulation v3.11.0</span>
+        <span>Civil War Battle Simulation v3.12.0</span>
     </div>
 </body>
 </html>
