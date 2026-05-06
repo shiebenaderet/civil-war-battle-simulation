@@ -13,6 +13,7 @@ function cacheScreens() {
     screens.sideSelection = document.getElementById('sideSelection');
     screens.leaderLetterScreen = document.getElementById('leaderLetterScreen');
     screens.actIntroScreen = document.getElementById('actIntroScreen');
+    screens.actRecallScreen = document.getElementById('actRecallScreen');
     screens.historicalScreen = document.getElementById('historicalScreen');
     screens.freeplayBriefing = document.getElementById('freeplayBriefing');
     screens.freeplayResults = document.getElementById('freeplayResults');
@@ -423,6 +424,34 @@ function shouldShowActIntro(battleIndex) {
     return shown.indexOf(actIdx) === -1;
 }
 
+// v3.12.1: returns a permutation of [0..n-1] used to shuffle WWYD options at
+// render time. Deterministic per (battleIndex, side) within a session: a tiny
+// seeded RNG derived from those keys plus a randomized session salt (set on
+// gameState init) produces the same order every time the same battle re-renders
+// in this playthrough, but a different order across playthroughs.
+function getWwydDisplayOrder(battleIndex, side, n) {
+    if (!gameState.wwydShuffleSalt) {
+        gameState.wwydShuffleSalt = Math.floor(Math.random() * 1e9);
+        if (typeof saveProgress === 'function') saveProgress();
+    }
+    // Stable seed: combine battle, side, salt
+    var sideKey = (side === 'union') ? 1 : (side === 'confederacy') ? 2 : 0;
+    var seed = (gameState.wwydShuffleSalt * 1664525 + battleIndex * 22695477 + sideKey * 1013904223) >>> 0;
+    // xorshift32 PRNG
+    function rand() {
+        seed ^= seed << 13; seed ^= seed >>> 17; seed ^= seed << 5;
+        return ((seed >>> 0) / 0x100000000);
+    }
+    var order = [];
+    for (var i = 0; i < n; i++) order.push(i);
+    // Fisher-Yates with seeded RNG
+    for (var j = n - 1; j > 0; j--) {
+        var k = Math.floor(rand() * (j + 1));
+        var tmp = order[j]; order[j] = order[k]; order[k] = tmp;
+    }
+    return order;
+}
+
 function shouldShowActRecall(battleIndex) {
     if (!isReflectionBattle(battleIndex)) return false;
     var actIdx = getActForBattle(battleIndex);
@@ -602,6 +631,193 @@ function renderActIntro(actIndex) {
     }, { once: true });
 }
 
+// ============================================================
+// v3.12.1 - Act recall (multiple-choice questions before grouped reflection)
+// ============================================================
+
+// Encapsulates the post-recall reflection display so both case 3
+// reflection-fire AND renderActRecall's onContinue call into the same flow.
+function showReflectionStep() {
+    showScreen('historicalScreen');
+    if (typeof updateStepPills === 'function') updateStepPills(3);
+    var targetSection = document.getElementById('sectionReflect');
+    if (targetSection) targetSection.style.display = 'block';
+    if (typeof showGroupedReflection === 'function') showGroupedReflection();
+    if (typeof showReflectScaffolding === 'function') showReflectScaffolding();
+    var isLast = gameState.currentBattle >= battles.length - 1;
+    var continueBtn = document.getElementById('narrativeContinueBtn');
+    if (continueBtn) {
+        continueBtn.textContent = isLast ? 'Complete Historical Mode' : 'Next Battle →';
+    }
+    if (targetSection) targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// Renders the act recall screen with question state machine.
+// State per question:
+//   unanswered -> wrong-once (nudge shown, retry allowed)
+//                          -> correct (explanation shown, Continue enabled)
+//                          -> wrong-twice (answer revealed; must click correct option to advance)
+function renderActRecall(actIndex) {
+    if (typeof acts === 'undefined' || !acts[actIndex]) {
+        // Data missing — skip recall, advance to reflection
+        gameState.completedRecalls = (gameState.completedRecalls || []);
+        if (gameState.completedRecalls.indexOf(actIndex) === -1) {
+            gameState.completedRecalls.push(actIndex);
+        }
+        if (typeof saveProgress === 'function') saveProgress();
+        showReflectionStep();
+        return;
+    }
+
+    var act = acts[actIndex];
+    var difficulty = gameState.difficulty || 'intermediate';
+    var questions = (act.recall && act.recall[difficulty]) || [];
+
+    if (!questions.length) {
+        // No questions authored for this act/level — skip
+        gameState.completedRecalls = (gameState.completedRecalls || []);
+        if (gameState.completedRecalls.indexOf(actIndex) === -1) {
+            gameState.completedRecalls.push(actIndex);
+        }
+        if (typeof saveProgress === 'function') saveProgress();
+        showReflectionStep();
+        return;
+    }
+
+    showScreen('actRecallScreen');
+
+    document.getElementById('actRecallEyebrow').textContent =
+        'Act ' + act.number + ' · ' + act.name;
+
+    var questionIdx = 0;
+    var wrongAttempts = 0;
+    var questionResolved = false;
+
+    function renderQuestion() {
+        var q = questions[questionIdx];
+        document.getElementById('actRecallProgress').textContent =
+            'Question ' + (questionIdx + 1) + ' of ' + questions.length;
+        document.getElementById('actRecallQuestion').textContent = q.question;
+
+        var optionsEl = document.getElementById('actRecallOptions');
+        // Clear previous options via DOM API (no innerHTML)
+        while (optionsEl.firstChild) optionsEl.removeChild(optionsEl.firstChild);
+
+        q.options.forEach(function(optText, i) {
+            var btn = document.createElement('button');
+            btn.className = 'act-recall-option';
+            btn.textContent = optText;
+            btn.setAttribute('data-letter', String.fromCharCode(65 + i));
+            btn.setAttribute('data-index', String(i));
+            btn.addEventListener('click', function() { onOptionClick(i, btn); });
+            optionsEl.appendChild(btn);
+        });
+
+        var feedbackEl = document.getElementById('actRecallFeedback');
+        feedbackEl.style.display = 'none';
+        feedbackEl.textContent = '';
+        feedbackEl.className = 'act-recall-feedback';
+
+        var continueBtn = document.getElementById('actRecallContinueBtn');
+        continueBtn.disabled = true;
+        continueBtn.textContent = (questionIdx < questions.length - 1)
+            ? 'Next Question'
+            : 'Continue to Reflection';
+
+        wrongAttempts = 0;
+        questionResolved = false;
+    }
+
+    // Helper: build feedback content with strong + body + optional em (XSS-safe, no innerHTML)
+    function setFeedback(el, label, body, hint) {
+        // Clear via DOM
+        while (el.firstChild) el.removeChild(el.firstChild);
+        var strong = document.createElement('strong');
+        strong.textContent = label;
+        el.appendChild(strong);
+        // Body as text node (plain) so any user-authored content can't inject HTML
+        el.appendChild(document.createTextNode(body));
+        if (hint) {
+            var em = document.createElement('em');
+            em.textContent = hint;
+            el.appendChild(em);
+        }
+        el.style.display = '';
+    }
+
+    function onOptionClick(optIdx, btnEl) {
+        if (questionResolved) return;
+        var q = questions[questionIdx];
+        var feedbackEl = document.getElementById('actRecallFeedback');
+        var allOpts = document.querySelectorAll('.act-recall-option');
+
+        if (optIdx === q.correctIndex) {
+            // CORRECT
+            btnEl.classList.add('selected-correct');
+            allOpts.forEach(function(o) { if (o !== btnEl) o.disabled = true; });
+            feedbackEl.className = 'act-recall-feedback feedback-correct';
+            setFeedback(feedbackEl, 'Right', q.explanation || '', null);
+            questionResolved = true;
+            document.getElementById('actRecallContinueBtn').disabled = false;
+            return;
+        }
+
+        // WRONG
+        wrongAttempts++;
+        btnEl.classList.add('selected-wrong');
+        btnEl.disabled = true;
+
+        if (wrongAttempts === 1) {
+            // First wrong: nudge, retry allowed
+            feedbackEl.className = 'act-recall-feedback feedback-nudge';
+            setFeedback(feedbackEl, 'Not quite — try again',
+                        q.nudge || 'Think it through once more.', null);
+        } else {
+            // Second wrong: reveal correct, require click to advance
+            feedbackEl.className = 'act-recall-feedback feedback-revealed';
+            var correctLetter = String.fromCharCode(65 + q.correctIndex);
+            setFeedback(feedbackEl,
+                        'The answer is ' + correctLetter,
+                        q.explanation || '',
+                        'Click the highlighted answer to continue.');
+            // Lock all options EXCEPT the correct one (which gets revealed-correct styling)
+            allOpts.forEach(function(o, i) {
+                if (i === q.correctIndex) {
+                    o.classList.add('revealed-correct');
+                    o.disabled = false;
+                } else {
+                    o.disabled = true;
+                }
+            });
+        }
+    }
+
+    function onContinue() {
+        questionIdx++;
+        if (questionIdx >= questions.length) {
+            // All questions resolved — mark act recall complete
+            gameState.completedRecalls = (gameState.completedRecalls || []);
+            if (gameState.completedRecalls.indexOf(actIndex) === -1) {
+                gameState.completedRecalls.push(actIndex);
+            }
+            if (typeof saveProgress === 'function') saveProgress();
+            showReflectionStep();
+        } else {
+            renderQuestion();
+        }
+    }
+
+    // Wire Continue with { once: false } since this fires multiple times per act.
+    // But we still need to clean up between renders. Use cloneNode pattern (no
+    // pending timers like the intro screen has, so this is safe here).
+    var continueBtn = document.getElementById('actRecallContinueBtn');
+    var newContinue = continueBtn.cloneNode(true);
+    continueBtn.parentNode.replaceChild(newContinue, continueBtn);
+    newContinue.addEventListener('click', onContinue);
+
+    renderQuestion();
+}
+
 function renderHistoricalBattle() {
     var content = getHistoricalContent();
     narrativeStep = 0;
@@ -689,23 +905,35 @@ function renderHistoricalBattle() {
     var wwyd = content.whatWouldYouDo;
     document.getElementById('histWWYDPrompt').textContent = wwyd.prompt;
 
+    // v3.12.1: shuffle option display order so the historical choice (always at
+    // index 0 in the data) is not always option A. Internal indices are preserved:
+    // selectWwydOption(originalIndex) is still called with the data-file index,
+    // so wwydSelected === 0 continues to mean "matched history" everywhere in
+    // the codebase (feedback comparison, PDF export, battle review, etc).
+    //
+    // The shuffle is deterministic per battle per side per playthrough so that
+    // navigating back/forward inside one battle does not re-shuffle the options.
+    // It IS re-randomized across playthroughs (new gameState = new shuffle).
     var optionsContainer = document.getElementById('histWWYDOptions');
     optionsContainer.innerHTML = '';
-    wwyd.options.forEach(function(optionText, idx) {
+    var displayOrder = getWwydDisplayOrder(gameState.currentBattle, gameState.side, wwyd.options.length);
+    displayOrder.forEach(function(originalIdx, displayIdx) {
+        var optionText = wwyd.options[originalIdx];
         var btn = document.createElement('button');
         btn.className = 'wwyd-option-btn';
-        btn.setAttribute('data-letter', String.fromCharCode(65 + idx));
+        btn.setAttribute('data-letter', String.fromCharCode(65 + displayIdx));
+        btn.setAttribute('data-original-idx', String(originalIdx));
         btn.textContent = optionText;
         btn.setAttribute('role', 'radio');
         btn.setAttribute('aria-checked', 'false');
         btn.setAttribute('tabindex', '0');
         btn.addEventListener('click', function() {
-            selectWwydOption(idx);
+            selectWwydOption(originalIdx);
         });
         btn.addEventListener('keydown', function(e) {
             if (e.key === 'Enter' || e.key === ' ') {
                 e.preventDefault();
-                selectWwydOption(idx);
+                selectWwydOption(originalIdx);
             }
         });
         optionsContainer.appendChild(btn);
@@ -808,11 +1036,15 @@ function renderHistoricalBattle() {
 function selectWwydOption(idx) {
     wwydSelected = idx;
 
-    // Highlight selected, dim others (reset first so re-selection works)
+    // v3.12.1: with display-order shuffle, the clicked option's original (data)
+    // index is what matters for state. Match buttons via data-original-idx
+    // attribute, not their DOM position, so the right button highlights
+    // regardless of shuffle.
     var buttons = document.querySelectorAll('#histWWYDOptions .wwyd-option-btn');
-    buttons.forEach(function(btn, i) {
+    buttons.forEach(function(btn) {
         btn.classList.remove('selected', 'dimmed');
-        if (i === idx) {
+        var btnOriginalIdx = parseInt(btn.getAttribute('data-original-idx'), 10);
+        if (btnOriginalIdx === idx) {
             btn.classList.add('selected');
             btn.setAttribute('aria-checked', 'true');
         } else {
@@ -1435,14 +1667,14 @@ function advanceNarrative() {
 
         case 3:
             if (isReflectionBattle(gameState.currentBattle)) {
-                // Show grouped reflection
-                updateStepPills(3);
-                targetSection = document.getElementById('sectionReflect');
-                targetSection.style.display = 'block';
-                showGroupedReflection();
-                showReflectScaffolding();
-                var isLast = gameState.currentBattle >= battles.length - 1;
-                continueBtn.textContent = isLast ? 'Complete Historical Mode' : 'Next Battle \u2192';
+                // v3.12.1: insert recall check before reflection if not yet completed
+                if (typeof shouldShowActRecall === 'function' &&
+                    shouldShowActRecall(gameState.currentBattle)) {
+                    var actIdx = getActForBattle(gameState.currentBattle);
+                    renderActRecall(actIdx);
+                    return;  // recall's onContinue will call showReflectionStep
+                }
+                showReflectionStep();
             } else {
                 // No reflection for this battle - save WWYD choice and advance
                 var wwydChoiceText = '';
