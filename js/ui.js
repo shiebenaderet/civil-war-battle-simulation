@@ -45,6 +45,17 @@ function showScreen(screenId) {
         screens[screenId].style.display = 'block';
     }
     window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    // v3.15: track current screen + show/hide navbar reading pills
+    if (typeof gameState !== 'undefined' && gameState) {
+        gameState.currentScreen = screenId;
+    }
+    var preGameScreens = ['introSplash', 'modeSelection', 'sideSelection', 'leaderLetterScreen'];
+    if (preGameScreens.indexOf(screenId) !== -1) {
+        hideNavbarReadingPills();
+    } else {
+        showNavbarReadingPills();
+    }
 }
 
 function showGameActions(show) {
@@ -2833,4 +2844,135 @@ function setupCreditsToggle() {
             toggle.querySelector('.credits-text').textContent = 'View Image Credits';
         }
     });
+}
+
+// ============================================================
+// v3.15: navbar reading-level pills + mid-game re-render
+// ============================================================
+
+function initNavbarReadingPills() {
+    var pills = document.querySelectorAll('.reading-pills .reading-pill');
+    pills.forEach(function(pill) {
+        pill.addEventListener('click', function() {
+            var level = pill.getAttribute('data-level');
+            setReadingLevelEverywhere(level);
+        });
+    });
+}
+
+function setReadingLevelEverywhere(level) {
+    if (level !== 'beginner' && level !== 'intermediate' && level !== 'advanced') return;
+
+    if (typeof gameState !== 'undefined' && gameState) {
+        gameState.difficulty = level;
+    }
+    if (typeof Settings !== 'undefined') {
+        Settings.set('readingLevel', level);
+    }
+
+    // Sync navbar pills (aria-pressed)
+    document.querySelectorAll('.reading-pills .reading-pill').forEach(function(p) {
+        p.setAttribute('aria-pressed', p.getAttribute('data-level') === level ? 'true' : 'false');
+    });
+
+    // Sync start-screen pills (uses .active class + aria-checked per existing convention).
+    // No canonical setDifficulty() exists in the codebase — the start-screen handler is
+    // an inline closure in app.js's setupEventListeners. Manual sync is the integration point.
+    document.querySelectorAll('.difficulty-pill').forEach(function(p) {
+        var pillLevel = p.getAttribute('data-level') || p.getAttribute('data-difficulty');
+        if (pillLevel === level) {
+            p.classList.add('active');
+            p.setAttribute('aria-checked', 'true');
+            p.setAttribute('aria-pressed', 'true');
+        } else {
+            p.classList.remove('active');
+            p.setAttribute('aria-checked', 'false');
+            p.setAttribute('aria-pressed', 'false');
+        }
+    });
+
+    // Update difficulty hint text on start screen if visible
+    var difficultyHints = {
+        beginner: 'Shorter text, extra help with writing',
+        intermediate: 'Standard text, some writing help',
+        advanced: 'More detail, deeper questions, full challenge'
+    };
+    var hintEl = document.getElementById('difficultyHint');
+    if (hintEl) hintEl.textContent = difficultyHints[level] || '';
+
+    rerenderForReadingLevel();
+}
+
+function rerenderForReadingLevel() {
+    if (typeof gameState === 'undefined' || !gameState) return;
+
+    var screen = gameState.currentScreen;
+
+    // Battle screen (historical mode) — uses gameState.currentBattle internally
+    if (screen === 'historicalScreen' && typeof renderHistoricalBattle === 'function') {
+        renderHistoricalBattle();
+    } else if (screen === 'actIntroScreen' && typeof renderActIntro === 'function' &&
+               typeof getActForBattle === 'function') {
+        var actIdx = getActForBattle(gameState.currentBattle);
+        if (actIdx !== -1) renderActIntro(actIdx);
+    } else if (screen === 'actRecallScreen' && typeof renderActRecall === 'function' &&
+               typeof getActForBattle === 'function') {
+        var aIdx = getActForBattle(gameState.currentBattle);
+        if (aIdx !== -1) renderActRecall(aIdx);
+    }
+
+    // Act review modal open? Re-render it on top of whatever screen is showing.
+    var reviewModal = document.getElementById('actReviewOverlay');
+    if (reviewModal &&
+        (reviewModal.style.display === 'flex' || reviewModal.style.display === 'block') &&
+        typeof openActReview === 'function' &&
+        typeof getActForBattle === 'function') {
+        var rIdx = getActForBattle(gameState.currentBattle);
+        if (rIdx !== -1) openActReview(rIdx);
+    }
+}
+
+function showNavbarReadingPills() {
+    var el = document.getElementById('navbarReadingLevel');
+    if (el) el.style.display = '';
+}
+
+function hideNavbarReadingPills() {
+    var el = document.getElementById('navbarReadingLevel');
+    if (el) el.style.display = 'none';
+}
+
+// Boot: wire navbar pills + restore saved reading level
+function initReadingLevelOnBoot() {
+    initNavbarReadingPills();
+
+    if (typeof Settings !== 'undefined') {
+        var savedLevel = Settings.get('readingLevel');
+        if (savedLevel) {
+            if (typeof gameState !== 'undefined' && gameState) {
+                gameState.difficulty = savedLevel;
+            }
+            document.querySelectorAll('.reading-pills .reading-pill').forEach(function(p) {
+                p.setAttribute('aria-pressed', p.getAttribute('data-level') === savedLevel ? 'true' : 'false');
+            });
+            document.querySelectorAll('.difficulty-pill').forEach(function(p) {
+                var pillLevel = p.getAttribute('data-level') || p.getAttribute('data-difficulty');
+                if (pillLevel === savedLevel) {
+                    p.classList.add('active');
+                    p.setAttribute('aria-checked', 'true');
+                    p.setAttribute('aria-pressed', 'true');
+                } else {
+                    p.classList.remove('active');
+                    p.setAttribute('aria-checked', 'false');
+                    p.setAttribute('aria-pressed', 'false');
+                }
+            });
+        }
+    }
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initReadingLevelOnBoot);
+} else {
+    initReadingLevelOnBoot();
 }
