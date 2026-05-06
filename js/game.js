@@ -19,7 +19,10 @@ let gameState = {
     wins: 0,
     losses: 0,
     momentum: 0,
-    battleHistory: []
+    battleHistory: [],
+    // v3.12 - Acts of the War
+    shownActIntros: [],   // act indices already shown to this student
+    completedRetrievals: []  // act indices whose retrieval is complete
 };
 
 // ============================================================
@@ -127,7 +130,9 @@ function resetGameState() {
         wins: 0,
         losses: 0,
         momentum: 0,
-        battleHistory: []
+        battleHistory: [],
+        shownActIntros: [],
+        completedRetrievals: []
     };
     clearSave();
 }

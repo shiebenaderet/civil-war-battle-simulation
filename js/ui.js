@@ -12,6 +12,7 @@ function cacheScreens() {
     screens.modeSelection = document.getElementById('modeSelection');
     screens.sideSelection = document.getElementById('sideSelection');
     screens.leaderLetterScreen = document.getElementById('leaderLetterScreen');
+    screens.actIntroScreen = document.getElementById('actIntroScreen');
     screens.historicalScreen = document.getElementById('historicalScreen');
     screens.freeplayBriefing = document.getElementById('freeplayBriefing');
     screens.freeplayResults = document.getElementById('freeplayResults');
