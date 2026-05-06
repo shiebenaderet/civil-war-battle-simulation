@@ -4000,6 +4000,155 @@ img {
     cursor: not-allowed;
 }
 
+/* ===============================================
+   ACT REVIEW OVERLAY (v3.14)
+   =============================================== */
+
+.act-review-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-4);
+}
+
+.act-review-backdrop {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(26, 22, 17, 0.6);
+    cursor: pointer;
+}
+
+.act-review-card {
+    position: relative;
+    background: var(--color-paper-card);
+    border: 1px solid var(--color-ink);
+    padding: var(--space-6);
+    max-width: 720px;
+    max-height: 85vh;
+    overflow-y: auto;
+    box-shadow: 0 4px 0 rgba(26, 22, 17, 0.15);
+}
+
+.act-review-close {
+    position: absolute;
+    top: var(--space-2);
+    right: var(--space-3);
+    background: transparent;
+    border: 0;
+    font-family: var(--font-serif);
+    font-size: var(--font-size-xl);
+    color: var(--color-ink-muted);
+    cursor: pointer;
+    width: 32px;
+    height: 32px;
+    line-height: 1;
+}
+.act-review-close:hover { color: var(--color-accent); }
+
+.act-review-eyebrow {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--color-ink-muted);
+    margin-bottom: var(--space-2);
+}
+
+.act-review-title {
+    font-family: var(--font-serif);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: -0.005em;
+    font-size: var(--font-size-2xl);
+    color: var(--color-ink);
+    margin-bottom: var(--space-4);
+}
+
+.act-review-thumbs {
+    display: flex;
+    gap: var(--space-2);
+    margin-bottom: var(--space-5);
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.act-review-thumb {
+    width: 100px;
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    color: var(--color-ink-muted);
+}
+
+.act-review-thumb img {
+    width: 100%;
+    height: 60px;
+    object-fit: cover;
+    border: 1px solid var(--color-ink);
+    margin-bottom: 0.3em;
+    filter: sepia(0.15) contrast(1.05);
+}
+
+.act-review-body {
+    font-family: var(--font-serif);
+    font-size: var(--font-size-base);
+    line-height: 1.65;
+    color: var(--color-ink);
+}
+
+.act-review-body h3 {
+    font-family: var(--font-serif);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: -0.005em;
+    font-size: var(--font-size-base);
+    color: var(--color-ink);
+    margin-top: var(--space-5);
+    margin-bottom: var(--space-2);
+}
+
+.act-review-body h3:first-child { margin-top: 0; }
+
+.act-review-body ul {
+    margin-left: var(--space-5);
+    margin-bottom: var(--space-3);
+}
+
+.act-review-body li {
+    margin-bottom: var(--space-1);
+}
+
+.act-review-empty {
+    font-family: var(--font-serif);
+    font-style: italic;
+    color: var(--color-ink-muted);
+    text-align: center;
+    padding: var(--space-6) var(--space-4);
+}
+
+/* "Review the act" link inside recall question cards and reflection */
+.act-review-link {
+    display: inline-block;
+    margin-top: var(--space-3);
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--color-ink-muted);
+    text-decoration: underline;
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    padding: 0;
+}
+.act-review-link:hover { color: var(--color-accent); }
+
 @media print {
     .main-navbar,
     .narrative-nav,
