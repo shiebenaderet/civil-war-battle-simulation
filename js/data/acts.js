@@ -60,7 +60,7 @@ const acts = [
             // section, which summarizes the escalation arc of the first three battles).
             positioning: {
                 beginner: 'The first three battles teach a hard lesson: this war will not be quick, and no one is ready for what it costs.',
-                intermediate: "Across the first three battles, the dream of a 90-day war collapses \u2014 and the country begins to glimpse the scale of what it has started.",
+                intermediate: "Across the first three battles, the dream of a 90-day war collapses, and the country begins to glimpse the scale of what it has started.",
                 advanced: "From Charleston Harbor to Pittsburg Landing, the war's opening year shatters the illusion of a brief, contained conflict and reveals an industrial-scale violence neither side anticipated."
             },
             positioningSource: {
@@ -103,6 +103,159 @@ const acts = [
             intermediate: [],
             advanced: []
         }
+    },
+    {
+        id: 'human_cost',
+        number: 'II',
+        name: 'The Human Cost',
+        years: '1862-1863',
+        battleIndices: [3, 4, 5],        // Antietam, Fredericksburg, Chancellorsville
+        reflectionBattleIndex: 5,
+        intro: {
+            positioning: {
+                beginner: "The next three battles show the war's real price: tens of thousands of casualties, broken families, and a turning point in what the war was even about.",
+                intermediate: "In these three battles the war's human cost becomes impossible to ignore, and Lincoln answers it by changing what the war is for: not just saving the Union, but ending slavery in the rebel states.",
+                advanced: "Across Antietam, Fredericksburg, and Chancellorsville the war's true cost emerges, both in the casualty lists and in the political reckoning that followed: Lincoln responds to Antietam's bloodletting by issuing the Emancipation Proclamation, redefining the conflict's purpose even as the killing continues."
+            },
+            positioningSource: {
+                beginner: 'battles[3].historical.biggerPicture.beginner',
+                intermediate: 'battles[3].historical.biggerPicture.intermediate',
+                advanced: 'battles[3].historical.biggerPicture.advanced'
+            },
+            // All three battles in MD/VA cluster; labels offset to avoid overlap.
+            // Antietam: label above pin. Fredericksburg + Chancellorsville: side-by-side stack below.
+            markers: [
+                {
+                    battleId: 'antietam',
+                    label: 'ANTIETAM · SEP 1862',
+                    coords: { x: 713, y: 285 },
+                    labelBox: { x: 638, y: 263, w: 150, h: 18 },
+                    labelText: { x: 713, y: 276 },
+                    source: 'battles[3].date'
+                },
+                {
+                    battleId: 'fredericksburg',
+                    label: 'FREDERICKSBURG · DEC 1862',
+                    coords: { x: 728, y: 320 },
+                    labelBox: { x: 619, y: 332, w: 218, h: 18 },
+                    labelText: { x: 728, y: 345 },
+                    source: 'battles[4].date'
+                },
+                {
+                    battleId: 'chancellorsville',
+                    label: 'CHANCELLORSVILLE · MAY 1863',
+                    coords: { x: 705, y: 335 },
+                    labelBox: { x: 583, y: 357, w: 244, h: 18 },
+                    labelText: { x: 705, y: 370 },
+                    source: 'battles[5].date'
+                }
+            ]
+        },
+        recall: { beginner: [], intermediate: [], advanced: [] }
+    },
+    {
+        id: 'turning_points',
+        number: 'III',
+        name: 'Turning Points',
+        years: '1863',
+        battleIndices: [6, 7, 8],        // Vicksburg, Gettysburg, Chickamauga
+        reflectionBattleIndex: 8,
+        intro: {
+            positioning: {
+                beginner: "In one summer week the war turns. Vicksburg falls, Lee is beaten at Gettysburg, and the South's chance to win starts running out. But Chickamauga proves the war is far from over.",
+                intermediate: "The summer of 1863 breaks the Confederacy's momentum: Vicksburg falls on July 4, Lee retreats from Gettysburg the next day, and the war's strategic balance shifts north. Chickamauga that fall reminds everyone the South can still win battles.",
+                advanced: "July 1863 marks the war's strategic inflection point: Vicksburg's surrender splits the Confederacy along the Mississippi, Gettysburg ends Lee's offensive capacity in the East, and the political weight of the war begins to settle. Yet Chickamauga in September demonstrates that the Confederacy's defeat, however inevitable in retrospect, is anything but immediate."
+            },
+            positioningSource: {
+                beginner: 'battles[7].historical.biggerPicture.beginner',
+                intermediate: 'battles[7].historical.biggerPicture.intermediate',
+                advanced: 'battles[7].historical.biggerPicture.advanced'
+            },
+            // Three battles geographically spread (MS, PA, GA) so labels don't collide.
+            markers: [
+                {
+                    battleId: 'vicksburg',
+                    label: 'VICKSBURG · JUL 1863',
+                    coords: { x: 525, y: 460 },
+                    labelBox: { x: 446, y: 476, w: 158, h: 18 },
+                    labelText: { x: 525, y: 489 },
+                    source: 'battles[6].date'
+                },
+                {
+                    battleId: 'gettysburg',
+                    label: 'GETTYSBURG · JUL 1863',
+                    coords: { x: 722, y: 270 },
+                    labelBox: { x: 638, y: 248, w: 168, h: 18 },
+                    labelText: { x: 722, y: 261 },
+                    source: 'battles[7].date'
+                },
+                {
+                    battleId: 'chickamauga',
+                    label: 'CHICKAMAUGA · SEP 1863',
+                    coords: { x: 618, y: 415 },
+                    labelBox: { x: 528, y: 432, w: 180, h: 18 },
+                    labelText: { x: 618, y: 445 },
+                    source: 'battles[8].date'
+                }
+            ]
+        },
+        recall: { beginner: [], intermediate: [], advanced: [] }
+    },
+    {
+        id: 'war_legacy',
+        number: 'IV',
+        name: "The War's Legacy",
+        years: '1864-1865',
+        battleIndices: [9, 10, 11, 12],  // Wilderness, Atlanta, Sherman's March, Appomattox
+        reflectionBattleIndex: 12,
+        intro: {
+            positioning: {
+                beginner: "The final battles end the war but raise harder questions. Grant won't stop fighting until the South gives up. Sherman destroys what's left. And after Appomattox, the country has to figure out what freedom really means for four million people just released from slavery.",
+                intermediate: "In the war's final year Grant refuses to retreat, Sherman targets civilians, and Lincoln's re-election keeps the Union committed to ending the rebellion. But the surrender at Appomattox settles the war on the battlefield without settling what the country owes to four million formerly enslaved people.",
+                advanced: "The war's final year transforms its character: Grant accepts unprecedented casualties to maintain pressure, Sherman makes Southern civilians strategic targets, and Atlanta's fall secures Lincoln's re-election against a peace movement that might have let the Confederacy survive. Yet Appomattox closes the military conflict without resolving the political one, and the questions left open about freedom, citizenship, and Reconstruction will shape American life for generations."
+            },
+            positioningSource: {
+                beginner: 'battles[12].historical.biggerPicture.beginner',
+                intermediate: 'battles[12].historical.biggerPicture.intermediate',
+                advanced: 'battles[12].historical.biggerPicture.advanced'
+            },
+            // Four battles, two in central VA (Wilderness, Appomattox), two in GA (Atlanta, Sherman's March).
+            // Labels carefully offset to avoid the VA pair colliding.
+            markers: [
+                {
+                    battleId: 'wilderness',
+                    label: 'WILDERNESS · MAY 1864',
+                    coords: { x: 715, y: 320 },
+                    labelBox: { x: 632, y: 298, w: 166, h: 18 },
+                    labelText: { x: 715, y: 311 },
+                    source: 'battles[9].date'
+                },
+                {
+                    battleId: 'atlanta',
+                    label: 'ATLANTA · JUL 1864',
+                    coords: { x: 640, y: 460 },
+                    labelBox: { x: 565, y: 442, w: 150, h: 18 },
+                    labelText: { x: 640, y: 455 },
+                    source: 'battles[10].date'
+                },
+                {
+                    battleId: 'shermans_march',
+                    label: "SHERMAN'S MARCH · NOV 1864",
+                    coords: { x: 685, y: 480 },
+                    labelBox: { x: 564, y: 496, w: 242, h: 18 },
+                    labelText: { x: 685, y: 509 },
+                    source: 'battles[11].date'
+                },
+                {
+                    battleId: 'appomattox',
+                    label: 'APPOMATTOX · APR 1865',
+                    coords: { x: 705, y: 345 },
+                    labelBox: { x: 624, y: 357, w: 162, h: 18 },
+                    labelText: { x: 705, y: 370 },
+                    source: 'battles[12].date'
+                }
+            ]
+        },
+        recall: { beginner: [], intermediate: [], advanced: [] }
     }
-    // Acts II, III, IV authored in subsequent commits.
 ];
