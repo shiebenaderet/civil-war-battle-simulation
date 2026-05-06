@@ -1033,6 +1033,27 @@ function renderHistoricalBattle() {
     narrativeStep = 0;
     wwydSelected = -1;
 
+    // v3.15: populate act/year dateline above battle name
+    (function populateBattleDateline() {
+        const datelines = document.querySelectorAll('.battle-act-dateline');
+        if (datelines.length === 0) return;
+        const battleIndex = gameState.currentBattle;
+        if (typeof battleIndex !== 'number' || !battles[battleIndex]) return;
+
+        let datelineText = '';
+        if (typeof getActForBattle === 'function') {
+            const actIndex = getActForBattle(battleIndex);
+            if (actIndex !== -1 && typeof acts !== 'undefined' && acts[actIndex]) {
+                datelineText = 'Act ' + acts[actIndex].number + ' — ' + acts[actIndex].years;
+            }
+        }
+        if (!datelineText) {
+            datelineText = String(battles[battleIndex].year || '');
+        }
+
+        datelines.forEach(function(el) { el.textContent = datelineText; });
+    })();
+
     // Progress
     document.getElementById('historicalProgressLabel').textContent =
         'Battle ' + content.battleNumber + ' of ' + content.totalBattles;
@@ -2124,6 +2145,27 @@ function generatePdfReport() {
 function renderFreeplayBriefing() {
     var battle = battles[gameState.currentBattle];
     var battleNum = gameState.currentBattle + 1;
+
+    // v3.15: populate act/year dateline above battle name
+    (function populateBattleDateline() {
+        const datelines = document.querySelectorAll('.battle-act-dateline');
+        if (datelines.length === 0) return;
+        const battleIndex = gameState.currentBattle;
+        if (typeof battleIndex !== 'number' || !battles[battleIndex]) return;
+
+        let datelineText = '';
+        if (typeof getActForBattle === 'function') {
+            const actIndex = getActForBattle(battleIndex);
+            if (actIndex !== -1 && typeof acts !== 'undefined' && acts[actIndex]) {
+                datelineText = 'Act ' + acts[actIndex].number + ' — ' + acts[actIndex].years;
+            }
+        }
+        if (!datelineText) {
+            datelineText = String(battles[battleIndex].year || '');
+        }
+
+        datelines.forEach(function(el) { el.textContent = datelineText; });
+    })();
 
     // Progress
     document.getElementById('freeplayProgressLabel').textContent =
