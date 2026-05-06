@@ -221,6 +221,11 @@ const acts = [
                     source: 'battles[2].historical.biggerPicture.advanced'
                 }
             ]
+        },
+        review: {
+            beginner: '',
+            intermediate: '',
+            advanced: ''
         }
     },
     {
@@ -394,6 +399,11 @@ const acts = [
                     source: 'battles[5].historical.biggerPicture.intermediate'
                 }
             ]
+        },
+        review: {
+            beginner: '',
+            intermediate: '',
+            advanced: ''
         }
     },
     {
@@ -566,6 +576,11 @@ const acts = [
                     source: 'battles[8].historical.biggerPicture.intermediate'
                 }
             ]
+        },
+        review: {
+            beginner: '',
+            intermediate: '',
+            advanced: ''
         }
     },
     {
@@ -747,6 +762,11 @@ const acts = [
                     source: 'battles[11].historical.biggerPicture.intermediate'
                 }
             ]
+        },
+        review: {
+            beginner: '',
+            intermediate: '',
+            advanced: ''
         }
     }
 ];
