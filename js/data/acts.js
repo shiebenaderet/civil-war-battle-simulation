@@ -128,9 +128,9 @@ const acts = [
                 {
                     battleId: 'antietam',
                     label: 'ANTIETAM · SEP 1862',
-                    coords: { x: 713, y: 285 },
-                    labelBox: { x: 638, y: 263, w: 150, h: 18 },
-                    labelText: { x: 713, y: 276 },
+                    coords: { x: 713, y: 295 },
+                    labelBox: { x: 638, y: 273, w: 150, h: 18 },
+                    labelText: { x: 713, y: 286 },
                     source: 'battles[3].date'
                 },
                 {
@@ -192,9 +192,9 @@ const acts = [
                 {
                     battleId: 'chickamauga',
                     label: 'CHICKAMAUGA · SEP 1863',
-                    coords: { x: 618, y: 415 },
-                    labelBox: { x: 528, y: 432, w: 180, h: 18 },
-                    labelText: { x: 618, y: 445 },
+                    coords: { x: 645, y: 425 },
+                    labelBox: { x: 555, y: 442, w: 180, h: 18 },
+                    labelText: { x: 645, y: 455 },
                     source: 'battles[8].date'
                 }
             ]
@@ -233,25 +233,25 @@ const acts = [
                 {
                     battleId: 'atlanta',
                     label: 'ATLANTA · JUL 1864',
-                    coords: { x: 640, y: 460 },
-                    labelBox: { x: 565, y: 442, w: 150, h: 18 },
-                    labelText: { x: 640, y: 455 },
+                    coords: { x: 660, y: 455 },
+                    labelBox: { x: 585, y: 437, w: 150, h: 18 },
+                    labelText: { x: 660, y: 450 },
                     source: 'battles[10].date'
                 },
                 {
                     battleId: 'shermans_march',
                     label: "SHERMAN'S MARCH · NOV 1864",
-                    coords: { x: 685, y: 480 },
-                    labelBox: { x: 564, y: 496, w: 242, h: 18 },
-                    labelText: { x: 685, y: 509 },
+                    coords: { x: 705, y: 470 },
+                    labelBox: { x: 584, y: 486, w: 242, h: 18 },
+                    labelText: { x: 705, y: 499 },
                     source: 'battles[11].date'
                 },
                 {
                     battleId: 'appomattox',
                     label: 'APPOMATTOX · APR 1865',
-                    coords: { x: 705, y: 345 },
-                    labelBox: { x: 624, y: 357, w: 162, h: 18 },
-                    labelText: { x: 705, y: 370 },
+                    coords: { x: 685, y: 350 },
+                    labelBox: { x: 604, y: 362, w: 162, h: 18 },
+                    labelText: { x: 685, y: 375 },
                     source: 'battles[12].date'
                 }
             ]
