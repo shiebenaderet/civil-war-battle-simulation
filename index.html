@@ -423,6 +423,21 @@
         </div>
 
         <!-- ================================= -->
+        <!-- ACT REVIEW OVERLAY (v3.14)         -->
+        <!-- Modal opened from recall and reflection; preserves underlying state. -->
+        <!-- ================================= -->
+        <div class="act-review-overlay" id="actReviewOverlay" style="display:none;" role="dialog" aria-modal="true" aria-label="Act review">
+            <div class="act-review-backdrop" id="actReviewBackdrop"></div>
+            <div class="act-review-card">
+                <button class="act-review-close" id="actReviewCloseBtn" type="button" aria-label="Close review">&times;</button>
+                <div class="act-review-eyebrow" id="actReviewEyebrow"></div>
+                <h2 class="act-review-title" id="actReviewTitle">Act Review</h2>
+                <div class="act-review-thumbs" id="actReviewThumbs"></div>
+                <div class="act-review-body" id="actReviewBody"></div>
+            </div>
+        </div>
+
+        <!-- ================================= -->
         <!-- ACT RECALL SCREEN (v3.12.1)       -->
         <!-- ================================= -->
         <div class="screen act-recall-screen" id="actRecallScreen" style="display:none;" role="region" aria-label="Quick recall check">
