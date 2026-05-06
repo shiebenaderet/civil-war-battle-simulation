@@ -703,6 +703,32 @@ function showReflectionStep() {
     if (targetSection) targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
+// v3.14: populate a note-nudge element from current battle content. If no
+// nudge content is authored (Plan B not yet shipped, or this battle has
+// no nudge for this sub-step), the slot stays hidden.
+function populateNoteNudge(slotId, subStepKey) {
+    var slot = document.getElementById(slotId);
+    if (!slot) return;
+    var battle = battles[gameState.currentBattle];
+    var nudgeData = battle && battle.notes && battle.notes[subStepKey];
+    if (!nudgeData) {
+        slot.style.display = 'none';
+        return;
+    }
+    var difficulty = gameState.difficulty || 'intermediate';
+    var text = nudgeData[difficulty] || nudgeData.intermediate || '';
+    if (!text || !text.trim()) {
+        slot.style.display = 'none';
+        return;
+    }
+    while (slot.firstChild) slot.removeChild(slot.firstChild);
+    var strong = document.createElement('strong');
+    strong.textContent = 'Worth writing down:';
+    slot.appendChild(strong);
+    slot.appendChild(document.createTextNode(' ' + text));
+    slot.style.display = '';
+}
+
 // ============================================================
 // v3.14 - Act Review Overlay
 // ============================================================
@@ -1755,7 +1781,7 @@ function advanceNarrative() {
     switch (narrativeStep) {
         case 1:
             // Show WWYD - block continue until student picks an option
-            updateStepPills(1);
+            updateStepPills(narrativeStep);
             targetSection = document.getElementById('sectionWWYD');
             targetSection.style.display = 'block';
             if (wwydSelected === -1) {
@@ -1764,28 +1790,25 @@ function advanceNarrative() {
             break;
 
         case 2:
-            // THE REVEAL: Show feedback + What Happened + Voice + Bigger Picture
-            updateStepPills(2);
+            // FEEDBACK sub-step: show only WWYD feedback panel.
+            updateStepPills(narrativeStep);
             continueBtn.disabled = false;
             continueBtn.classList.remove('pulse-hint');
+            continueBtn.textContent = 'Continue';
 
-            // Show redesigned WWYD feedback with choice comparison
             var feedbackEl = document.getElementById('wwydFeedback');
-            var content = getHistoricalContent();
-            var feedbackList = content.whatWouldYouDo.feedback;
-            var optionsList = content.whatWouldYouDo.options;
+            var contentForFeedback = getHistoricalContent();
+            var feedbackList = contentForFeedback.whatWouldYouDo.feedback;
+            var optionsList = contentForFeedback.whatWouldYouDo.options;
 
             if (feedbackList && Array.isArray(feedbackList) && wwydSelected >= 0 && feedbackList[wwydSelected]) {
-                // Show student's choice
                 var choiceTextEl = document.getElementById('feedbackChoiceText');
                 if (choiceTextEl) choiceTextEl.textContent = optionsList[wwydSelected] || '';
 
-                // Comparison badge + historical decision
                 var badge = document.getElementById('feedbackBadge');
                 var histSection = document.getElementById('feedbackHistorical');
                 if (badge && histSection) {
                     if (wwydSelected === 0) {
-                        // Matches the historical decision
                         var commanderRaw = battles[gameState.currentBattle].historical.intel[gameState.side].commander;
                         var commander = (typeof commanderRaw === 'string') ? commanderRaw : getContent(commanderRaw);
                         commander = String(commander).split('(')[0].split(',')[0].trim();
@@ -1793,7 +1816,6 @@ function advanceNarrative() {
                         badge.textContent = 'Same call as ' + commander;
                         histSection.style.display = 'none';
                     } else {
-                        // Different from history
                         badge.className = 'feedback-badge badge-different';
                         badge.textContent = 'You chose a different path';
                         var histTextEl = document.getElementById('feedbackHistoricalText');
@@ -1802,63 +1824,67 @@ function advanceNarrative() {
                     }
                 }
 
-                // Detailed feedback text
                 var detailEl = document.getElementById('feedbackDetail');
                 if (detailEl) detailEl.textContent = feedbackList[wwydSelected];
                 feedbackEl.style.display = 'block';
                 targetSection = feedbackEl;
             }
 
-            // Progressive reveal: stagger the three sections
+            // Hide later sub-sections in case they were visible from a prior re-render
+            document.getElementById('sectionHappened').style.display = 'none';
+            document.getElementById('sectionVoice').style.display = 'none';
+            document.getElementById('sectionBigPicture').style.display = 'none';
+
+            populateNoteNudge('noteNudgeFeedback', 'feedback');
+            break;
+
+        case 3:
+            // OUTCOME sub-step: feedback stays, show What Really Happened + tech.
+            updateStepPills(narrativeStep);
+            continueBtn.textContent = 'Continue';
             var happened = document.getElementById('sectionHappened');
+            happened.style.display = 'block';
+            targetSection = happened;
+            populateNoteNudge('noteNudgeOutcome', 'outcome');
+            break;
+
+        case 4:
+            // REFLECTION FROM HISTORY sub-step: show Voice + Bigger Picture.
+            updateStepPills(narrativeStep);
+
             var voice = document.getElementById('sectionVoice');
             var bigPicture = document.getElementById('sectionBigPicture');
-
-            // Remove old stagger classes before re-applying
-            [happened, voice, bigPicture].forEach(function(el) {
-                el.classList.remove('reveal-stagger', 'reveal-stagger-1', 'reveal-stagger-2', 'reveal-stagger-3', 'reveal-stagger-4');
-            });
-
-            var staggerIdx = 1;
-            if (feedbackEl.style.display === 'block') {
-                feedbackEl.classList.add('reveal-stagger', 'reveal-stagger-1');
-                staggerIdx = 2;
-            }
-
-            happened.classList.add('reveal-stagger', 'reveal-stagger-' + staggerIdx);
-            happened.style.display = 'block';
-            if (!targetSection) targetSection = happened;
-
-            voice.classList.add('reveal-stagger', 'reveal-stagger-' + (staggerIdx + 1));
             voice.style.display = 'block';
-
-            bigPicture.classList.add('reveal-stagger', 'reveal-stagger-' + (staggerIdx + 2));
             bigPicture.style.display = 'block';
+            targetSection = voice;
 
-            // At beginner: collapse Voice and Bigger Picture to reduce wall-of-text
+            // At beginner: collapse Voice and Bigger Picture
             var isBeginner = (gameState.difficulty === 'beginner');
             setupCollapsibleSection('voiceHeading', 'voiceBody', !isBeginner);
             setupCollapsibleSection('bigPictureHeading', 'bigPictureBody', !isBeginner);
 
-            // Set button text: if no reflection follows, go straight to next battle
+            populateNoteNudge('noteNudgeReflection', 'reflectionFromHistory');
+
             if (!isReflectionBattle(gameState.currentBattle)) {
                 var isLast = gameState.currentBattle >= battles.length - 1;
                 continueBtn.textContent = isLast ? 'Complete Historical Mode' : 'Next Battle \u2192';
+            } else {
+                continueBtn.textContent = 'Continue';
             }
             break;
 
-        case 3:
+        case 5:
+            // RECALL or REFLECT (formerly case 3 reflection branch).
             if (isReflectionBattle(gameState.currentBattle)) {
-                // v3.12.1: insert recall check before reflection if not yet completed
                 if (typeof shouldShowActRecall === 'function' &&
                     shouldShowActRecall(gameState.currentBattle)) {
                     var actIdx = getActForBattle(gameState.currentBattle);
                     renderActRecall(actIdx);
-                    return;  // recall's onContinue will call showReflectionStep
+                    return;
                 }
                 showReflectionStep();
             } else {
-                // No reflection for this battle - save WWYD choice and advance
+                // Non-reflection battle: save WWYD choice and advance.
                 var wwydChoiceText = '';
                 if (wwydSelected >= 0) {
                     var c = getHistoricalContent();
@@ -1873,26 +1899,24 @@ function advanceNarrative() {
             }
             break;
 
-        case 4:
-            // Save response and advance to next battle (reflection battles only)
-            var wwydChoiceText = '';
+        case 6:
+            // SAVE AND ADVANCE (formerly case 4) - reflection battles only.
+            var wwydChoiceText2 = '';
             if (wwydSelected >= 0) {
-                var content = getHistoricalContent();
-                var opts = content.whatWouldYouDo.options;
-                if (opts && opts[wwydSelected]) {
-                    wwydChoiceText = opts[wwydSelected];
-                }
+                var content2 = getHistoricalContent();
+                var opts2 = content2.whatWouldYouDo.options;
+                if (opts2 && opts2[wwydSelected]) wwydChoiceText2 = opts2[wwydSelected];
             }
             var reflectionText = document.getElementById('histReflectInput').value.trim();
-            saveHistoricalResponse(wwydChoiceText, reflectionText, wwydSelected);
+            saveHistoricalResponse(wwydChoiceText2, reflectionText, wwydSelected);
 
-            var done = advanceHistorical();
-            if (done) {
+            var done2 = advanceHistorical();
+            if (done2) {
                 renderHistoricalComplete();
             } else {
                 enterBattleScreen();
             }
-            return; // exit early, no scroll needed
+            return;
     }
 
     // Smooth scroll to the newly revealed section
