@@ -809,6 +809,14 @@ function renderActRecall(actIndex) {
     document.getElementById('actRecallEyebrow').textContent =
         'Act ' + act.number + ' · ' + act.name;
 
+    // v3.14: wire "Review the act" link (replace handler each render to avoid duplicates)
+    var reviewLink = document.getElementById('actRecallReviewLink');
+    if (reviewLink) {
+        var newReviewLink = reviewLink.cloneNode(true);
+        reviewLink.parentNode.replaceChild(newReviewLink, reviewLink);
+        newReviewLink.addEventListener('click', function() { openActReview(actIndex); });
+    }
+
     var questionIdx = 0;
     var wrongAttempts = 0;
     var questionResolved = false;
