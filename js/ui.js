@@ -399,6 +399,209 @@ function isReflectionBattle(battleIndex) {
     return reflectionBattles.indexOf(battleIndex) !== -1;
 }
 
+// ============================================================
+// v3.12 - Acts of the War
+// ============================================================
+
+var actIntroBattleIndices = [0, 3, 6, 9];
+
+function getActForBattle(battleIndex) {
+    if (typeof acts === 'undefined' || !Array.isArray(acts)) return -1;
+    for (var i = 0; i < acts.length; i++) {
+        if (acts[i].battleIndices && acts[i].battleIndices.indexOf(battleIndex) !== -1) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+function shouldShowActIntro(battleIndex) {
+    if (actIntroBattleIndices.indexOf(battleIndex) === -1) return false;
+    var actIdx = getActForBattle(battleIndex);
+    if (actIdx === -1) return false;
+    var shown = (gameState.shownActIntros || []);
+    return shown.indexOf(actIdx) === -1;
+}
+
+function shouldShowActRecall(battleIndex) {
+    if (!isReflectionBattle(battleIndex)) return false;
+    var actIdx = getActForBattle(battleIndex);
+    if (actIdx === -1) return false;
+    var done = (gameState.completedRecalls || []);
+    return done.indexOf(actIdx) === -1;
+}
+
+function enterBattleScreen() {
+    var b = gameState.currentBattle;
+    if (shouldShowActIntro(b)) {
+        renderActIntro(getActForBattle(b));
+        return;
+    }
+    renderHistoricalBattle();
+}
+
+// SVG namespace for createElementNS
+var SVG_NS = 'http://www.w3.org/2000/svg';
+
+function makeSvgEl(tag, attrs) {
+    var el = document.createElementNS(SVG_NS, tag);
+    if (attrs) {
+        for (var k in attrs) if (Object.prototype.hasOwnProperty.call(attrs, k)) {
+            el.setAttribute(k, attrs[k]);
+        }
+    }
+    return el;
+}
+
+// Build the act intro map as a real DOM tree (no string injection).
+function buildActMapNode(act) {
+    if (typeof ACT_MAP_REGIONS === 'undefined' || !Array.isArray(ACT_MAP_REGIONS)) {
+        return null;
+    }
+    var viewBox = (typeof ACT_MAP_VIEWBOX !== 'undefined') ? ACT_MAP_VIEWBOX : '0 0 900 700';
+    var svg = makeSvgEl('svg', { viewBox: viewBox, preserveAspectRatio: 'xMidYMid meet', 'aria-hidden': 'true' });
+
+    // Ocean (sits behind everything; overflow clipped by viewBox)
+    svg.appendChild(makeSvgEl('rect', { class: 'act-ocean', x: 0, y: 0, width: 900, height: 700 }));
+
+    // States group
+    var statesG = makeSvgEl('g', { class: 'act-states' });
+    for (var i = 0; i < ACT_MAP_REGIONS.length; i++) {
+        var r = ACT_MAP_REGIONS[i];
+        statesG.appendChild(makeSvgEl('path', {
+            class: 'act-state act-state-' + r.allegiance,
+            'data-id': r.id,
+            d: r.d
+        }));
+    }
+    svg.appendChild(statesG);
+
+    // Markers group
+    var markersG = makeSvgEl('g', { class: 'act-markers' });
+    var markers = (act.intro && act.intro.markers) || [];
+    for (var j = 0; j < markers.length; j++) {
+        var m = markers[j];
+        var lb = m.labelBox || { x: m.coords.x - 70, y: m.coords.y + 18, w: 140, h: 18 };
+        var lt = m.labelText || { x: m.coords.x, y: m.coords.y + 31 };
+
+        var g = makeSvgEl('g', { class: 'act-marker', 'data-idx': String(j) });
+        g.appendChild(makeSvgEl('rect', {
+            class: 'act-marker-label-bg',
+            x: lb.x, y: lb.y, width: lb.w, height: lb.h
+        }));
+        var text = makeSvgEl('text', {
+            class: 'act-marker-label',
+            x: lt.x, y: lt.y
+        });
+        text.textContent = m.label;  // textContent is XSS-safe
+        g.appendChild(text);
+        g.appendChild(makeSvgEl('circle', {
+            class: 'act-marker-pin-outer',
+            cx: m.coords.x, cy: m.coords.y, r: 6.5
+        }));
+        g.appendChild(makeSvgEl('circle', {
+            class: 'act-marker-pin-inner',
+            cx: m.coords.x, cy: m.coords.y, r: 2.2
+        }));
+        markersG.appendChild(g);
+    }
+    svg.appendChild(markersG);
+
+    return svg;
+}
+
+function renderActIntro(actIndex) {
+    if (typeof acts === 'undefined' || !acts[actIndex]) {
+        gameState.shownActIntros = (gameState.shownActIntros || []);
+        if (gameState.shownActIntros.indexOf(actIndex) === -1) {
+            gameState.shownActIntros.push(actIndex);
+        }
+        renderHistoricalBattle();
+        return;
+    }
+
+    var act = acts[actIndex];
+    var difficulty = gameState.difficulty || 'intermediate';
+
+    showScreen('actIntroScreen');
+
+    var datelineEl = document.getElementById('actIntroDateline');
+    var headlineEl = document.getElementById('actIntroHeadline');
+    var positioningEl = document.getElementById('actIntroPositioning');
+    var mapEl = document.getElementById('actIntroMap');
+    var continueBtn = document.getElementById('actIntroContinueBtn');
+    var toggleBtn = document.getElementById('actIntroToggleAllegiance');
+    var legendEl = document.getElementById('actIntroLegend');
+
+    datelineEl.textContent = 'Act ' + act.number + ' · ' + act.years;
+    headlineEl.textContent = act.name;
+    positioningEl.textContent = (act.intro.positioning && act.intro.positioning[difficulty]) ||
+                                 (act.intro.positioning && act.intro.positioning.intermediate) || '';
+
+    // Replace map content via DOM (XSS-safe — no innerHTML)
+    while (mapEl.firstChild) mapEl.removeChild(mapEl.firstChild);
+    var svgNode = buildActMapNode(act);
+    if (svgNode) mapEl.appendChild(svgNode);
+
+    [datelineEl, headlineEl, positioningEl].forEach(function(el) { el.classList.remove('fade-in'); });
+    var markers = mapEl.querySelectorAll('.act-marker');
+    markers.forEach(function(m) { m.classList.remove('reveal'); });
+    continueBtn.style.display = 'none';
+
+    toggleBtn.classList.remove('on');
+    legendEl.classList.remove('on');
+    toggleBtn.textContent = 'Show political alignment';
+    mapEl.querySelectorAll('.act-state').forEach(function(s) { s.classList.remove('allegiance-on'); });
+
+    // Replace toggle handler each render to avoid duplicates
+    var newToggle = toggleBtn.cloneNode(true);
+    toggleBtn.parentNode.replaceChild(newToggle, toggleBtn);
+    newToggle.addEventListener('click', function() {
+        var on = newToggle.classList.toggle('on');
+        legendEl.classList.toggle('on', on);
+        mapEl.querySelectorAll('.act-state').forEach(function(s) {
+            s.classList.toggle('allegiance-on', on);
+        });
+        newToggle.textContent = on ? 'Hide political alignment' : 'Show political alignment';
+    });
+
+    var prefersReduced = window.matchMedia &&
+        window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    var timers = [];
+    function later(ms, fn) { timers.push(setTimeout(fn, ms)); }
+
+    if (prefersReduced) {
+        datelineEl.classList.add('fade-in');
+        headlineEl.classList.add('fade-in');
+        positioningEl.classList.add('fade-in');
+        markers.forEach(function(m) { m.classList.add('reveal'); });
+        later(6000, function() { continueBtn.style.display = ''; });
+    } else {
+        later(50, function() { datelineEl.classList.add('fade-in'); });
+        var markerStart = 800;
+        markers.forEach(function(m, i) {
+            later(markerStart + i * 700, function() { m.classList.add('reveal'); });
+        });
+        var afterMarkers = markerStart + markers.length * 700 + 400;
+        later(afterMarkers, function() { headlineEl.classList.add('fade-in'); });
+        later(afterMarkers + 700, function() { positioningEl.classList.add('fade-in'); });
+        later(afterMarkers + 1400, function() { continueBtn.style.display = ''; });
+    }
+
+    var newContinue = continueBtn.cloneNode(true);
+    continueBtn.parentNode.replaceChild(newContinue, continueBtn);
+    newContinue.addEventListener('click', function() {
+        timers.forEach(function(t) { clearTimeout(t); });
+        gameState.shownActIntros = (gameState.shownActIntros || []);
+        if (gameState.shownActIntros.indexOf(actIndex) === -1) {
+            gameState.shownActIntros.push(actIndex);
+        }
+        if (typeof saveProgress === 'function') saveProgress();
+        renderHistoricalBattle();
+    });
+}
+
 function renderHistoricalBattle() {
     var content = getHistoricalContent();
     narrativeStep = 0;
@@ -1251,7 +1454,7 @@ function advanceNarrative() {
                 saveHistoricalResponse(wwydChoiceText, '', wwydSelected);
                 var done = advanceHistorical();
                 if (done) renderHistoricalComplete();
-                else renderHistoricalBattle();
+                else enterBattleScreen();
                 return;
             }
             break;
@@ -1273,7 +1476,7 @@ function advanceNarrative() {
             if (done) {
                 renderHistoricalComplete();
             } else {
-                renderHistoricalBattle();
+                enterBattleScreen();
             }
             return; // exit early, no scroll needed
     }

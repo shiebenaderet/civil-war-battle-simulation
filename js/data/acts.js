@@ -3,7 +3,7 @@
 //
 // Each act has:
 //   - intro: positioning sentence (3 reading levels) + map markers
-//   - retrieval: 3 multiple-choice questions per reading level (added in later commits)
+//   - recall: 3 multiple-choice questions per reading level (added in later commits)
 //
 // Map regions are derived from the studytools/units/civil-war 1861 dataset
 // (https://github.com/shiebenaderet/studytools), authored by Shie Benaderet.
@@ -97,8 +97,8 @@ const acts = [
                 }
             ]
         },
-        retrieval: {
-            // Populated in subsequent commits (Act I retrieval questions).
+        recall: {
+            // Populated in subsequent commits (Act I recall questions).
             beginner: [],
             intermediate: [],
             advanced: []

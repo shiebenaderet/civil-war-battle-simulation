@@ -59,7 +59,7 @@ function setupEventListeners() {
         if (saved) {
             restoreGameState(saved);
             if (saved.mode === 'historical') {
-                renderHistoricalBattle();
+                enterBattleScreen();
             } else {
                 renderFreeplayBriefing();
             }
@@ -137,7 +137,7 @@ function setupEventListeners() {
 
     // Leader letter - begin journey
     document.getElementById('beginJourneyBtn').addEventListener('click', function() {
-        renderHistoricalBattle();
+        enterBattleScreen();
     });
 
     // Historical mode - narrative continue

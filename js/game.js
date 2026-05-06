@@ -22,7 +22,7 @@ let gameState = {
     battleHistory: [],
     // v3.12 - Acts of the War
     shownActIntros: [],   // act indices already shown to this student
-    completedRetrievals: []  // act indices whose retrieval is complete
+    completedRecalls: []  // act indices whose recall is complete
 };
 
 // ============================================================
@@ -132,7 +132,7 @@ function resetGameState() {
         momentum: 0,
         battleHistory: [],
         shownActIntros: [],
-        completedRetrievals: []
+        completedRecalls: []
     };
     clearSave();
 }
