@@ -4001,6 +4001,36 @@ img {
 }
 
 /* ===============================================
+   NOTE-TAKING NUDGE (v3.14)
+   =============================================== */
+
+.note-nudge {
+    margin-top: var(--space-4);
+    padding: var(--space-2) var(--space-3);
+    border-top: 1px dashed var(--color-rule);
+    font-family: var(--font-mono);
+    font-size: var(--font-size-xs);
+    text-transform: none;
+    letter-spacing: 0.02em;
+    color: var(--color-ink-muted);
+    line-height: 1.5;
+}
+
+.note-nudge::before {
+    content: "\270E ";
+    margin-right: 0.5em;
+    color: var(--color-accent);
+}
+
+.note-nudge strong {
+    color: var(--color-ink);
+    font-weight: normal;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-right: 0.4em;
+}
+
+/* ===============================================
    ACT REVIEW OVERLAY (v3.14)
    =============================================== */
 
