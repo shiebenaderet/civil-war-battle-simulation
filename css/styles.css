@@ -112,6 +112,43 @@
     --z-overlay: 1400;
 }
 
+/* ===============================================
+   v3.15: OpenDyslexic font (self-hosted)
+   =============================================== */
+
+@font-face {
+    font-family: 'OpenDyslexic';
+    src: url('../assets/fonts/OpenDyslexic-Regular.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: 'OpenDyslexic';
+    src: url('../assets/fonts/OpenDyslexic-Bold.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* When data-font-family="dyslexic", swap ALL font tokens including chrome. */
+html[data-font-family="dyslexic"] {
+    --font-serif: 'OpenDyslexic', Georgia, serif;
+    --font-sans: 'OpenDyslexic', Georgia, serif;
+    --font-mono: 'OpenDyslexic', Georgia, serif;
+}
+
+/* ===============================================
+   v3.15: Font size scale via root attribute
+   =============================================== */
+
+html[data-font-size="small"] {
+    --font-size-base: clamp(0.85rem, 0.78rem + 0.25vw, 0.95rem);
+}
+html[data-font-size="large"] {
+    --font-size-base: clamp(1.05rem, 0.95rem + 0.4vw, 1.2rem);
+}
+
 @media (prefers-reduced-motion: reduce) {
     :root {
         --transition-fast: 0.01ms;
