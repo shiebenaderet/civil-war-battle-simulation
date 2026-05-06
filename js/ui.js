@@ -468,6 +468,28 @@ function getWwydDisplayOrder(battleIndex, side, n) {
     return order;
 }
 
+// v3.14: deterministic recall option shuffle. Same salt as WWYD; salt
+// is per-session. Keyed on (actIndex, qIdx) so each question gets its
+// own permutation but reroll is stable within a session.
+function getRecallDisplayOrder(actIndex, qIdx, n) {
+    if (!gameState.wwydShuffleSalt) {
+        gameState.wwydShuffleSalt = Math.floor(Math.random() * 1e9);
+        if (typeof saveProgress === 'function') saveProgress();
+    }
+    var seed = (gameState.wwydShuffleSalt * 1664525 + actIndex * 22695477 + qIdx * 1013904223) >>> 0;
+    function rand() {
+        seed ^= seed << 13; seed ^= seed >>> 17; seed ^= seed << 5;
+        return ((seed >>> 0) / 0x100000000);
+    }
+    var order = [];
+    for (var i = 0; i < n; i++) order.push(i);
+    for (var j = n - 1; j > 0; j--) {
+        var k = Math.floor(rand() * (j + 1));
+        var tmp = order[j]; order[j] = order[k]; order[k] = tmp;
+    }
+    return order;
+}
+
 function shouldShowActRecall(battleIndex) {
     if (!isReflectionBattle(battleIndex)) return false;
     var actIdx = getActForBattle(battleIndex);
@@ -844,13 +866,15 @@ function renderActRecall(actIndex) {
         // Clear previous options via DOM API (no innerHTML)
         while (optionsEl.firstChild) optionsEl.removeChild(optionsEl.firstChild);
 
-        q.options.forEach(function(optText, i) {
+        var displayOrder = getRecallDisplayOrder(actIndex, questionIdx, q.options.length);
+        displayOrder.forEach(function(originalIdx, displayIdx) {
+            var optText = q.options[originalIdx];
             var btn = document.createElement('button');
             btn.className = 'act-recall-option';
             btn.textContent = optText;
-            btn.setAttribute('data-letter', String.fromCharCode(65 + i));
-            btn.setAttribute('data-index', String(i));
-            btn.addEventListener('click', function() { onOptionClick(i, btn); });
+            btn.setAttribute('data-letter', String.fromCharCode(65 + displayIdx));
+            btn.setAttribute('data-original-idx', String(originalIdx));
+            btn.addEventListener('click', function() { onOptionClick(originalIdx, btn); });
             optionsEl.appendChild(btn);
         });
 
@@ -916,14 +940,22 @@ function renderActRecall(actIndex) {
         } else {
             // Second wrong: reveal correct, require click to advance
             feedbackEl.className = 'act-recall-feedback feedback-revealed';
-            var correctLetter = String.fromCharCode(65 + q.correctIndex);
+            var displayPos = -1;
+            var allOptsList = document.querySelectorAll('.act-recall-option');
+            allOptsList.forEach(function(o, oi) {
+                if (parseInt(o.getAttribute('data-original-idx'), 10) === q.correctIndex) {
+                    displayPos = oi;
+                }
+            });
+            var correctLetter = (displayPos >= 0) ? String.fromCharCode(65 + displayPos) : '';
             setFeedback(feedbackEl,
                         'The answer is ' + correctLetter,
                         q.explanation || '',
                         'Click the highlighted answer to continue.');
             // Lock all options EXCEPT the correct one (which gets revealed-correct styling)
-            allOpts.forEach(function(o, i) {
-                if (i === q.correctIndex) {
+            allOpts.forEach(function(o) {
+                var oOrigIdx = parseInt(o.getAttribute('data-original-idx'), 10);
+                if (oOrigIdx === q.correctIndex) {
                     o.classList.add('revealed-correct');
                     o.disabled = false;
                 } else {
