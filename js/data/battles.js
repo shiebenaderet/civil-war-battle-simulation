@@ -631,6 +631,27 @@ const battles = [
             ]
         },
 
+        notes: {
+            feedback: {
+                beginner: 'McClellan\'s choice to attack in three slow waves — instead of all at once — let Lee survive a fight he should have lost.',
+                intermediate: 'McClellan attacked cautiously despite holding Lee\'s actual battle plans, letting Lee shift his thin forces between Union waves.',
+                advanced: 'McClellan\'s tactical caution wasted the strategic gift of Lee\'s captured plans; Lee escaped destruction by exploiting the Union\'s piecemeal commitment.',
+                source: 'battles[3].historical.whatHappened.intermediate'
+            },
+            outcome: {
+                beginner: '22,000 killed or wounded in 12 hours. The bloodiest single day in American history.',
+                intermediate: 'Over 22,000 casualties in 12 hours — September 17, 1862 is still the bloodiest single day on American soil.',
+                advanced: '22,000+ casualties in 12 hours; the highest single-day toll in any American war, and the first battle photographed in the immediate aftermath.',
+                source: 'battles[3].historical.keyFact.intermediate'
+            },
+            reflectionFromHistory: {
+                beginner: 'Lincoln used the battle to issue the Emancipation Proclamation, freeing enslaved people in Confederate states.',
+                intermediate: 'Lincoln used Antietam\'s outcome to issue the Emancipation Proclamation, freeing enslaved people in rebel-held territory and reframing what the war was for.',
+                advanced: 'Antietam was tactically inconclusive but politically transformative; Lincoln converted Lee\'s retreat into a Union \'victory\' sufficient to issue the Emancipation Proclamation, redefining the war\'s stakes and keeping Britain and France on the sidelines.',
+                source: 'battles[3].historical.biggerPicture.intermediate'
+            },
+        },
+
         freeplay: {
             briefing: "Lee has invaded Maryland, and Union forces have found his battle plans! McClellan's army outnumbers Lee nearly 2-to-1. But Lee is a master tactician fighting with desperate courage. The fate of the war may hinge on this single day of battle near Antietam Creek.",
             difficulty: 7,
@@ -793,6 +814,27 @@ const battles = [
             ]
         },
 
+        notes: {
+            feedback: {
+                beginner: 'Burnside ordered 14 separate attacks at the same wall. Not one reached it.',
+                intermediate: 'Burnside committed to repeated frontal assaults against a fortified position, costing 12,000 Union casualties for almost no Confederate loss.',
+                advanced: 'Burnside\'s serial frontal assaults against Marye\'s Heights produced a 2-to-1 casualty ratio in the Confederacy\'s favor; the operational decision was strategically and tactically indefensible.',
+                source: 'battles[4].historical.whatHappened.intermediate'
+            },
+            outcome: {
+                beginner: '12,000 Union soldiers killed or wounded. Confederate losses: about 5,000.',
+                intermediate: '12,000 Union casualties to about 5,000 Confederate. A Confederate officer said: \'A chicken could not live on that field.\'',
+                advanced: 'Union casualties of 12,000+ against ~5,000 Confederate; soldiers used the bodies of fallen comrades as cover from sustained Minié ball fire.',
+                source: 'battles[4].historical.keyFact.intermediate'
+            },
+            reflectionFromHistory: {
+                beginner: 'After Fredericksburg, many in the North wanted to end the war and let the South go.',
+                intermediate: 'The defeat fueled the Northern peace movement. \'Copperhead\' Democrats demanded an end to the war, and Union army morale collapsed.',
+                advanced: 'Fredericksburg\'s slaughter empowered the Copperhead peace movement and revealed the political fragility of Northern war commitment; Burnside was relieved within weeks.',
+                source: 'battles[4].historical.biggerPicture.intermediate'
+            },
+        },
+
         freeplay: {
             briefing: "The Union army must cross the Rappahannock River and attack Lee's fortified positions on Marye's Heights. Lee has had weeks to prepare, and a stone wall provides perfect cover for his defenders. Attacking uphill across open ground against prepared defenses is extremely dangerous.",
             difficulty: 7,
@@ -940,6 +982,27 @@ const battles = [
                 intermediate: "Stonewall Jackson was accidentally shot by his own men in the darkness. He died 8 days later. Lee never found a replacement who could match Jackson's speed and daring.",
                 advanced: "Jackson was struck by three bullets from his own troops while reconnoitering ahead of his lines in the darkness. He died eight days later. Lee's lament \u2014 'I have lost my right arm' \u2014 proved prophetic: no subsequent Confederate commander could replicate Jackson's combination of strategic vision, tactical audacity, and the speed of execution that had made Lee's operational style possible."
             }
+        },
+
+        notes: {
+            feedback: {
+                beginner: 'Lee split his small army to surprise the bigger Union army from the side. It worked.',
+                intermediate: 'Lee gambled by splitting his outnumbered army; Jackson\'s flanking march caught the Union completely by surprise.',
+                advanced: 'Lee\'s decision to divide his force in the face of a numerically superior enemy was tactically reckless and brilliantly executed; Jackson\'s flanking march remains a textbook study in the operational art.',
+                source: 'battles[5].historical.whatHappened.intermediate'
+            },
+            outcome: {
+                beginner: 'Lee won a huge victory. But Stonewall Jackson was killed by his own soldiers in the dark.',
+                intermediate: 'Jackson\'s flanking attack shattered the Union right. That night, his own men shot him by accident in the darkness; he died eight days later.',
+                advanced: 'A Confederate tactical triumph against twice their numbers; Jackson was mortally wounded by friendly fire after the successful flanking attack and died eight days later.',
+                source: 'battles[5].historical.keyFact.intermediate'
+            },
+            reflectionFromHistory: {
+                beginner: 'Lee\'s victory made him think he could invade the North again. That led to Gettysburg.',
+                intermediate: 'The victory gave Lee confidence to invade the North a second time, leading directly to Gettysburg. But losing Jackson was a wound the Confederacy never recovered from.',
+                advanced: 'Chancellorsville convinced Lee that an offensive into Pennsylvania could force a political settlement; the loss of Jackson permanently degraded the Confederate command\'s capacity for the kind of risk that had just won the battle.',
+                source: 'battles[5].historical.biggerPicture.intermediate'
+            },
         },
 
         freeplay: {
@@ -1090,6 +1153,27 @@ const battles = [
                 intermediate: "Vicksburg surrendered on July 4, 1863. The city was so bitter about the date that residents refused to celebrate Independence Day for over 80 years afterward.",
                 advanced: "Pemberton, a Northern-born officer serving the Confederacy, deliberately chose July 4 for the surrender, calculating that Grant would offer more generous terms on Independence Day. The gambit worked \u2014 Grant paroled the garrison rather than imprisoning them \u2014 but the date left such bitterness that Vicksburg residents reportedly refused to celebrate Independence Day until the 1940s."
             }
+        },
+
+        notes: {
+            feedback: {
+                beginner: 'Grant gave up trying to attack the city directly and decided to surround it instead.',
+                intermediate: 'After two failed direct assaults, Grant chose to besiege Vicksburg, accepting a longer fight to avoid the cost of frontal attacks.',
+                advanced: 'Grant abandoned the costly frontal-assault paradigm in favor of a 47-day siege, demonstrating an emerging Union strategic patience.',
+                source: 'battles[6].historical.whatHappened.intermediate'
+            },
+            outcome: {
+                beginner: 'Vicksburg surrendered on July 4, 1863, after 47 days of being surrounded. People inside were eating mules and rats.',
+                intermediate: '47-day siege. Civilians ate mules, rats, and shoe leather. Vicksburg surrendered on July 4, 1863, the same week Lee retreated from Gettysburg.',
+                advanced: '47-day siege producing civilian famine and Confederate surrender on July 4, 1863; combined with Gettysburg the day before, the strategic balance of the war shifted decisively.',
+                source: 'battles[6].historical.keyFact.intermediate'
+            },
+            reflectionFromHistory: {
+                beginner: 'The Union now controlled the Mississippi River. The Confederacy was cut in two.',
+                intermediate: 'With Vicksburg\'s fall, the Union controlled the entire Mississippi from Minnesota to the Gulf, splitting the Confederacy and isolating Texas, Arkansas, and Louisiana.',
+                advanced: 'Vicksburg gave the Union complete control of the Mississippi River, fulfilling the Anaconda Plan\'s western objective and severing the Trans-Mississippi Confederacy from supply and reinforcement.',
+                source: 'battles[6].historical.biggerPicture.intermediate'
+            },
         },
 
         freeplay: {
@@ -1254,6 +1338,27 @@ const battles = [
             ]
         },
 
+        notes: {
+            feedback: {
+                beginner: 'Meade\'s army held the high ground. Lee kept attacking it for three days.',
+                intermediate: 'Meade\'s defensive position on Cemetery Ridge was strong; Lee\'s repeated assaults — including Pickett\'s Charge — failed to dislodge it.',
+                advanced: 'Meade\'s selection and defense of the Cemetery Ridge position transformed Gettysburg into a Union victory; Lee\'s offensive culminated in Pickett\'s Charge, which collapsed against entrenched Union artillery and infantry.',
+                source: 'battles[7].historical.whatHappened.intermediate'
+            },
+            outcome: {
+                beginner: 'On the third day, Lee sent 12,000 men across an open field. Fewer than half came back.',
+                intermediate: 'Pickett\'s Charge: 12,000 Confederates marched a mile across open ground into Union artillery and rifle fire. Fewer than half made it back. Lee said, \'It is all my fault.\'',
+                advanced: 'Pickett\'s Charge committed 12,000 men across nearly a mile of open ground; concentrated Union artillery and rifle fire produced ~50% casualties in roughly an hour. Lee accepted personal responsibility on the field.',
+                source: 'battles[7].historical.keyFact.intermediate'
+            },
+            reflectionFromHistory: {
+                beginner: 'Lee never invaded the North again. Lincoln\'s Gettysburg Address made the war about equality.',
+                intermediate: 'Gettysburg ended the Confederacy\'s offensive capacity in the East. Lincoln\'s Gettysburg Address four months later redefined the war as a fight for \'a new birth of freedom.\'',
+                advanced: 'Gettysburg ended Confederate offensive capacity in the Eastern Theater; Lincoln\'s address that November transcended commemoration to reframe the Union cause as equality, while the 54th Massachusetts at Fort Wagner that same month proved Black soldiers\' commitment to that cause.',
+                source: 'battles[7].historical.biggerPicture.intermediate'
+            },
+        },
+
         freeplay: {
             briefing: "The war's biggest battle! Lee has invaded Pennsylvania, and both armies have stumbled into each other at Gettysburg. The Union holds the high ground on Cemetery Ridge. Lee must decide whether to attack uphill or try to outmaneuver. Over 160,000 soldiers are about to collide.",
             difficulty: 6,
@@ -1404,6 +1509,27 @@ const battles = [
             }
         },
 
+        notes: {
+            feedback: {
+                beginner: 'A Union officer\'s confused order opened a hole in the line. The Confederates poured through.',
+                intermediate: 'A miscommunicated order pulled a Union division out of line, opening a gap that Longstreet\'s veterans exploited like a battering ram.',
+                advanced: 'A reporting error created a 0.25-mile gap in Rosecrans\'s line; Longstreet\'s reinforced corps, fresh from Virginia by rail, exploited the breach with timing that suggests both luck and tactical opportunism.',
+                source: 'battles[8].historical.whatHappened.intermediate'
+            },
+            outcome: {
+                beginner: 'The Confederates won, but General George Thomas held the rear so the Union army could escape.',
+                intermediate: 'Confederate victory, but General George Thomas held Snodgrass Hill against repeated assaults until nightfall, earning the nickname \'Rock of Chickamauga\' and saving the Union army from total destruction.',
+                advanced: 'Bragg\'s victory was operationally incomplete; Thomas\'s defense of Snodgrass Hill prevented total Union destruction, and Bragg failed to pursue the retreating Union army to Chattanooga.',
+                source: 'battles[8].historical.keyFact.intermediate'
+            },
+            reflectionFromHistory: {
+                beginner: 'The Confederate general didn\'t chase the Union army. Lincoln sent Grant to take command in the West.',
+                intermediate: 'Bragg\'s failure to pursue let the Union fortify Chattanooga. Lincoln responded by sending Grant to take overall Western command, setting up the Union breakout.',
+                advanced: 'Bragg\'s failure to convert tactical victory into strategic exploitation became a defining Confederate command failure of late 1863; Lincoln moved Grant to overall Western command in response, prefiguring the elevation of Grant to general-in-chief in March 1864.',
+                source: 'battles[8].historical.biggerPicture.intermediate'
+            },
+        },
+
         freeplay: {
             briefing: "Dense forests in northern Georgia. The Confederacy has more troops here for once, thanks to reinforcements from Virginia. A confused order has created a gap in the Union line. In the chaos of the thick woods, can one side exploit the other's mistakes?",
             difficulty: 6,
@@ -1552,6 +1678,27 @@ const battles = [
                 intermediate: "When Union soldiers realized Grant was marching south instead of retreating north, they burst into cheers. For the first time, a Union commander refused to turn back after a brutal fight.",
                 advanced: "The moment Union soldiers realized they were marching south rather than north has become one of the war's iconic turning points. After years of commanders who fought Lee, withdrew, and reorganized, Grant's refusal to retreat signaled a fundamental change in Union strategy. The cheers that erupted along the marching columns reflected soldiers' recognition that the war's endgame had finally begun."
             }
+        },
+
+        notes: {
+            feedback: {
+                beginner: 'Grant marched his army into a forest where the Confederates knew the ground. The fight was brutal.',
+                intermediate: 'Grant chose to engage Lee in dense terrain that neutralized Union numerical advantage; the result was two days of savage indecisive fighting.',
+                advanced: 'Grant\'s decision to engage in the Wilderness exchanged numerical advantage for the chance of decisive contact; the resulting carnage was a strategic precondition for the Overland Campaign\'s continuous pressure.',
+                source: 'battles[9].historical.whatHappened.intermediate'
+            },
+            outcome: {
+                beginner: 'Two days of brutal fighting. The forest caught fire and burned wounded soldiers alive.',
+                intermediate: 'Two days of fighting in forest so thick soldiers couldn\'t see 20 yards. The woods caught fire, threatening to burn wounded men alive.',
+                advanced: 'Two days of close-range combat in dense second-growth forest; firestorms erupted in the underbrush, immolating wounded men of both sides.',
+                source: 'battles[9].historical.keyFact.intermediate'
+            },
+            reflectionFromHistory: {
+                beginner: 'Grant didn\'t retreat. He marched south to keep fighting. Union soldiers cheered.',
+                intermediate: 'When Union soldiers realized Grant was marching south instead of retreating north, they cheered. No Union commander before him had refused to turn back after a fight that bloody.',
+                advanced: 'Grant\'s refusal to disengage after the Wilderness signaled the war\'s final phase: the Union would now apply continuous pressure regardless of casualties, accepting attrition as the price of decisive outcome.',
+                source: 'battles[9].historical.biggerPicture.intermediate'
+            },
         },
 
         freeplay: {
@@ -1705,6 +1852,27 @@ const battles = [
             }
         },
 
+        notes: {
+            feedback: {
+                beginner: 'Sherman cut all the railroads into Atlanta one by one. Without supplies, the city had to be abandoned.',
+                intermediate: 'Sherman\'s siege strategy targeted Atlanta\'s supply lines rather than the city directly, methodically severing each rail connection.',
+                advanced: 'Sherman\'s operational approach systematically eliminated Atlanta\'s logistic dependencies; Hood\'s three failed offensives over eight days cost over 15,000 Confederate casualties without changing the strategic situation.',
+                source: 'battles[10].historical.whatHappened.intermediate'
+            },
+            outcome: {
+                beginner: 'Hood attacked Sherman three times in eight days. He lost 15,000 men and had to give up the city.',
+                intermediate: 'Hood\'s three offensives over eight days lost 15,000 men. Sherman cut the last railroad. On September 2, Hood evacuated, destroying what he couldn\'t carry. Sherman telegraphed Lincoln: \'Atlanta is ours.\'',
+                advanced: 'Hood\'s offensive losses of 15,000 men, combined with Sherman\'s railroad strangulation, forced Confederate evacuation; the city was the largest industrial center the Confederacy had lost.',
+                source: 'battles[10].historical.keyFact.intermediate'
+            },
+            reflectionFromHistory: {
+                beginner: 'Atlanta\'s fall helped Lincoln win the 1864 election. If he had lost, the war might have ended differently.',
+                intermediate: 'Atlanta\'s fall in September 1864 helped Lincoln win re-election against a peace candidate. Without it, the new president might have negotiated peace and let the Confederacy survive.',
+                advanced: 'Atlanta\'s capture in early September 1864 transformed the November election; before Atlanta, McClellan\'s peace platform had been viable; after, Lincoln\'s re-election was nearly certain. The election\'s outcome made the Union\'s continued prosecution of the war politically inevitable.',
+                source: 'battles[10].historical.biggerPicture.intermediate'
+            },
+        },
+
         freeplay: {
             briefing: "Sherman's army has reached Atlanta after months of marching through Georgia. The city is the industrial heart of the Confederacy, producing weapons and connecting railroad lines. Hood has replaced Johnston and wants to attack aggressively. The fate of the 1864 election may rest on this campaign.",
             difficulty: 5,
@@ -1854,6 +2022,27 @@ const battles = [
                 intermediate: "Sherman's army destroyed an estimated $100 million in property (about $1.8 billion today). Soldiers bent heated railroad rails around trees, creating twisted metal 'neckties' that couldn't be straightened and reused.",
                 advanced: "Sherman's army inflicted an estimated $100 million in property damage (approximately $1.8 billion in current value) across a 300-mile corridor. The systematic destruction of railroad infrastructure, cotton gins, and agricultural resources crippled the Confederate war economy. An estimated 25,000 formerly enslaved people followed the army to freedom, though their treatment by some Union soldiers was inconsistent with the liberation they sought."
             }
+        },
+
+        notes: {
+            feedback: {
+                beginner: 'Sherman cut his army loose from supply lines and marched 300 miles, taking food and burning whatever might help the war.',
+                intermediate: 'Sherman abandoned his supply lines and lived off the Georgia countryside, destroying anything that could support the Confederate war effort across a 60-mile-wide path.',
+                advanced: 'Sherman\'s operational concept abandoned the conventional supply-line dependence and made the army\'s logistic base the Confederate countryside itself, with deliberate destruction of war-supporting infrastructure as the campaign\'s primary aim.',
+                source: 'battles[11].historical.whatHappened.intermediate'
+            },
+            outcome: {
+                beginner: '300 miles in five weeks. Railroads, factories, farms, and cotton gins were destroyed. About $100 million in damage.',
+                intermediate: '60,000 troops marched 300 miles to Savannah in five weeks, destroying $100 million in property (about $1.8 billion today). Soldiers twisted heated rails into \'Sherman\'s neckties.\'',
+                advanced: '60,000 troops, 300 miles in five weeks, ~$100 million in destroyed property. Targeted infrastructure included railroads (rails twisted into \'Sherman\'s neckties\'), factories, cotton gins, and food stores; civilians were not directly targeted but suffered substantially.',
+                source: 'battles[11].historical.keyFact.intermediate'
+            },
+            reflectionFromHistory: {
+                beginner: 'Sherman proved the Confederacy couldn\'t protect its own people. The war was almost over.',
+                intermediate: 'By destroying what the Confederacy needed to keep fighting, Sherman demonstrated that the South could no longer protect even its own civilians. This is what \'total war\' meant.',
+                advanced: 'Sherman\'s march established the doctrine that civilian-supporting infrastructure was a legitimate strategic target; historians remain divided on whether his approach shortened the war and saved lives, or constituted disproportionate suffering of noncombatants, particularly enslaved people who followed his army and were left vulnerable.',
+                source: 'battles[11].historical.biggerPicture.intermediate'
+            },
         },
 
         freeplay: {
@@ -2026,6 +2215,27 @@ const battles = [
                     text: "The war's greatest legacy was the 13th Amendment, ratified in December 1865, abolishing slavery throughout the entire United States \u2014 not just in rebel states. But freedom on paper and freedom in practice were not the same thing. The struggle over what freedom meant for four million formerly enslaved people would define the next century of American history."
                 }
             ]
+        },
+
+        notes: {
+            feedback: {
+                beginner: 'Lee was surrounded and outnumbered four to one. He chose to surrender instead of starting a guerrilla war.',
+                intermediate: 'Lee considered breaking his army into small bands to keep fighting from the hills, but chose surrender. He believed continued resistance would prolong suffering without changing the outcome.',
+                advanced: 'Lee\'s choice between formal surrender and dispersed guerrilla resistance was strategically consequential; he understood that prolonged irregular warfare would decimate the South further without altering the political result, and that Grant\'s generous terms offered the framework for postwar reconciliation.',
+                source: 'battles[12].historical.whatHappened.intermediate'
+            },
+            outcome: {
+                beginner: 'Grant let Confederate soldiers keep their horses and go home. The war was over.',
+                intermediate: 'In the parlor of the McLean house, Grant offered Lee generous terms: soldiers could keep their horses, officers their sidearms, and everyone could go home. Lee accepted.',
+                advanced: 'Grant\'s surrender terms were notably lenient: parole rather than imprisonment, retention of sidearms by officers, retention of horses for those who needed them. The terms shaped how Reconstruction would unfold.',
+                source: 'battles[12].historical.keyFact.intermediate'
+            },
+            reflectionFromHistory: {
+                beginner: 'The war ended, but the country still had to figure out what freedom meant for four million people just freed from slavery.',
+                intermediate: 'The military conflict ended at Appomattox, but the political conflict didn\'t. Slavery wasn\'t fully ended until the 13th Amendment in December 1865. What freedom would mean for four million formerly enslaved people was just beginning to be answered.',
+                advanced: 'Appomattox closed the military conflict; the political conflict over what freedom meant, who would have it, and what the country owed people just released from slavery was the work of Reconstruction. The 13th Amendment (December 1865), 14th (1868), and 15th (1870) defined the legal framework, but the failures of Reconstruction\'s enforcement would shape American life for the next century.',
+                source: 'battles[12].historical.biggerPicture.intermediate'
+            },
         },
 
         freeplay: {
