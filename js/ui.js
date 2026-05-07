@@ -2008,6 +2008,9 @@ function advanceNarrative() {
 }
 
 function renderHistoricalComplete() {
+    // v3.15: reveal the Print Summary menu item now that the campaign is finished.
+    if (typeof showPrintSummaryMenuItem === 'function') showPrintSummaryMenuItem();
+
     var endBanner = document.getElementById('endBanner');
     endBanner.className = 'outcome-banner victory-banner';
 

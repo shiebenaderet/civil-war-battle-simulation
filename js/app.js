@@ -330,6 +330,26 @@ function setupEventListeners() {
         // Voice select wiring deferred to T11 (TTS module).
     })();
 
+    // === v3.15: Print Summary ===
+    (function wirePrintSummary() {
+        const btn = document.getElementById('printSummaryMenuBtn');
+        if (!btn) return;
+        btn.addEventListener('click', function() {
+            if (typeof PrintSummary !== 'undefined') PrintSummary.generate();
+            const sm = document.getElementById('settingsMenu');
+            if (sm) sm.classList.remove('show');
+            const sb = document.getElementById('settingsBtn');
+            if (sb) sb.setAttribute('aria-expanded', 'false');
+        });
+    })();
+
+    // Exposed so end-of-game flow (renderHistoricalComplete) can reveal the menu item.
+    function showPrintSummaryMenuItem() {
+        const btn = document.getElementById('printSummaryMenuBtn');
+        if (btn) btn.style.display = '';
+    }
+    window.showPrintSummaryMenuItem = showPrintSummaryMenuItem;
+
     // === v3.15: Reset Battle ===
     (function wireResetBattle() {
         const menuBtn = document.getElementById('resetBattleMenuBtn');
