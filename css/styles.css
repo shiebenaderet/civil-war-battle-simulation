@@ -4429,3 +4429,61 @@ img {
         color: black;
     }
 }
+
+/* v3.15: Confirm modal (Reset Battle, etc.) */
+.confirm-modal {
+    position: fixed;
+    inset: 0;
+    z-index: var(--z-overlay);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.confirm-modal[hidden] { display: none; }
+
+.confirm-modal-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(26, 22, 17, 0.55);
+}
+
+.confirm-modal-content {
+    position: relative;
+    background: var(--color-paper-card);
+    border: 1px solid var(--color-ink);
+    box-shadow: var(--shadow-lg);
+    padding: var(--space-6);
+    max-width: 460px;
+    width: calc(100% - var(--space-8));
+}
+
+.confirm-modal-title {
+    font-family: var(--font-serif);
+    font-weight: 700;
+    font-size: 1.4rem;
+    margin-bottom: var(--space-3);
+    color: var(--color-ink);
+}
+
+.confirm-modal-body {
+    font-family: var(--font-serif);
+    font-size: 1rem;
+    color: var(--color-ink);
+    margin-bottom: var(--space-5);
+}
+
+.confirm-modal-actions {
+    display: flex;
+    gap: var(--space-3);
+    justify-content: flex-end;
+}
+
+.btn-primary.danger {
+    background: var(--color-accent);
+    color: var(--color-paper);
+    border: 1px solid var(--color-accent);
+}
+.btn-primary.danger:hover {
+    background: var(--color-accent-hover);
+    border-color: var(--color-accent-hover);
+}

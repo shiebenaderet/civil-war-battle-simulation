@@ -320,6 +320,77 @@ function setupEventListeners() {
 
         // Voice select wiring deferred to T11 (TTS module).
     })();
+
+    // === v3.15: Reset Battle ===
+    (function wireResetBattle() {
+        const menuBtn = document.getElementById('resetBattleMenuBtn');
+        const modal = document.getElementById('resetBattleConfirm');
+        const cancelBtn = document.getElementById('resetBattleCancel');
+        const confirmBtn = document.getElementById('resetBattleConfirmBtn');
+        const nameEl = document.getElementById('resetBattleName');
+        if (!menuBtn || !modal) return;
+
+        menuBtn.addEventListener('click', function() {
+            const idx = (typeof gameState !== 'undefined') ? gameState.currentBattle : -1;
+            if (idx === undefined || idx < 0 || typeof battles === 'undefined' || !battles[idx]) return;
+            if (nameEl) nameEl.textContent = battles[idx].name;
+            modal.removeAttribute('hidden');
+            const sm = document.getElementById('settingsMenu');
+            if (sm) sm.classList.remove('show');
+            const sb = document.getElementById('settingsBtn');
+            if (sb) sb.setAttribute('aria-expanded', 'false');
+        });
+
+        cancelBtn.addEventListener('click', function() { modal.setAttribute('hidden', ''); });
+
+        confirmBtn.addEventListener('click', function() {
+            const idx = (typeof gameState !== 'undefined') ? gameState.currentBattle : -1;
+            if (idx === undefined || idx < 0 || typeof battles === 'undefined' || !battles[idx]) {
+                modal.setAttribute('hidden', '');
+                return;
+            }
+
+            // Per-battle progress in this codebase lives in two places:
+            //  1. gameState.responses[] — only pushed at end of battle (saveHistoricalResponse).
+            //     We strip any existing entry for this battle's id (defensive; supports
+            //     re-renders where a response was already saved).
+            //  2. ui.js module-level vars `narrativeStep` and `wwydSelected` —
+            //     renderHistoricalBattle() resets these to 0 / -1 itself.
+            const battleId = battles[idx].id;
+            if (Array.isArray(gameState.responses)) {
+                gameState.responses = gameState.responses.filter(function(r) {
+                    return r && r.battleId !== battleId;
+                });
+            }
+            if (typeof saveProgress === 'function') saveProgress();
+
+            modal.setAttribute('hidden', '');
+
+            // Canonical battle re-render (resets narrativeStep, wwydSelected, pills, UI).
+            if (typeof renderHistoricalBattle === 'function') {
+                renderHistoricalBattle();
+            }
+        });
+
+        const backdrop = modal.querySelector('.confirm-modal-backdrop');
+        if (backdrop) backdrop.addEventListener('click', function() { modal.setAttribute('hidden', ''); });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && !modal.hasAttribute('hidden')) {
+                modal.setAttribute('hidden', '');
+            }
+        });
+    })();
+}
+
+// === v3.15: Reset Battle menu visibility helpers ===
+function showResetBattleMenuItem() {
+    const item = document.getElementById('resetBattleMenuBtn');
+    if (item) item.style.display = '';
+}
+function hideResetBattleMenuItem() {
+    const item = document.getElementById('resetBattleMenuBtn');
+    if (item) item.style.display = 'none';
 }
 
 function startWithSide(side) {

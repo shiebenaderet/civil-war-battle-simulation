@@ -56,6 +56,13 @@ function showScreen(screenId) {
     } else {
         showNavbarReadingPills();
     }
+
+    // v3.15: "Reset This Battle" menu item — visible only mid-battle.
+    if (screenId === 'historicalScreen') {
+        if (typeof showResetBattleMenuItem === 'function') showResetBattleMenuItem();
+    } else {
+        if (typeof hideResetBattleMenuItem === 'function') hideResetBattleMenuItem();
+    }
 }
 
 function showGameActions(show) {

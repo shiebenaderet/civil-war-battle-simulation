@@ -1007,5 +1007,18 @@
     <div class="version-info">
         <span>Civil War Battle Simulation v3.14.0</span>
     </div>
+
+    <!-- v3.15: Reset Battle confirmation -->
+    <div class="confirm-modal" id="resetBattleConfirm" role="dialog" aria-labelledby="resetBattleConfirmTitle" aria-modal="true" hidden>
+        <div class="confirm-modal-backdrop"></div>
+        <div class="confirm-modal-content">
+            <h2 class="confirm-modal-title" id="resetBattleConfirmTitle">Reset this battle?</h2>
+            <p class="confirm-modal-body">Your progress on <strong id="resetBattleName">this battle</strong> will be cleared. Your reflections from earlier battles are safe.</p>
+            <div class="confirm-modal-actions">
+                <button class="btn-secondary" id="resetBattleCancel">Cancel</button>
+                <button class="btn-primary danger" id="resetBattleConfirmBtn">Reset Battle</button>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
