@@ -144,6 +144,10 @@ function restoreGameState(saved) {
     if (!gameState.responses) gameState.responses = [];
     if (!gameState.studentName) gameState.studentName = '';
     if (!gameState.difficulty) gameState.difficulty = 'intermediate';
+    // v3.15: isInBattle is session state, not persisted across reloads.
+    // A reload mid-battle shows the resume prompt; the user opts in via Resume,
+    // which re-renders the battle and re-sets the flag in renderHistoricalBattle.
+    gameState.isInBattle = false;
 }
 
 // ============================================================
