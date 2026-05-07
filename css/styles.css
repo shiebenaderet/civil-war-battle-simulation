@@ -4487,3 +4487,33 @@ img {
     background: var(--color-accent-hover);
     border-color: var(--color-accent-hover);
 }
+
+/* v3.15: TTS play buttons */
+.tts-play-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    height: 26px;
+    padding: 0 var(--space-2);
+    background: transparent;
+    border: 1px solid var(--color-rule);
+    color: var(--color-ink-muted);
+    cursor: pointer;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: background var(--transition-fast);
+    margin-left: var(--space-2);
+    vertical-align: middle;
+}
+.tts-play-btn:hover {
+    background: var(--color-paper-deep);
+    color: var(--color-ink);
+    border-color: var(--color-ink);
+}
+.tts-play-btn[data-playing="true"] {
+    background: var(--color-accent);
+    border-color: var(--color-accent);
+    color: var(--color-paper);
+}

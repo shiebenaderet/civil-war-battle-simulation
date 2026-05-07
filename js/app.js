@@ -381,6 +381,152 @@ function setupEventListeners() {
             }
         });
     })();
+
+    // === v3.15: TTS — voice select + per-section play buttons ===
+    function populateVoiceSelect() {
+        const select = document.getElementById('accVoiceSelect');
+        const ttsSection = document.getElementById('accTtsSection');
+        const note = document.getElementById('accQualityNote');
+        if (!select || !ttsSection) return;
+
+        if (typeof TTS === 'undefined' || !TTS.isAvailable()) {
+            ttsSection.style.display = 'none';
+            return;
+        }
+        ttsSection.style.display = '';
+
+        const voices = TTS.getVoices();
+        const savedVoice = (typeof Settings !== 'undefined') ? Settings.get('ttsVoice') : null;
+
+        select.textContent = '';
+        voices.forEach(function(voice) {
+            const opt = document.createElement('option');
+            opt.value = voice.name;
+            opt.textContent = voice.name + ' (' + voice.lang + ')';
+            if (voice.name === savedVoice) opt.selected = true;
+            select.appendChild(opt);
+        });
+
+        if (!select.dataset.changeWired) {
+            select.addEventListener('change', function() {
+                if (typeof Settings !== 'undefined') Settings.set('ttsVoice', select.value);
+            });
+            select.dataset.changeWired = '1';
+        }
+
+        if (note) {
+            const warning = TTS.qualityWarning();
+            if (warning) {
+                note.textContent = warning;
+                note.removeAttribute('hidden');
+            } else {
+                note.setAttribute('hidden', '');
+            }
+        }
+    }
+
+    document.addEventListener('tts:voices-updated', populateVoiceSelect);
+
+    (function wireVoiceSelectOnPanelOpen() {
+        const accBtn = document.getElementById('accessibilityBtn');
+        if (accBtn) {
+            accBtn.addEventListener('click', function() { setTimeout(populateVoiceSelect, 0); });
+        }
+    })();
+
+    function attachTtsButton(targetEl, label) {
+        if (!targetEl) return null;
+        if (typeof TTS === 'undefined' || !TTS.isAvailable()) return null;
+        if (targetEl.querySelector(':scope > .tts-play-btn')) return null;
+
+        const btn = document.createElement('button');
+        btn.className = 'tts-play-btn';
+        btn.setAttribute('aria-label', 'Read aloud: ' + (label || 'this section'));
+        btn.textContent = '▶ Read';
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            if (btn.getAttribute('data-playing') === 'true') {
+                TTS.stop();
+                return;
+            }
+            document.querySelectorAll('.tts-play-btn[data-playing="true"]').forEach(function(other) {
+                other.setAttribute('data-playing', 'false');
+                other.textContent = '▶ Read';
+            });
+            const text = Array.from(targetEl.childNodes)
+                .filter(function(n) { return n !== btn; })
+                .map(function(n) { return (n.textContent || '').trim(); })
+                .filter(function(s) { return s.length > 0; })
+                .join(' ');
+            if (!text) return;
+            btn.setAttribute('data-playing', 'true');
+            btn.textContent = '■ Stop';
+            TTS.speak(text, {
+                onEnd: function() {
+                    btn.setAttribute('data-playing', 'false');
+                    btn.textContent = '▶ Read';
+                },
+                onError: function() {
+                    btn.setAttribute('data-playing', 'false');
+                    btn.textContent = '▶ Read';
+                }
+            });
+        });
+        targetEl.appendChild(btn);
+        return btn;
+    }
+
+    function refreshTtsButtons(root) {
+        const scope = root || document;
+        scope.querySelectorAll('.tts-readable').forEach(function(el) {
+            attachTtsButton(el, el.getAttribute('data-tts-label'));
+        });
+    }
+
+    window.refreshTtsButtons = refreshTtsButtons;
+
+    // MutationObserver: auto-attach play buttons whenever a `.tts-readable`
+    // element appears (or has the class added) anywhere under historicalScreen
+    // or actRecallScreen. This avoids having to call refreshTtsButtons() at
+    // every reveal point in ui.js.
+    (function observeTtsReadable() {
+        if (typeof TTS === 'undefined' || !TTS.isAvailable()) return;
+        const targets = [
+            document.getElementById('historicalScreen'),
+            document.getElementById('actRecallScreen')
+        ].filter(Boolean);
+        if (!targets.length) return;
+        const obs = new MutationObserver(function(mutations) {
+            for (let i = 0; i < mutations.length; i++) {
+                const m = mutations[i];
+                if (m.type === 'attributes' && m.target && m.target.classList && m.target.classList.contains('tts-readable')) {
+                    attachTtsButton(m.target, m.target.getAttribute('data-tts-label'));
+                }
+                if (m.type === 'childList') {
+                    // If a readable element's children changed (e.g. textContent
+                    // re-assignment wipes the button), re-attach.
+                    if (m.target && m.target.classList && m.target.classList.contains('tts-readable')) {
+                        attachTtsButton(m.target, m.target.getAttribute('data-tts-label'));
+                    }
+                    m.addedNodes.forEach(function(node) {
+                        if (node.nodeType !== 1) return;
+                        if (node.classList && node.classList.contains('tts-readable')) {
+                            attachTtsButton(node, node.getAttribute('data-tts-label'));
+                        }
+                        if (node.querySelectorAll) {
+                            node.querySelectorAll('.tts-readable').forEach(function(el) {
+                                attachTtsButton(el, el.getAttribute('data-tts-label'));
+                            });
+                        }
+                    });
+                }
+            }
+        });
+        targets.forEach(function(t) {
+            obs.observe(t, { childList: true, subtree: true, attributes: true, attributeFilter: ['class'] });
+        });
+    })();
 }
 
 // === v3.15: Reset Battle menu visibility helpers ===

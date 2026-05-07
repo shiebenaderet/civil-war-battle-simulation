@@ -904,7 +904,11 @@ function renderActRecall(actIndex) {
         var q = questions[questionIdx];
         document.getElementById('actRecallProgress').textContent =
             'Question ' + (questionIdx + 1) + ' of ' + questions.length;
-        document.getElementById('actRecallQuestion').textContent = q.question;
+        var actRecallQuestionEl = document.getElementById('actRecallQuestion');
+        actRecallQuestionEl.textContent = q.question;
+        // v3.15: TTS — mark the recall question as readable.
+        actRecallQuestionEl.classList.add('tts-readable');
+        actRecallQuestionEl.setAttribute('data-tts-label', 'Recall question');
 
         var optionsEl = document.getElementById('actRecallOptions');
         // Clear previous options via DOM API (no innerHTML)
@@ -1137,11 +1141,19 @@ function renderHistoricalBattle() {
     }
 
     // --- Section 2: The Situation ---
-    document.getElementById('histSituation').textContent = content.situation;
+    var histSituationEl = document.getElementById('histSituation');
+    histSituationEl.textContent = content.situation;
+    // v3.15: TTS — mark this paragraph as readable. A MutationObserver in app.js
+    // attaches a play button when the class is added.
+    histSituationEl.classList.add('tts-readable');
+    histSituationEl.setAttribute('data-tts-label', 'The Situation');
 
     // --- Section 3: What Would You Do? ---
     var wwyd = content.whatWouldYouDo;
-    document.getElementById('histWWYDPrompt').textContent = wwyd.prompt;
+    var histWWYDPromptEl = document.getElementById('histWWYDPrompt');
+    histWWYDPromptEl.textContent = wwyd.prompt;
+    histWWYDPromptEl.classList.add('tts-readable');
+    histWWYDPromptEl.setAttribute('data-tts-label', 'Your Call prompt');
 
     // v3.12.1: shuffle option display order so the historical choice (always at
     // index 0 in the data) is not always option A. Internal indices are preserved:
@@ -1178,7 +1190,11 @@ function renderHistoricalBattle() {
     });
 
     // --- Section 4: What Really Happened ---
-    document.getElementById('histWhatHappened').textContent = content.whatHappened;
+    var histWhatHappenedEl = document.getElementById('histWhatHappened');
+    histWhatHappenedEl.textContent = content.whatHappened;
+    // v3.15: TTS — mark the outcome narrative as readable.
+    histWhatHappenedEl.classList.add('tts-readable');
+    histWhatHappenedEl.setAttribute('data-tts-label', 'What Really Happened');
     document.getElementById('histOutcome').textContent = content.outcome;
 
     var totalCasualties = content.casualties.union + content.casualties.confederacy;
@@ -1208,7 +1224,11 @@ function renderHistoricalBattle() {
     }
 
     // --- Section 6: The Bigger Picture ---
-    document.getElementById('histBigPicture').textContent = content.biggerPicture;
+    var histBigPictureEl = document.getElementById('histBigPicture');
+    histBigPictureEl.textContent = content.biggerPicture;
+    // v3.15: TTS — mark the reflection-from-history paragraph as readable.
+    histBigPictureEl.classList.add('tts-readable');
+    histBigPictureEl.setAttribute('data-tts-label', 'The Bigger Picture');
 
     // Key Fact: hide entire box at beginner level to reduce reading
     var keyFactEl = document.getElementById('histKeyFact');
@@ -1872,7 +1892,12 @@ function advanceNarrative() {
                 }
 
                 var detailEl = document.getElementById('feedbackDetail');
-                if (detailEl) detailEl.textContent = feedbackList[wwydSelected];
+                if (detailEl) {
+                    detailEl.textContent = feedbackList[wwydSelected];
+                    // v3.15: TTS — read the explanatory feedback paragraph.
+                    detailEl.classList.add('tts-readable');
+                    detailEl.setAttribute('data-tts-label', 'Choice feedback');
+                }
                 feedbackEl.style.display = 'block';
                 targetSection = feedbackEl;
             }
