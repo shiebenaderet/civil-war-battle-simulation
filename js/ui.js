@@ -38,6 +38,10 @@ function wireActReviewOverlay() {
 }
 
 function showScreen(screenId) {
+    // v3.15: clear isInBattle when leaving historical battle
+    if (typeof gameState !== 'undefined' && gameState && screenId !== 'historicalScreen') {
+        gameState.isInBattle = false;
+    }
     Object.values(screens).forEach(function(el) {
         if (el) el.style.display = 'none';
     });
@@ -1040,6 +1044,7 @@ function renderActRecall(actIndex) {
 }
 
 function renderHistoricalBattle() {
+    if (typeof gameState !== 'undefined' && gameState) gameState.isInBattle = true;
     var content = getHistoricalContent();
     narrativeStep = 0;
     wwydSelected = -1;

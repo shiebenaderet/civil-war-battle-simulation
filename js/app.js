@@ -18,6 +18,15 @@ function boot() {
 }
 
 function setupEventListeners() {
+    // === v3.15: beforeunload warning when mid-battle ===
+    window.addEventListener('beforeunload', function(e) {
+        if (typeof gameState !== 'undefined' && gameState && gameState.isInBattle === true) {
+            e.preventDefault();
+            e.returnValue = '';
+            return '';
+        }
+    });
+
     // Intro splash - proceed to mode selection
     document.getElementById('splashStartBtn').addEventListener('click', function() {
         localStorage.setItem('civilWarIntroSeen', '1');

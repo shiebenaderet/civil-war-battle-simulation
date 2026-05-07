@@ -11,6 +11,7 @@ let gameState = {
     difficulty: 'intermediate', // 'beginner', 'intermediate', 'advanced'
     currentBattle: 0,
     studentName: '',
+    isInBattle: false,
     // Historical mode - response tracking
     responses: [],        // { battleId, wwydChoice, reflectionText }
     // Free-play specific
@@ -210,6 +211,7 @@ function saveHistoricalResponse(wwydChoice, reflectionText, wwydIndex) {
         reflectionText: reflectionText || ''
     });
     saveProgress();
+    if (typeof gameState !== 'undefined' && gameState) gameState.isInBattle = false;
 }
 
 function advanceHistorical() {
