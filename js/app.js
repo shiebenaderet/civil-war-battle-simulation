@@ -18,6 +18,15 @@ function boot() {
 }
 
 function setupEventListeners() {
+    // === v3.15: beforeunload warning when mid-battle ===
+    window.addEventListener('beforeunload', function(e) {
+        if (typeof gameState !== 'undefined' && gameState && gameState.isInBattle === true) {
+            e.preventDefault();
+            e.returnValue = '';
+            return '';
+        }
+    });
+
     // Intro splash - proceed to mode selection
     document.getElementById('splashStartBtn').addEventListener('click', function() {
         localStorage.setItem('civilWarIntroSeen', '1');
@@ -152,8 +161,8 @@ function setupEventListeners() {
     });
 
     // Campaign log + war map shortcut
-    document.getElementById('campaignLogNavBtn').addEventListener('click', showCampaignLog);
-    document.getElementById('warMapNavBtn').addEventListener('click', showWarMapDirect);
+    document.getElementById('campaignLogMenuBtn').addEventListener('click', showCampaignLog);
+    document.getElementById('warMapMenuBtn').addEventListener('click', showWarMapDirect);
     document.getElementById('closeLogBtn').addEventListener('click', closeCampaignLog);
 
     // Campaign log tabs (Progress / War Map)
@@ -175,7 +184,7 @@ function setupEventListeners() {
     });
 
     // Start over (nav menu)
-    document.getElementById('startOverNavBtn').addEventListener('click', function() {
+    document.getElementById('startOverMenuBtn').addEventListener('click', function() {
         if (confirm('Are you sure you want to start over? Your progress will be lost.')) {
             resetGameState();
             renderModeSelection();
@@ -221,7 +230,7 @@ function setupEventListeners() {
     });
 
     // Tutorial / Help
-    document.getElementById('helpToggleBtn').addEventListener('click', toggleHelpBar);
+    document.getElementById('helpToggleMenuBtn').addEventListener('click', toggleHelpBar);
     document.getElementById('helpBarClose').addEventListener('click', hideHelpBar);
     document.getElementById('tutorialNext').addEventListener('click', nextTutorialStep);
     document.getElementById('tutorialSkip').addEventListener('click', endTutorial);
@@ -248,6 +257,315 @@ function setupEventListeners() {
 
     // Credits toggle
     setupCreditsToggle();
+
+    // === v3.15: Accessibility panel (Aa button) ===
+    (function wireAccessibilityPanel() {
+        const btn = document.getElementById('accessibilityBtn');
+        const panel = document.getElementById('accessibilityPanel');
+        if (!btn || !panel) return;
+
+        btn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            const isOpen = !panel.hasAttribute('hidden');
+            if (isOpen) {
+                panel.setAttribute('hidden', '');
+                btn.setAttribute('aria-expanded', 'false');
+            } else {
+                panel.removeAttribute('hidden');
+                btn.setAttribute('aria-expanded', 'true');
+            }
+        });
+
+        document.addEventListener('click', function(e) {
+            if (panel.hasAttribute('hidden')) return;
+            if (panel.contains(e.target) || btn.contains(e.target)) return;
+            panel.setAttribute('hidden', '');
+            btn.setAttribute('aria-expanded', 'false');
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && !panel.hasAttribute('hidden')) {
+                panel.setAttribute('hidden', '');
+                btn.setAttribute('aria-expanded', 'false');
+                btn.focus();
+            }
+        });
+    })();
+
+    // === v3.15: Accessibility controls (toggle, size, rate) ===
+    (function wireAccessibilityControls() {
+        if (typeof Settings === 'undefined') return;
+        const settings = Settings.getAll();
+
+        const dToggle = document.getElementById('accDyslexicToggle');
+        if (dToggle) {
+            dToggle.checked = settings.fontFamily === 'dyslexic';
+            dToggle.addEventListener('change', function() {
+                Settings.set('fontFamily', dToggle.checked ? 'dyslexic' : 'serif');
+            });
+        }
+
+        document.querySelectorAll('.size-pill[data-size]').forEach(function(pill) {
+            const size = pill.getAttribute('data-size');
+            if (size === settings.fontSize) pill.setAttribute('aria-pressed', 'true');
+            pill.addEventListener('click', function() {
+                document.querySelectorAll('.size-pill[data-size]').forEach(function(p) {
+                    p.setAttribute('aria-pressed', p === pill ? 'true' : 'false');
+                });
+                Settings.set('fontSize', size);
+            });
+        });
+
+        document.querySelectorAll('.size-pill[data-rate]').forEach(function(pill) {
+            const rate = parseFloat(pill.getAttribute('data-rate'));
+            if (rate === settings.ttsRate) pill.setAttribute('aria-pressed', 'true');
+            pill.addEventListener('click', function() {
+                document.querySelectorAll('.size-pill[data-rate]').forEach(function(p) {
+                    p.setAttribute('aria-pressed', p === pill ? 'true' : 'false');
+                });
+                Settings.set('ttsRate', rate);
+            });
+        });
+
+        // Voice select wiring deferred to T11 (TTS module).
+    })();
+
+    // === v3.15: Print Summary ===
+    (function wirePrintSummary() {
+        const btn = document.getElementById('printSummaryMenuBtn');
+        if (!btn) return;
+        btn.addEventListener('click', function() {
+            if (typeof PrintSummary !== 'undefined') PrintSummary.generate();
+            const sm = document.getElementById('settingsMenu');
+            if (sm) sm.classList.remove('show');
+            const sb = document.getElementById('settingsBtn');
+            if (sb) sb.setAttribute('aria-expanded', 'false');
+        });
+    })();
+
+    // Exposed so end-of-game flow (renderHistoricalComplete) can reveal the menu item.
+    function showPrintSummaryMenuItem() {
+        const btn = document.getElementById('printSummaryMenuBtn');
+        if (btn) btn.style.display = '';
+    }
+    window.showPrintSummaryMenuItem = showPrintSummaryMenuItem;
+
+    // === v3.15: Reset Battle ===
+    (function wireResetBattle() {
+        const menuBtn = document.getElementById('resetBattleMenuBtn');
+        const modal = document.getElementById('resetBattleConfirm');
+        const cancelBtn = document.getElementById('resetBattleCancel');
+        const confirmBtn = document.getElementById('resetBattleConfirmBtn');
+        const nameEl = document.getElementById('resetBattleName');
+        if (!menuBtn || !modal) return;
+
+        menuBtn.addEventListener('click', function() {
+            const idx = (typeof gameState !== 'undefined') ? gameState.currentBattle : -1;
+            if (idx === undefined || idx < 0 || typeof battles === 'undefined' || !battles[idx]) return;
+            if (nameEl) nameEl.textContent = battles[idx].name;
+            modal.removeAttribute('hidden');
+            const sm = document.getElementById('settingsMenu');
+            if (sm) sm.classList.remove('show');
+            const sb = document.getElementById('settingsBtn');
+            if (sb) sb.setAttribute('aria-expanded', 'false');
+        });
+
+        cancelBtn.addEventListener('click', function() { modal.setAttribute('hidden', ''); });
+
+        confirmBtn.addEventListener('click', function() {
+            const idx = (typeof gameState !== 'undefined') ? gameState.currentBattle : -1;
+            if (idx === undefined || idx < 0 || typeof battles === 'undefined' || !battles[idx]) {
+                modal.setAttribute('hidden', '');
+                return;
+            }
+
+            // Per-battle progress in this codebase lives in two places:
+            //  1. gameState.responses[] — only pushed at end of battle (saveHistoricalResponse).
+            //     We strip any existing entry for this battle's id (defensive; supports
+            //     re-renders where a response was already saved).
+            //  2. ui.js module-level vars `narrativeStep` and `wwydSelected` —
+            //     renderHistoricalBattle() resets these to 0 / -1 itself.
+            const battleId = battles[idx].id;
+            if (Array.isArray(gameState.responses)) {
+                gameState.responses = gameState.responses.filter(function(r) {
+                    return r && r.battleId !== battleId;
+                });
+            }
+            if (typeof saveProgress === 'function') saveProgress();
+
+            modal.setAttribute('hidden', '');
+
+            // Canonical battle re-render (resets narrativeStep, wwydSelected, pills, UI).
+            if (typeof renderHistoricalBattle === 'function') {
+                renderHistoricalBattle();
+            }
+        });
+
+        const backdrop = modal.querySelector('.confirm-modal-backdrop');
+        if (backdrop) backdrop.addEventListener('click', function() { modal.setAttribute('hidden', ''); });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && !modal.hasAttribute('hidden')) {
+                modal.setAttribute('hidden', '');
+            }
+        });
+    })();
+
+    // === v3.15: TTS — voice select + per-section play buttons ===
+    function populateVoiceSelect() {
+        const select = document.getElementById('accVoiceSelect');
+        const ttsSection = document.getElementById('accTtsSection');
+        const note = document.getElementById('accQualityNote');
+        if (!select || !ttsSection) return;
+
+        if (typeof TTS === 'undefined' || !TTS.isAvailable()) {
+            ttsSection.style.display = 'none';
+            return;
+        }
+        ttsSection.style.display = '';
+
+        const voices = TTS.getVoices();
+        const savedVoice = (typeof Settings !== 'undefined') ? Settings.get('ttsVoice') : null;
+
+        select.textContent = '';
+        voices.forEach(function(voice) {
+            const opt = document.createElement('option');
+            opt.value = voice.name;
+            opt.textContent = voice.name + ' (' + voice.lang + ')';
+            if (voice.name === savedVoice) opt.selected = true;
+            select.appendChild(opt);
+        });
+
+        if (!select.dataset.changeWired) {
+            select.addEventListener('change', function() {
+                if (typeof Settings !== 'undefined') Settings.set('ttsVoice', select.value);
+            });
+            select.dataset.changeWired = '1';
+        }
+
+        if (note) {
+            const warning = TTS.qualityWarning();
+            if (warning) {
+                note.textContent = warning;
+                note.removeAttribute('hidden');
+            } else {
+                note.setAttribute('hidden', '');
+            }
+        }
+    }
+
+    document.addEventListener('tts:voices-updated', populateVoiceSelect);
+
+    (function wireVoiceSelectOnPanelOpen() {
+        const accBtn = document.getElementById('accessibilityBtn');
+        if (accBtn) {
+            accBtn.addEventListener('click', function() { setTimeout(populateVoiceSelect, 0); });
+        }
+    })();
+
+    function attachTtsButton(targetEl, label) {
+        if (!targetEl) return null;
+        if (typeof TTS === 'undefined' || !TTS.isAvailable()) return null;
+        if (targetEl.querySelector(':scope > .tts-play-btn')) return null;
+
+        const btn = document.createElement('button');
+        btn.className = 'tts-play-btn';
+        btn.setAttribute('aria-label', 'Read aloud: ' + (label || 'this section'));
+        btn.textContent = '▶ Read';
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            if (btn.getAttribute('data-playing') === 'true') {
+                TTS.stop();
+                return;
+            }
+            document.querySelectorAll('.tts-play-btn[data-playing="true"]').forEach(function(other) {
+                other.setAttribute('data-playing', 'false');
+                other.textContent = '▶ Read';
+            });
+            const text = Array.from(targetEl.childNodes)
+                .filter(function(n) { return n !== btn; })
+                .map(function(n) { return (n.textContent || '').trim(); })
+                .filter(function(s) { return s.length > 0; })
+                .join(' ');
+            if (!text) return;
+            btn.setAttribute('data-playing', 'true');
+            btn.textContent = '■ Stop';
+            TTS.speak(text, {
+                onEnd: function() {
+                    btn.setAttribute('data-playing', 'false');
+                    btn.textContent = '▶ Read';
+                },
+                onError: function() {
+                    btn.setAttribute('data-playing', 'false');
+                    btn.textContent = '▶ Read';
+                }
+            });
+        });
+        targetEl.appendChild(btn);
+        return btn;
+    }
+
+    function refreshTtsButtons(root) {
+        const scope = root || document;
+        scope.querySelectorAll('.tts-readable').forEach(function(el) {
+            attachTtsButton(el, el.getAttribute('data-tts-label'));
+        });
+    }
+
+    window.refreshTtsButtons = refreshTtsButtons;
+
+    // MutationObserver: auto-attach play buttons whenever a `.tts-readable`
+    // element appears (or has the class added) anywhere under historicalScreen
+    // or actRecallScreen. This avoids having to call refreshTtsButtons() at
+    // every reveal point in ui.js.
+    (function observeTtsReadable() {
+        if (typeof TTS === 'undefined' || !TTS.isAvailable()) return;
+        const targets = [
+            document.getElementById('historicalScreen'),
+            document.getElementById('actRecallScreen')
+        ].filter(Boolean);
+        if (!targets.length) return;
+        const obs = new MutationObserver(function(mutations) {
+            for (let i = 0; i < mutations.length; i++) {
+                const m = mutations[i];
+                if (m.type === 'attributes' && m.target && m.target.classList && m.target.classList.contains('tts-readable')) {
+                    attachTtsButton(m.target, m.target.getAttribute('data-tts-label'));
+                }
+                if (m.type === 'childList') {
+                    // If a readable element's children changed (e.g. textContent
+                    // re-assignment wipes the button), re-attach.
+                    if (m.target && m.target.classList && m.target.classList.contains('tts-readable')) {
+                        attachTtsButton(m.target, m.target.getAttribute('data-tts-label'));
+                    }
+                    m.addedNodes.forEach(function(node) {
+                        if (node.nodeType !== 1) return;
+                        if (node.classList && node.classList.contains('tts-readable')) {
+                            attachTtsButton(node, node.getAttribute('data-tts-label'));
+                        }
+                        if (node.querySelectorAll) {
+                            node.querySelectorAll('.tts-readable').forEach(function(el) {
+                                attachTtsButton(el, el.getAttribute('data-tts-label'));
+                            });
+                        }
+                    });
+                }
+            }
+        });
+        targets.forEach(function(t) {
+            obs.observe(t, { childList: true, subtree: true, attributes: true, attributeFilter: ['class'] });
+        });
+    })();
+}
+
+// === v3.15: Reset Battle menu visibility helpers ===
+function showResetBattleMenuItem() {
+    const item = document.getElementById('resetBattleMenuBtn');
+    if (item) item.style.display = '';
+}
+function hideResetBattleMenuItem() {
+    const item = document.getElementById('resetBattleMenuBtn');
+    if (item) item.style.display = 'none';
 }
 
 function startWithSide(side) {

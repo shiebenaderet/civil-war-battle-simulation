@@ -38,6 +38,10 @@ function wireActReviewOverlay() {
 }
 
 function showScreen(screenId) {
+    // v3.15: clear isInBattle when leaving historical battle
+    if (typeof gameState !== 'undefined' && gameState && screenId !== 'historicalScreen') {
+        gameState.isInBattle = false;
+    }
     Object.values(screens).forEach(function(el) {
         if (el) el.style.display = 'none';
     });
@@ -45,6 +49,24 @@ function showScreen(screenId) {
         screens[screenId].style.display = 'block';
     }
     window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    // v3.15: track current screen + show/hide navbar reading pills
+    if (typeof gameState !== 'undefined' && gameState) {
+        gameState.currentScreen = screenId;
+    }
+    var preGameScreens = ['introSplash', 'modeSelection', 'sideSelection', 'leaderLetterScreen'];
+    if (preGameScreens.indexOf(screenId) !== -1) {
+        hideNavbarReadingPills();
+    } else {
+        showNavbarReadingPills();
+    }
+
+    // v3.15: "Reset This Battle" menu item — visible only mid-battle.
+    if (screenId === 'historicalScreen') {
+        if (typeof showResetBattleMenuItem === 'function') showResetBattleMenuItem();
+    } else {
+        if (typeof hideResetBattleMenuItem === 'function') hideResetBattleMenuItem();
+    }
 }
 
 function showGameActions(show) {
@@ -57,9 +79,9 @@ function showGameActions(show) {
 }
 
 function showCampaignLogBtn(show) {
-    var btn = document.getElementById('campaignLogNavBtn');
+    var btn = document.getElementById('campaignLogMenuBtn');
     if (btn) btn.style.display = show ? 'block' : 'none';
-    var mapBtn = document.getElementById('warMapNavBtn');
+    var mapBtn = document.getElementById('warMapMenuBtn');
     if (mapBtn) mapBtn.style.display = show ? 'block' : 'none';
 }
 
@@ -886,7 +908,11 @@ function renderActRecall(actIndex) {
         var q = questions[questionIdx];
         document.getElementById('actRecallProgress').textContent =
             'Question ' + (questionIdx + 1) + ' of ' + questions.length;
-        document.getElementById('actRecallQuestion').textContent = q.question;
+        var actRecallQuestionEl = document.getElementById('actRecallQuestion');
+        actRecallQuestionEl.textContent = q.question;
+        // v3.15: TTS — mark the recall question as readable.
+        actRecallQuestionEl.classList.add('tts-readable');
+        actRecallQuestionEl.setAttribute('data-tts-label', 'Recall question');
 
         var optionsEl = document.getElementById('actRecallOptions');
         // Clear previous options via DOM API (no innerHTML)
@@ -1018,9 +1044,31 @@ function renderActRecall(actIndex) {
 }
 
 function renderHistoricalBattle() {
+    if (typeof gameState !== 'undefined' && gameState) gameState.isInBattle = true;
     var content = getHistoricalContent();
     narrativeStep = 0;
     wwydSelected = -1;
+
+    // v3.15: populate act/year dateline above battle name
+    (function populateBattleDateline() {
+        const datelines = document.querySelectorAll('.battle-act-dateline');
+        if (datelines.length === 0) return;
+        const battleIndex = gameState.currentBattle;
+        if (typeof battleIndex !== 'number' || !battles[battleIndex]) return;
+
+        let datelineText = '';
+        if (typeof getActForBattle === 'function') {
+            const actIndex = getActForBattle(battleIndex);
+            if (actIndex !== -1 && typeof acts !== 'undefined' && acts[actIndex]) {
+                datelineText = 'Act ' + acts[actIndex].number + ' — ' + acts[actIndex].years;
+            }
+        }
+        if (!datelineText) {
+            datelineText = String(battles[battleIndex].year || '');
+        }
+
+        datelines.forEach(function(el) { el.textContent = datelineText; });
+    })();
 
     // Progress
     document.getElementById('historicalProgressLabel').textContent =
@@ -1098,11 +1146,19 @@ function renderHistoricalBattle() {
     }
 
     // --- Section 2: The Situation ---
-    document.getElementById('histSituation').textContent = content.situation;
+    var histSituationEl = document.getElementById('histSituation');
+    histSituationEl.textContent = content.situation;
+    // v3.15: TTS — mark this paragraph as readable. A MutationObserver in app.js
+    // attaches a play button when the class is added.
+    histSituationEl.classList.add('tts-readable');
+    histSituationEl.setAttribute('data-tts-label', 'The Situation');
 
     // --- Section 3: What Would You Do? ---
     var wwyd = content.whatWouldYouDo;
-    document.getElementById('histWWYDPrompt').textContent = wwyd.prompt;
+    var histWWYDPromptEl = document.getElementById('histWWYDPrompt');
+    histWWYDPromptEl.textContent = wwyd.prompt;
+    histWWYDPromptEl.classList.add('tts-readable');
+    histWWYDPromptEl.setAttribute('data-tts-label', 'Your Call prompt');
 
     // v3.12.1: shuffle option display order so the historical choice (always at
     // index 0 in the data) is not always option A. Internal indices are preserved:
@@ -1139,7 +1195,11 @@ function renderHistoricalBattle() {
     });
 
     // --- Section 4: What Really Happened ---
-    document.getElementById('histWhatHappened').textContent = content.whatHappened;
+    var histWhatHappenedEl = document.getElementById('histWhatHappened');
+    histWhatHappenedEl.textContent = content.whatHappened;
+    // v3.15: TTS — mark the outcome narrative as readable.
+    histWhatHappenedEl.classList.add('tts-readable');
+    histWhatHappenedEl.setAttribute('data-tts-label', 'What Really Happened');
     document.getElementById('histOutcome').textContent = content.outcome;
 
     var totalCasualties = content.casualties.union + content.casualties.confederacy;
@@ -1169,7 +1229,11 @@ function renderHistoricalBattle() {
     }
 
     // --- Section 6: The Bigger Picture ---
-    document.getElementById('histBigPicture').textContent = content.biggerPicture;
+    var histBigPictureEl = document.getElementById('histBigPicture');
+    histBigPictureEl.textContent = content.biggerPicture;
+    // v3.15: TTS — mark the reflection-from-history paragraph as readable.
+    histBigPictureEl.classList.add('tts-readable');
+    histBigPictureEl.setAttribute('data-tts-label', 'The Bigger Picture');
 
     // Key Fact: hide entire box at beginner level to reduce reading
     var keyFactEl = document.getElementById('histKeyFact');
@@ -1718,7 +1782,7 @@ var helpBarVisible = false;
 
 function showHelpBar(mode) {
     var bar = document.getElementById('helpBar');
-    var btn = document.getElementById('helpToggleBtn');
+    var btn = document.getElementById('helpToggleMenuBtn');
 
     btn.style.display = '';
     helpBarVisible = true;
@@ -1730,7 +1794,7 @@ function showHelpBar(mode) {
 
 function hideHelpBar() {
     var bar = document.getElementById('helpBar');
-    var btn = document.getElementById('helpToggleBtn');
+    var btn = document.getElementById('helpToggleMenuBtn');
 
     helpBarVisible = false;
     bar.style.display = 'none';
@@ -1755,7 +1819,7 @@ function updateHelpBarText(mode, step) {
 
 // Initialize tutorial on first battle
 function maybeStartTutorial(mode) {
-    var btn = document.getElementById('helpToggleBtn');
+    var btn = document.getElementById('helpToggleMenuBtn');
     btn.style.display = '';
 
     if (shouldShowTutorial(mode)) {
@@ -1833,7 +1897,12 @@ function advanceNarrative() {
                 }
 
                 var detailEl = document.getElementById('feedbackDetail');
-                if (detailEl) detailEl.textContent = feedbackList[wwydSelected];
+                if (detailEl) {
+                    detailEl.textContent = feedbackList[wwydSelected];
+                    // v3.15: TTS — read the explanatory feedback paragraph.
+                    detailEl.classList.add('tts-readable');
+                    detailEl.setAttribute('data-tts-label', 'Choice feedback');
+                }
                 feedbackEl.style.display = 'block';
                 targetSection = feedbackEl;
             }
@@ -1939,6 +2008,9 @@ function advanceNarrative() {
 }
 
 function renderHistoricalComplete() {
+    // v3.15: reveal the Print Summary menu item now that the campaign is finished.
+    if (typeof showPrintSummaryMenuItem === 'function') showPrintSummaryMenuItem();
+
     var endBanner = document.getElementById('endBanner');
     endBanner.className = 'outcome-banner victory-banner';
 
@@ -2113,6 +2185,27 @@ function generatePdfReport() {
 function renderFreeplayBriefing() {
     var battle = battles[gameState.currentBattle];
     var battleNum = gameState.currentBattle + 1;
+
+    // v3.15: populate act/year dateline above battle name
+    (function populateBattleDateline() {
+        const datelines = document.querySelectorAll('.battle-act-dateline');
+        if (datelines.length === 0) return;
+        const battleIndex = gameState.currentBattle;
+        if (typeof battleIndex !== 'number' || !battles[battleIndex]) return;
+
+        let datelineText = '';
+        if (typeof getActForBattle === 'function') {
+            const actIndex = getActForBattle(battleIndex);
+            if (actIndex !== -1 && typeof acts !== 'undefined' && acts[actIndex]) {
+                datelineText = 'Act ' + acts[actIndex].number + ' — ' + acts[actIndex].years;
+            }
+        }
+        if (!datelineText) {
+            datelineText = String(battles[battleIndex].year || '');
+        }
+
+        datelines.forEach(function(el) { el.textContent = datelineText; });
+    })();
 
     // Progress
     document.getElementById('freeplayProgressLabel').textContent =
@@ -2833,4 +2926,135 @@ function setupCreditsToggle() {
             toggle.querySelector('.credits-text').textContent = 'View Image Credits';
         }
     });
+}
+
+// ============================================================
+// v3.15: navbar reading-level pills + mid-game re-render
+// ============================================================
+
+function initNavbarReadingPills() {
+    var pills = document.querySelectorAll('.reading-pills .reading-pill');
+    pills.forEach(function(pill) {
+        pill.addEventListener('click', function() {
+            var level = pill.getAttribute('data-level');
+            setReadingLevelEverywhere(level);
+        });
+    });
+}
+
+function setReadingLevelEverywhere(level) {
+    if (level !== 'beginner' && level !== 'intermediate' && level !== 'advanced') return;
+
+    if (typeof gameState !== 'undefined' && gameState) {
+        gameState.difficulty = level;
+    }
+    if (typeof Settings !== 'undefined') {
+        Settings.set('readingLevel', level);
+    }
+
+    // Sync navbar pills (aria-pressed)
+    document.querySelectorAll('.reading-pills .reading-pill').forEach(function(p) {
+        p.setAttribute('aria-pressed', p.getAttribute('data-level') === level ? 'true' : 'false');
+    });
+
+    // Sync start-screen pills (uses .active class + aria-checked per existing convention).
+    // No canonical setDifficulty() exists in the codebase — the start-screen handler is
+    // an inline closure in app.js's setupEventListeners. Manual sync is the integration point.
+    document.querySelectorAll('.difficulty-pill').forEach(function(p) {
+        var pillLevel = p.getAttribute('data-level') || p.getAttribute('data-difficulty');
+        if (pillLevel === level) {
+            p.classList.add('active');
+            p.setAttribute('aria-checked', 'true');
+            p.setAttribute('aria-pressed', 'true');
+        } else {
+            p.classList.remove('active');
+            p.setAttribute('aria-checked', 'false');
+            p.setAttribute('aria-pressed', 'false');
+        }
+    });
+
+    // Update difficulty hint text on start screen if visible
+    var difficultyHints = {
+        beginner: 'Shorter text, extra help with writing',
+        intermediate: 'Standard text, some writing help',
+        advanced: 'More detail, deeper questions, full challenge'
+    };
+    var hintEl = document.getElementById('difficultyHint');
+    if (hintEl) hintEl.textContent = difficultyHints[level] || '';
+
+    rerenderForReadingLevel();
+}
+
+function rerenderForReadingLevel() {
+    if (typeof gameState === 'undefined' || !gameState) return;
+
+    var screen = gameState.currentScreen;
+
+    // Battle screen (historical mode) — uses gameState.currentBattle internally
+    if (screen === 'historicalScreen' && typeof renderHistoricalBattle === 'function') {
+        renderHistoricalBattle();
+    } else if (screen === 'actIntroScreen' && typeof renderActIntro === 'function' &&
+               typeof getActForBattle === 'function') {
+        var actIdx = getActForBattle(gameState.currentBattle);
+        if (actIdx !== -1) renderActIntro(actIdx);
+    } else if (screen === 'actRecallScreen' && typeof renderActRecall === 'function' &&
+               typeof getActForBattle === 'function') {
+        var aIdx = getActForBattle(gameState.currentBattle);
+        if (aIdx !== -1) renderActRecall(aIdx);
+    }
+
+    // Act review modal open? Re-render it on top of whatever screen is showing.
+    var reviewModal = document.getElementById('actReviewOverlay');
+    if (reviewModal &&
+        (reviewModal.style.display === 'flex' || reviewModal.style.display === 'block') &&
+        typeof openActReview === 'function' &&
+        typeof getActForBattle === 'function') {
+        var rIdx = getActForBattle(gameState.currentBattle);
+        if (rIdx !== -1) openActReview(rIdx);
+    }
+}
+
+function showNavbarReadingPills() {
+    var el = document.getElementById('navbarReadingLevel');
+    if (el) el.style.display = '';
+}
+
+function hideNavbarReadingPills() {
+    var el = document.getElementById('navbarReadingLevel');
+    if (el) el.style.display = 'none';
+}
+
+// Boot: wire navbar pills + restore saved reading level
+function initReadingLevelOnBoot() {
+    initNavbarReadingPills();
+
+    if (typeof Settings !== 'undefined') {
+        var savedLevel = Settings.get('readingLevel');
+        if (savedLevel) {
+            if (typeof gameState !== 'undefined' && gameState) {
+                gameState.difficulty = savedLevel;
+            }
+            document.querySelectorAll('.reading-pills .reading-pill').forEach(function(p) {
+                p.setAttribute('aria-pressed', p.getAttribute('data-level') === savedLevel ? 'true' : 'false');
+            });
+            document.querySelectorAll('.difficulty-pill').forEach(function(p) {
+                var pillLevel = p.getAttribute('data-level') || p.getAttribute('data-difficulty');
+                if (pillLevel === savedLevel) {
+                    p.classList.add('active');
+                    p.setAttribute('aria-checked', 'true');
+                    p.setAttribute('aria-pressed', 'true');
+                } else {
+                    p.classList.remove('active');
+                    p.setAttribute('aria-checked', 'false');
+                    p.setAttribute('aria-pressed', 'false');
+                }
+            });
+        }
+    }
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initReadingLevelOnBoot);
+} else {
+    initReadingLevelOnBoot();
 }

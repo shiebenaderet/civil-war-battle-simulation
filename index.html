@@ -178,31 +178,47 @@
     <nav class="main-navbar" role="navigation" aria-label="Main navigation">
         <div class="navbar-content">
             <div class="navbar-brand">
-                <h1 class="nav-game-title">&#x2694;&#xFE0F; Civil War Simulation</h1>
-                <span class="nav-subtitle">Educational Edition</span>
+                <h1 class="nav-game-title">Civil War Simulation</h1>
             </div>
 
             <div class="navbar-controls">
-                <button class="nav-btn primary-action" id="warMapNavBtn" style="display: none;" aria-label="View war map" title="War Map">
-                    &#x1F5FA;&#xFE0F;
-                </button>
-                <button class="nav-btn primary-action" id="campaignLogNavBtn" style="display: none;" aria-label="View campaign log" title="Campaign Log">
-                    &#x1F4CA;
-                </button>
-                <button class="nav-btn help-btn" id="helpToggleBtn" style="display: none;" aria-label="Toggle help tips" title="Help">
-                    ?
-                </button>
+                <div class="navbar-reading-level" id="navbarReadingLevel" style="display:none;">
+                    <span class="navbar-reading-label">Reading</span>
+                    <div class="reading-pills" role="radiogroup" aria-label="Reading level">
+                        <button class="reading-pill" data-level="beginner" aria-pressed="false" title="Beginner">B</button>
+                        <button class="reading-pill" data-level="intermediate" aria-pressed="true" title="Intermediate">I</button>
+                        <button class="reading-pill" data-level="advanced" aria-pressed="false" title="Advanced">A</button>
+                    </div>
+                </div>
+
+                <button class="nav-btn nav-btn-text" id="accessibilityBtn" aria-label="Accessibility settings" aria-expanded="false" title="Accessibility">Aa</button>
 
                 <div class="settings-dropdown">
-                    <button class="nav-btn settings-btn" id="settingsBtn" aria-label="Open menu" aria-expanded="false" title="Menu">
-                        &#x22EF;
-                    </button>
+                    <button class="nav-btn settings-btn" id="settingsBtn" aria-label="Open menu" aria-expanded="false" title="Menu">&#x22EF;</button>
                     <div class="settings-menu" id="settingsMenu" role="menu" aria-labelledby="settingsBtn">
-                        <div class="settings-divider" id="gameActionsDiv" style="display: none;"></div>
-                        <div class="menu-section" id="gameActionsSection" style="display: none;">
+                        <div class="menu-section" id="menuNavSection">
+                            <div class="menu-section-title">Navigation</div>
+                            <button class="settings-item" id="warMapMenuBtn" role="menuitem" style="display:none;">
+                                <span class="menu-icon">&#x1F5FA;&#xFE0F;</span> War Map
+                            </button>
+                            <button class="settings-item" id="campaignLogMenuBtn" role="menuitem" style="display:none;">
+                                <span class="menu-icon">&#x1F4CA;</span> Campaign Log
+                            </button>
+                            <button class="settings-item" id="helpToggleMenuBtn" role="menuitem">
+                                <span class="menu-icon">?</span> Help &amp; Tutorial
+                            </button>
+                        </div>
+                        <div class="menu-divider"></div>
+                        <div class="menu-section" id="menuGameSection">
                             <div class="menu-section-title">Game</div>
-                            <button class="settings-item danger-item" id="startOverNavBtn" role="menuitem">
+                            <button class="settings-item" id="resetBattleMenuBtn" role="menuitem" style="display:none;">
+                                <span class="menu-icon">&#x21BA;</span> Reset This Battle
+                            </button>
+                            <button class="settings-item danger-item" id="startOverMenuBtn" role="menuitem" style="display:none;">
                                 <span class="menu-icon">&#x1F504;</span> Start Over
+                            </button>
+                            <button class="settings-item" id="printSummaryMenuBtn" role="menuitem" style="display:none;">
+                                <span class="menu-icon">&#x1F5B6;</span> Print Summary
                             </button>
                         </div>
                     </div>
@@ -210,6 +226,44 @@
             </div>
         </div>
     </nav>
+
+    <!-- v3.15 Accessibility panel (Aa) — separate from settings menu -->
+    <div class="accessibility-panel" id="accessibilityPanel" role="dialog" aria-labelledby="accessibilityPanelTitle" aria-modal="false" hidden>
+        <h2 id="accessibilityPanelTitle" class="accessibility-panel-title">Accessibility</h2>
+
+        <div class="acc-section">
+            <h3 class="acc-section-title">Display</h3>
+            <div class="acc-row">
+                <label for="accDyslexicToggle">OpenDyslexic font</label>
+                <input type="checkbox" id="accDyslexicToggle" class="acc-checkbox">
+            </div>
+            <div class="acc-row">
+                <label>Font size</label>
+                <div class="size-pills" role="radiogroup" aria-label="Font size">
+                    <button class="size-pill" data-size="small" aria-pressed="false">S</button>
+                    <button class="size-pill" data-size="medium" aria-pressed="true">M</button>
+                    <button class="size-pill" data-size="large" aria-pressed="false">L</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="acc-section" id="accTtsSection">
+            <h3 class="acc-section-title">Read aloud</h3>
+            <div class="acc-row">
+                <label for="accVoiceSelect">Voice</label>
+                <select id="accVoiceSelect" class="acc-select"></select>
+            </div>
+            <div class="acc-row">
+                <label>Speed</label>
+                <div class="size-pills" role="radiogroup" aria-label="Speech rate">
+                    <button class="size-pill" data-rate="0.8" aria-pressed="false">0.8&times;</button>
+                    <button class="size-pill" data-rate="1.0" aria-pressed="true">1&times;</button>
+                    <button class="size-pill" data-rate="1.2" aria-pressed="false">1.2&times;</button>
+                </div>
+            </div>
+            <p class="acc-quality-note" id="accQualityNote" hidden>Quality varies by device.</p>
+        </div>
+    </div>
 
     <!-- Help Bar - contextual tips (toggleable) -->
     <div class="help-bar" id="helpBar" style="display:none;" role="status" aria-live="polite">
@@ -481,6 +535,7 @@
 
             <!-- Battle header -->
             <div class="battle-header">
+                <div class="battle-act-dateline"></div>
                 <h2 class="battle-name" id="histBattleName"></h2>
                 <div class="battle-meta">
                     <span class="battle-date" id="histBattleDate"></span>
@@ -674,6 +729,7 @@
             </div>
 
             <div class="battle-header">
+                <div class="battle-act-dateline"></div>
                 <h2 class="battle-name" id="fpBattleName"></h2>
                 <div class="battle-meta">
                     <span class="battle-date" id="fpBattleDate"></span>
@@ -937,6 +993,9 @@
     <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"></script>
 
     <!-- JavaScript - Data files first, then logic, then UI, then app init -->
+    <script src="js/settings.js"></script>
+    <script src="js/tts.js"></script>
+    <script src="js/print-summary.js"></script>
     <script src="js/data/battles.js"></script>
     <script src="js/data/leaders.js"></script>
     <script src="js/data/maps.js"></script>
@@ -948,7 +1007,20 @@
 
     <!-- Version Display -->
     <div class="version-info">
-        <span>Civil War Battle Simulation v3.14.0</span>
+        <span>Civil War Battle Simulation v3.15.0</span>
+    </div>
+
+    <!-- v3.15: Reset Battle confirmation -->
+    <div class="confirm-modal" id="resetBattleConfirm" role="dialog" aria-labelledby="resetBattleConfirmTitle" aria-modal="true" hidden>
+        <div class="confirm-modal-backdrop"></div>
+        <div class="confirm-modal-content">
+            <h2 class="confirm-modal-title" id="resetBattleConfirmTitle">Reset this battle?</h2>
+            <p class="confirm-modal-body">Your progress on <strong id="resetBattleName">this battle</strong> will be cleared. Your reflections from earlier battles are safe.</p>
+            <div class="confirm-modal-actions">
+                <button class="btn-secondary" id="resetBattleCancel">Cancel</button>
+                <button class="btn-primary danger" id="resetBattleConfirmBtn">Reset Battle</button>
+            </div>
+        </div>
     </div>
 </body>
 </html>

@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>v3.15 Toolbar Mockups — Civil War Simulation</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Old+Standard+TT:ital,wght@0,400;0,700;1,400&family=Special+Elite&display=swap" rel="stylesheet">
+
+<style>
+:root {
+    --color-paper: #f0e9d8;
+    --color-paper-elev: #ebe2cb;
+    --color-paper-card: #f5efde;
+    --color-paper-deep: #e2d6b3;
+    --color-ink: #1a1611;
+    --color-ink-muted: #4a3f2c;
+    --color-ink-faint: #7d6e54;
+    --color-rule: #c4b89a;
+    --color-rule-strong: #8a7a5e;
+    --color-accent: #6b1a17;
+    --color-accent-hover: #8a2520;
+    --font-serif: 'Old Standard TT', 'Times New Roman', Georgia, serif;
+    --font-mono: 'Special Elite', 'Courier New', monospace;
+    --space-1: 0.25rem;
+    --space-2: 0.5rem;
+    --space-3: 0.75rem;
+    --space-4: 1rem;
+    --space-5: 1.25rem;
+    --space-6: 1.5rem;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+    font-family: var(--font-serif);
+    background: var(--color-paper);
+    color: var(--color-ink);
+    line-height: 1.6;
+    padding: var(--space-6);
+    min-height: 100vh;
+}
+
+/* Page chrome */
+.page-title {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-ink-faint);
+    margin-bottom: var(--space-2);
+}
+.page-h1 {
+    font-family: var(--font-serif);
+    font-weight: 700;
+    font-size: 2rem;
+    margin-bottom: var(--space-6);
+    border-bottom: 4px double var(--color-ink);
+    padding-bottom: var(--space-3);
+}
+.option-block {
+    margin-bottom: var(--space-6);
+    background: var(--color-paper-card);
+    border: 1px solid var(--color-rule);
+    padding: 0;
+}
+.option-label {
+    background: var(--color-paper-elev);
+    border-bottom: 1px solid var(--color-rule);
+    padding: var(--space-3) var(--space-4);
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-ink-muted);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.option-label strong { color: var(--color-ink); }
+.option-tradeoff {
+    font-family: var(--font-serif);
+    font-size: 0.95rem;
+    text-transform: none;
+    letter-spacing: normal;
+    color: var(--color-ink-muted);
+    font-style: italic;
+    padding: var(--space-3) var(--space-4);
+    border-bottom: 1px solid var(--color-rule);
+    background: var(--color-paper);
+}
+
+/* ============= NAVBAR (shared) ============= */
+.mock-navbar {
+    background: var(--color-paper-elev);
+    border-bottom: 4px double var(--color-ink);
+    padding: var(--space-3) var(--space-4);
+    position: relative;
+}
+.mock-navbar-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+}
+.mock-navbar-brand h1 {
+    font-family: var(--font-serif);
+    font-weight: 700;
+    font-size: 1.25rem;
+    text-transform: uppercase;
+    letter-spacing: -0.005em;
+    color: var(--color-ink);
+    line-height: 1;
+}
+.mock-navbar-meta {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-ink-faint);
+    margin-top: var(--space-1);
+}
+.mock-navbar-controls {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+}
+
+/* Standard nav button */
+.nav-btn {
+    height: 36px;
+    min-width: 36px;
+    padding: 0 var(--space-3);
+    background: transparent;
+    color: var(--color-ink);
+    border: 1px solid var(--color-rule);
+    cursor: pointer;
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    letter-spacing: 0.08em;
+    transition: background 0.15s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+.nav-btn:hover { background: var(--color-paper-deep); border-color: var(--color-ink); }
+
+/* ============= OPTION A: Compact + status pill ============= */
+.opt-a-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    height: 36px;
+    padding: 0 var(--space-3);
+    background: var(--color-paper-card);
+    border: 1px solid var(--color-rule-strong);
+    color: var(--color-ink);
+    cursor: pointer;
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    letter-spacing: 0.08em;
+}
+.opt-a-pill .label-faint {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--color-ink-faint);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+}
+.opt-a-pill .level-name {
+    font-family: var(--font-serif);
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--color-ink);
+    letter-spacing: 0;
+}
+.opt-a-pill .caret { font-size: 0.65rem; opacity: 0.6; }
+.opt-a-pill:hover { background: var(--color-paper-deep); }
+
+/* ============= OPTION B: 3 reading-level pills ============= */
+.opt-b-pillgroup {
+    display: inline-flex;
+    border: 1px solid var(--color-rule-strong);
+    background: var(--color-paper-card);
+}
+.opt-b-pillgroup button {
+    height: 34px;
+    width: 34px;
+    background: transparent;
+    border: 0;
+    border-right: 1px solid var(--color-rule);
+    color: var(--color-ink-muted);
+    cursor: pointer;
+    font-family: var(--font-mono);
+    font-size: 0.95rem;
+    font-weight: 700;
+}
+.opt-b-pillgroup button:last-child { border-right: 0; }
+.opt-b-pillgroup button.active {
+    background: var(--color-ink);
+    color: var(--color-paper);
+}
+.opt-b-pillgroup button:hover:not(.active) { background: var(--color-paper-deep); }
+.opt-b-label {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--color-ink-faint);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    margin-right: var(--space-2);
+    align-self: center;
+}
+
+/* ============= OPTION C: Single Settings button ============= */
+.opt-c-settings {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    height: 36px;
+    padding: 0 var(--space-4);
+    background: var(--color-paper-card);
+    border: 1px solid var(--color-rule-strong);
+    color: var(--color-ink);
+    cursor: pointer;
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+.opt-c-settings:hover { background: var(--color-paper-deep); }
+
+/* ============= Open-state panels (visible always for the mock) ============= */
+.panel-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+}
+.panel-row > div {
+    padding: var(--space-4);
+}
+.panel-row > div:first-child {
+    border-right: 1px solid var(--color-rule);
+}
+.panel-caption {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-ink-faint);
+    margin-bottom: var(--space-3);
+}
+.panel-section {
+    margin-bottom: var(--space-4);
+}
+.panel-section h4 {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-ink-muted);
+    margin-bottom: var(--space-2);
+    padding-bottom: var(--space-1);
+    border-bottom: 1px solid var(--color-rule);
+}
+.panel-section .row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    margin-bottom: var(--space-2);
+}
+.panel-section label {
+    font-family: var(--font-serif);
+    font-size: 0.95rem;
+    color: var(--color-ink);
+}
+.toggle-row { justify-content: space-between; }
+.size-pillgroup {
+    display: inline-flex;
+    border: 1px solid var(--color-rule-strong);
+}
+.size-pillgroup button {
+    width: 32px;
+    height: 28px;
+    border: 0;
+    border-right: 1px solid var(--color-rule);
+    background: transparent;
+    cursor: pointer;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--color-ink-muted);
+}
+.size-pillgroup button:last-child { border-right: 0; }
+.size-pillgroup button.active { background: var(--color-ink); color: var(--color-paper); }
+select.mock-select {
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    background: var(--color-paper);
+    color: var(--color-ink);
+    border: 1px solid var(--color-rule-strong);
+    padding: var(--space-1) var(--space-2);
+    height: 28px;
+}
+.checkbox {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 1px solid var(--color-rule-strong);
+    background: var(--color-paper);
+    position: relative;
+}
+.checkbox.checked::after {
+    content: "✓";
+    position: absolute;
+    inset: 0;
+    text-align: center;
+    line-height: 14px;
+    color: var(--color-accent);
+    font-weight: 700;
+}
+
+/* Slide-in panel (opt C visualization) */
+.slide-panel {
+    background: var(--color-paper-card);
+    border-left: 4px double var(--color-ink);
+    padding: var(--space-5);
+    max-width: 360px;
+    margin: var(--space-4) var(--space-4) var(--space-4) auto;
+    box-shadow: -2px 0 0 rgba(26,22,17,0.08);
+}
+.slide-panel h3 {
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    margin-bottom: var(--space-4);
+    padding-bottom: var(--space-2);
+    border-bottom: 1px solid var(--color-rule);
+}
+.danger-btn {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: var(--space-2) var(--space-3);
+    background: transparent;
+    border: 1px solid var(--color-accent);
+    color: var(--color-accent);
+    cursor: pointer;
+    margin-right: var(--space-2);
+}
+.danger-btn:hover { background: var(--color-accent); color: var(--color-paper); }
+
+/* Mobile preview */
+.mobile-frame {
+    max-width: 380px;
+    margin: var(--space-4) auto;
+    border: 1px solid var(--color-rule);
+    background: var(--color-paper);
+}
+.mobile-label {
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--color-ink-faint);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    padding: var(--space-2);
+}
+
+/* Verdict box */
+.verdict {
+    background: var(--color-paper);
+    border: 1px solid var(--color-rule);
+    padding: var(--space-4);
+    margin: var(--space-4);
+    font-size: 0.95rem;
+}
+.verdict strong {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-ink-faint);
+    display: block;
+    margin-bottom: var(--space-2);
+}
+.verdict ul { padding-left: 1.2em; }
+.verdict li { margin-bottom: var(--space-1); }
+.verdict .pro { color: var(--color-ink); }
+.verdict .con { color: var(--color-ink-muted); }
+</style>
+</head>
+<body>
+
+<div class="page-title">v3.15 — Toolbar Direction Mockup</div>
+<h1 class="page-h1">Three options, in real Field Report tokens</h1>
+
+<p style="margin-bottom: var(--space-6); max-width: 720px; color: var(--color-ink-muted); font-style: italic;">
+Each option shows: (1) the toolbar in its closed state, (2) the open state of any panel/menu, (3) the mobile-width version, (4) a verdict box with my honest read. Hover the buttons to see interaction states. The body of the page beneath each toolbar would be the existing battle screen — same as v3.14, untouched.
+</p>
+
+<!-- ============= OPTION A ============= -->
+<div class="option-block" id="optA">
+    <div class="option-label">
+        <span><strong>OPTION A</strong> · COMPACT + STATUS PILL</span>
+        <span>My recommendation</span>
+    </div>
+    <div class="option-tradeoff">Reading level shows current state at a glance; one extra click to switch. Cleanest masthead.</div>
+
+    <!-- Closed state -->
+    <nav class="mock-navbar">
+        <div class="mock-navbar-content">
+            <div class="mock-navbar-brand">
+                <h1>Civil War Simulation</h1>
+                <div class="mock-navbar-meta">Act II — 1862</div>
+            </div>
+            <div class="mock-navbar-controls">
+                <button class="opt-a-pill" title="Click to change reading level">
+                    <span class="label-faint">Reading</span>
+                    <span class="level-name">Intermediate</span>
+                    <span class="caret">▾</span>
+                </button>
+                <button class="nav-btn" title="Accessibility">Aa</button>
+                <button class="nav-btn" title="Menu">⋯</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="panel-row">
+        <!-- Aa panel open -->
+        <div>
+            <div class="panel-caption">Accessibility panel (Aa button)</div>
+            <div class="panel-section">
+                <h4>Display</h4>
+                <div class="row toggle-row">
+                    <label>OpenDyslexic font</label>
+                    <span class="checkbox checked"></span>
+                </div>
+                <div class="row toggle-row">
+                    <label>Font size</label>
+                    <span class="size-pillgroup">
+                        <button>S</button>
+                        <button class="active">M</button>
+                        <button>L</button>
+                    </span>
+                </div>
+            </div>
+            <div class="panel-section">
+                <h4>Read aloud</h4>
+                <div class="row toggle-row">
+                    <label>Voice</label>
+                    <select class="mock-select">
+                        <option>Samantha (default)</option>
+                        <option>Daniel</option>
+                        <option>Karen</option>
+                    </select>
+                </div>
+                <div class="row toggle-row">
+                    <label>Speed</label>
+                    <span class="size-pillgroup">
+                        <button>0.8×</button>
+                        <button class="active">1×</button>
+                        <button>1.2×</button>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <!-- ⋯ menu open -->
+        <div>
+            <div class="panel-caption">Menu (⋯ button)</div>
+            <div class="panel-section">
+                <h4>Navigation</h4>
+                <div class="row"><label>War Map</label></div>
+                <div class="row"><label>Campaign Log</label></div>
+                <div class="row"><label>Help &amp; Tutorial</label></div>
+            </div>
+            <div class="panel-section">
+                <h4>Game</h4>
+                <button class="danger-btn">Reset This Battle</button>
+                <button class="danger-btn">Start Over</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile -->
+    <div class="mobile-label">Mobile (≤640px)</div>
+    <div class="mobile-frame">
+        <nav class="mock-navbar">
+            <div class="mock-navbar-content">
+                <div class="mock-navbar-brand">
+                    <h1 style="font-size: 1rem;">Civil War</h1>
+                    <div class="mock-navbar-meta" style="font-size: 0.65rem;">Act II</div>
+                </div>
+                <div class="mock-navbar-controls">
+                    <button class="opt-a-pill" style="padding: 0 var(--space-2);">
+                        <span class="level-name" style="font-size: 0.85rem;">I</span>
+                        <span class="caret">▾</span>
+                    </button>
+                    <button class="nav-btn">Aa</button>
+                    <button class="nav-btn">⋯</button>
+                </div>
+            </div>
+        </nav>
+    </div>
+
+    <div class="verdict">
+        <strong>Verdict</strong>
+        <p class="pro"><b>Pros:</b> Looks like a serious educational tool. Status of reading level always visible. Negative space. Most room for the title to breathe.</p>
+        <p class="con"><b>Cons:</b> Switching reading level is a click + select (vs. single click in B). For students who switch a lot mid-game, that's friction.</p>
+    </div>
+</div>
+
+<!-- ============= OPTION B ============= -->
+<div class="option-block" id="optB">
+    <div class="option-label">
+        <span><strong>OPTION B</strong> · 3 PILLS ALWAYS VISIBLE</span>
+        <span>Most discoverable</span>
+    </div>
+    <div class="option-tradeoff">One-click reading level switch. Pills compete with title for attention. Tighter on small screens.</div>
+
+    <nav class="mock-navbar">
+        <div class="mock-navbar-content">
+            <div class="mock-navbar-brand">
+                <h1>Civil War Simulation</h1>
+                <div class="mock-navbar-meta">Act II — 1862</div>
+            </div>
+            <div class="mock-navbar-controls">
+                <span class="opt-b-label">Reading</span>
+                <span class="opt-b-pillgroup" role="radiogroup" aria-label="Reading level">
+                    <button title="Beginner">B</button>
+                    <button class="active" title="Intermediate">I</button>
+                    <button title="Advanced">A</button>
+                </span>
+                <button class="nav-btn" title="Accessibility">Aa</button>
+                <button class="nav-btn" title="Menu">⋯</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="panel-row">
+        <div>
+            <div class="panel-caption">Accessibility panel (Aa button)</div>
+            <div class="panel-section">
+                <h4>Display</h4>
+                <div class="row toggle-row">
+                    <label>OpenDyslexic font</label>
+                    <span class="checkbox checked"></span>
+                </div>
+                <div class="row toggle-row">
+                    <label>Font size</label>
+                    <span class="size-pillgroup">
+                        <button>S</button>
+                        <button class="active">M</button>
+                        <button>L</button>
+                    </span>
+                </div>
+            </div>
+            <div class="panel-section">
+                <h4>Read aloud</h4>
+                <div class="row toggle-row">
+                    <label>Voice</label>
+                    <select class="mock-select">
+                        <option>Samantha (default)</option>
+                    </select>
+                </div>
+                <div class="row toggle-row">
+                    <label>Speed</label>
+                    <span class="size-pillgroup">
+                        <button>0.8×</button>
+                        <button class="active">1×</button>
+                        <button>1.2×</button>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div>
+            <div class="panel-caption">Menu (⋯ button)</div>
+            <div class="panel-section">
+                <h4>Navigation</h4>
+                <div class="row"><label>War Map</label></div>
+                <div class="row"><label>Campaign Log</label></div>
+                <div class="row"><label>Help &amp; Tutorial</label></div>
+            </div>
+            <div class="panel-section">
+                <h4>Game</h4>
+                <button class="danger-btn">Reset This Battle</button>
+                <button class="danger-btn">Start Over</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="mobile-label">Mobile (≤640px) — pills wrap to second row</div>
+    <div class="mobile-frame">
+        <nav class="mock-navbar">
+            <div style="display: flex; flex-direction: column; gap: var(--space-2);">
+                <div class="mock-navbar-content">
+                    <div class="mock-navbar-brand">
+                        <h1 style="font-size: 1rem;">Civil War</h1>
+                        <div class="mock-navbar-meta" style="font-size: 0.65rem;">Act II</div>
+                    </div>
+                    <div class="mock-navbar-controls">
+                        <button class="nav-btn">Aa</button>
+                        <button class="nav-btn">⋯</button>
+                    </div>
+                </div>
+                <span class="opt-b-pillgroup" style="align-self: flex-end;">
+                    <button>B</button>
+                    <button class="active">I</button>
+                    <button>A</button>
+                </span>
+            </div>
+        </nav>
+    </div>
+
+    <div class="verdict">
+        <strong>Verdict</strong>
+        <p class="pro"><b>Pros:</b> Reading level switch is one click, every time. Active state instantly visible. Best for classes where students experiment with levels.</p>
+        <p class="con"><b>Cons:</b> Visually busiest — three pills compete with the masthead title. On a Chromebook at 1366px, it works; on an old 1024px netbook, it gets crowded. Pills stack to a second row on phones, costing vertical space above the battle screen.</p>
+    </div>
+</div>
+
+<!-- ============= OPTION C ============= -->
+<div class="option-block" id="optC">
+    <div class="option-label">
+        <span><strong>OPTION C</strong> · ALL CONTROLS IN SLIDE-OUT</span>
+        <span>Maximum simplicity</span>
+    </div>
+    <div class="option-tradeoff">Everything behind one Settings button. Most chrome cleanup. Two clicks for any change. Reading level less discoverable.</div>
+
+    <nav class="mock-navbar">
+        <div class="mock-navbar-content">
+            <div class="mock-navbar-brand">
+                <h1>Civil War Simulation</h1>
+                <div class="mock-navbar-meta">Act II — 1862</div>
+            </div>
+            <div class="mock-navbar-controls">
+                <button class="opt-c-settings">⚙ Settings</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="slide-panel">
+        <h3>Settings</h3>
+
+        <div class="panel-section">
+            <h4>Reading Level</h4>
+            <div class="row"><span class="opt-b-pillgroup"><button>B</button><button class="active">I</button><button>A</button></span></div>
+        </div>
+        <div class="panel-section">
+            <h4>Accessibility</h4>
+            <div class="row toggle-row">
+                <label>OpenDyslexic font</label>
+                <span class="checkbox checked"></span>
+            </div>
+            <div class="row toggle-row">
+                <label>Font size</label>
+                <span class="size-pillgroup"><button>S</button><button class="active">M</button><button>L</button></span>
+            </div>
+        </div>
+        <div class="panel-section">
+            <h4>Read Aloud</h4>
+            <div class="row toggle-row">
+                <label>Voice</label>
+                <select class="mock-select"><option>Samantha (default)</option></select>
+            </div>
+            <div class="row toggle-row">
+                <label>Speed</label>
+                <span class="size-pillgroup"><button>0.8×</button><button class="active">1×</button><button>1.2×</button></span>
+            </div>
+        </div>
+        <div class="panel-section">
+            <h4>Navigation</h4>
+            <div class="row"><label>War Map · Campaign Log · Help</label></div>
+        </div>
+        <div class="panel-section">
+            <h4>Game</h4>
+            <button class="danger-btn">Reset This Battle</button>
+            <button class="danger-btn">Start Over</button>
+        </div>
+    </div>
+
+    <div class="mobile-label">Mobile (≤640px)</div>
+    <div class="mobile-frame">
+        <nav class="mock-navbar">
+            <div class="mock-navbar-content">
+                <div class="mock-navbar-brand">
+                    <h1 style="font-size: 1rem;">Civil War</h1>
+                    <div class="mock-navbar-meta" style="font-size: 0.65rem;">Act II</div>
+                </div>
+                <div class="mock-navbar-controls">
+                    <button class="opt-c-settings" style="padding: 0 var(--space-3);">⚙</button>
+                </div>
+            </div>
+        </nav>
+    </div>
+
+    <div class="verdict">
+        <strong>Verdict</strong>
+        <p class="pro"><b>Pros:</b> Cleanest possible toolbar. Best mobile story (one button always). Easiest to add new settings later without re-designing.</p>
+        <p class="con"><b>Cons:</b> Two clicks for every setting change. Reading level not visible at a glance — students who pick the wrong level may not realize. Slide-out panels work better with libraries; we'd hand-roll one in vanilla CSS, which adds focus-trap and ESC-handling code we don't have yet.</p>
+    </div>
+</div>
+
+</body>
+</html>
