@@ -137,8 +137,8 @@ body { font-family: 'Old Standard TT', Georgia, serif; font-size: 13.5pt; line-h
 .qtext { font-size: 13pt; margin-bottom: 6px; }
 .qtext b { color: var(--brand); }
 .thesis-line {
-    display: block; border-bottom: 1px solid var(--ink); height: 1.4em;
-    width: 5.5em; margin: 0 4px; vertical-align: bottom;
+    display: inline-block; border-bottom: 1px solid var(--ink);
+    width: 5.5em; height: 1.2em; margin: 0 4px; vertical-align: bottom;
 }
 .evidence-row {
     display: grid; grid-template-columns: 90px 1fr; gap: 10px;
@@ -177,17 +177,51 @@ body { font-family: 'Old Standard TT', Georgia, serif; font-size: 13.5pt; line-h
     border-top: 1px solid var(--rule); padding-top: 4px;
 }
 
+/* Print toolbar (screen only) */
+.print-toolbar {
+    position: sticky; top: 0; z-index: 10;
+    background: var(--ink); color: var(--paper);
+    padding: 10px 16px; margin: -8px -8px 14px -8px;
+    display: flex; justify-content: space-between; align-items: center;
+    font-family: 'Special Elite', monospace; font-size: 11pt;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+.print-toolbar .hint { color: var(--paper); opacity: 0.85; }
+.print-toolbar button {
+    background: var(--brand); color: var(--paper); border: none;
+    padding: 8px 18px; font-family: 'Special Elite', monospace; font-size: 11pt;
+    letter-spacing: 0.05em; text-transform: uppercase; cursor: pointer;
+    border-radius: 2px;
+}
+.print-toolbar button:hover { background: #8c2f1f; }
+
+/* Page 2 continuation strip (lighter than top-line) */
+.cont-line {
+    font-family: 'Special Elite', monospace; font-size: 10pt;
+    color: var(--ink-soft); border-bottom: 1px solid var(--rule);
+    padding-bottom: 4px; margin-bottom: 14px;
+    display: flex; justify-content: space-between; align-items: baseline;
+}
+.cont-line .left-cont { color: var(--ink-soft); }
+.cont-line .right-cont { font-style: italic; }
+
 /* Print */
 @media print {
     html, body { background: var(--paper) !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
     .page { width: 100%; }
-    .pat-list, .annot, .act-box, .q-embed, .wordbank {
+    .print-toolbar { display: none !important; }
+    .pat-list, .act-box, .q-embed, .wordbank {
         break-inside: avoid; page-break-inside: avoid;
     }
 }
 </style>
 </head>
 <body>
+<div class="print-toolbar">
+    <span class="hint">Battle Journal · Standard · Large Text</span>
+    <button onclick="window.print()">Print Handout</button>
+</div>
+
 <div class="page">
 
     <div class="top-line">
@@ -211,16 +245,6 @@ body { font-family: 'Old Standard TT', Georgia, serif; font-size: 13.5pt; line-h
             <li>Watch for the <b>8 vocabulary terms</b> in the Word Bank on the back. Circle them on the back when you see them in the game.</li>
             <li>Your final job is to answer one question: <b>How was the Union able to defeat the Confederacy?</b> Build evidence as you play.</li>
         </ol>
-    </div>
-
-    <div class="annot">
-        <div class="lbl">As you fill in the act boxes</div>
-        <div class="annot-grid">
-            <div><span class="mark">★</span> A turning point or major event</div>
-            <div><span class="mark">▢</span> A specific person, place, or number</div>
-            <div><span class="mark">?</span> Something that surprised you</div>
-            <div><span class="mark">_</span> A vocabulary term from the Word Bank</div>
-        </div>
     </div>
 
     <div class="act-grid">
@@ -286,11 +310,9 @@ body { font-family: 'Old Standard TT', Georgia, serif; font-size: 13.5pt; line-h
 
 <div class="page">
 
-    <div class="top-line">
-        <div class="left"><span class="mod-tag">Standard · Large Text</span></div>
-        <div class="namebar">
-            Name <b></b>
-        </div>
+    <div class="cont-line">
+        <span class="left-cont">Battle Journal · Standard · Large Text</span>
+        <span class="right-cont">page 2 of 2</span>
     </div>
 
     <div class="section-head">

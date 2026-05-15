@@ -790,6 +790,23 @@ function openActReview(actIndex) {
 
     // Body content (markdown-lite to DOM)
     while (body.firstChild) body.removeChild(body.firstChild);
+
+    // Handout nudge: every act review reminds students to fill in their journal.
+    var nudge = document.createElement('div');
+    nudge.className = 'act-review-handout-nudge';
+    var nudgeIcon = document.createElement('span');
+    nudgeIcon.className = 'handout-nudge-icon';
+    nudgeIcon.textContent = '✎';
+    nudge.appendChild(nudgeIcon);
+    var nudgeText = document.createElement('span');
+    nudgeText.appendChild(document.createTextNode('Battle Journal: now fill in '));
+    var actBold = document.createElement('strong');
+    actBold.textContent = 'Act ' + act.number;
+    nudgeText.appendChild(actBold);
+    nudgeText.appendChild(document.createTextNode(' on your handout before continuing.'));
+    nudge.appendChild(nudgeText);
+    body.appendChild(nudge);
+
     var content = (act.review && act.review[difficulty]) || (act.review && act.review.intermediate) || '';
     if (!content || !content.trim()) {
         var empty = document.createElement('div');

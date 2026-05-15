@@ -123,8 +123,8 @@ body { font-family: 'Old Standard TT', Georgia, serif; font-size: 15pt; line-hei
 .qtext b { color: var(--brand); }
 
 .thesis-line {
-    display: block; border-bottom: 1px solid var(--ink); height: 1.7em;
-    width: 6em; margin: 0 4px; vertical-align: bottom;
+    display: inline-block; border-bottom: 1px solid var(--ink);
+    width: 6em; height: 1.4em; margin: 0 4px; vertical-align: bottom;
 }
 .evidence-row {
     display: grid; grid-template-columns: 100px 1fr; gap: 12px;
@@ -161,9 +161,36 @@ body { font-family: 'Old Standard TT', Georgia, serif; font-size: 15pt; line-hei
     border-top: 1px solid var(--rule); padding-top: 4px;
 }
 
+.print-toolbar {
+    position: sticky; top: 0; z-index: 10;
+    background: var(--ext); color: var(--paper);
+    padding: 10px 16px; margin: -8px -8px 14px -8px;
+    display: flex; justify-content: space-between; align-items: center;
+    font-family: 'Special Elite', monospace; font-size: 11pt;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+.print-toolbar .hint { color: var(--paper); opacity: 0.85; }
+.print-toolbar button {
+    background: var(--brand); color: var(--paper); border: none;
+    padding: 8px 18px; font-family: 'Special Elite', monospace; font-size: 11pt;
+    letter-spacing: 0.05em; text-transform: uppercase; cursor: pointer;
+    border-radius: 2px;
+}
+.print-toolbar button:hover { background: #8c2f1f; }
+
+.cont-line {
+    font-family: 'Special Elite', monospace; font-size: 10pt;
+    color: var(--ink-soft); border-bottom: 1px solid var(--rule);
+    padding-bottom: 4px; margin-bottom: 14px;
+    display: flex; justify-content: space-between; align-items: baseline;
+}
+.cont-line .left-cont { color: var(--ink-soft); }
+.cont-line .right-cont { font-style: italic; }
+
 @media print {
     html, body { background: var(--paper) !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
     .page { width: 100%; }
+    .print-toolbar { display: none !important; }
     .pat-list, .act-box, .q-embed, .wordbank {
         break-inside: avoid; page-break-inside: avoid;
     }
@@ -171,6 +198,11 @@ body { font-family: 'Old Standard TT', Georgia, serif; font-size: 15pt; line-hei
 </style>
 </head>
 <body>
+<div class="print-toolbar">
+    <span class="hint">Battle Journal · Extra Support · Large Text</span>
+    <button onclick="window.print()">Print Handout</button>
+</div>
+
 <div class="page">
 
     <div class="top-line">
@@ -246,11 +278,9 @@ body { font-family: 'Old Standard TT', Georgia, serif; font-size: 15pt; line-hei
 
 <div class="page">
 
-    <div class="top-line">
-        <div class="left"><span class="mod-tag">Extra Support · Large Text</span></div>
-        <div class="namebar">
-            Name <b></b>
-        </div>
+    <div class="cont-line">
+        <span class="left-cont">Battle Journal · Extra Support · Large Text</span>
+        <span class="right-cont">page 2 of 2</span>
     </div>
 
     <div class="section-head">
