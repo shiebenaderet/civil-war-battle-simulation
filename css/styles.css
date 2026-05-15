@@ -303,6 +303,21 @@ img {
     outline-offset: 1px;
 }
 
+/* Extra Support pill: subtle warm tint to signal "most-supported" tier */
+.reading-pill-extra:not([aria-pressed="true"]) {
+    background: rgba(107, 36, 25, 0.06);
+}
+.reading-pill-extra[aria-pressed="true"] {
+    background: #3A1208;
+}
+.difficulty-pill-extra:not(.active) {
+    background: rgba(107, 36, 25, 0.06);
+}
+.difficulty-pill-extra.active {
+    background: #3A1208;
+    color: var(--color-paper);
+}
+
 /* ----- Generic nav button ----- */
 
 .nav-btn {

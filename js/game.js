@@ -33,12 +33,30 @@ let gameState = {
 // Returns the appropriate text for the current difficulty level.
 // If field is a {beginner, intermediate, advanced} object, returns the right level.
 // If field is a plain string/array, returns it unchanged (backwards compatible).
+// Fallback chain: extra → beginner → intermediate. Anything missing falls
+// to the next-easiest tier so partial ES rollout never shows empty content.
 function getContent(field) {
     if (field && typeof field === 'object' && !Array.isArray(field) &&
-        ('beginner' in field || 'intermediate' in field || 'advanced' in field)) {
-        return field[gameState.difficulty] || field.intermediate || '';
+        ('extra' in field || 'beginner' in field || 'intermediate' in field || 'advanced' in field)) {
+        var d = gameState.difficulty;
+        if (d === 'extra') return field.extra || field.beginner || field.intermediate || '';
+        return field[d] || field.intermediate || '';
     }
     return field;
+}
+
+// Returns the difficulty key to use when reading from a {extra, beginner,
+// intermediate, advanced} field. Use this for callsites that index into
+// multi-level objects directly (e.g., act.recall[difficulty]).
+function resolveDifficulty(field) {
+    var d = gameState.difficulty || 'intermediate';
+    if (!field || typeof field !== 'object') return d;
+    if (d === 'extra' && !field.extra) {
+        if (field.beginner) return 'beginner';
+        if (field.intermediate) return 'intermediate';
+    }
+    if (!field[d] && field.intermediate) return 'intermediate';
+    return d;
 }
 
 // Resolve side-specific fields: {union: "...", confederacy: "..."} or plain string

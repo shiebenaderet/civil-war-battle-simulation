@@ -610,7 +610,7 @@ function renderActIntro(actIndex) {
     }
 
     var act = acts[actIndex];
-    var difficulty = gameState.difficulty || 'intermediate';
+    var difficulty = resolveDifficulty(act.intro && act.intro.positioning);
 
     showScreen('actIntroScreen');
 
@@ -737,7 +737,7 @@ function populateNoteNudge(slotId, subStepKey) {
         slot.style.display = 'none';
         return;
     }
-    var difficulty = gameState.difficulty || 'intermediate';
+    var difficulty = resolveDifficulty(nudgeData);
     var text = nudgeData[difficulty] || nudgeData.intermediate || '';
     if (!text || !text.trim()) {
         slot.style.display = 'none';
@@ -745,7 +745,7 @@ function populateNoteNudge(slotId, subStepKey) {
     }
     while (slot.firstChild) slot.removeChild(slot.firstChild);
     var strong = document.createElement('strong');
-    strong.textContent = 'Worth writing down:';
+    strong.textContent = 'One worth remembering:';
     slot.appendChild(strong);
     slot.appendChild(document.createTextNode(' ' + text));
     slot.style.display = '';
@@ -758,7 +758,7 @@ function populateNoteNudge(slotId, subStepKey) {
 function openActReview(actIndex) {
     if (typeof acts === 'undefined' || !acts[actIndex]) return;
     var act = acts[actIndex];
-    var difficulty = gameState.difficulty || 'intermediate';
+    var difficulty = resolveDifficulty(act.review);
     var overlay = document.getElementById('actReviewOverlay');
     var eyebrow = document.getElementById('actReviewEyebrow');
     var title = document.getElementById('actReviewTitle');
@@ -890,7 +890,7 @@ function renderActRecall(actIndex) {
     }
 
     var act = acts[actIndex];
-    var difficulty = gameState.difficulty || 'intermediate';
+    var difficulty = resolveDifficulty(act.recall);
     var questions = (act.recall && act.recall[difficulty]) || [];
 
     if (!questions.length) {
@@ -1137,12 +1137,13 @@ function renderHistoricalBattle() {
 
     // --- Difficulty-based section visibility ---
     var difficulty = gameState.difficulty || 'intermediate';
+    var isLowReadingTier = (difficulty === 'beginner' || difficulty === 'extra');
 
     // --- Section 1: Intel Report ---
-    // Beginner: hide Intel grid (situation text covers what they need)
+    // Beginner/ES: hide Intel grid (situation text covers what they need)
     var intelSection = document.getElementById('sectionIntel');
     var intelGrid = document.getElementById('histIntelGrid');
-    if (difficulty === 'beginner') {
+    if (isLowReadingTier) {
         if (intelSection) intelSection.style.display = 'none';
     } else {
         if (intelSection) intelSection.style.display = '';
@@ -1227,18 +1228,18 @@ function renderHistoricalBattle() {
 
     document.getElementById('histTechName').textContent = content.tech.name;
     document.getElementById('histTechDesc').textContent = content.tech.description;
-    // Tech Spotlight: hide at beginner to reduce cognitive load
+    // Tech Spotlight: hide at beginner/ES to reduce cognitive load
     var techBox = document.getElementById('histTechBox');
-    if (techBox) techBox.style.display = (difficulty === 'beginner') ? 'none' : '';
+    if (techBox) techBox.style.display = isLowReadingTier ? 'none' : '';
 
     // --- Section 5: A Voice From the War ---
     document.getElementById('histVoiceQuote').textContent = content.voice.quote;
     document.getElementById('histVoiceAttribution').textContent = '\u2014 ' + content.voice.attribution;
     document.getElementById('histVoiceSource').textContent = content.voice.source;
 
-    // Voice explainer (beginner level)
+    // Voice explainer (beginner/ES level)
     var explainerEl = document.getElementById('histVoiceExplainer');
-    if (content.voice.explainer && gameState.difficulty === 'beginner') {
+    if (content.voice.explainer && isLowReadingTier) {
         explainerEl.textContent = '\uD83D\uDCA1 In simpler words: ' + content.voice.explainer;
         explainerEl.style.display = 'block';
     } else {
@@ -1252,10 +1253,10 @@ function renderHistoricalBattle() {
     histBigPictureEl.classList.add('tts-readable');
     histBigPictureEl.setAttribute('data-tts-label', 'The Bigger Picture');
 
-    // Key Fact: hide entire box at beginner level to reduce reading
+    // Key Fact: hide entire box at beginner/ES to reduce reading
     var keyFactEl = document.getElementById('histKeyFact');
     var keyFactBox = keyFactEl ? keyFactEl.closest('.key-fact-box') : null;
-    if (difficulty === 'beginner') {
+    if (isLowReadingTier) {
         if (keyFactBox) keyFactBox.style.display = 'none';
     } else {
         keyFactEl.textContent = content.keyFact;
@@ -1398,16 +1399,18 @@ function showReflectScaffolding() {
     if (!scaffolding) return;
 
     var difficulty = gameState.difficulty || 'intermediate';
+    // ES uses beginner starters until ES-specific starters are authored
+    var starterLevel = (difficulty === 'extra') ? 'beginner' : difficulty;
 
-    if (difficulty === 'beginner' || difficulty === 'intermediate') {
+    if (starterLevel === 'beginner' || starterLevel === 'intermediate') {
         // Use group-specific starters if available, fallback to generic
         var groupIdx = getReflectionGroupIndex(gameState.currentBattle);
         var group = groupedReflections[groupIdx];
         var starters;
-        if (group && group.starters && group.starters[difficulty]) {
-            starters = group.starters[difficulty];
+        if (group && group.starters && group.starters[starterLevel]) {
+            starters = group.starters[starterLevel];
         } else {
-            starters = reflectionStarters[difficulty] || reflectionStarters.intermediate;
+            starters = reflectionStarters[starterLevel] || reflectionStarters.intermediate;
         }
 
         chipList.innerHTML = '';
@@ -1422,7 +1425,7 @@ function showReflectScaffolding() {
             chipList.appendChild(chip);
         });
 
-        starterLabel.textContent = difficulty === 'beginner'
+        starterLabel.textContent = (difficulty === 'beginner' || difficulty === 'extra')
             ? 'Click a sentence starter to begin:'
             : 'Need help getting started?';
 
@@ -1952,10 +1955,10 @@ function advanceNarrative() {
             bigPicture.style.display = 'block';
             targetSection = voice;
 
-            // At beginner: collapse Voice and Bigger Picture
-            var isBeginner = (gameState.difficulty === 'beginner');
-            setupCollapsibleSection('voiceHeading', 'voiceBody', !isBeginner);
-            setupCollapsibleSection('bigPictureHeading', 'bigPictureBody', !isBeginner);
+            // At beginner/ES: collapse Voice and Bigger Picture
+            var isLowReadingTier = (gameState.difficulty === 'beginner' || gameState.difficulty === 'extra');
+            setupCollapsibleSection('voiceHeading', 'voiceBody', !isLowReadingTier);
+            setupCollapsibleSection('bigPictureHeading', 'bigPictureBody', !isLowReadingTier);
 
             populateNoteNudge('noteNudgeReflection', 'reflectionFromHistory');
 
@@ -2960,7 +2963,7 @@ function initNavbarReadingPills() {
 }
 
 function setReadingLevelEverywhere(level) {
-    if (level !== 'beginner' && level !== 'intermediate' && level !== 'advanced') return;
+    if (level !== 'extra' && level !== 'beginner' && level !== 'intermediate' && level !== 'advanced') return;
 
     if (typeof gameState !== 'undefined' && gameState) {
         gameState.difficulty = level;
@@ -2992,6 +2995,7 @@ function setReadingLevelEverywhere(level) {
 
     // Update difficulty hint text on start screen if visible
     var difficultyHints = {
+        extra: 'Easiest reading, lots of writing help, fewer choices',
         beginner: 'Shorter text, extra help with writing',
         intermediate: 'Standard text, some writing help',
         advanced: 'More detail, deeper questions, full challenge'

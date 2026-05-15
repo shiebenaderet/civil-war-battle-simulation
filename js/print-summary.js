@@ -24,10 +24,14 @@
             var sideKey = side === 'union' ? 'union' : 'confederacy';
             var wwyd = battle.historical.whatWouldYouDo[sideKey];
             var opts = wwyd.options;
-            // options may be {beginner,intermediate,advanced} or a plain array
+            // options may be {extra,beginner,intermediate,advanced} or a plain array
             if (opts && typeof opts === 'object' && !Array.isArray(opts) &&
-                ('beginner' in opts || 'intermediate' in opts || 'advanced' in opts)) {
-                opts = opts[level] || opts.intermediate || [];
+                ('extra' in opts || 'beginner' in opts || 'intermediate' in opts || 'advanced' in opts)) {
+                if (level === 'extra') {
+                    opts = opts.extra || opts.beginner || opts.intermediate || [];
+                } else {
+                    opts = opts[level] || opts.intermediate || [];
+                }
             }
             return (opts && opts[0]) || '';
         } catch (e) {
@@ -50,7 +54,8 @@
         var completedDate = new Date().toLocaleDateString();
 
         var sideLabel = side ? (side.charAt(0).toUpperCase() + side.slice(1)) : 'Unknown';
-        var levelLabel = level ? (level.charAt(0).toUpperCase() + level.slice(1)) : '';
+        var levelLabel = level === 'extra' ? 'Extra Support'
+            : (level ? (level.charAt(0).toUpperCase() + level.slice(1)) : '');
 
         var parts = [];
         parts.push('<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Civil War Simulation Summary - ' + escape(studentName) + '</title>');
@@ -119,7 +124,9 @@
             // Per-question answers are not persisted in this codebase; gameState.completedRecalls
             // only records that the student finished an act's recall round. We list the
             // question + correct answer for review/printing purposes.
-            var recallQuestions = (act.recall && act.recall[level]) || [];
+            var recallQuestions = (act.recall && (act.recall[level] ||
+                (level === 'extra' && act.recall.beginner) ||
+                act.recall.intermediate)) || [];
             if (recallQuestions.length) {
                 parts.push('<h3>Recall Questions</h3>');
                 var didRecall = completedRecalls.indexOf(actIdx) !== -1;

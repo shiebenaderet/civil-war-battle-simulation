@@ -100,6 +100,7 @@ function setupEventListeners() {
     // Difficulty toggle
     var difficultyPills = document.querySelectorAll('.difficulty-pill');
     var difficultyHints = {
+        extra: 'Easiest reading, lots of writing help, fewer choices',
         beginner: 'Shorter text, extra help with writing',
         intermediate: 'Standard text, some writing help',
         advanced: 'More detail, deeper questions, full challenge'
