@@ -59,15 +59,22 @@ const acts = [
             // Source: each level draws on battles[2].historical.biggerPicture (Shiloh's bigger-picture
             // section, which summarizes the escalation arc of the first three battles).
             positioning: {
+                extra: "The war is starting. Both sides think it will be quick. They are wrong. Many soldiers will die.",
                 beginner: 'The first three battles teach a hard lesson: this war will not be quick, and no one is ready for what it costs.',
                 intermediate: "Across the first three battles, the dream of a 90-day war collapses, and the country begins to glimpse the scale of what it has started.",
                 advanced: "From Charleston Harbor to Pittsburg Landing, the war's opening year shatters the illusion of a brief, contained conflict and reveals an industrial-scale violence neither side anticipated."
             },
             positioningSource: {
+                extra: 'battles[2].historical.biggerPicture.beginner',
                 beginner: 'battles[2].historical.biggerPicture.beginner',
                 intermediate: 'battles[2].historical.biggerPicture.intermediate',
                 advanced: 'battles[2].historical.biggerPicture.advanced'
             },
+            pat: [
+                "Watch for these names: <strong>Lincoln</strong>, <strong>Grant</strong>, <strong>Lee</strong>",
+                "Key event for your journal: how the dream of a short war died at Bull Run and Shiloh",
+                "Update your Battle Journal after each battle, before continuing"
+            ],
             // Map markers in studytools-1861 coordinate system (viewBox 0 0 900 700).
             // Coordinates verified visually in mockup; pin centers labelled below.
             markers: [
@@ -98,6 +105,47 @@ const acts = [
             ]
         },
         recall: {
+            extra: [
+                {
+                    question: "Who shot first at Fort Sumter?",
+                    options: [
+                        "The South",
+                        "The North",
+                        "A ship in the harbor",
+                        "No one"
+                    ],
+                    correctIndex: 0,
+                    explanation: " The South fired the first shots at Fort Sumter. This started the Civil War.",
+                    nudge: " Think about who attacked the fort, and who was inside it.",
+                    source: 'battles[0].historical.whatHappened.intermediate'
+                },
+                {
+                    question: "Who won the Battle of Bull Run?",
+                    options: [
+                        "The South",
+                        "The North",
+                        "Nobody",
+                        "The picnic watchers"
+                    ],
+                    correctIndex: 0,
+                    explanation: " The South won Bull Run. The North ran away. People had come to watch the battle. They had to run too.",
+                    nudge: " The North lost this one. The South won.",
+                    source: 'battles[1].historical.whatHappened.intermediate'
+                },
+                {
+                    question: "Why was Shiloh shocking?",
+                    options: [
+                        "23,000 soldiers were killed or hurt in two days",
+                        "It was the first battle",
+                        "The North gave up",
+                        "It was very small"
+                    ],
+                    correctIndex: 0,
+                    explanation: " 23,000 soldiers were killed or hurt at Shiloh in just two days. People had never seen so many die in one battle.",
+                    nudge: " Look for a big number. The shock was about how many people died.",
+                    source: 'battles[2].historical.keyFact.intermediate'
+                }
+            ],
             beginner: [
                 {
                     question: "Who fired first at Fort Sumter?",
@@ -223,6 +271,7 @@ const acts = [
             ]
         },
         review: {
+            extra: "### What happened in Act I\n\n- Fort Sumter: The war started here. No one died.\n- Bull Run: The South won. The North ran away.\n- Shiloh: A huge battle. 23,000 soldiers were killed or hurt in two days.\n\n### What we learned\n\n- People thought the war would be short. They were wrong.\n- Lincoln called for 500,000 more soldiers.\n- The war was going to be long and hard.\n\n### Two new things\n\n- Trains moved soldiers fast. This helped the South win Bull Run.\n- Battles were now huge. Many people would die.",
             beginner: "### How the war got worse, fast\n\n- Fort Sumter: Almost no one died. Both sides treated war like a show.\n- Bull Run: People brought picnic baskets to watch. The Union army ran for its life.\n- Shiloh: 23,000 killed or wounded in two days. More than all previous American wars combined.\n\n### What people expected vs. what they got\n\n- Before Sumter, most thought secession could be settled without much bloodshed.\n- After Bull Run, Lincoln signed up 500,000 soldiers for three years. The dream of a 90-day war was over.\n- After Shiloh, Grant decided the only way to win was to keep fighting until the South gave up completely.\n\n### What changed in how the war was fought\n\n- Trains carried soldiers faster than they could march (Bull Run).\n- Industrial-scale battle was real. Shiloh proved it.\n- Civilians stopped being spectators and started being witnesses.",
             intermediate: "### The escalation\n\n- Fort Sumter: A symbolic standoff with almost no combat deaths. Both sides still believed war was theater.\n- Bull Run: Civilians brought picnic baskets to watch a single decisive battle. The Union army's panicked retreat shattered that fantasy.\n- Shiloh: 23,000 casualties in two days. The nation's first encounter with industrial-scale slaughter.\n\n### What changed in expectations\n\n- Before Sumter, both North and South believed the conflict could be brief and contained.\n- After Bull Run, Lincoln signed bills enlisting 500,000 soldiers for three years and replaced McDowell with McClellan.\n- After Shiloh, Grant concluded that only 'complete conquest' could end the war. Lincoln defended him: 'I can't spare this man. He fights.'\n\n### What changed in how the war was fought\n\n- Railroads moved Confederate reinforcements in time to win Bull Run, the first decisive use of rail in combat history.\n- Rifled artillery at Fort Sumter showed brick-and-stone coastal forts were obsolete.\n- Civilians transitioned from spectators to witnesses. The picnic baskets at Bull Run were the last gasp of the old way of thinking about war.",
             advanced: "### The escalation\n\n- Fort Sumter (April 1861): A 34-hour bombardment producing zero combat fatalities, yet politically transformative. Lincoln converted a Confederate military victory into a Northern moral cause.\n- Bull Run (July 1861): A flanking maneuver tactically sound but undone by Confederate rail-borne reinforcements; the Union rout shattered the 90-day-war fantasy.\n- Shiloh (April 1862): 23,000 casualties in 48 hours, more than the cumulative toll of every previous American war combined. Industrial warfare became impossible to deny.\n\n### Expectations and political reality\n\n- Pre-Sumter, both Lincoln and Davis assumed the conflict could be brief and limited; Sumter's bloodless beginning seemed to confirm this.\n- Bull Run forced Lincoln to authorize 500,000 three-year enlistments and to replace McDowell with the methodical McClellan, signaling that the Union now planned for a multi-year war.\n- Shiloh shifted Grant's strategic philosophy decisively: only 'complete conquest' could resolve the war. Lincoln's public defense, 'I can't spare this man. He fights,' established the partnership that would direct Union grand strategy through 1865.\n\n### Transformations in the conduct of war\n\n- Railroads emerged at Bull Run as a decisive operational tool, allowing Johnston's Shenandoah forces to concentrate with Beauregard in time to turn the battle.\n- Rifled artillery at Fort Sumter rendered Third System masonry fortifications strategically obsolete.\n- The civilian-spectator phenomenon at Bull Run, with its picnic baskets and opera glasses, marked the last performance of the war-as-theater conception. After 1862, war became something witnessed, suffered, and survived, not consumed."
@@ -237,15 +286,22 @@ const acts = [
         reflectionBattleIndex: 5,
         intro: {
             positioning: {
+                extra: "The war gets bigger. So many people die. Lincoln writes a new rule. It frees enslaved people in the South. The war is now also about ending slavery.",
                 beginner: "The next three battles show the war's real price: tens of thousands of casualties, broken families, and a turning point in what the war was even about.",
                 intermediate: "In these three battles the war's human cost becomes impossible to ignore, and Lincoln answers it by changing what the war is for: not just saving the Union, but ending slavery in the rebel states.",
                 advanced: "Across Antietam, Fredericksburg, and Chancellorsville the war's true cost emerges, both in the casualty lists and in the political reckoning that followed: Lincoln responds to Antietam's bloodletting by issuing the Emancipation Proclamation, redefining the conflict's purpose even as the killing continues."
             },
             positioningSource: {
+                extra: 'battles[3].historical.biggerPicture.beginner',
                 beginner: 'battles[3].historical.biggerPicture.beginner',
                 intermediate: 'battles[3].historical.biggerPicture.intermediate',
                 advanced: 'battles[3].historical.biggerPicture.advanced'
             },
+            pat: [
+                "Vocabulary to watch for: <strong>Emancipation Proclamation</strong>, <strong>Stonewall Jackson</strong>",
+                "Key event for your journal: how Lincoln changed what the war was for after Antietam",
+                "Update your Battle Journal as the casualty numbers grow"
+            ],
             // All three battles in MD/VA cluster; labels offset to avoid overlap.
             // Antietam: label above pin. Fredericksburg + Chancellorsville: side-by-side stack below.
             markers: [
@@ -276,6 +332,47 @@ const acts = [
             ]
         },
                 recall: {
+            extra: [
+                {
+                    question: "Why is Antietam famous?",
+                    options: [
+                        "The bloodiest day in U.S. history",
+                        "It was the first battle",
+                        "The South won big",
+                        "No one was hurt"
+                    ],
+                    correctIndex: 0,
+                    explanation: " 22,000 soldiers were killed or hurt at Antietam in one day. It is the bloodiest day in U.S. history.",
+                    nudge: " Think about how many people died in one day.",
+                    source: 'battles[3].historical.keyFact.intermediate'
+                },
+                {
+                    question: "What did Lincoln do after Antietam?",
+                    options: [
+                        "He freed enslaved people in the South",
+                        "He surrendered",
+                        "He moved to Canada",
+                        "He fired Grant"
+                    ],
+                    correctIndex: 0,
+                    explanation: " Lincoln signed the Emancipation Proclamation. It freed enslaved people in the South. Now the war was also about ending slavery.",
+                    nudge: " Lincoln signed a famous paper. It was about slavery.",
+                    source: 'battles[3].historical.biggerPicture.intermediate'
+                },
+                {
+                    question: "Who was killed by his own soldiers at Chancellorsville?",
+                    options: [
+                        "Stonewall Jackson",
+                        "Robert E. Lee",
+                        "Ulysses S. Grant",
+                        "Abraham Lincoln"
+                    ],
+                    correctIndex: 0,
+                    explanation: " Stonewall Jackson was a great Southern general. His own soldiers shot him by mistake at night. He died eight days later. The South never had a general as good as him again.",
+                    nudge: " The general's name has 'Stone' in it.",
+                    source: 'battles[5].historical.keyFact.intermediate'
+                }
+            ],
             beginner: [
                 {
                     question: "What is Antietam known as?",
@@ -401,6 +498,23 @@ const acts = [
             ]
         },
         review: {
+            extra: `### What happened in Act II
+
+- Antietam: 22,000 soldiers killed or hurt in one day. The bloodiest day in U.S. history.
+- Fredericksburg: The South won. 12,000 Union soldiers were killed or hurt.
+- Chancellorsville: The South won. But their best general, Stonewall Jackson, was killed.
+
+### A big change
+
+- After Antietam, Lincoln signed the Emancipation Proclamation.
+- It freed enslaved people in the South.
+- The war was now also about ending slavery.
+
+### Who was hurt
+
+- Soldiers on both sides. Many died.
+- Enslaved people. They were now legally free in the South.
+- People at home. They saw photos of dead soldiers for the first time.`,
             beginner: `### What the war cost
 
 - Antietam: 22,000 killed or wounded in 12 hours. The bloodiest day in American history.
@@ -463,15 +577,22 @@ const acts = [
         reflectionBattleIndex: 8,
         intro: {
             positioning: {
+                extra: "In one week, the war turns around. The Union wins two big battles. Vicksburg falls. The South loses at Gettysburg. The South starts to lose the war. But the South is not done fighting yet.",
                 beginner: "In one summer week the war turns. Vicksburg falls, Lee is beaten at Gettysburg, and the South's chance to win starts running out. But Chickamauga proves the war is far from over.",
                 intermediate: "The summer of 1863 breaks the Confederacy's momentum: Vicksburg falls on July 4, Lee retreats from Gettysburg the next day, and the war's strategic balance shifts north. Chickamauga that fall reminds everyone the South can still win battles.",
                 advanced: "July 1863 marks the war's strategic inflection point: Vicksburg's surrender splits the Confederacy along the Mississippi, Gettysburg ends Lee's offensive capacity in the East, and the political weight of the war begins to settle. Yet Chickamauga in September demonstrates that the Confederacy's defeat, however inevitable in retrospect, is anything but immediate."
             },
             positioningSource: {
+                extra: 'battles[7].historical.biggerPicture.beginner',
                 beginner: 'battles[7].historical.biggerPicture.beginner',
                 intermediate: 'battles[7].historical.biggerPicture.intermediate',
                 advanced: 'battles[7].historical.biggerPicture.advanced'
             },
+            pat: [
+                "Vocabulary to watch for: <strong>Siege of Vicksburg</strong>, <strong>Battle of Gettysburg</strong>, <strong>54th Massachusetts</strong>",
+                "Key event for your journal: how the Union won two huge battles in one week (July 1863)",
+                "These battles are essay-critical. Write down the dates and what each one decided."
+            ],
             // Three battles geographically spread (MS, PA, GA) so labels don't collide.
             markers: [
                 {
@@ -501,6 +622,47 @@ const acts = [
             ]
         },
                 recall: {
+            extra: [
+                {
+                    question: "What did the Union win at Vicksburg?",
+                    options: [
+                        "Control of the Mississippi River",
+                        "A new state",
+                        "A treaty with England",
+                        "A new president"
+                    ],
+                    correctIndex: 0,
+                    explanation: " The Union won at Vicksburg. They now controlled the Mississippi River. This cut the South in half.",
+                    nudge: " Vicksburg sits on a big river. That river was the prize.",
+                    source: 'battles[6].historical.biggerPicture.intermediate'
+                },
+                {
+                    question: "Who lost the Battle of Gettysburg?",
+                    options: [
+                        "The South (Lee)",
+                        "The North (Meade)",
+                        "Nobody",
+                        "England"
+                    ],
+                    correctIndex: 0,
+                    explanation: " Lee's Southern army lost at Gettysburg. He had tried to invade the North. He never tried again.",
+                    nudge: " Lee was the Southern general. He attacked the North and lost.",
+                    source: 'battles[7].historical.whatHappened.intermediate'
+                },
+                {
+                    question: "Did the South win or lose at Chickamauga?",
+                    options: [
+                        "Won, but did not chase the Union army",
+                        "Lost the battle",
+                        "Tied",
+                        "Did not show up"
+                    ],
+                    correctIndex: 0,
+                    explanation: " The South won at Chickamauga. But they did not chase the Union army. The Union army got away. This was a missed chance for the South.",
+                    nudge: " The South won. But they made a mistake after.",
+                    source: 'battles[8].historical.whatHappened.intermediate'
+                }
+            ],
             beginner: [
                 {
                     question: "What date did Vicksburg surrender?",
@@ -626,6 +788,23 @@ const acts = [
             ]
         },
         review: {
+            extra: `### Three big battles
+
+- Vicksburg: The Union won. They now controlled the Mississippi River. The South was cut in half.
+- Gettysburg: The Union won. Lee's army was beaten. Lee never tried to invade the North again.
+- Chickamauga: The South won. But they did not chase the Union army. Lincoln sent Grant to take charge.
+
+### Why this matters
+
+- The South was losing the war.
+- Black soldiers fought for the Union. They proved they would fight for their freedom.
+- Lincoln gave the Gettysburg Address. It was a famous speech.
+
+### But the war was not over
+
+- The South could still win battles.
+- Many more soldiers would die.
+- Grant was now the most important Union general.`,
             beginner: `### What made these battles decisive
 
 - Vicksburg: The Union got the whole Mississippi River. The Confederacy was cut in half.
@@ -688,15 +867,22 @@ const acts = [
         reflectionBattleIndex: 12,
         intro: {
             positioning: {
+                extra: "The war is ending. Grant will not stop fighting. Sherman burns farms and cities. Lee gives up at a place called Appomattox. The war is over. But four million people just got their freedom. Now the country must figure out what freedom really means.",
                 beginner: "The final battles end the war but raise harder questions. Grant won't stop fighting until the South gives up. Sherman destroys what's left. And after Appomattox, the country has to figure out what freedom really means for four million people just released from slavery.",
                 intermediate: "In the war's final year Grant refuses to retreat, Sherman targets civilians, and Lincoln's re-election keeps the Union committed to ending the rebellion. But the surrender at Appomattox settles the war on the battlefield without settling what the country owes to four million formerly enslaved people.",
                 advanced: "The war's final year transforms its character: Grant accepts unprecedented casualties to maintain pressure, Sherman makes Southern civilians strategic targets, and Atlanta's fall secures Lincoln's re-election against a peace movement that might have let the Confederacy survive. Yet Appomattox closes the military conflict without resolving the political one, and the questions left open about freedom, citizenship, and Reconstruction will shape American life for generations."
             },
             positioningSource: {
+                extra: 'battles[12].historical.biggerPicture.beginner',
                 beginner: 'battles[12].historical.biggerPicture.beginner',
                 intermediate: 'battles[12].historical.biggerPicture.intermediate',
                 advanced: 'battles[12].historical.biggerPicture.advanced'
             },
+            pat: [
+                "Vocabulary to watch for: <strong>Ulysses S. Grant</strong>, <strong>William T. Sherman</strong>, <strong>total war</strong>",
+                "Key event for your journal: how Sherman's march and Grant's campaign forced the South to surrender",
+                "This is the last act. Make sure your journal is ready for the final essay."
+            ],
             // Four battles, two in central VA (Wilderness, Appomattox), two in GA (Atlanta, Sherman's March).
             // Labels carefully offset to avoid the VA pair colliding.
             markers: [
@@ -735,6 +921,47 @@ const acts = [
             ]
         },
                 recall: {
+            extra: [
+                {
+                    question: "Why was Grant a different kind of general?",
+                    options: [
+                        "He did not give up after a hard battle",
+                        "He never fought a battle",
+                        "He worked for the South",
+                        "He liked to retreat"
+                    ],
+                    correctIndex: 0,
+                    explanation: " Other Union generals would retreat after a hard battle. Grant kept marching south. He did not give up.",
+                    nudge: " Grant was tough. He kept going.",
+                    source: 'battles[9].historical.keyFact.intermediate'
+                },
+                {
+                    question: "What did Sherman do on his march through Georgia?",
+                    options: [
+                        "He burned farms, railroads, and factories",
+                        "He gave food to everyone",
+                        "He built new schools",
+                        "He took a long nap"
+                    ],
+                    correctIndex: 0,
+                    explanation: " Sherman's army marched 300 miles. They burned farms, railroads, and factories. They wanted to break the South's ability to fight.",
+                    nudge: " Sherman destroyed things. Think about what would help the South keep fighting.",
+                    source: 'battles[11].historical.whatHappened.intermediate'
+                },
+                {
+                    question: "What happened at Appomattox?",
+                    options: [
+                        "Lee surrendered to Grant",
+                        "Lincoln gave a speech",
+                        "Sherman burned a city",
+                        "The war started"
+                    ],
+                    correctIndex: 0,
+                    explanation: " At Appomattox, Lee surrendered to Grant. The Civil War was over.",
+                    nudge: " The South gave up here. Two famous generals met.",
+                    source: 'battles[12].historical.whatHappened.intermediate'
+                }
+            ],
             beginner: [
                 {
                     question: "What was different about Grant compared to Union generals before him?",
@@ -860,6 +1087,24 @@ const acts = [
             ]
         },
         review: {
+            extra: `### How the war ended
+
+- Wilderness: Grant did not give up after a hard battle. He kept marching south.
+- Atlanta: Sherman took the city. This helped Lincoln win the election.
+- Sherman's March: Sherman's army marched 300 miles. They burned farms and railroads.
+- Appomattox: Lee surrendered to Grant. The war was over.
+
+### What changed
+
+- The North won. The country stayed together.
+- Slavery ended in all the states.
+- Four million enslaved people were now free.
+
+### Hard questions to think about
+
+- Was it right for Sherman to burn so many things?
+- The war was over. But what would freedom really mean for millions of people?
+- The country still had a lot of work to do.`,
             beginner: `### How the war ended
 
 - Wilderness: Grant kept marching south even after a brutal fight. The war was now going to end one way or the other.

@@ -627,6 +627,36 @@ function renderActIntro(actIndex) {
     positioningEl.textContent = (act.intro.positioning && act.intro.positioning[difficulty]) ||
                                  (act.intro.positioning && act.intro.positioning.intermediate) || '';
 
+    // PAT (Pay Attention To) callout: per-act vocab + journal nudge
+    var patEl = document.getElementById('actIntroPat');
+    var patList = document.getElementById('actIntroPatList');
+    if (patEl && patList) {
+        while (patList.firstChild) patList.removeChild(patList.firstChild);
+        var patItems = (act.intro && act.intro.pat) || [];
+        if (patItems.length) {
+            patItems.forEach(function(itemHtml) {
+                var li = document.createElement('li');
+                // Parse the limited <strong>...</strong> markup into text + bold nodes
+                // (no innerHTML — avoids the security hook and any XSS surface)
+                var parts = String(itemHtml).split(/(<strong>.*?<\/strong>)/g);
+                parts.forEach(function(part) {
+                    var m = part.match(/^<strong>(.*?)<\/strong>$/);
+                    if (m) {
+                        var s = document.createElement('strong');
+                        s.textContent = m[1];
+                        li.appendChild(s);
+                    } else if (part) {
+                        li.appendChild(document.createTextNode(part));
+                    }
+                });
+                patList.appendChild(li);
+            });
+            patEl.style.display = '';
+        } else {
+            patEl.style.display = 'none';
+        }
+    }
+
     // Replace map content via DOM (XSS-safe — no innerHTML)
     while (mapEl.firstChild) mapEl.removeChild(mapEl.firstChild);
     var svgNode = buildActMapNode(act);
