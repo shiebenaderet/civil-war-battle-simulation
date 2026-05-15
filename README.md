@@ -4,7 +4,7 @@ An interactive educational game that takes students through 13 major battles of 
 
 ## Play the Game
 
-**Live Demo:** https://shiebenaderet.github.io/civil-war-battle-simulation
+**Live site:** https://civil.mrbsocialstudies.org
 
 ## Learning Objectives
 

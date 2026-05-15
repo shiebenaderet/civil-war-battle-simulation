@@ -182,9 +182,45 @@ function getStudentNameFromForm() {
 // Leader Letter Screen (Transition into Historical Mode)
 // ============================================================
 
+// Leader letter content, keyed by side and difficulty.
+// Each value is an array of paragraph strings. ES paragraphs are short
+// 1-3rd grade sentences. Beginner/Intermediate/Advanced share the same
+// existing copy until per-tier voicing is needed.
+var leaderLetterParagraphs = {
+    union: {
+        extra: [
+            "Our country is at war. I need your help.",
+            "You will visit 13 famous battles. You will see what happened. You will make choices.",
+            "At each battle, you will learn what real generals had to decide. Some choices were hard. Some had a big cost.",
+            "War is never easy. But we have to understand it. Our country is fighting to stay together. We are also fighting for the idea that all people are equal."
+        ],
+        beginner: [
+            "The nation faces its gravest hour. As your President, I write to ask something of you that requires both courage and careful thought.",
+            "I need you on the ground \u2014 someone who can witness the events of this war firsthand, from the first shots at Fort Sumter to whatever end Providence has in store. You will visit 13 battlefields across our divided nation.",
+            "At each site, you will review the intelligence available to our commanders, weigh the decisions they faced, learn what actually happened, and hear from the people who lived through it. I ask that you record your honest thoughts at every step.",
+            "This will not be easy. War never is. But understanding what happened \u2014 and why \u2014 is the duty of every citizen who wishes to preserve this Union and the idea that all people are created equal."
+        ]
+    },
+    confederacy: {
+        extra: [
+            "Our new country needs your help. We are at war with the North.",
+            "You will visit 13 big battles. You will see what happened on both sides.",
+            "At each battle, you will see what generals had to decide. You will make some of those choices yourself.",
+            "Pay close attention. The story of this war will shape our country for a long time."
+        ],
+        beginner: [
+            "The Confederate States of America stand at a crossroads, and I require a trusted correspondent to document what unfolds on our battlefields.",
+            "You will observe 13 pivotal engagements across the breadth of this war, from the first shots at Fort Sumter to the final chapter at Appomattox Court House.",
+            "At each battlefield, you will study the intelligence available to commanders on both sides, consider the decisions they faced, and record your own reflections on what this war means for the people caught in its path.",
+            "I ask that you witness these events honestly and completely. Your observations will be invaluable to understanding the true cost and meaning of this conflict for all who lived through it."
+        ]
+    }
+};
+
 function renderLeaderLetter() {
     var side = gameState.side;
     var studentName = gameState.studentName || 'Student';
+    var difficulty = (typeof gameState !== 'undefined' && gameState.difficulty) || 'intermediate';
 
     var seal = document.getElementById('letterSeal');
     var from = document.getElementById('letterFrom');
@@ -195,16 +231,17 @@ function renderLeaderLetter() {
     var signature = document.getElementById('letterSignature');
     var title = document.getElementById('letterTitle');
 
-    if (side === 'union') {
+    var sideKey = (side === 'union') ? 'union' : 'confederacy';
+
+    // Paragraph fallback chain: extra -> beginner -> intermediate -> advanced
+    var sideContent = leaderLetterParagraphs[sideKey] || {};
+    var paras = sideContent[difficulty] || sideContent.beginner || sideContent.intermediate ||
+                sideContent.advanced || sideContent.extra || [];
+
+    if (sideKey === 'union') {
         seal.textContent = '\uD83C\uDDFA\uD83C\uDDF8';
         from.textContent = 'Executive Mansion, Washington';
         date.textContent = 'April 1861';
-        salutation.textContent = 'Dear ' + escapeHtml(studentName) + ',';
-        body.innerHTML =
-            '<p>The nation faces its gravest hour. As your President, I write to ask something of you that requires both courage and careful thought.</p>' +
-            '<p>I need you on the ground \u2014 someone who can witness the events of this war firsthand, from the first shots at Fort Sumter to whatever end Providence has in store. You will visit <strong>13 battlefields</strong> across our divided nation.</p>' +
-            '<p>At each site, you will review the intelligence available to our commanders, weigh the decisions they faced, learn what actually happened, and hear from the people who lived through it. I ask that you record your honest thoughts at every step.</p>' +
-            '<p>This will not be easy. War never is. But understanding what happened \u2014 and why \u2014 is the duty of every citizen who wishes to preserve this Union and the idea that all people are created equal.</p>';
         closing.textContent = 'With great confidence in your judgment,';
         signature.textContent = 'Abraham Lincoln';
         title.textContent = 'President of the United States';
@@ -212,16 +249,19 @@ function renderLeaderLetter() {
         seal.textContent = '\uD83C\uDFF4';
         from.textContent = 'Executive Office, Richmond';
         date.textContent = 'April 1861';
-        salutation.textContent = 'Dear ' + escapeHtml(studentName) + ',';
-        body.innerHTML =
-            '<p>The Confederate States of America stand at a crossroads, and I require a trusted correspondent to document what unfolds on our battlefields.</p>' +
-            '<p>You will observe <strong>13 pivotal engagements</strong> across the breadth of this war, from the first shots at Fort Sumter to the final chapter at Appomattox Court House.</p>' +
-            '<p>At each battlefield, you will study the intelligence available to commanders on both sides, consider the decisions they faced, and record your own reflections on what this war means for the people caught in its path.</p>' +
-            '<p>I ask that you witness these events honestly and completely. Your observations will be invaluable to understanding the true cost and meaning of this conflict for all who lived through it.</p>';
         closing.textContent = 'May Providence guide your journey,';
         signature.textContent = 'Jefferson Davis';
         title.textContent = 'President of the Confederate States';
     }
+    salutation.textContent = 'Dear ' + studentName + ',';
+
+    // Render paragraphs via DOM (no innerHTML \u2014 security hook + XSS-safe)
+    while (body.firstChild) body.removeChild(body.firstChild);
+    paras.forEach(function(text) {
+        var p = document.createElement('p');
+        p.textContent = text;
+        body.appendChild(p);
+    });
 
     showScreen('leaderLetterScreen');
 }
@@ -321,11 +361,13 @@ var groupedReflections = [
         theme: 'The War Begins',
         battleRange: 'Fort Sumter, Bull Run, and Shiloh',
         prompt: {
+            extra: "You saw the first three battles. At Fort Sumter, no one died. At Bull Run, people came to watch like it was a show. At Shiloh, 23,000 soldiers were killed or hurt in two days. The war got much worse very fast. Why? What changed?",
             beginner: "You've seen the first three battles. At Fort Sumter, both sides said they were just defending themselves. At Bull Run, people thought the war would be quick. By Shiloh, thousands were dying in a single day. Why did the war get so much worse so fast? What changed between the first shots and the bloodbath at Shiloh?",
             intermediate: "From Fort Sumter through Shiloh, the war escalated from a symbolic standoff to massive bloodshed. Both sides initially expected a short war \u2014 civilians even picnicked at Bull Run. What caused this rapid escalation? How did the reality of battle change what people expected and how the war was fought?",
             advanced: "Trace the escalation from Fort Sumter's relatively bloodless standoff through Bull Run's shocking rout to Shiloh's unprecedented carnage. How did each battle reshape assumptions about the war's nature and cost? After Shiloh, Grant concluded that only 'complete conquest' could end the war \u2014 what evidence from these three battles supports or complicates that conclusion?"
         },
         teacherTip: {
+            extra: "Think about what people expected before the war. Then think about Shiloh. What surprised them most?",
             beginner: "Think about what people expected before each battle vs. what actually happened. You could compare the civilians picnicking at Bull Run to the soldiers at Shiloh. What surprised people the most?",
             intermediate: "Consider how expectations changed from battle to battle. What did people assume about war at first? What details from the primary sources proved those assumptions wrong?",
             advanced: "Examine the gap between political rhetoric and battlefield reality. How did each side's justification for war hold up against escalating violence? Use specific evidence from the primary sources."
@@ -348,11 +390,13 @@ var groupedReflections = [
         theme: 'The Human Cost',
         battleRange: 'Antietam, Fredericksburg, and Chancellorsville',
         prompt: {
+            extra: "These three battles hurt a lot of people. Soldiers died. Families lost loved ones. Lincoln signed the Emancipation Proclamation to free enslaved people in the South. Pick one person or group from the war. Tell how the war changed their life.",
             beginner: "Over these three battles, you've seen how the war hurt everyone \u2014 soldiers, nurses, immigrants, and regular families. Clara Barton treated the wounded. Irish soldiers charged a wall 14 times. Lincoln freed enslaved people to help win the war. Pick one person or group and explain how the war changed their life.",
             intermediate: "Antietam through Chancellorsville reveals the war's devastating human toll. The Emancipation Proclamation transformed the war's purpose. Fredericksburg exposed the cost of poor leadership. Chancellorsville showed that even victories have terrible prices. Choose one of these themes and explain how it changed the conflict.",
             advanced: "These three battles illustrate the intersection of military strategy, political calculation, and human suffering. Lincoln weaponized Antietam's outcome for the Emancipation Proclamation. Fredericksburg's futile charges raise questions about command responsibility. Chancellorsville's Pyrrhic victory cost Lee his most irreplaceable general. Drawing on primary sources, analyze how the relationship between military action and political purpose evolved. Who bore the greatest cost?"
         },
         teacherTip: {
+            extra: "Pick one person from these battles. How was their life changed by the war?",
             beginner: "Pick one person you read about \u2014 Clara Barton, an Irish soldier, an enslaved person. What was their experience? How was the war personal for them?",
             intermediate: "Think about who had power and who didn't. Who made the big decisions, and who paid the price? The Emancipation Proclamation is a good example \u2014 who did it help, and who was left out?",
             advanced: "Consider whose voices are centered in traditional war narratives and whose are marginalized. How do the primary source quotes complicate simple moral judgments about the war's purpose?"
@@ -375,11 +419,13 @@ var groupedReflections = [
         theme: 'Turning Points',
         battleRange: 'Vicksburg, Gettysburg, and Chickamauga',
         prompt: {
+            extra: "In one week, the war changed. The Union won at Vicksburg. The Union won at Gettysburg. The South was losing. But Chickamauga showed the South could still win. What made these battles so important? Why do people call this the turning point?",
             beginner: "Vicksburg and Gettysburg happened at almost the same time and changed the whole war. People in Vicksburg hid in caves. At Gettysburg, 12,000 men charged across an open field. What made this the moment the war started to turn? Would you have kept fighting if you were on the losing side?",
             intermediate: "The summer of 1863 \u2014 Vicksburg, Gettysburg, and Chickamauga \u2014 was the war's turning point. The Confederacy was split in two and suffered its worst defeat, yet won one last major victory at Chickamauga. What made these battles decisive? Consider both the military results and the human cost.",
             advanced: "July 1863 represents the war's strategic inflection point. Vicksburg split the Confederacy. Gettysburg ended Lee's offensive capacity. Yet Chickamauga proved the war was far from over. Analyze how these battles collectively transformed the war's trajectory, and examine the ethical questions they raise: civilian suffering at Vicksburg, the futility of Pickett's Charge, and the role of chance at Chickamauga."
         },
         teacherTip: {
+            extra: "Think about who was winning before these battles and who was winning after.",
             beginner: "What was different about the war before and after these battles? Try comparing who was winning before to who was winning after.",
             intermediate: "A 'turning point' doesn't mean the war was over \u2014 Chickamauga proved that. What changed strategically, and what stayed the same? Think about both sides.",
             advanced: "Interrogate the concept of 'turning point.' Was it the military outcomes, political consequences, or psychological impact that mattered most? Argue your position with evidence."
@@ -402,11 +448,13 @@ var groupedReflections = [
         theme: "The War's Legacy",
         battleRange: 'Wilderness, Atlanta, Sherman\'s March, and Appomattox',
         prompt: {
+            extra: "The war is ending. Grant did not stop fighting. Sherman burned farms and cities. Lee surrendered. Then Lincoln was killed. Four million people were now free. Was the way the war ended fair? What should happen after a war this terrible?",
             beginner: "The last four battles show how the war ended \u2014 and raise big questions about what came next. Grant kept fighting no matter the cost. Sherman destroyed homes and farms. Then Grant let the Confederates go home in peace, and Lincoln was killed five days later. Was the way the war ended fair? What should happen after a war this terrible?",
             intermediate: "The war's final chapter raises questions that still matter today. Grant's relentless strategy, Sherman's total war, and the generous surrender terms all shaped what came next. Was Grant a hero or a butcher? Was Sherman's destruction justified? How did Lincoln's assassination change Reconstruction?",
             advanced: "The war's endgame crystallizes its most enduring moral questions. Grant accepted devastating casualties for strategic objectives. Sherman deliberately targeted civilian infrastructure. Appomattox embodied reconciliation \u2014 yet Lincoln's assassination five days later derailed that vision. Evaluate the ethical frameworks at work and the tension between reconciliation and justice for four million freed people. How do these unresolved tensions continue to shape American society?"
         },
         teacherTip: {
+            extra: "Think about a soldier, a freed person, and a Southern family. How would each one answer: was the war worth it?",
             beginner: "Think about different people \u2014 a Union soldier, a freed person, a Southern family. How would each of them answer: 'Was the war worth it?'",
             intermediate: "Consider the tension between ending the war quickly and ending it fairly. Were the surrender terms fair to everyone, including the four million freed people?",
             advanced: "How do the decisions from 1864\u20131865 still affect American society? Think about the relationship between the generous surrender terms and the failures of Reconstruction."
@@ -1319,8 +1367,8 @@ function renderHistoricalBattle() {
     document.getElementById('histReflectInput').value = '';
 
     // STREAMLINED FLOW: Step 0 shows Intel + Situation together (Briefing)
-    // Intel already hidden at beginner via difficulty logic above
-    if (difficulty !== 'beginner') document.getElementById('sectionIntel').style.display = 'block';
+    // Intel already hidden at beginner/ES via difficulty logic above
+    if (!isLowReadingTier) document.getElementById('sectionIntel').style.display = 'block';
     document.getElementById('sectionSituation').style.display = 'block';
     document.getElementById('sectionWWYD').style.display = 'none';
     document.getElementById('wwydFeedback').style.display = 'none';

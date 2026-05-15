@@ -107,13 +107,23 @@ function setupEventListeners() {
     };
     difficultyPills.forEach(function(pill) {
         pill.addEventListener('click', function() {
-            difficultyPills.forEach(function(p) {
-                p.classList.remove('active');
-                p.setAttribute('aria-checked', 'false');
-            });
-            pill.classList.add('active');
-            pill.setAttribute('aria-checked', 'true');
-            gameState.difficulty = pill.getAttribute('data-level');
+            var level = pill.getAttribute('data-level');
+            // Route through setReadingLevelEverywhere so navbar pills + Settings
+            // stay in sync. Without this, choosing a level on the start screen
+            // and then entering a battle leaves the navbar pill showing whatever
+            // was last persisted (or default Intermediate).
+            if (typeof setReadingLevelEverywhere === 'function') {
+                setReadingLevelEverywhere(level);
+            } else {
+                // Fallback if helper isn't loaded yet
+                difficultyPills.forEach(function(p) {
+                    p.classList.remove('active');
+                    p.setAttribute('aria-checked', 'false');
+                });
+                pill.classList.add('active');
+                pill.setAttribute('aria-checked', 'true');
+                gameState.difficulty = level;
+            }
             document.getElementById('difficultyHint').textContent =
                 difficultyHints[gameState.difficulty] || '';
         });
@@ -194,6 +204,20 @@ function setupEventListeners() {
 
     // Settings menu
     document.getElementById('settingsBtn').addEventListener('click', toggleSettingsMenu);
+
+    // Handout links: close the menu after clicking (the link still opens in a
+    // new tab via target="_blank"; closing the menu prevents it from staying
+    // open behind the new tab).
+    ['handoutStandardMenuBtn', 'handoutSomeSupportMenuBtn', 'handoutExtraSupportMenuBtn'].forEach(function(id) {
+        var el = document.getElementById(id);
+        if (el) {
+            el.addEventListener('click', function() {
+                var sm = document.getElementById('settingsMenu');
+                if (sm) sm.classList.remove('show');
+                document.getElementById('settingsBtn').setAttribute('aria-expanded', 'false');
+            });
+        }
+    });
 
     // Close settings when clicking outside
     document.addEventListener('click', function(e) {

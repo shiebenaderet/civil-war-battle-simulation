@@ -410,6 +410,14 @@ img {
 
 .settings-item:hover { background: var(--color-paper-deep); }
 
+/* Anchor variants of .settings-item (e.g., handout links) — strip default
+   link styling so they match the button items. */
+a.settings-item {
+    text-decoration: none;
+    color: var(--color-ink);
+}
+a.settings-item:visited { color: var(--color-ink); }
+
 .menu-icon {
     width: 1.4em;
     text-align: center;
