@@ -206,12 +206,39 @@ body { font-family: 'Old Standard TT', Georgia, serif; font-size: 14pt; line-hei
 .cont-line .right-cont { font-style: italic; }
 
 @media print {
-    html, body { background: var(--paper) !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-    .page { width: 100%; }
+    html, body {
+        background: white !important;
+        color: black !important;
+    }
+    body { font-size: 12pt; line-height: 1.4; }
+    .page { width: auto; margin: 0; padding: 0; }
     .print-toolbar { display: none !important; }
+
+    .pat-list, .act-box, .q-embed, .wordbank, .cont-line {
+        background: white !important;
+    }
+    .badge, .mod-tag, .act-tag, .qtag, .reason-tag {
+        background: white !important;
+        color: black !important;
+        border: 1px solid black;
+    }
+    .pat-list { border-left: 3px solid black; }
+    .act-box, .q-embed, .wordbank { border: 1px solid black; }
+    .pat-list b, .qtext b, .field-lbl, .wordbank-grid .term {
+        color: black !important;
+    }
+    .stem, .act-box .stem { color: black !important; }
+
+    .page-break { page-break-before: always; break-before: page; }
     .pat-list, .act-box, .q-embed, .wordbank {
         break-inside: avoid; page-break-inside: avoid;
     }
+    .section-head { margin-bottom: 6px; }
+    .section-head h1 { font-size: 22pt; margin-top: 0; }
+    .pat-list, .act-box, .q-embed, .wordbank { margin: 6px 0; padding: 6px 10px; }
+    .act-grid { gap: 6px; margin: 6px 0; }
+    .lineW { height: 1.2em; margin: 1px 0; }
+    .foot { display: none; }
 }
 </style>
 </head>
@@ -305,9 +332,7 @@ body { font-family: 'Old Standard TT', Georgia, serif; font-size: 14pt; line-hei
     <div class="foot">PAGE 1 · KEEP GOING ON THE BACK</div>
 </div>
 
-<div style="page-break-before: always;"></div>
-
-<div class="page">
+<div class="page page-break">
 
     <div class="cont-line">
         <span class="left-cont">Battle Journal · Some Support · Large Text</span>
