@@ -43,6 +43,17 @@ Unlocked after completing Historical Mode. Students make strategic choices with 
 - Dark/light theme for different classroom environments
 - Screen reader support, keyboard navigation, accessibility compliant
 - Student responses exportable as PDF for Canvas/LMS submission
+- Printable Battle Journal handout in three differentiation tiers (see below)
+
+## Battle Journal Handout
+
+A printable companion handout students fill in during Historical Mode. Captures battle evidence by act, then scaffolds a thesis-and-evidence response to "How was the Union able to defeat the Confederacy?" Available in three tiers, all large-text, two pages each. Open in a browser and click the Print Handout button at the top.
+
+- **Standard:** [civil.mrbsocialstudies.org/handouts/battle-journal-standard.html](https://civil.mrbsocialstudies.org/handouts/battle-journal-standard.html) — on-grade 8th-grade level, 8 vocabulary terms in Word Bank
+- **Some Support:** [civil.mrbsocialstudies.org/handouts/battle-journal-some-support.html](https://civil.mrbsocialstudies.org/handouts/battle-journal-some-support.html) — 5-6th grade level, sentence stems on every prompt
+- **Extra Support:** [civil.mrbsocialstudies.org/handouts/battle-journal-extra-support.html](https://civil.mrbsocialstudies.org/handouts/battle-journal-extra-support.html) — 1-3rd grade level, 6 Word Bank terms with plain-language definitions
+
+The in-game Act Review screens (one per act, four total) display a banner reminding students to fill in that act's box before continuing.
 
 ## The 13 Battles
 
@@ -94,6 +105,7 @@ civil-war-battle-simulation/
 │   ├── ui.js               # Screen management, rendering, DOM, tutorial, reflections
 │   └── app.js              # Init, event wiring, screen flow
 ├── images/                 # Public domain artwork (Library of Congress, National Archives)
+├── handouts/               # Printable Battle Journal in 3 differentiation tiers
 └── README.md
 ```
 
@@ -108,6 +120,7 @@ civil-war-battle-simulation/
 
 ## Version History
 
+- **v3.15.1** - "Battle Journal + Confederate Polish": adds a printable two-page Battle Journal handout in three differentiation tiers (Standard, Some Support, Extra Support) following the Unit 9 Field Report design system. Each tier captures evidence by act and scaffolds a thesis-and-evidence response to the unit prompt about how the Union won. Each handout has a sticky Print Handout toolbar that hides on print. The Act Review modal now displays a handout-nudge banner reminding students to fill in that act's box before continuing. Five tonal fixes to Confederate-side battle text: Fredericksburg's "mow them down" / "slaughter" framing replaced with sober description, Chancellorsville's celebratory "greatest victory!" feedback complicated with Jackson's death, Sherman's March now names the enslaved people who fled to Union lines, Chickamauga's "paid off big time" slang replaced, Antietam's European recognition framing now names the slavery dimension Britain and France would have been recognizing. No code changes to game logic, save/load, or content data structure.
 - **v3.15.0** - "Launch Polish": classroom-ready release. Toolbar redesigned in Field Report tokens with always-visible reading-level pills (B/I/A) — students can switch reading level mid-battle, mid-recall, or mid-reflection without losing progress; selection persists in localStorage. Accessibility panel (Aa) adds OpenDyslexic font toggle (self-hosted, swaps all text including chrome), font size scale (S/M/L), and read-aloud voice/rate controls using the browser's speech synthesis with quality filtering and per-section play buttons (auto-attached via MutationObserver). Settings menu (⋯) cleanup: Reset This Battle (with confirmation) lets students redo a single battle without nuking progress; Print Summary at end of game produces a printable per-act report of decisions, recall completion, and per-battle reflections (via Blob URL with auto-print). Browser refresh/back/close warning when mid-battle. Subtitle "Act II — 1862" relocated from navbar to battle header dateline to keep navbar single-row on desktop. No changes to battle content; this is the runway-cleanup release.
 - **v3.14.0** - "Battle Screen, Reshaped" — full release (code + content): Plan A code refactor plus Plan B content authoring. Per-sub-screen note nudges (Feedback / Outcome / Reflection) for all 13 battles at 3 reading levels (117 nudges total), each citing the source field it summarizes. Act review study guides for all 4 acts at 3 reading levels (12 guides total), organized around each act's synthesis prompts so students reach the recall question with the right framing. Acts II–IV explicitly handle the Emancipation Proclamation arc through to the 13th Amendment to prevent the conflation of Appomattox with full emancipation. No em dashes; teacher's voice throughout.
 - **v3.14.0-alpha** - "Battle Screen, Reshaped" Plan A (code refactor): step 2 of the historical battle screen splits into 3 sub-steps (Feedback, Outcome, Reflection from history). Each gets its own Continue button; cascade-reveal stagger animation removed. Recall option display order shuffled (drop-in WWYD pattern, same salt). Review overlay shell added: per-recall-question and per-reflection-textarea "Review the act" link opens a modal with battle thumbnails and act review content (content authored in Plan B). Note-nudge slots added inside step 2 sub-sections (content authored in Plan B). All sub-sections render gracefully when content is empty. No regression of tutorial, help bar, save/resume, PDF export, or step pills.
