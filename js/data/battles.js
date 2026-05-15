@@ -548,11 +548,13 @@ const battles = [
         historical: {
             situation: {
                 union: {
+                    extra: "Lee's army came into the North! But your soldiers found Lee's secret plans wrapped around three cigars. You know where his army is. You have twice as many soldiers. This could end the war.",
                     beginner: "Robert E. Lee has brought his army into Maryland \u2014 the war is now on Northern soil! But your soldiers found something amazing: a copy of Lee's secret plans wrapped around three cigars. You know exactly where his army is and it's split up. You have twice as many soldiers. This could end the war!",
                     intermediate: "Robert E. Lee has invaded Maryland, bringing the war to Northern soil for the first time. But your soldiers just found an incredible gift: a copy of Lee's secret battle plans wrapped around three cigars! You know exactly where his divided army is positioned. This is your chance to destroy him.",
                     advanced: "Lee has launched an audacious invasion of Maryland, seeking a decisive victory on Northern soil that could secure European recognition of the Confederacy. In an extraordinary stroke of fortune, your soldiers have discovered a copy of Lee's Special Order 191 \u2014 his complete operational plan \u2014 wrapped around three cigars at an abandoned campsite. You now know the precise disposition of his dangerously divided army and possess a 2-to-1 numerical advantage. This is perhaps the single greatest intelligence windfall of the war."
                 },
                 confederacy: {
+                    extra: "Lee took your army into the North. He hopes a big win here will help. Other countries might join your side. But your army is spread out. And you don't know the enemy just found your plans.",
                     beginner: "General Lee has taken your army into Maryland, hoping to win a big battle on Northern land. If you win here, Britain and France might recognize the Confederacy as a real country, even though that would mean accepting a country built on slavery. But your army is spread out across miles of countryside, and you don't know that the enemy just found a copy of your secret plans.",
                     intermediate: "General Lee has invaded Maryland, hoping a victory on Northern soil will convince Britain and France to recognize the Confederacy. Both countries have officially banned slavery, so recognizing the Confederacy would mean overlooking the institution their textile mills depend on Confederate cotton to supply. Your army is dangerously divided across miles of countryside. Worse, you don't know that the enemy has found a copy of your battle plans.",
                     advanced: "Lee's Maryland Campaign aims to achieve a decisive victory that will secure European diplomatic recognition and demoralize the Northern electorate. However, your army is dangerously dispersed across miles of countryside, with Jackson's corps detached to capture Harpers Ferry. Compounding this vulnerability, McClellan has obtained a copy of Special Order 191 \u2014 your complete operational plan \u2014 though you remain unaware of this catastrophic intelligence breach."
@@ -599,6 +601,7 @@ const battles = [
                 }
             },
             whatHappened: {
+                extra: "McClellan attacked in three parts. Lee was able to move his soldiers to each new attack. The fighting was terrible. 22,000 soldiers were killed or hurt in one day. It is the bloodiest day in U.S. history. Lee left for Virginia the next day.",
                 beginner: "McClellan attacked in three parts instead of all at once, which gave Lee time to move his soldiers around. The fighting happened in a cornfield, along a sunken road called 'Bloody Lane,' and across Burnside Bridge. Over 22,000 soldiers were killed or hurt in one day \u2014 the bloodiest single day in American history. Lee held his ground but went back to Virginia the next day.",
                 intermediate: "McClellan attacked cautiously in three separate waves instead of all at once, giving Lee time to shift his thin forces. The fighting raged through a cornfield, a sunken road called 'Bloody Lane,' and across Burnside Bridge. It became the bloodiest single day in American history, with over 22,000 casualties. Lee held his ground but retreated to Virginia the next day.",
                 advanced: "McClellan squandered his intelligence advantage by launching three sequential attacks \u2014 first the northern flank through Miller's Cornfield, then the center at the Sunken Road ('Bloody Lane'), and finally the southern flank across Burnside Bridge \u2014 rather than a coordinated assault. This allowed Lee to employ interior lines, shifting his thin reserves to meet each threat in turn. The result was the bloodiest single day in American history: over 22,000 casualties in twelve hours of fighting. Lee's line bent but never broke, and he withdrew to Virginia the following day with his army intact."
@@ -606,6 +609,7 @@ const battles = [
             tech: {
                 name: "Battlefield Photography",
                 description: {
+                    extra: "A man named Alexander Gardner took photos of dead soldiers. These were the first photos of dead Americans in a war. People at home saw them. They were shocked. Now they could see what war was really like.",
                     beginner: "A photographer named Alexander Gardner took pictures of dead soldiers at Antietam. These were the first photos of dead Americans on a battlefield. When people in New York saw them, they were shocked. For the first time, people at home could see what war really looked like.",
                     intermediate: "Photographer Alexander Gardner arrived at Antietam days after the battle and took the first photographs of American dead on a battlefield. When displayed in New York, viewers were shocked. For the first time, people at home could see the real horror of war.",
                     advanced: "Alexander Gardner's photographs of Antietam's dead, displayed at Mathew Brady's New York gallery, constituted the first photographic documentation of American battlefield casualties. The images created a public sensation \u2014 the New York Times reported that Brady had 'brought home the terrible reality and earnestness of war.' Photography fundamentally transformed the relationship between the home front and the battlefield, making the war's human cost viscerally real in a way that written accounts never could."
@@ -618,6 +622,7 @@ const battles = [
                 explainer: "Clara Barton was helping a wounded soldier drink water when a bullet passed through her sleeve and killed the man she was holding. She risked her life to help soldiers on the battlefield and later started the American Red Cross."
             },
             biggerPicture: {
+                extra: "Lincoln used this battle to do something big. He signed the Emancipation Proclamation. It said enslaved people in the South were now free. The war was now about ending slavery, not just keeping the country together.",
                 beginner: "Lincoln used the battle to make a huge announcement: the Emancipation Proclamation (a document that said all enslaved people in rebel states were now free). This changed the war from just a fight about keeping the country together into a fight to end slavery. Britain and France decided not to help the Confederacy.",
                 intermediate: "Lincoln used the 'victory' at Antietam to issue the Emancipation Proclamation, declaring all enslaved people in rebel states to be free. This transformed the war from a fight to save the Union into a war to end slavery, and convinced Britain and France not to support the Confederacy.",
                 advanced: "Lincoln leveraged the strategic outcome at Antietam to issue the Emancipation Proclamation, fundamentally redefining the war's purpose. By declaring all enslaved people in rebel states 'forever free,' Lincoln transformed the Union cause from constitutional preservation into a moral crusade against slavery. This masterstroke of statecraft achieved multiple objectives: it energized the abolitionist movement, opened military service to nearly 180,000 Black soldiers, and effectively eliminated the possibility of European intervention on behalf of a slaveholding Confederacy."
@@ -631,6 +636,7 @@ const battles = [
             outcome: "Tactical draw, strategic Union victory",
             casualties: { union: 12401, confederacy: 10316 },
             keyFact: {
+                extra: "Antietam is the bloodiest day in U.S. history. 22,000 soldiers were killed or hurt in just 12 hours.",
                 beginner: "September 17, 1862 is still the bloodiest single day in American history. Over 22,000 soldiers were killed or hurt in just 12 hours. That's more people than live in many small towns.",
                 intermediate: "September 17, 1862 remains the bloodiest single day in American history. Over 22,000 soldiers were killed or wounded in just 12 hours of fighting.",
                 advanced: "September 17, 1862 remains the bloodiest single day in American history, with over 22,000 casualties in twelve hours. To put this in perspective, Antietam's single-day losses exceeded total American casualties in the War of 1812 and approached those of the entire Revolutionary War."
@@ -731,11 +737,13 @@ const battles = [
         historical: {
             situation: {
                 union: {
+                    extra: "Burnside is the new Union general. He wants to attack Richmond. But his bridges came late. That gave Lee time to dig in on a hill. Now you have to attack uphill against a stone wall.",
                     beginner: "General Burnside is the new commander of the Union army. He wants to cross a river and march through the town of Fredericksburg to reach Richmond. But his special bridges arrived weeks late, giving Lee time to build defenses on the hills above town. Now you have to run uphill across open fields toward a stone wall full of enemy soldiers.",
                     intermediate: "General Burnside, the new Union commander, plans to cross the Rappahannock River and push through Fredericksburg to reach Richmond. But pontoon bridges arrived weeks late, giving Lee time to fortify the heights above town. Now you must attack uphill across open ground against a stone wall bristling with Confederate rifles.",
                     advanced: "Burnside's operational plan \u2014 crossing the Rappahannock at Fredericksburg to advance on Richmond \u2014 was sound in concept but fatally delayed by the late arrival of pontoon bridges. The weeks of delay allowed Lee to fortify Marye's Heights behind a sunken road and stone wall, creating interlocking fields of fire across open ground that any attacker must cross. You now face the prospect of frontal assault against one of the strongest defensive positions of the war."
                 },
                 confederacy: {
+                    extra: "You had weeks to get ready. Your army is on a hill behind a stone wall. The enemy has to cross a river, then attack uphill in the open. It is a very strong spot.",
                     beginner: "You've had weeks to prepare. Your army is dug in on top of a hill behind a stone wall. The enemy has to cross a river, walk through a town, and then attack uphill across a wide-open field with no cover. It is one of the strongest defensive positions of the entire war.",
                     intermediate: "You've had weeks to prepare a strong defensive position. Your army is dug in along Marye's Heights behind a stone wall, with clear fields of fire across open ground. The Union army must cross a river, march through a town, and then attack uphill against your wall.",
                     advanced: "Burnside's delay has given you weeks to construct one of the war's strongest defensive positions. Your forces occupy Marye's Heights behind a sunken road and stone wall, with overlapping fields of fire across hundreds of yards of open ground. The Union army must cross the Rappahannock, advance through Fredericksburg's streets, and then assault uphill against concentrated rifle and artillery fire."
@@ -782,6 +790,7 @@ const battles = [
                 }
             },
             whatHappened: {
+                extra: "Burnside told his soldiers to attack the wall 14 times. Not one attack reached the wall. Over 12,000 Union soldiers were killed or hurt. The South lost only 5,000. It was a terrible loss for the North.",
                 beginner: "Burnside ordered his soldiers to charge the stone wall 14 different times. Not once did they reach it. The soldiers fell in rows, shot down by Confederate rifles. Over 12,000 Union soldiers were killed or hurt, while the Confederates lost only about 5,000. It was one of the most one-sided battles of the entire war.",
                 intermediate: "Burnside ordered 14 separate assaults against the stone wall on Marye's Heights. Not a single one reached it. Union soldiers fell in rows, mowed down by Confederate rifle fire. Over 12,000 Union soldiers were killed or wounded compared to about 5,000 Confederates. It was one of the most lopsided battles of the war.",
                 advanced: "Burnside committed to fourteen successive frontal assaults against the stone wall on Marye's Heights, each meeting the same devastating result. No Union unit came within fifty yards of the wall. The concentrated rifle fire from the sunken road, combined with artillery on the heights, created a killing field that no amount of courage could overcome. Union casualties exceeded 12,600 against approximately 5,300 Confederate losses \u2014 one of the most lopsided engagements of the war and a devastating indictment of command rigidity."
@@ -789,6 +798,7 @@ const battles = [
             tech: {
                 name: "The Mini\u00e9 Ball",
                 description: {
+                    extra: "The Mini\u00e9 ball was a new kind of bullet. It could hit a target from far away. At Fredericksburg, the South used these bullets from behind the wall. They killed many Union soldiers. Attacking was now much more dangerous.",
                     beginner: "The Mini\u00e9 ball (MIN-ee ball) was a special bullet that was more accurate than old-fashioned round musket balls. It could hit a target from 500 yards away! At Fredericksburg, soldiers behind the stone wall fired these bullets at charging soldiers with deadly accuracy. This new technology made running at the enemy much more dangerous than generals realized.",
                     intermediate: "The soft lead Mini\u00e9 ball expanded when fired from a rifled musket, making it accurate up to 500 yards. At Fredericksburg, defenders behind the stone wall fired Mini\u00e9 balls into charging troops with devastating accuracy. This technology made frontal assaults far deadlier than generals realized.",
                     advanced: "The Mini\u00e9 ball \u2014 a conical soft-lead projectile that expanded upon firing to grip rifled barrel grooves \u2014 extended effective infantry range to 500 yards, roughly five times that of smoothbore muskets. At Fredericksburg, this technological revolution reached its devastating conclusion: defenders behind the stone wall delivered accurate, sustained fire into charging formations at distances that made successful frontal assault virtually impossible. The tactical implications were clear, though it would take years for military doctrine to fully adapt."
@@ -801,6 +811,7 @@ const battles = [
                 explainer: "Captain Nagle is describing the Irish Brigade's charge up the hill toward the stone wall. They wore green sprigs (small plant pieces) in their hats to show they were Irish. Of about 1,200 men, only about 250 survived."
             },
             biggerPicture: {
+                extra: "The big loss at Fredericksburg made many people in the North want to give up. Some Northerners said the war should end. Union soldiers were sad and angry. Burnside was fired as the general.",
                 beginner: "The disaster at Fredericksburg made many people in the North want to stop fighting. 'Copperhead' Democrats (Northerners who wanted peace) demanded an end to the war. Union soldiers were so angry and sad that some openly said their leaders didn't know what they were doing. Burnside was fired.",
                 intermediate: "The disaster at Fredericksburg fueled the growing peace movement in the North. 'Copperhead' Democrats demanded an end to the war. Morale in the Union army hit rock bottom, with soldiers openly questioning their commanders. Burnside was removed from command.",
                 advanced: "Fredericksburg's lopsided casualties catalyzed the Northern peace movement, emboldening 'Copperhead' Democrats who demanded a negotiated end to the war. Army morale plummeted to its nadir \u2014 soldiers openly questioned their leadership, and desertions spiked. Burnside was removed from command, but the damage extended beyond personnel: Fredericksburg raised existential questions about whether the Union could sustain the political will to continue a war that seemed to produce nothing but catastrophic defeats in the Eastern Theater."
@@ -814,6 +825,7 @@ const battles = [
             outcome: "Decisive Confederate victory",
             casualties: { union: 12653, confederacy: 5377 },
             keyFact: {
+                extra: "A Confederate officer said the open field was so deadly that 'a chicken could not live on that field.' Union soldiers had no cover. Some used the bodies of fallen soldiers to hide from bullets.",
                 beginner: "A Confederate officer watching the battle said, 'A chicken could not live on that field.' The Union soldiers had nowhere to hide. Some even tried to use the bodies of soldiers who had already fallen as shields from the bullets.",
                 intermediate: "A Confederate officer watching the slaughter said, 'A chicken could not live on that field.' Union soldiers later tried to use the bodies of fallen comrades as cover from the relentless fire.",
                 advanced: "Longstreet reportedly assured Lee that 'a chicken could not live on that field when we open on it.' The killing ground before the stone wall became so densely carpeted with Union dead and wounded that survivors used their fallen comrades' bodies as improvised cover \u2014 a grim testament to the technological revolution that had rendered Napoleonic tactics obsolete."
@@ -913,11 +925,13 @@ const battles = [
         historical: {
             situation: {
                 union: {
+                    extra: "You have 130,000 soldiers. Lee has 60,000. You have twice as many. Your plan is to sneak around Lee's side. The forest will hide you. Your general says his plan is perfect.",
                     beginner: "You have 130,000 soldiers against Lee's 60,000 \u2014 more than twice as many! Your plan seems great: sneak around Lee's side while keeping him busy. General Hooker brags, 'My plans are perfect.' The thick forest should hide your soldiers as they move.",
                     intermediate: "You command 130,000 troops against Lee's 60,000. Your plan is brilliant: pin Lee in place while sweeping around his flank. General Hooker boasts, 'My plans are perfect.' The dense Virginia Wilderness should hide your movements.",
                     advanced: "You command 130,000 troops against Lee's 60,000, and your operational plan is genuinely innovative: pin Lee's army frontally while executing a wide flanking maneuver through the Wilderness. Hooker's confidence \u2014 'My plans are perfect' \u2014 is not entirely unfounded. The dense Virginia forest should conceal your movements. However, the same terrain that hides your maneuver also limits your ability to coordinate and deploy your numerical superiority."
                 },
                 confederacy: {
+                    extra: "You have only half as many soldiers as the Union. They are coming from many sides. Your best general, Stonewall Jackson, has a wild idea. He wants to split your army in half and sneak through the woods. If it works, you can win. If it fails, you lose everything.",
                     beginner: "You're outnumbered more than two-to-one, and the enemy is coming at you from different directions. Your best general, Stonewall Jackson, has a crazy idea: split your small army in half and sneak 12 miles through the forest to attack the enemy's side. It's super risky, but it might be your only chance.",
                     intermediate: "You're outnumbered more than 2-to-1, and Hooker's army is closing in from multiple directions. Your only hope is a daring gamble: split your already small army and send Stonewall Jackson on a secret 12-mile march to hit the Union flank.",
                     advanced: "Hooker's converging advance threatens to overwhelm your outnumbered army from multiple directions. Jackson proposes a characteristically audacious solution: a concealed 12-mile flanking march through the Wilderness to strike the exposed Union right. The maneuver would require dividing your already outnumbered force \u2014 leaving fewer than 15,000 to hold Hooker's attention while Jackson marches with 28,000. If detected, both halves could be destroyed in detail."
@@ -964,6 +978,7 @@ const battles = [
                 }
             },
             whatHappened: {
+                extra: "Lee did something very bold. He split his small army. He sent Jackson on a secret march. At sunset, Jackson's soldiers came out of the woods and broke the Union side. But that night, Jackson was shot by his own soldiers by mistake. He died eight days later.",
                 beginner: "Lee made the boldest move of the war. He split his small army and sent Jackson on a secret march through the forest. At sunset, Jackson's 28,000 soldiers burst out of the woods and completely destroyed the Union right side. But that night, Jackson was accidentally shot by his own soldiers in the dark. He died eight days later.",
                 intermediate: "Lee made his boldest gamble, splitting his army to send Jackson on a secret flanking march. At dusk, Jackson's 28,000 men burst from the woods and shattered the Union right flank. But that night, Jackson was accidentally shot by his own men and died days later.",
                 advanced: "Lee executed his most audacious gamble, dividing his outnumbered army to send Jackson on a concealed 12-mile flanking march. At dusk on May 2, Jackson's 28,000 men erupted from the Wilderness and obliterated the exposed Union XI Corps. The rout cascaded through the Union right, creating panic that nearly unraveled Hooker's entire army. However, that evening, Jackson was struck by friendly fire while reconnoitering ahead of his lines. He died eight days later \u2014 an irreplaceable loss that would haunt the Confederacy for the remainder of the war."
@@ -971,6 +986,7 @@ const battles = [
             tech: {
                 name: "Field Medicine / Ambulance Corps",
                 description: {
+                    extra: "A Union doctor made the first ambulance teams. They carried wounded soldiers off the battlefield. They set up medical stations to help them fast. This saved thousands of lives.",
                     beginner: "Dr. Jonathan Letterman created the first organized ambulance (emergency medical transport) system for the army. He trained special teams to carry wounded soldiers off the battlefield and set up medical stations to help them. His system saved thousands of lives and is still the model for battlefield medicine today.",
                     intermediate: "Dr. Jonathan Letterman created the first organized ambulance corps system, with trained stretcher-bearers and triage stations. His system saved thousands of lives and became the model for military medicine worldwide.",
                     advanced: "Dr. Jonathan Letterman's ambulance corps represented a revolution in military medicine: an organized system of trained stretcher-bearers, field triage stations, and evacuation protocols that replaced the chaos that had previously left wounded soldiers lying on battlefields for days. Letterman's innovations \u2014 including the concept of triage (prioritizing treatment by severity) \u2014 saved thousands of lives and established principles that still undergird military and civilian emergency medicine today."
@@ -983,6 +999,7 @@ const battles = [
                 explainer: "Susie King Taylor was a Black woman who worked with a regiment of Black soldiers. She was officially a laundress, but she also taught soldiers to read and write, nursed wounded men, and learned to shoot. She's showing that Black soldiers and the people who supported them proved they belonged in the army."
             },
             biggerPicture: {
+                extra: "Lee won. He felt strong enough to invade the North again. That led to Gettysburg. But losing Jackson hurt the South for the rest of the war. Lee never found another general as good.",
                 beginner: "Lee won his greatest victory, which made him confident enough to invade the North again (leading to Gettysburg). But losing Stonewall Jackson was a blow the Confederacy never recovered from. Jackson was Lee's best general, and Lee never found anyone as good to replace him.",
                 intermediate: "Lee's greatest victory gave him the confidence to invade the North again, leading directly to Gettysburg. But losing Stonewall Jackson was a wound the Confederacy never recovered from.",
                 advanced: "Chancellorsville gave Lee the confidence to launch a second invasion of the North, leading directly to the Gettysburg Campaign. However, the victory came at a cost the Confederacy could not afford: Jackson's death deprived Lee of his most capable subordinate \u2014 the only commander who could execute the audacious independent maneuvers that were central to Lee's operational art. At Gettysburg, the absence of Jackson's tactical brilliance would prove decisive."
@@ -996,6 +1013,7 @@ const battles = [
             outcome: "Confederate tactical victory at devastating cost",
             casualties: { union: 17278, confederacy: 13303 },
             keyFact: {
+                extra: "Stonewall Jackson was shot by his own soldiers in the dark. He died 8 days later. Lee said losing Jackson was like losing his right arm.",
                 beginner: "Stonewall Jackson was accidentally shot by his own soldiers in the dark! He died 8 days later. Lee said losing Jackson was like losing his right arm. No one could replace him.",
                 intermediate: "Stonewall Jackson was accidentally shot by his own men in the darkness. He died 8 days later. Lee never found a replacement who could match Jackson's speed and daring.",
                 advanced: "Jackson was struck by three bullets from his own troops while reconnoitering ahead of his lines in the darkness. He died eight days later. Lee's lament \u2014 'I have lost my right arm' \u2014 proved prophetic: no subsequent Confederate commander could replicate Jackson's combination of strategic vision, tactical audacity, and the speed of execution that had made Lee's operational style possible."
