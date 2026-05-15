@@ -14,11 +14,13 @@ const battles = [
         historical: {
             situation: {
                 union: {
+                    extra: "You are in charge of Fort Sumter. It is a small fort on an island. The South wants the fort. Their cannons are all around you. You are running out of food.",
                     beginner: "You're in charge of Fort Sumter, a small fort on an island in Charleston Harbor, South Carolina. The South has left the United States, and enemy cannons surround you. You're running out of food, and a supply ship is on its way.",
                     intermediate: "You command Fort Sumter, a small federal fort sitting on an island in Charleston Harbor. South Carolina seceded months ago, and now Confederate batteries surround you. Your supplies are running out, and President Lincoln is sending a relief ship.",
                     advanced: "You command the federal garrison at Fort Sumter, an island fortress in Charleston Harbor that has become the focal point of the secession crisis. South Carolina left the Union in December 1860, and Confederate batteries now encircle your position. With provisions dwindling, Lincoln has dispatched a relief expedition \u2014 a decision that forces the Confederacy to choose between allowing resupply or firing the first shot."
                 },
                 confederacy: {
+                    extra: "South Carolina left the United States. The Union still has a fort in your harbor. You want it. A Union ship is coming with food. If you shoot, you start a war.",
                     beginner: "South Carolina has left the United States, and your new Confederate government wants all U.S. forts handed over. Fort Sumter sits in the middle of Charleston Harbor. A Union supply ship is coming. If you let it through, you look weak. If you shoot, you start a war.",
                     intermediate: "South Carolina has seceded and the new Confederate government demands that all federal property be turned over. Fort Sumter sits in the middle of Charleston Harbor like a splinter. If you let a Union supply ship through, you look weak. If you fire, you start a war.",
                     advanced: "South Carolina's secession has created an intractable dilemma: Fort Sumter remains under federal control in the heart of Charleston Harbor, a symbol of Union authority that the new Confederate government cannot tolerate. Lincoln's decision to resupply the garrison forces your hand \u2014 allowing the relief expedition to succeed undermines Confederate sovereignty, yet opening fire risks alienating the border states and casting the South as the aggressor."
@@ -65,6 +67,7 @@ const battles = [
                 }
             },
             whatHappened: {
+                extra: "On April 12, the South started shooting at the fort. They shot for 34 hours. The fort caught fire. Anderson and his men fought back. But they ran out of bullets. They had to give up. The Civil War had begun.",
                 beginner: "At 4:30 in the morning on April 12, Confederate cannons started firing at Fort Sumter from all sides. The attack lasted 34 hours. Anderson's soldiers fired back, but they were badly outnumbered. With the fort on fire and almost no ammunition (bullets and cannonballs) left, Anderson gave up on April 13.",
                 intermediate: "At 4:30 AM on April 12, Confederate batteries opened fire on Fort Sumter from all directions. The bombardment lasted 34 hours. Anderson's men fired back but were hopelessly outgunned. With the fort on fire and ammunition nearly gone, Anderson surrendered on April 13.",
                 advanced: "At 4:30 AM on April 12, Confederate batteries commenced a converging bombardment of Fort Sumter. The 34-hour cannonade, involving over 40 guns firing from multiple positions, overwhelmed Anderson's garrison of 85 men. Despite returning fire with limited effect, the defenders faced an untenable situation: the fort's interior was ablaze, the main gate destroyed, and ammunition stocks critically depleted. Anderson negotiated surrender terms on April 13, receiving full military honors."
@@ -72,6 +75,7 @@ const battles = [
             tech: {
                 name: "Coastal Artillery",
                 description: {
+                    extra: "The South had new cannons. They could shoot farther and straighter than old cannons. The fort's brick walls could not stop them.",
                     beginner: "Fort Sumter was built to stop wooden ships, but the Confederate cannons included new rifled cannons (cannons with grooves inside the barrel that make the cannonball fly straighter and farther). These new guns could hit targets much more accurately than old-style smooth cannons. Brick forts like Sumter were becoming outdated.",
                     intermediate: "Fort Sumter was designed to withstand wooden warships, but Confederate guns included new rifled cannons that were far more accurate than old smoothbore cannons. The age of brick-and-stone coastal forts was ending.",
                     advanced: "Fort Sumter's Third System design was engineered to resist wooden naval vessels, but Confederate ordnance included rifled artillery pieces capable of far greater accuracy and penetrating power than traditional smoothbore guns. The bombardment demonstrated that masonry fortifications \u2014 the backbone of coastal defense since the War of 1812 \u2014 were becoming obsolete in the face of modern rifled weaponry."
@@ -84,6 +88,7 @@ const battles = [
                 explainer: "Mary Chesnut is saying she couldn't sleep because she knew the attack on Fort Sumter was about to begin. When she heard the cannons fire, she got on her knees and prayed."
             },
             biggerPicture: {
+                extra: "Fort Sumter changed everything. The North got angry. People wanted to fight back. Lincoln asked for 75,000 soldiers. Four more states joined the South. The war had begun.",
                 beginner: "The attack on Fort Sumter changed everything overnight. The North came together, and Lincoln asked for 75,000 soldiers to volunteer. Four more slave states joined the Confederacy. The war that nobody wanted had started.",
                 intermediate: "The attack on Fort Sumter unified the North overnight. Lincoln called for 75,000 volunteers, and four more slave states joined the Confederacy. The war everyone hoped to avoid had begun.",
                 advanced: "The bombardment of Fort Sumter catalyzed Northern public opinion with extraordinary speed. Lincoln's call for 75,000 militia volunteers was oversubscribed within weeks, but it also triggered the secession of Virginia, Arkansas, Tennessee, and North Carolina \u2014 nearly doubling the Confederacy's population and industrial capacity. The calculated gamble of forcing the first shot had achieved Lincoln's immediate political objective while simultaneously expanding the conflict's scope."
@@ -97,6 +102,7 @@ const battles = [
             outcome: "Confederate victory, fort surrendered",
             casualties: { union: 13, confederacy: 0 },
             keyFact: {
+                extra: "No one died in the battle. One Union soldier died in an accident on the next day, during the surrender. He was the first death of the war.",
                 beginner: "Nobody was killed in the actual battle! The only death was a Union soldier who died in an accidental explosion during the surrender ceremony on April 14.",
                 intermediate: "No soldiers on either side were killed in combat during the bombardment. The only death was a Union soldier killed in an accidental explosion during the 100-gun surrender salute on April 14.",
                 advanced: "Remarkably, the bombardment produced no combat fatalities on either side \u2014 the sole death was Private Daniel Hough, killed during an accidental powder explosion in the 100-gun surrender salute on April 14. This bloodless beginning belied the apocalyptic scale of violence to come: over 620,000 Americans would die before the war's end."
@@ -186,11 +192,13 @@ const battles = [
         historical: {
             situation: {
                 union: {
+                    extra: "It is the first big battle of the war. You have 35,000 soldiers. Most have never fought before. People from Washington came to watch. They brought picnic lunches.",
                     beginner: "It's been three months since Fort Sumter, and everyone in the North is screaming, 'Go get 'em!' Your army of 35,000 soldiers is marching south to fight. Most of them have never been in a real battle. People from Washington, D.C. actually brought picnic lunches to watch the fight!",
                     intermediate: "It's been three months since Fort Sumter, and the public demands action. Your army of 35,000 marches south toward the Confederate capital at Richmond. Everyone expects a quick victory. Civilians from Washington have packed picnic baskets to watch the battle.",
                     advanced: "Three months after Fort Sumter, Northern public opinion demands a decisive blow. Your army of 35,000 largely untrained volunteers is advancing on Manassas Junction, where Confederate forces guard the railroad to Richmond. The expectation of a short, glorious war is so pervasive that Washington civilians have traveled to the battlefield with picnic baskets, treating the coming battle as spectacle."
                 },
                 confederacy: {
+                    extra: "A big Union army is coming. You have a good spot behind a creek. More of your soldiers are coming on a train. You just need to hold on until they get here.",
                     beginner: "A big Union army is heading straight for you, only 30 miles from Washington, D.C. Your soldiers are new and haven't fought before, but you've got a good spot to defend along a creek called Bull Run. More soldiers are coming by train to help you.",
                     intermediate: "A large Union army is marching toward you at Manassas Junction, just 30 miles from Washington. Your troops are mostly untrained volunteers, but you have a strong position along Bull Run creek. Reinforcements are on the way by railroad.",
                     advanced: "A Union force of 35,000 is advancing on your position at Manassas Junction, a critical railroad hub just 30 miles from Washington. Your troops are largely untrained volunteers, but you occupy strong defensive terrain along Bull Run creek. Crucially, Johnston's forces in the Shenandoah Valley can reinforce you by rail \u2014 if they arrive in time."
@@ -237,6 +245,7 @@ const battles = [
                 }
             },
             whatHappened: {
+                extra: "The Union almost won. They pushed the South back. But one Southern general stood firm on a hill 'like a stone wall.' That is how Stonewall Jackson got his name. Then Southern soldiers came on a train. They attacked. The Union ran away.",
                 beginner: "McDowell's sneak attack almost worked! His soldiers pushed the Confederates back. But General Thomas Jackson and his men stood firm on a hill 'like a stone wall' \u2014 that's how he got the nickname 'Stonewall Jackson.' Then Confederate soldiers arrived by train and attacked. The whole Union army panicked and ran back to Washington, crashing into the picnicking civilians on the road!",
                 intermediate: "McDowell's flanking attack nearly worked, pushing the Confederates back. But General Thomas Jackson's brigade held firm on Henry Hill 'like a stone wall,' buying time. When Confederate reinforcements arrived by railroad, a massive counterattack sent the Union army fleeing back to Washington in panic, mixed in with the civilian spectators.",
                 advanced: "McDowell's flanking maneuver initially succeeded, driving Confederate forces from their positions along Bull Run. However, General Thomas Jackson's Virginia brigade established a critical defensive line on Henry Hill, earning Jackson his famous sobriquet 'Stonewall.' Jackson's stand bought time for Johnston's reinforcements to arrive via the Manassas Gap Railroad. The fresh Confederate troops launched a devastating counterattack that transformed an orderly Union withdrawal into a complete rout, with panicked soldiers and civilian spectators clogging the roads back to Washington."
@@ -244,6 +253,7 @@ const battles = [
             tech: {
                 name: "Railroads in War",
                 description: {
+                    extra: "Trains were new. The South used them to move soldiers fast. They got to the battle just in time. This was the first time trains helped win a battle.",
                     beginner: "Confederate soldiers rode trains from far away to reach the battle just in time. This was the first time trains were used to move soldiers during a fight. It proved that railroads (trains) could move armies much faster than walking.",
                     intermediate: "Confederate reinforcements arrived by train from the Shenandoah Valley just in time to turn the battle. This was the first time railroads played a decisive role in combat, proving that trains could move armies faster than marching.",
                     advanced: "Johnston's forces traveled via the Manassas Gap Railroad from the Shenandoah Valley, arriving in time to execute the decisive counterattack. Bull Run demonstrated for the first time that railroads could serve as a strategic force multiplier, enabling rapid concentration of forces that fundamentally altered the calculus of 19th-century warfare."
@@ -256,6 +266,7 @@ const battles = [
                 explainer: "Sullivan Ballou is writing to his wife Sarah before the battle. He knows he might die, but says he believes in the cause and isn't afraid. He was killed at Bull Run one week after writing this letter."
             },
             biggerPicture: {
+                extra: "The Union lost. People realized this war would not be quick. Lincoln asked for 500,000 more soldiers. The South thought they had won the war. They were wrong.",
                 beginner: "The Union lost, and everyone's dream of a quick war was over. Lincoln called for 500,000 more soldiers to sign up for three years. The South thought they had already won the whole war after just one battle \u2014 but they were wrong.",
                 intermediate: "The Union defeat shattered the fantasy of a quick war. Lincoln signed bills to enlist 500,000 soldiers for three years and replaced McDowell with General McClellan. The South gained dangerous overconfidence, believing one battle had won their independence.",
                 advanced: "The Union rout at Bull Run shattered Northern illusions of a swift, decisive conflict. Lincoln responded by signing legislation to enlist 500,000 volunteers for three-year terms and replacing McDowell with the methodical George McClellan. Paradoxically, the defeat may have benefited the Union long-term by forcing early recognition of the war's true scale. Meanwhile, the Confederate victory bred a dangerous overconfidence that would hamper Southern strategic planning for months."
@@ -269,6 +280,7 @@ const battles = [
             outcome: "Confederate victory",
             casualties: { union: 2896, confederacy: 1982 },
             keyFact: {
+                extra: "People came to watch the battle like it was a show. When the Union lost, soldiers and watchers all ran away together. The roads were a mess.",
                 beginner: "People from Washington, D.C. brought picnic baskets to watch the battle like a show! When the Union army started losing, the soldiers and the picnickers all tried to run home at the same time, jamming the roads.",
                 intermediate: "Civilians from Washington brought picnic baskets to watch the battle like a sporting event. They fled in terror alongside retreating Union soldiers, jamming the roads back to the capital.",
                 advanced: "Washington society figures brought picnic baskets and opera glasses to observe the battle as spectacle. Their panicked flight alongside retreating soldiers created a chaotic scene that graphically illustrated the nation's naive understanding of what modern warfare would entail."
@@ -358,11 +370,13 @@ const battles = [
         historical: {
             situation: {
                 union: {
+                    extra: "General Grant's army is camped in Tennessee. You are waiting for more soldiers. No one built walls. No one dug trenches. You don't think the South will attack. Grant is sleeping nine miles away.",
                     beginner: "General Grant's army is camped near a little church called Shiloh in Tennessee. Your soldiers are waiting for more troops to arrive. Nobody has built any walls or dug any trenches because you don't think the enemy will attack. Grant isn't even at the camp \u2014 he's sleeping at a nice house nine miles away!",
                     intermediate: "General Grant's army is camped near Shiloh Church at Pittsburg Landing, Tennessee, waiting for reinforcements. You haven't built any defensive fortifications because you don't expect an attack. Grant is so confident, he's sleeping nine miles away at a mansion.",
                     advanced: "Grant's 40,000-man Army of the Tennessee is encamped near Pittsburg Landing, awaiting Buell's 25,000 reinforcements before advancing on Corinth, Mississippi. Critically, no defensive fortifications have been constructed \u2014 Grant's aggressive mindset left him focused on offense, not defense. His headquarters are nine miles downriver, leaving the army without its commander on the ground."
                 },
                 confederacy: {
+                    extra: "The Union army is camped in the open. They have no walls. They don't know you are coming. If you attack at sunrise, you could win big.",
                     beginner: "The Union army is camped in the open with no walls or fences to protect them. They have no idea you're coming! If you attack at sunrise, you could destroy their whole army before help arrives. Your general says, 'Tonight we will water our horses in the Tennessee River.'",
                     intermediate: "Grant's army is sitting in the open near Pittsburg Landing, completely unprepared. If you strike now with a surprise dawn attack, you can destroy his army before reinforcements arrive. Confederate General Albert Sidney Johnston tells his officers: 'Tonight we will water our horses in the Tennessee River.'",
                     advanced: "Grant's army is encamped in the open near Pittsburg Landing without defensive works \u2014 a critical vulnerability. A surprise dawn attack could destroy his force before Buell's 25,000 reinforcements arrive. General Albert Sidney Johnston, the Confederacy's highest-ranking field commander, has concentrated 44,000 troops for the assault, declaring to his officers: 'Tonight we will water our horses in the Tennessee River.'"
@@ -409,6 +423,7 @@ const battles = [
                 }
             },
             whatHappened: {
+                extra: "On April 6, the South attacked at sunrise. They almost won. But some Union soldiers held one spot for six hours. This slowed the attack. That night, 25,000 fresh Union soldiers came. Grant attacked the next day. The Union won.",
                 beginner: "On April 6, the Confederates attacked at sunrise and almost destroyed Grant's army. But some brave Union soldiers held a spot called the 'Hornets' Nest' for six hours, slowing the attack. The Confederate general, Johnston, was killed that afternoon. Overnight, 25,000 fresh Union soldiers crossed the river. Grant attacked on April 7 and won.",
                 intermediate: "The Confederate surprise attack on April 6 nearly destroyed Grant's army. But stubborn Union resistance at the 'Hornets' Nest' bought precious hours. General Johnston was killed leading a charge that afternoon. Overnight, 25,000 Union reinforcements crossed the river. Grant counterattacked on April 7 and drove the Confederates from the field.",
                 advanced: "The Confederate surprise assault on April 6 achieved devastating initial results, overrunning Union camps and driving disorganized units toward the Tennessee River. However, a stubborn Union stand at a sunken road \u2014 dubbed the 'Hornets' Nest' for the intensity of fire \u2014 absorbed repeated Confederate assaults for six hours, fatally disrupting the Confederate timetable. General Johnston, the Confederacy's highest-ranking field commander, was killed leading a charge at 2:30 PM. Overnight, Buell's 25,000 reinforcements crossed the river, and Grant's counterattack on April 7 drove the bloodied Confederates from the field."
@@ -416,6 +431,7 @@ const battles = [
             tech: {
                 name: "Gunboats",
                 description: {
+                    extra: "Union ships had big guns. They fired all night. The loud booms scared the South. They also helped fresh Union soldiers cross the river safely.",
                     beginner: "Two Union gunboats (warships with big cannons) on the river fired huge shells at the Confederate soldiers all night long. The loud booming scared the tired Southern soldiers and helped keep them away while fresh Union troops crossed the river.",
                     intermediate: "Two Union gunboats, the USS Tyler and USS Lexington, fired massive shells into Confederate positions all night. The booming guns terrified exhausted Southern soldiers and helped protect Grant's army while reinforcements crossed the river.",
                     advanced: "The USS Tyler and USS Lexington, timber-clad gunboats on the Tennessee River, provided continuous fire support throughout the night of April 6-7. Their heavy ordnance disrupted Confederate positions and demoralized exhausted Southern troops, while simultaneously providing covering fire for Buell's reinforcements crossing the river. Shiloh demonstrated the decisive potential of joint army-navy operations in riverine warfare."
@@ -428,6 +444,7 @@ const battles = [
                 explainer: "Chaplain Eaton is describing enslaved people who escaped to Union army lines during the battle. They were desperate to be free and terrified that the soldiers might send them back to slavery."
             },
             biggerPicture: {
+                extra: "23,000 soldiers were killed or hurt in two days. That was more than all the wars America had ever fought. People were shocked. The war was going to be much worse than anyone thought.",
                 beginner: "In just two days, 23,000 soldiers were killed or hurt \u2014 more than in all of America's previous wars put together. Everyone was shocked. The dream of a quick, easy war was dead. People criticized Grant for being unprepared, but Lincoln said: 'I can't spare this man. He fights.'",
                 intermediate: "Shiloh's 23,000 casualties in two days were more than all previous American wars combined. The nation was horrified. Dreams of a quick, glorious war died on that field. Grant was criticized for being unprepared, but Lincoln said: 'I can't spare this man. He fights.'",
                 advanced: "Shiloh's 23,000 casualties in forty-eight hours exceeded the combined losses of the American Revolution, the War of 1812, and the Mexican-American War. The scale of slaughter shattered any remaining illusions about the war's nature. Grant faced intense criticism and calls for his removal, but Lincoln's response \u2014 'I can't spare this man. He fights' \u2014 signaled that the president valued aggressive commanders willing to accept the war's terrible arithmetic."
@@ -441,6 +458,7 @@ const battles = [
             outcome: "Union strategic victory",
             casualties: { union: 13047, confederacy: 10699 },
             keyFact: {
+                extra: "23,000 soldiers were killed or hurt in two days. No battle in U.S. history had ever been so big and so deadly.",
                 beginner: "Over 23,000 soldiers were killed or hurt in just two days \u2014 more than in all of America's earlier wars added together. Nobody had ever seen anything like it.",
                 intermediate: "Over 23,000 soldiers were killed or wounded in two days, more than all previous American wars combined at that point. The nation was horrified by the scale of the slaughter.",
                 advanced: "Shiloh's 23,000 casualties in forty-eight hours exceeded the combined losses of every previous American conflict. The battle marked the moment when both sides recognized that the war would demand sacrifice on an industrial scale previously unimaginable in American warfare."
