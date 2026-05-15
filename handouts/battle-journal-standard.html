@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Battle Journal — Civil War Simulation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Old+Standard+TT:ital,wght@0,400;0,700;1,400&family=Special+Elite&display=swap" rel="stylesheet">
+<style>
+:root {
+    --paper: #F4ECD8;
+    --card: #FBF6E8;
+    --card-warm: #EDE1C4;
+    --ink: #2A1F12;
+    --ink-soft: #6B5840;
+    --rule: #C9B486;
+    --rule-strong: #A08A5E;
+    --brand: #6B2419;
+}
+@page { size: letter portrait; margin: 0.4in; }
+* { box-sizing: border-box; }
+html, body { background: var(--paper); color: var(--ink); margin: 0; padding: 0; }
+body { font-family: 'Old Standard TT', Georgia, serif; font-size: 13.5pt; line-height: 1.45; }
+.page { width: 7.7in; margin: 0 auto; padding: 0; }
+
+/* Top-line strip */
+.top-line {
+    display: flex; justify-content: space-between; align-items: flex-end;
+    border-bottom: 1.5px solid var(--ink); padding-bottom: 6px; margin-bottom: 14px;
+}
+.mod-tag {
+    background: var(--brand); color: var(--paper);
+    font-family: 'Special Elite', monospace; font-size: 10pt;
+    padding: 3px 10px; letter-spacing: 0.05em; text-transform: uppercase;
+}
+.namebar {
+    font-family: 'Special Elite', monospace; font-size: 10.5pt;
+    color: var(--ink-soft); display: flex; gap: 14px; align-items: flex-end;
+}
+.namebar b {
+    display: inline-block; min-width: 130px;
+    border-bottom: 1px solid var(--ink); margin-left: 4px;
+}
+
+/* Section header */
+.section-head {
+    border-top: none !important; border-bottom: none !important;
+    margin-bottom: 10px;
+}
+.badge {
+    background: var(--ink); color: var(--paper);
+    font-family: 'Special Elite', monospace; font-size: 9.5pt;
+    padding: 2px 8px; letter-spacing: 0.08em; text-transform: uppercase;
+    display: inline-block; margin-bottom: 4px;
+}
+.section-head h1 {
+    font-family: 'Old Standard TT', Georgia, serif; font-weight: 700;
+    font-size: 26pt; margin: 2px 0 0 0; line-height: 1.1;
+}
+
+/* PAT box */
+.pat-list {
+    background: var(--card); border-left: 4px solid var(--brand);
+    padding: 10px 14px 10px 14px; margin: 12px 0;
+    border-top: 1px solid var(--rule); border-right: 1px solid var(--rule); border-bottom: 1px solid var(--rule);
+    break-inside: avoid; page-break-inside: avoid;
+}
+.pat-list .lbl {
+    font-family: 'Special Elite', monospace; font-size: 10pt;
+    color: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.05em;
+    margin-bottom: 6px;
+}
+.pat-list ol { margin: 0; padding-left: 22px; }
+.pat-list li { margin-bottom: 4px; }
+.pat-list b { color: var(--brand); }
+
+/* Annotation guide */
+.annot {
+    background: var(--card-warm); border: 1px solid var(--rule-strong);
+    padding: 10px 14px; margin: 12px 0;
+    break-inside: avoid; page-break-inside: avoid;
+}
+.annot .lbl {
+    font-family: 'Special Elite', monospace; font-size: 10pt;
+    color: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.05em;
+    margin-bottom: 6px;
+}
+.annot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 18px; }
+.annot-grid div { font-size: 12pt; }
+.annot-grid .mark {
+    font-family: 'Special Elite', monospace; color: var(--brand);
+    display: inline-block; width: 1.4em; font-weight: 700;
+}
+
+/* Act capture boxes */
+.act-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 10px 0; }
+.act-box {
+    background: var(--card); border: 1px solid var(--rule-strong);
+    padding: 8px 12px 10px 12px;
+    break-inside: avoid; page-break-inside: avoid;
+}
+.act-box .act-tag {
+    font-family: 'Special Elite', monospace; font-size: 9.5pt;
+    color: var(--paper); background: var(--ink);
+    padding: 2px 7px; letter-spacing: 0.06em; text-transform: uppercase;
+    display: inline-block;
+}
+.act-box .act-title {
+    font-family: 'Old Standard TT', serif; font-weight: 700; font-size: 14pt;
+    margin: 4px 0 2px 0; color: var(--ink);
+}
+.act-box .act-battles {
+    font-family: 'Special Elite', monospace; font-size: 9.5pt;
+    color: var(--ink-soft); margin-bottom: 6px;
+}
+.act-box .field-lbl {
+    font-family: 'Special Elite', monospace; font-size: 9.5pt;
+    color: var(--brand); text-transform: uppercase; letter-spacing: 0.05em;
+    margin-top: 6px;
+}
+.lineW {
+    display: block; border-bottom: 1px solid var(--ink); height: 1.35em; margin: 2px 0;
+}
+
+/* Q-embed (essay scaffolding) */
+.q-embed {
+    background: var(--card); border: 1px solid var(--rule-strong);
+    padding: 10px 14px; margin: 10px 0;
+    break-inside: avoid; page-break-inside: avoid;
+}
+.qtag {
+    background: var(--brand); color: var(--paper);
+    font-family: 'Special Elite', monospace; font-size: 9.5pt;
+    padding: 1px 7px; letter-spacing: 0.05em; text-transform: uppercase;
+    margin-right: 8px;
+}
+.qtext { font-size: 13pt; margin-bottom: 6px; }
+.qtext b { color: var(--brand); }
+.thesis-line {
+    display: block; border-bottom: 1px solid var(--ink); height: 1.4em;
+    width: 5.5em; margin: 0 4px; vertical-align: bottom;
+}
+.evidence-row {
+    display: grid; grid-template-columns: 90px 1fr; gap: 10px;
+    align-items: start; margin-top: 8px;
+    padding-top: 8px; border-top: 1px dashed var(--rule);
+}
+.evidence-row .reason-tag {
+    background: var(--brand); color: var(--paper);
+    font-family: 'Special Elite', monospace; font-size: 9.5pt;
+    padding: 2px 6px; letter-spacing: 0.05em; text-transform: uppercase;
+    text-align: center;
+}
+.evidence-row .reason-body { }
+
+/* Word Bank */
+.wordbank {
+    background: var(--card-warm); border: 1px solid var(--rule-strong);
+    padding: 10px 14px; margin: 12px 0;
+    break-inside: avoid; page-break-inside: avoid;
+}
+.wordbank .lbl {
+    font-family: 'Special Elite', monospace; font-size: 10pt;
+    color: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.05em;
+    margin-bottom: 6px;
+}
+.wordbank-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 18px; }
+.wordbank-grid .term {
+    font-weight: 700; color: var(--brand);
+    font-family: 'Old Standard TT', serif;
+}
+
+/* Footer */
+.foot {
+    font-family: 'Special Elite', monospace; font-size: 9pt;
+    color: var(--ink-soft); text-align: right; margin-top: 10px;
+    border-top: 1px solid var(--rule); padding-top: 4px;
+}
+
+/* Print */
+@media print {
+    html, body { background: var(--paper) !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .page { width: 100%; }
+    .pat-list, .annot, .act-box, .q-embed, .wordbank {
+        break-inside: avoid; page-break-inside: avoid;
+    }
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+    <div class="top-line">
+        <div class="left"><span class="mod-tag">Standard · Large Text</span></div>
+        <div class="namebar">
+            Name <b></b>
+            Period <b style="min-width:60px;"></b>
+            Date <b style="min-width:90px;"></b>
+        </div>
+    </div>
+
+    <div class="section-head">
+        <span class="badge">Civil War Simulation</span>
+        <h1>Battle Journal</h1>
+    </div>
+
+    <div class="pat-list">
+        <div class="lbl">Pay attention to · while you play Historical Mode</div>
+        <ol>
+            <li>After each <b>Act review screen</b>, fill in that act's box on this page. Don't wait until the end.</li>
+            <li>Watch for the <b>8 vocabulary terms</b> in the Word Bank on the back. Circle them on the back when you see them in the game.</li>
+            <li>Your final job is to answer one question: <b>How was the Union able to defeat the Confederacy?</b> Build evidence as you play.</li>
+        </ol>
+    </div>
+
+    <div class="annot">
+        <div class="lbl">As you fill in the act boxes</div>
+        <div class="annot-grid">
+            <div><span class="mark">★</span> A turning point or major event</div>
+            <div><span class="mark">▢</span> A specific person, place, or number</div>
+            <div><span class="mark">?</span> Something that surprised you</div>
+            <div><span class="mark">_</span> A vocabulary term from the Word Bank</div>
+        </div>
+    </div>
+
+    <div class="act-grid">
+
+        <div class="act-box">
+            <span class="act-tag">Act I</span>
+            <div class="act-title">The War Begins</div>
+            <div class="act-battles">1861-1862 · Fort Sumter · Bull Run · Shiloh</div>
+            <div class="field-lbl">Key events I want to remember</div>
+            <span class="lineW"></span>
+            <span class="lineW"></span>
+            <span class="lineW"></span>
+            <div class="field-lbl">Why this act mattered for the Union</div>
+            <span class="lineW"></span>
+            <span class="lineW"></span>
+        </div>
+
+        <div class="act-box">
+            <span class="act-tag">Act II</span>
+            <div class="act-title">A New Kind of War</div>
+            <div class="act-battles">1862-1863 · Antietam · Fredericksburg · Chancellorsville</div>
+            <div class="field-lbl">Key events I want to remember</div>
+            <span class="lineW"></span>
+            <span class="lineW"></span>
+            <span class="lineW"></span>
+            <div class="field-lbl">Why this act mattered for the Union</div>
+            <span class="lineW"></span>
+            <span class="lineW"></span>
+        </div>
+
+        <div class="act-box">
+            <span class="act-tag">Act III</span>
+            <div class="act-title">The Tide Turns</div>
+            <div class="act-battles">1863 · Vicksburg · Gettysburg · Chickamauga</div>
+            <div class="field-lbl">Key events I want to remember</div>
+            <span class="lineW"></span>
+            <span class="lineW"></span>
+            <span class="lineW"></span>
+            <div class="field-lbl">Why this act mattered for the Union</div>
+            <span class="lineW"></span>
+            <span class="lineW"></span>
+        </div>
+
+        <div class="act-box">
+            <span class="act-tag">Act IV</span>
+            <div class="act-title">The War's Legacy</div>
+            <div class="act-battles">1864-1865 · Wilderness · Atlanta · Sherman's March · Appomattox</div>
+            <div class="field-lbl">Key events I want to remember</div>
+            <span class="lineW"></span>
+            <span class="lineW"></span>
+            <span class="lineW"></span>
+            <div class="field-lbl">Why this act mattered for the Union</div>
+            <span class="lineW"></span>
+            <span class="lineW"></span>
+        </div>
+
+    </div>
+
+    <div class="foot">PAGE 1 · KEEP GOING ON THE BACK</div>
+</div>
+
+<div style="page-break-before: always;"></div>
+
+<div class="page">
+
+    <div class="top-line">
+        <div class="left"><span class="mod-tag">Standard · Large Text</span></div>
+        <div class="namebar">
+            Name <b></b>
+        </div>
+    </div>
+
+    <div class="section-head">
+        <span class="badge">Part 2 · Build Your Answer</span>
+        <h1>How Did the Union Win?</h1>
+    </div>
+
+    <div class="wordbank">
+        <div class="lbl">Word Bank · circle each term when you find it in the game</div>
+        <div class="wordbank-grid">
+            <div><span class="term">Anaconda Plan</span> — the Union strategy to blockade Southern ports and take the Mississippi River, squeezing the South like a snake.</div>
+            <div><span class="term">Emancipation Proclamation</span> — Lincoln's 1863 order freeing enslaved people in Confederate states; turned the war into a fight against slavery.</div>
+            <div><span class="term">total war</span> — destroying not just enemy armies but the farms, factories, and railroads that support them.</div>
+            <div><span class="term">Battle of Gettysburg</span> — July 1863 battle in Pennsylvania; Lee's invasion failed and the Confederacy never went on offense again.</div>
+            <div><span class="term">Siege of Vicksburg</span> — 47-day siege ending July 4, 1863; the Union won the entire Mississippi River and split the Confederacy in two.</div>
+            <div><span class="term">Ulysses S. Grant</span> — Union general who refused to retreat after hard battles; promoted to lead all Union armies in 1864.</div>
+            <div><span class="term">William T. Sherman</span> — Union general whose 1864 march from Atlanta to Savannah pioneered total war in the South.</div>
+            <div><span class="term">54th Massachusetts</span> — Black Union regiment that fought heroically at Fort Wagner in 1863, proving Black soldiers would fight for their freedom.</div>
+        </div>
+    </div>
+
+    <div class="q-embed">
+        <div class="qtext"><span class="qtag">Prompt</span> How was the Union able to defeat the Confederacy? Use at least <b>three specific advantages or events</b> from the game.</div>
+    </div>
+
+    <div class="q-embed">
+        <div class="qtext"><span class="qtag">Q1</span> Build your thesis. Fill in three reasons.</div>
+        <div style="font-size: 13pt; line-height: 2; margin-top: 6px;">
+            The Union defeated the Confederacy because
+            <span class="thesis-line"></span>,
+            <span class="thesis-line"></span>, and
+            <span class="thesis-line"></span>.
+        </div>
+    </div>
+
+    <div class="q-embed">
+        <div class="qtext"><span class="qtag">Q2</span> Evidence from your journal. For each reason, give one specific battle, person, or event that proves it.</div>
+
+        <div class="evidence-row">
+            <div class="reason-tag">Reason 1</div>
+            <div class="reason-body">
+                <span class="lineW"></span>
+                <span class="lineW"></span>
+            </div>
+        </div>
+
+        <div class="evidence-row">
+            <div class="reason-tag">Reason 2</div>
+            <div class="reason-body">
+                <span class="lineW"></span>
+                <span class="lineW"></span>
+            </div>
+        </div>
+
+        <div class="evidence-row">
+            <div class="reason-tag">Reason 3</div>
+            <div class="reason-body">
+                <span class="lineW"></span>
+                <span class="lineW"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="q-embed">
+        <div class="qtext"><span class="qtag">Q3</span> Of the 8 Word Bank terms, which one was <b>most important</b> to the Union's victory? Pick one and explain in one sentence why.</div>
+        <div style="font-family: 'Special Elite', monospace; font-size: 10.5pt; color: var(--ink-soft); margin-top: 4px;">My pick: ____________________________________</div>
+        <span class="lineW"></span>
+        <span class="lineW"></span>
+    </div>
+
+    <div class="q-embed">
+        <div class="qtext"><span class="qtag">Q4</span> The South had brave soldiers and skilled generals too. Write one sentence explaining why <b>bravery and leadership were not enough</b> for the Confederacy to win.</div>
+        <span class="lineW"></span>
+        <span class="lineW"></span>
+    </div>
+
+    <div class="foot">PAGE 2 · BATTLE JOURNAL</div>
+</div>
+
+</body>
+</html>
