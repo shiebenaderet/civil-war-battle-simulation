@@ -1102,11 +1102,13 @@ const battles = [
         historical: {
             situation: {
                 union: {
+                    extra: "Grant has been trying to take Vicksburg for months. Vicksburg sits on tall cliffs above the Mississippi River. The river is like a highway. If you take it, you cut the South in half. Two attacks have failed.",
                     beginner: "General Grant has been trying for months to capture Vicksburg, a city sitting on top of tall cliffs above the Mississippi River. The river is like a highway through the middle of the country, and the South controls it from Vicksburg. Two attacks on the city walls have already failed.",
                     intermediate: "General Grant has marched his army deep into Mississippi after months of failed attempts to reach Vicksburg. The fortress city sits on high bluffs above the Mississippi River, blocking Union control of the waterway. Two direct assaults have already failed with heavy losses.",
                     advanced: "After months of unsuccessful approaches \u2014 canal schemes, bayou expeditions, and two costly direct assaults \u2014 Grant has maneuvered his army to encircle Vicksburg. The fortress city, perched on 200-foot bluffs commanding the Mississippi River, is the last Confederate stronghold preventing Union control of the waterway. Its fall would bisect the Confederacy, but the fortifications have proven impervious to frontal assault."
                 },
                 confederacy: {
+                    extra: "You hold Vicksburg. The city sits on tall cliffs. People say it cannot be taken. As long as you hold it, the South stays in one piece. You have 30,000 soldiers and strong walls.",
                     beginner: "You hold Vicksburg, called the 'Gibraltar of the Confederacy' because it seems impossible to capture. The city sits on top of 200-foot cliffs above the Mississippi River. As long as you hold it, the Confederacy stays connected. You have 30,000 soldiers and strong walls.",
                     intermediate: "You hold Vicksburg, the 'Gibraltar of the Confederacy,' perched on 200-foot bluffs above the Mississippi River. As long as you hold this city, the Confederacy remains connected. General Pemberton has 30,000 troops behind strong fortifications.",
                     advanced: "You hold Vicksburg, the 'Gibraltar of the Confederacy' \u2014 a fortress city commanding the Mississippi from 200-foot bluffs. Its strategic importance cannot be overstated: as long as Vicksburg holds, the Confederacy maintains its trans-Mississippi connection to Texas, Arkansas, and Louisiana. Pemberton commands 30,000 troops behind formidable fortifications that have already repelled two Union assaults."
@@ -1153,6 +1155,7 @@ const battles = [
                 }
             },
             whatHappened: {
+                extra: "Grant surrounded the city for 47 days. No food could get in. People inside got so hungry they ate rats and shoe leather. On July 4, 1863, the city gave up. The same week, Lee lost at Gettysburg. Two huge wins for the North.",
                 beginner: "Grant surrounded the city and waited for 47 days. Nobody could get in or out. People inside got so hungry they ate mules, rats, and even boiled shoe leather! On July 4, 1863 \u2014 the same day Lee retreated from Gettysburg \u2014 the city finally gave up.",
                 intermediate: "Grant settled into a 47-day siege, surrounding the city and cutting off all supplies. Soldiers and civilians alike slowly starved. People ate mules, rats, and boiled shoe leather. On July 4, 1863, the same day Lee retreated from Gettysburg, Pemberton surrendered the entire garrison.",
                 advanced: "Grant established a comprehensive siege, encircling the city with entrenchments while the Navy blockaded the river approaches. Over 47 days, the garrison and civilian population endured systematic starvation \u2014 reduced to consuming mules, rats, and boiled shoe leather. Union engineers dug approach trenches and detonated a mine under Confederate lines. On July 4, 1863 \u2014 the same day Lee retreated from Gettysburg \u2014 Pemberton surrendered his entire garrison of nearly 30,000 men, the largest capitulation of American troops until World War II."
@@ -1160,6 +1163,7 @@ const battles = [
             tech: {
                 name: "Trench Warfare",
                 description: {
+                    extra: "Both sides dug long ditches called trenches. Soldiers hid in them. The Union even dug a tunnel under the South's walls and blew it up. This kind of fighting would come back in World War I.",
                     beginner: "Both sides dug miles of trenches (long ditches for soldiers to hide in) and tunnels around Vicksburg. Union engineers even dug a tunnel under the Confederate walls and blew it up with explosives! This kind of trench fighting was a preview of what World War I would look like 50 years later.",
                     intermediate: "Both sides dug miles of trenches, tunnels, and fortifications around Vicksburg. Union engineers even detonated a mine under Confederate lines. This style of warfare foreshadowed the trench warfare of World War I fifty years later.",
                     advanced: "The Vicksburg siege produced an elaborate system of approach trenches, parallel fortifications, and mining operations that presaged the Western Front of World War I by half a century. Union engineers constructed saps and parallels that advanced inexorably toward Confederate lines, ultimately detonating a 2,200-pound mine beneath the 3rd Louisiana Redan. The siege demonstrated that modern fortifications required methodical reduction rather than direct assault."
@@ -1172,6 +1176,7 @@ const battles = [
                 explainer: "Dora Miller was a woman living in Vicksburg during the siege. She's describing how terrible it was for regular people \u2014 trapped, always hungry, and constantly dodging cannonballs and shells falling on the city."
             },
             biggerPicture: {
+                extra: "Vicksburg fell on July 4. Gettysburg ended the day before. Two huge Union wins in two days. The Union now had the whole Mississippi River. The South was cut in half. Texas, Arkansas, and Louisiana were now alone.",
                 beginner: "Vicksburg fell on July 4, and Gettysburg ended the day before \u2014 two huge Union wins in two days! The Union now controlled the whole Mississippi River, cutting the Confederacy in half. Texas, Arkansas, and Louisiana were completely cut off from the rest of the South.",
                 intermediate: "Vicksburg's fall on July 4, combined with Gettysburg the day before, broke the Confederacy in two. The Union now controlled the entire Mississippi River, cutting off Texas, Arkansas, and Louisiana from the rest of the South.",
                 advanced: "The fall of Vicksburg on July 4, following Gettysburg by a single day, marked the war's strategic turning point. Union control of the entire Mississippi River bisected the Confederacy, severing the trans-Mississippi states \u2014 Texas, Arkansas, and Louisiana \u2014 from the Eastern Confederacy. The twin victories destroyed Confederate hopes of European intervention and shifted the strategic initiative permanently to the Union."
@@ -1185,6 +1190,7 @@ const battles = [
             outcome: "Union victory - Mississippi River secured",
             casualties: { union: 4835, confederacy: 32697 },
             keyFact: {
+                extra: "Vicksburg gave up on July 4. That is Independence Day. The people of Vicksburg were so sad that they did not celebrate the Fourth of July for over 80 years.",
                 beginner: "Vicksburg surrendered on July 4 \u2014 Independence Day! The people of Vicksburg were so upset about surrendering on that date that they refused to celebrate the Fourth of July for over 80 years.",
                 intermediate: "Vicksburg surrendered on July 4, 1863. The city was so bitter about the date that residents refused to celebrate Independence Day for over 80 years afterward.",
                 advanced: "Pemberton, a Northern-born officer serving the Confederacy, deliberately chose July 4 for the surrender, calculating that Grant would offer more generous terms on Independence Day. The gambit worked \u2014 Grant paroled the garrison rather than imprisoning them \u2014 but the date left such bitterness that Vicksburg residents reportedly refused to celebrate Independence Day until the 1940s."
@@ -1273,11 +1279,13 @@ const battles = [
         historical: {
             situation: {
                 union: {
+                    extra: "Lee's army has come to Pennsylvania. You race to stop him. You find his army near a town called Gettysburg. You grab the hilltops first. The hills are key.",
                     beginner: "Lee has marched his army into Pennsylvania \u2014 the North! Your army is racing to stop him. When Union soldiers on horses find Confederate troops near a little town called Gettysburg, you rush to grab the hilltops. Whoever holds the high ground will have a huge advantage.",
                     intermediate: "Lee has invaded the North again, marching into Pennsylvania. Your army is racing to intercept him. When Union cavalry finds Confederate troops near Gettysburg, you rush to seize the high ground on Cemetery Ridge and the surrounding hills.",
                     advanced: "Lee has launched his second invasion of the North, advancing into Pennsylvania with 71,000 veterans. Your Army of the Potomac is racing to intercept. When Buford's cavalry discovers Confederate forces near Gettysburg, you rush to seize the commanding terrain: Cemetery Ridge, Little Round Top, and Culp's Hill. The defensive advantage of this high ground could prove decisive against Lee's aggressive tactical style."
                 },
                 confederacy: {
+                    extra: "Lee brought your army into the North after winning at Chancellorsville. A big win here might end the war. You meet the Union army near a town called Gettysburg.",
                     beginner: "After your big win at Chancellorsville, Lee has brought the army into Pennsylvania. If you win a huge battle on Northern soil, the North might give up and let the Confederacy go. Your army runs into the enemy near a small town called Gettysburg.",
                     intermediate: "After your triumph at Chancellorsville, Lee has brought the war to Northern soil. A decisive victory here could force the Union to negotiate peace. Your army meets the enemy unexpectedly near the small town of Gettysburg.",
                     advanced: "Buoyed by Chancellorsville, Lee has launched an ambitious invasion of Pennsylvania, seeking a decisive victory that could fracture Northern political will and compel a negotiated peace. Your army encounters Union forces unexpectedly near Gettysburg. The engagement develops into a meeting battle on terrain that increasingly favors the defender \u2014 the Union army occupies the high ground, and without Jackson, your ability to execute the flanking maneuvers that defined Lee's operational art is diminished."
@@ -1324,6 +1332,7 @@ const battles = [
                 }
             },
             whatHappened: {
+                extra: "The battle lasted three days. Day 1: The South pushed the Union back. But the Union held the hilltops. Day 2: Lee attacked the sides. He almost broke through. Day 3: Lee sent 12,000 soldiers across an open field. The Union shot them down. Lee retreated to Virginia.",
                 beginner: "The battle lasted three terrible days. Day 1: The Confederates pushed Union soldiers back through town, but the Union grabbed the hilltops. Day 2: Lee attacked both sides and almost broke through at a spot called Little Round Top. Day 3: Lee sent 12,000 men in 'Pickett's Charge' across a mile of open field. They were mowed down by cannons and rifles. Lee retreated to Virginia.",
                 intermediate: "Three days of desperate fighting. Day 1: Confederates pushed Union forces through town but failed to take the high ground. Day 2: Attacks on both flanks nearly broke through at Little Round Top. Day 3: Lee sent 12,000 men in Pickett's Charge across a mile of open ground. It was slaughtered. Lee retreated to Virginia.",
                 advanced: "Three days of escalating carnage defined the war's decisive battle. Day 1: Confederate forces drove the Union through Gettysburg but failed to seize Cemetery Hill before reinforcements arrived. Day 2: Longstreet's assault on the Union left nearly succeeded at Little Round Top, saved only by Chamberlain's desperate bayonet charge, while Ewell's attack on Culp's Hill was repulsed. Day 3: Lee committed to Pickett's Charge \u2014 12,000 men advancing nearly a mile across open ground against concentrated artillery and rifle fire. The assault achieved a brief penetration at 'the Angle' before being annihilated. Lee withdrew to Virginia, his invasion force shattered."
@@ -1331,6 +1340,7 @@ const battles = [
             tech: {
                 name: "Artillery",
                 description: {
+                    extra: "Before the big charge on Day 3, over 300 cannons fired at once. The ground shook for miles. But most Southern cannonballs flew too far. They missed the Union soldiers.",
                     beginner: "Before Pickett's Charge, over 300 cannons fired at the same time \u2014 the biggest cannonade (artillery bombardment) in North American history! The ground shook for miles. But most Confederate shells flew too far and missed the Union soldiers they were supposed to hit.",
                     intermediate: "Over 300 cannons fired in the bombardment before Pickett's Charge, the largest artillery barrage in North American history. The ground shook for miles. Despite the firepower, most Confederate shells overshot the Union line.",
                     advanced: "The bombardment preceding Pickett's Charge involved over 300 guns \u2014 the largest artillery concentration in North American history. However, Confederate shells consistently overshot the Union line on Cemetery Ridge, striking rear areas rather than the infantry and artillery they needed to suppress. This failure left Union defensive firepower largely intact for the infantry assault. The episode demonstrated that massed artillery could not reliably suppress well-positioned defenders \u2014 a lesson that would be relearned at enormous cost in World War I."
@@ -1343,6 +1353,7 @@ const battles = [
                 explainer: "After Pickett's Charge failed, General Pickett told Lee that his entire division had been destroyed. Most of his soldiers were killed, wounded, or captured. Lee's response was: 'It is all my fault.'"
             },
             biggerPicture: {
+                extra: "The South would never invade the North again. Lincoln gave the Gettysburg Address. It said the war was a fight for equal rights. That same month, the 54th Massachusetts, a Black regiment, fought bravely at Fort Wagner. They showed that Black soldiers would fight for their own freedom.",
                 beginner: "The Confederacy would never invade the North again. Lincoln gave his famous Gettysburg Address, saying the war was a fight for equality. That same month, the 54th Massachusetts \u2014 a regiment of Black soldiers \u2014 fought bravely at Fort Wagner, proving that African Americans would fight and die for their own freedom.",
                 intermediate: "The Confederate invasion of the North failed forever. Lincoln's Gettysburg Address redefined the war as a fight for equality. That same month, the 54th Massachusetts, a Black regiment, fought heroically at Fort Wagner, proving that African Americans would fight and die for their own freedom.",
                 advanced: "Gettysburg ended any realistic Confederate hope of achieving independence through military victory on Northern soil. Lincoln's Gettysburg Address, delivered at the battlefield's dedication in November, reframed the war as a test of whether a nation 'conceived in liberty and dedicated to the proposition that all men are created equal' could endure. That same July, the 54th Massachusetts' heroic assault on Fort Wagner demonstrated that African Americans would fight and die for the nation's founding ideals \u2014 accelerating Black enlistment that would ultimately total nearly 180,000 soldiers."
@@ -1356,6 +1367,7 @@ const battles = [
             outcome: "Decisive Union victory - turning point of the war",
             casualties: { union: 23049, confederacy: 28063 },
             keyFact: {
+                extra: "In Pickett's Charge, 12,000 Southern soldiers walked across an open field. Cannons and rifles shot at them. Fewer than half made it back. Lee said, 'It is all my fault.'",
                 beginner: "During Pickett's Charge, 12,000 Confederate soldiers had to walk almost a mile across an open field while cannons and rifles shot at them. Fewer than half made it back. Lee told his men, 'It is all my fault.'",
                 intermediate: "During Pickett's Charge, 12,000 Confederate soldiers marched nearly a mile across open ground. Union artillery and rifle fire cut them to pieces. Fewer than half made it back. Lee told his men, 'It is all my fault.'",
                 advanced: "Pickett's Charge required 12,000 men to advance nearly a mile across open ground under concentrated artillery and rifle fire. The assault achieved a momentary penetration at 'the Angle' before being overwhelmed. Fewer than half the attackers returned. Lee personally rode among the survivors, accepting full responsibility: 'It is all my fault.' The failed charge became the Confederacy's 'high-water mark.'"
@@ -1456,11 +1468,13 @@ const battles = [
         historical: {
             situation: {
                 union: {
+                    extra: "Your army is spread out in thick woods in Georgia. The South just got more soldiers. Now they have more men than you. The trees are so thick you can't see what is happening.",
                     beginner: "Your army is spread out in thick forests in northern Georgia. You've been chasing the Confederate army, but they just got a bunch of extra soldiers from Virginia and now they have more troops than you! The trees are so thick you can barely see what's going on.",
                     intermediate: "Your army is spread thin in the dense forests of northern Georgia, pursuing retreating Confederates toward Chattanooga. But General Bragg has received reinforcements from Virginia and now outnumbers you. The thick woods make it nearly impossible to see what's happening.",
                     advanced: "Your army is dangerously dispersed across miles of dense Georgia forest, having pursued Bragg's retreating Confederates toward Chattanooga. However, Bragg has received Longstreet's veteran corps from Lee's Army of Northern Virginia, giving him numerical superiority for the first time in the Western Theater. The impenetrable forest severely limits reconnaissance and communication, creating conditions ripe for catastrophic miscommunication."
                 },
                 confederacy: {
+                    extra: "For the first time, you have more soldiers than the Union. Extra troops just came from Virginia. The Union army is spread out in the woods. This is your big chance to win.",
                     beginner: "For the first time, you have more soldiers than the Union! General Bragg got extra troops from Virginia, including Longstreet's tough fighters. The Union army is spread out in the thick Georgia forest. This is your big chance to crush them!",
                     intermediate: "For once, you outnumber the Union forces. General Bragg has received Longstreet's corps from Lee's army in Virginia. Rosecrans' Union army is spread out and vulnerable in the dense Georgia forests. This is your chance to destroy them.",
                     advanced: "For the first time in the Western Theater, Confederate forces enjoy numerical superiority. Longstreet's veteran corps \u2014 transferred from Lee's army by rail \u2014 provides both additional strength and experienced leadership. Rosecrans' Army of the Cumberland is dispersed across miles of dense forest, its units separated by difficult terrain. The conditions are optimal for a devastating Confederate offensive."
@@ -1507,6 +1521,7 @@ const battles = [
                 }
             },
             whatHappened: {
+                extra: "On Day 2, a confused order pulled Union soldiers out of their line. This left a huge gap. The South charged through the hole. Two-thirds of the Union army ran away. Only General Thomas held his ground. He earned the nickname 'Rock of Chickamauga.'",
                 beginner: "On the second day, a confusing order pulled Union soldiers out of their line, leaving a huge gap. Longstreet's experienced soldiers charged right through the hole like a battering ram and destroyed two-thirds of the Union army! Only General George Thomas refused to run. He held his ground on Snodgrass Hill, earning the nickname 'Rock of Chickamauga' and saving the army from total destruction.",
                 intermediate: "On the second day, a confused order pulled a Union division out of line, creating a gaping hole. Longstreet's veterans smashed through like a battering ram, routing two-thirds of the Union army. Only General George Thomas held firm on Snodgrass Hill, earning the nickname 'Rock of Chickamauga' and saving the army from total destruction.",
                 advanced: "On September 20, a fatally confused order from Rosecrans pulled Wood's division from the Union line, creating a quarter-mile gap at precisely the point where Longstreet was massing for assault. Longstreet's veterans surged through with devastating effect, routing approximately two-thirds of the Union army, including Rosecrans himself. Only General George Thomas' determined stand on Snodgrass Hill \u2014 holding against repeated assaults until nightfall \u2014 prevented the complete destruction of the Army of the Cumberland, earning Thomas the immortal sobriquet 'Rock of Chickamauga.'"
@@ -1514,6 +1529,7 @@ const battles = [
             tech: {
                 name: "The Telegraph",
                 description: {
+                    extra: "The telegraph was a new machine. It sent messages through wires. Generals could now talk to each other from far away. This let the South move soldiers from Virginia to Georgia very fast.",
                     beginner: "The telegraph (a machine that sends messages through wires using electric signals) let leaders communicate across hundreds of miles almost instantly. Longstreet's soldiers were sent from Virginia to Georgia by orders sent through the telegraph. After the battle, Lincoln used it to rush General Grant to take charge.",
                     intermediate: "The telegraph allowed commanders to coordinate armies hundreds of miles apart. Longstreet's reinforcements from Virginia were ordered by telegraph. After Chickamauga, Lincoln used the telegraph to rush Grant to Chattanooga to take command.",
                     advanced: "The telegraph's strategic impact was demonstrated at Chickamauga on both sides: Confederate leadership used it to coordinate the transfer of Longstreet's corps from Virginia to Georgia \u2014 a 900-mile rail movement orchestrated by telegraph communication. After the battle, Lincoln employed the same technology to rush Grant to Chattanooga, enabling the rapid command reorganization that would produce the Union breakout at Missionary Ridge."
@@ -1526,6 +1542,7 @@ const battles = [
                 explainer: "Sam Watkins is saying that even though he had read about battles and heard stories about the glory of war, actually being in a battle was nothing like he imagined. It was much worse than any story could describe."
             },
             biggerPicture: {
+                extra: "The South won. But General Bragg did not chase the Union army. He let them get away. Lincoln sent General Grant to take charge. The South lost their big chance to win.",
                 beginner: "Even though the Confederates won, General Bragg didn't chase the Union army. He let them escape to Chattanooga, where they built strong forts. Lincoln sent General Grant to take over, setting up the next big fight.",
                 intermediate: "Despite the Confederate victory, Bragg failed to pursue the beaten Union army and let them fortify Chattanooga. Lincoln sent Ulysses S. Grant to take command in the West, setting the stage for the Union breakout.",
                 advanced: "Chickamauga was a tactical Confederate triumph squandered by Bragg's failure to pursue. The beaten Union army was allowed to retreat to Chattanooga and fortify, transforming a potential war-changing victory into a mere setback. Lincoln's decision to send Grant to take overall command in the Western Theater set the stage for the dramatic Union breakout at Missionary Ridge \u2014 turning Confederate victory into strategic irrelevance."
@@ -1539,6 +1556,7 @@ const battles = [
             outcome: "Confederate tactical victory",
             casualties: { union: 16170, confederacy: 18454 },
             keyFact: {
+                extra: "General Thomas refused to run when the rest of the Union army did. He held his hill until dark. People called him 'the Rock of Chickamauga.' He saved the army.",
                 beginner: "General George Thomas got the nickname 'Rock of Chickamauga' because he refused to run when everyone else did. He held his ground on Snodgrass Hill until dark, saving the whole Union army from being destroyed.",
                 intermediate: "General George Thomas earned the nickname 'Rock of Chickamauga' for refusing to retreat. He held Snodgrass Hill against repeated Confederate assaults until nightfall, saving the Union army from total destruction.",
                 advanced: "Thomas' stand on Snodgrass Hill \u2014 holding against repeated Confederate assaults until nightfall with diminishing ammunition \u2014 prevented the rout from becoming annihilation. His performance earned him the sobriquet 'Rock of Chickamauga' and was arguably the most consequential individual act of defensive leadership in the war. The army he saved would later fight at Chattanooga, Atlanta, and Nashville."
