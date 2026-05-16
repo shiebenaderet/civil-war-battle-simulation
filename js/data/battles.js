@@ -1645,11 +1645,13 @@ const battles = [
         historical: {
             situation: {
                 union: {
+                    extra: "Grant is now in charge of all Union armies. He is marching into a thick forest to fight Lee. Grant's plan is simple. Keep fighting. Never go back.",
                     beginner: "General Grant is now in charge of ALL Union armies. He's marching into a thick forest called the Wilderness to fight Lee. Grant's plan is simple: keep fighting and never go backwards. The forest will make it hard to use your bigger army, but Grant doesn't care.",
                     intermediate: "General Grant has taken command of all Union armies and is marching south into the dense Virginia Wilderness to fight Lee. Grant's plan is simple: keep fighting and never retreat. The thick forest will cancel out your advantage in numbers and artillery, but Grant doesn't care.",
                     advanced: "Grant, now commanding all Union armies, has launched the Overland Campaign \u2014 a relentless advance through Virginia designed to pin Lee's army in continuous combat. The dense Wilderness terrain neutralizes Union advantages in numbers and artillery, but Grant's strategic calculus has fundamentally changed: he intends to use the Union's superior manpower and materiel to grind down Lee's irreplaceable army through constant engagement, regardless of tactical outcomes."
                 },
                 confederacy: {
+                    extra: "Grant's huge army is marching into the same thick forest where you beat Hooker last year. The trees are your friend. They hide how few soldiers you have. The fight will be up close.",
                     beginner: "Grant's huge army is marching into the Wilderness \u2014 the same thick forest where you beat General Hooker last year. The tangled woods are your friend: they hide how few soldiers you have and turn the fight into close-up combat where your experienced soldiers do best.",
                     intermediate: "Grant's massive army is pushing into the Wilderness, the same tangled forest where you defeated Hooker last year. The dense undergrowth is your ally, hiding your smaller numbers and turning the battle into close-range chaos where your veterans thrive.",
                     advanced: "Grant's 101,000-man army is entering the Wilderness \u2014 the same impenetrable terrain where you destroyed Hooker's flank a year ago. The dense forest remains your most powerful ally: it negates Union numerical superiority and artillery advantage while favoring the close-quarters combat at which your veteran infantry excels. However, Grant is not Hooker \u2014 this commander will not retreat regardless of tactical results."
@@ -1696,6 +1698,7 @@ const battles = [
                 }
             },
             whatHappened: {
+                extra: "Two days of fighting in thick forest. The woods caught fire. Wounded soldiers couldn't get away. Neither side won. But Grant did something new. He did not go home. He marched south. His soldiers cheered.",
                 beginner: "Two days of horrible fighting in forest so thick soldiers couldn't see 20 yards ahead. The woods actually caught fire, and wounded soldiers who couldn't move were in danger of burning alive. Neither side really won. But here's the important part: unlike every Union general before him, Grant refused to retreat. He marched south, and his soldiers cheered.",
                 intermediate: "Two days of savage fighting in dense forest so thick soldiers couldn't see 20 yards ahead. The woods caught fire, threatening to burn wounded men alive. Neither side won a clear victory. But unlike every Union general before him, Grant refused to retreat. He marched south, and his soldiers cheered.",
                 advanced: "Two days of savage combat in the Wilderness produced approximately 28,000 combined casualties in conditions of appalling confusion \u2014 soldiers fought at point-blank range in undergrowth so dense that visibility was limited to twenty yards. Brushfires swept through the forest, immolating wounded soldiers unable to escape. The tactical result was inconclusive. But Grant's response was unprecedented: instead of retreating northward as every previous Army of the Potomac commander had done after an engagement with Lee, he ordered the army south toward Spotsylvania. When soldiers realized the direction of march, they erupted in cheers. The war's endgame had begun."
@@ -1703,6 +1706,7 @@ const battles = [
             tech: {
                 name: "Repeating Rifles",
                 description: {
+                    extra: "Some Union soldiers had new rifles. They could fire 7 shots in a row. Most guns could fire only one shot at a time. The new rifles gave Union soldiers a big edge.",
                     beginner: "Some Union soldiers had Spencer repeating rifles that could fire 7 shots without reloading! Most soldiers on both sides had guns that could only fire one shot before you had to reload. Having a repeating rifle was like having a superpower in battle.",
                     intermediate: "Spencer repeating rifles could fire 7 shots without reloading, giving some Union units devastating firepower compared to single-shot muskets.",
                     advanced: "The Spencer repeating rifle \u2014 capable of firing seven rounds from a tubular magazine without reloading \u2014 gave equipped Union units a dramatic firepower advantage over opponents armed with single-shot muzzle-loading muskets. While not yet widely issued, the Spencer demonstrated the future of infantry combat: volume of fire rather than individual accuracy would determine tactical outcomes."
@@ -1715,6 +1719,7 @@ const battles = [
                 explainer: "Corporal Gooding, a Black soldier, is writing to President Lincoln to demand equal pay. Black soldiers were paid less than white soldiers even though they risked their lives the same way. He's asking: if we're willing to die for the country, why aren't we treated equally?"
             },
             biggerPicture: {
+                extra: "Grant did not give up. Every Union general before him had gone home after fighting Lee. Grant kept going south. The war was now in its final part.",
                 beginner: "Grant's refusal to retreat was a turning point. Every Union general before him had fought Lee, lost or tied, and gone home. Grant said 'no' \u2014 he kept going south. The war had entered its final chapter.",
                 intermediate: "Grant's refusal to retreat showed the war had entered its final phase. The Union would fight until the end.",
                 advanced: "Grant's decision to continue south after the Wilderness marked a fundamental strategic inflection point. For the first time, the Army of the Potomac would maintain continuous offensive contact with Lee's army, denying the Confederacy the operational pauses it needed to recover. Grant's strategy of attrition \u2014 trading casualties that the Union could replace but the Confederacy could not \u2014 revealed the war's underlying mathematical reality: the South could not sustain a protracted conflict against a determined opponent with vastly superior resources."
@@ -1728,6 +1733,7 @@ const battles = [
             outcome: "Tactical draw, strategic shift in Union's favor",
             casualties: { union: 17666, confederacy: 11125 },
             keyFact: {
+                extra: "When Union soldiers saw Grant was going south, not back home, they cheered. No Union general had ever done this after fighting Lee. It changed the war.",
                 beginner: "When Union soldiers realized Grant was marching south \u2014 not north back home \u2014 they burst into cheers! For the first time ever, a Union general refused to turn back after fighting Lee. That moment changed everything.",
                 intermediate: "When Union soldiers realized Grant was marching south instead of retreating north, they burst into cheers. For the first time, a Union commander refused to turn back after a brutal fight.",
                 advanced: "The moment Union soldiers realized they were marching south rather than north has become one of the war's iconic turning points. After years of commanders who fought Lee, withdrew, and reorganized, Grant's refusal to retreat signaled a fundamental change in Union strategy. The cheers that erupted along the marching columns reflected soldiers' recognition that the war's endgame had finally begun."
@@ -1817,11 +1823,13 @@ const battles = [
         historical: {
             situation: {
                 union: {
+                    extra: "Sherman's army has reached Atlanta. The city has many factories. Its trains connect the South. If you take Atlanta, it will help Lincoln win the election. The war can keep going until the South gives up.",
                     beginner: "After months of marching through Georgia, Sherman's army has reached Atlanta. The city makes weapons and ammunition in its factories, and its railroads connect the whole Confederacy. If you can capture Atlanta, it might help Lincoln win the upcoming election and keep the war going until the South is beaten.",
                     intermediate: "After months of maneuvering through Georgia, Sherman's army has reached Atlanta. The city's factories produce weapons and ammunition, and its railroads connect the eastern and western Confederacy. Capturing Atlanta could decide the 1864 presidential election.",
                     advanced: "After months of strategic maneuvering through Georgia, Sherman's army has invested Atlanta \u2014 the Confederacy's industrial heart and railroad nexus. The city's factories, foundries, and rail connections are critical to Confederate logistics. Beyond its military significance, Atlanta has become the political center of gravity: Lincoln faces re-election in November, and without a major Union victory, the Democratic candidate George McClellan may win on a peace platform that could end the war with the Confederacy intact."
                 },
                 confederacy: {
+                    extra: "Atlanta cannot fall. The city's factories make weapons. Its railroads connect the whole South. Davis just put General Hood in charge. Hood likes to attack. He must save the city.",
                     beginner: "Atlanta cannot fall! The city's factories make weapons, and its railroads connect the whole Confederacy. President Davis just replaced the careful General Johnston with the aggressive General Hood, who has orders to attack Sherman and save the city no matter what.",
                     intermediate: "Atlanta must not fall. Its factories, railroads, and strategic position are vital to the Confederacy's survival. President Davis has replaced the cautious General Johnston with the aggressive General Hood, ordering him to attack Sherman and save the city at all costs.",
                     advanced: "Atlanta represents an existential strategic position: its factories, foundries, and railroad junction are irreplaceable Confederate assets. Davis's decision to replace the defensively skilled Johnston with the aggressive Hood reflects the Confederacy's desperation \u2014 Hood's orders are to attack Sherman and save the city, but his aggressive temperament may prove catastrophically wasteful against Sherman's larger, well-supplied army."
@@ -1868,6 +1876,7 @@ const battles = [
                 }
             },
             whatHappened: {
+                extra: "Hood attacked Sherman three times. Every attack failed. He lost 15,000 soldiers. Then Sherman cut the railroad tracks. No food could reach the city. On September 2, Hood left Atlanta. Sherman sent Lincoln a message: 'Atlanta is ours.'",
                 beginner: "Hood attacked Sherman three times in eight days, and every attack failed. He lost over 15,000 soldiers. Then Sherman started cutting the railroad tracks one by one, so no food or supplies could reach Atlanta. On September 2, Hood had to leave the city, burning what he couldn't carry. Sherman sent a famous message to Lincoln: 'Atlanta is ours, and fairly won.'",
                 intermediate: "Hood attacked Sherman three times in eight days, losing over 15,000 men in failed offensives. Sherman then cut the railroads one by one, strangling Atlanta's supplies. On September 2, Hood evacuated the city, destroying what he couldn't carry. Sherman telegraphed Lincoln: 'Atlanta is ours, and fairly won.'",
                 advanced: "Hood launched three costly sorties \u2014 at Peachtree Creek, the Battle of Atlanta, and Ezra Church \u2014 losing approximately 15,000 irreplaceable troops in eight days without achieving any strategic result. Sherman then executed his decisive maneuver: swinging his army south to sever the Macon & Western Railroad, Atlanta's last supply line. On September 2, Hood evacuated the city, destroying military stores he couldn't transport. Sherman's laconic telegram to Washington \u2014 'Atlanta is ours, and fairly won' \u2014 sealed Lincoln's re-election and the Confederacy's fate."
@@ -1875,6 +1884,7 @@ const battles = [
             tech: {
                 name: "Railroad Destruction",
                 description: {
+                    extra: "Union soldiers found a clever way to wreck railroad tracks. They heated the rails in big fires until soft. Then they twisted them around trees. They called the twisted rails 'Sherman's neckties.' They could never be used again.",
                     beginner: "Union soldiers had a special way of destroying railroad tracks. They would heat the iron rails over bonfires until they were soft, then twist them around trees. These twisted rails were called 'Sherman's neckties,' and they couldn't be straightened and used again.",
                     intermediate: "Union soldiers heated railroad rails over bonfires and twisted them around trees, creating 'Sherman's neckties' that couldn't be reused.",
                     advanced: "Union troops developed systematic methods of railroad destruction: ties were piled and ignited, and the heated rails were twisted around trees or telegraph poles into useless spirals dubbed 'Sherman's neckties.' This technique rendered the rails irreparable \u2014 the Confederacy lacked the industrial capacity to re-roll twisted iron \u2014 and proved devastatingly effective against the railroad infrastructure that sustained Confederate military operations."
@@ -1887,6 +1897,7 @@ const battles = [
                 explainer: "Sherman sent this short, famous message to Washington, D.C. after capturing Atlanta. It was one of the most important moments of the war because it meant Lincoln could win re-election."
             },
             biggerPicture: {
+                extra: "Taking Atlanta saved Lincoln's job. He won re-election in November. If he had lost, the new president might have let the South keep slavery. Atlanta changed everything.",
                 beginner: "Atlanta's capture saved Lincoln's presidency. He won re-election in November 1864. If Lincoln had lost, the new president might have made a deal with the Confederacy and let them keep slavery. Atlanta changed everything.",
                 intermediate: "Atlanta's fall guaranteed Lincoln's re-election. Without it, a peace candidate might have let the Confederacy survive.",
                 advanced: "Atlanta's fall in September 1864 transformed the Northern political landscape. Lincoln's re-election, which had appeared doubtful through the summer, became virtually certain. Had McClellan won the presidency on a peace platform, the Confederacy might have survived through a negotiated settlement. Sherman's capture of Atlanta thus achieved something no purely military victory could: it ensured that the political will to continue the war until unconditional victory would survive the democratic process."
@@ -1900,6 +1911,7 @@ const battles = [
             outcome: "Union victory - critical political and military impact",
             casualties: { union: 3722, confederacy: 8499 },
             keyFact: {
+                extra: "Taking Atlanta helped Lincoln win re-election. If he had lost, the new president might have made peace with the South. Slavery could have lasted longer.",
                 beginner: "Atlanta's capture helped Lincoln win re-election in 1864. If Lincoln had lost, the new president might have made peace with the Confederacy, and slavery could have continued.",
                 intermediate: "Atlanta's fall helped Lincoln win re-election in 1864. If Lincoln had lost, the new president might have negotiated peace and allowed the Confederacy to survive.",
                 advanced: "Atlanta's fall transformed the 1864 election from a referendum on Lincoln's management of a seemingly endless war into a validation of his determination to see it through. McClellan's Democratic platform called for an armistice and negotiated peace \u2014 terms that would likely have preserved the Confederacy. Sherman's victory ensured that possibility never materialized."
@@ -1989,11 +2001,13 @@ const battles = [
         historical: {
             situation: {
                 union: {
+                    extra: "Sherman has a bold idea. Leave the supply wagons behind. March 300 miles to the ocean. Eat what you find. Destroy everything in a 60-mile path. The goal is to break the South.",
                     beginner: "After capturing Atlanta, Sherman has a wild idea: leave your supply wagons behind and march 300 miles to the ocean, eating whatever you find along the way and destroying everything in a 60-mile-wide path. The goal is to break the South's ability to fight.",
                     intermediate: "After capturing Atlanta, Sherman proposes something radical: cut loose from your supply lines and march 300 miles to the sea, living off the land and destroying everything in a 60-mile-wide path. The goal is to break the South's ability and will to fight.",
                     advanced: "Sherman proposes an unprecedented strategic gamble: severing his own supply lines and marching 60,000 troops 300 miles from Atlanta to Savannah, subsisting on foraged resources while systematically destroying the Confederacy's agricultural and industrial infrastructure in a 60-mile-wide corridor. The objective is twofold: demonstrate that the Confederacy cannot defend its own heartland, and eliminate the economic foundation that sustains Southern armies in the field."
                 },
                 confederacy: {
+                    extra: "Sherman has 60,000 soldiers marching across Georgia. You have only 13,000 to stop him. Farms and towns are not safe. Many enslaved people on the plantations will leave to follow Sherman's army to freedom.",
                     beginner: "Sherman has left Atlanta and is marching across Georgia with 60,000 soldiers. You have only about 13,000 scattered soldiers to try to stop him. Georgia's farms, towns, and railroads are unprotected. The plantations he is marching toward are worked by tens of thousands of enslaved people, many of whom will leave their plantations and join Sherman's army as it passes.",
                     intermediate: "Sherman has left Atlanta and is marching across Georgia with 60,000 men. You have only scattered militia and Wheeler's cavalry to oppose him. The heartland of Georgia lies exposed. Many of the plantations in his path are worked by enslaved people who will follow his army to seek freedom.",
                     advanced: "Sherman has abandoned his supply lines and is advancing across Georgia's heartland with 60,000 veteran troops. Your available forces \u2014 approximately 13,000 militia and Wheeler's cavalry \u2014 are woefully insufficient to contest his advance. The Confederacy's agricultural infrastructure and critical rail network lie exposed. Tens of thousands of enslaved people on the plantations in Sherman's path will leave with his army, fundamentally disrupting the labor system the Confederate economy depends on."
@@ -2040,6 +2054,7 @@ const battles = [
                 }
             },
             whatHappened: {
+                extra: "Sherman's army marched 300 miles in five weeks. They destroyed railroads, factories, and farms. About 25,000 enslaved people left their plantations and followed Sherman's army to freedom. On December 21, Sherman took Savannah. He gave the city to Lincoln as a Christmas gift.",
                 beginner: "Sherman's 60,000 soldiers marched 300 miles from Atlanta to the ocean city of Savannah in just five weeks. They destroyed railroads, factories, cotton gins (machines that clean cotton), and farms in a path 60 miles wide. They twisted hot railroad rails into 'Sherman's neckties' around trees. On December 21, Sherman took Savannah and offered it to Lincoln as a Christmas present!",
                 intermediate: "Sherman's 60,000 troops marched 300 miles from Atlanta to Savannah in five weeks, destroying railroads, factories, cotton gins, and farms in a 60-mile-wide swath. His soldiers twisted heated rails into 'Sherman's neckties' and burned anything of military value. On December 21, Sherman captured Savannah and telegraphed Lincoln, offering the city as a Christmas gift.",
                 advanced: "Sherman's 60,000 troops executed a 300-mile march from Atlanta to Savannah in thirty-five days, systematically destroying the Confederacy's agricultural and industrial infrastructure across a 60-mile-wide corridor. Railroads were methodically wrecked, cotton gins and factories burned, and livestock and provisions confiscated. Approximately 25,000 formerly enslaved people joined the march. On December 21, Sherman captured Savannah and telegraphed Lincoln his famous Christmas offering: the city and 25,000 bales of cotton."
@@ -2047,6 +2062,7 @@ const battles = [
             tech: {
                 name: "Total War",
                 description: {
+                    extra: "Sherman started a new kind of war called 'total war.' He did not just fight the enemy's army. He destroyed the farms, factories, and railroads that helped the army. If people could not eat or make guns, the war would end faster.",
                     beginner: "Sherman invented a new kind of warfare called 'total war.' Instead of just fighting the enemy's army, he destroyed everything that helped them fight: farms, factories, railroads, and supplies. The idea was that if people couldn't eat or make weapons, the war would end faster.",
                     intermediate: "Sherman pioneered 'total war,' targeting civilian infrastructure like farms, railroads, and factories to destroy the enemy's ability to fight, not just their army.",
                     advanced: "Sherman's March to the Sea operationalized the concept of 'total war' \u2014 the systematic targeting of civilian economic infrastructure to destroy the enemy's capacity and will to sustain hostilities. By attacking the agricultural, industrial, and transportation foundations of the Confederate war effort rather than its armies directly, Sherman demonstrated that modern warfare extended beyond the battlefield to encompass the entire society that sustained military operations."
@@ -2059,6 +2075,7 @@ const battles = [
                 explainer: "Dolly Sumner Lunt owned a plantation in Georgia. She's describing Union soldiers raiding her property, taking all her food and animals. This is what 'total war' looked like for the people living through it."
             },
             biggerPicture: {
+                extra: "Sherman showed the South could not protect its own people. If the South could not keep its farms safe, many Southerners started to ask: why keep fighting?",
                 beginner: "By destroying so much of Georgia, Sherman proved that the Confederacy couldn't protect its own people. If the Confederate government couldn't keep farms and towns safe, many Southerners started wondering: what's the point of fighting?",
                 intermediate: "By destroying the South's ability to make war, Sherman proved the Confederacy couldn't protect its own people.",
                 advanced: "The March to the Sea achieved its strategic objectives on multiple levels: materially, it destroyed an estimated $100 million in Confederate infrastructure; psychologically, it demonstrated that the Confederate government was powerless to defend its own population; and politically, it further demoralized Southern civilians whose support was essential to sustaining the war effort. Sherman had discovered that in a modern democracy, the will of the civilian population was as legitimate a military target as the enemy's army."
@@ -2072,6 +2089,7 @@ const battles = [
             outcome: "Union victory - the Confederacy's heartland devastated",
             casualties: { union: 2200, confederacy: 2500 },
             keyFact: {
+                extra: "Sherman's army destroyed $100 million in property. That is about $1.8 billion today. Soldiers twisted hot railroad rails around trees. They called them 'neckties.' They could never be used again.",
                 beginner: "Sherman's army destroyed about $100 million worth of property \u2014 that's about $1.8 billion in today's money! Soldiers twisted hot railroad rails around trees, making 'neckties' that could never be used again.",
                 intermediate: "Sherman's army destroyed an estimated $100 million in property (about $1.8 billion today). Soldiers bent heated railroad rails around trees, creating twisted metal 'neckties' that couldn't be straightened and reused.",
                 advanced: "Sherman's army inflicted an estimated $100 million in property damage (approximately $1.8 billion in current value) across a 300-mile corridor. The systematic destruction of railroad infrastructure, cotton gins, and agricultural resources crippled the Confederate war economy. An estimated 25,000 formerly enslaved people followed the army to freedom, though their treatment by some Union soldiers was inconsistent with the liberation they sought."
@@ -2165,11 +2183,13 @@ const battles = [
         historical: {
             situation: {
                 union: {
+                    extra: "Lee's army left Richmond. They are running west. They are starving and tired. Your army of 100,000 is closing in on Lee's 28,000. The war is almost over.",
                     beginner: "Lee's army has left Richmond and is running west, starving and worn out. Grant's army is chasing them, and cavalry has raced ahead to block the roads. You have over 100,000 soldiers closing in on Lee's 28,000. The end of the war is almost here.",
                     intermediate: "Lee's army has abandoned Richmond and is fleeing west, starving and exhausted. Grant's forces are in pursuit, and Sheridan's cavalry has raced ahead to cut off Lee's escape. You have over 100,000 men closing in on Lee's 28,000. The end is near.",
                     advanced: "Lee's Army of Northern Virginia has evacuated Richmond and is retreating westward in a desperate attempt to reach Johnston's forces in North Carolina. The army is disintegrating \u2014 starving, exhausted, and hemorrhaging deserters. Sheridan's cavalry has outpaced Lee and blocked the road at Appomattox Court House. With over 100,000 troops converging on Lee's 28,000, the military situation is hopeless. The question now is not whether the war will end, but how."
                 },
                 confederacy: {
+                    extra: "Richmond, your capital, has fallen. Only 28,000 starving soldiers are left. You are trying to escape, but the Union army is closing in. Some officers want to keep fighting in small groups for years. Lee must make the hardest choice of his life.",
                     beginner: "Richmond, the Confederate capital, has been captured. Your army of 28,000 starving, exhausted soldiers is all that's left. You're trying to escape to the west, but Grant's army is closing in from all sides. Some officers want to break the army into small groups and fight as guerrillas (hidden fighters) for years. Lee must make the hardest decision of his life.",
                     intermediate: "Richmond has fallen. Your army of 28,000 starving, exhausted men is all that remains. You're trying to escape west to join other Confederate forces, but Grant's army is closing in from every direction. Some officers urge guerrilla warfare. Lee must decide.",
                     advanced: "Richmond has fallen, and your army of 28,000 \u2014 starving, exhausted, and disintegrating through desertion \u2014 represents the Confederacy's last organized military force. The retreat westward to link with Johnston has been cut off by Sheridan's cavalry at Appomattox Court House. Some officers advocate disbanding the army into guerrilla bands to wage an indefinite insurgency. Lee faces the war's most consequential decision: surrender or prolonged guerrilla conflict."
@@ -2216,6 +2236,7 @@ const battles = [
                 }
             },
             whatHappened: {
+                extra: "Lee tried one last escape on April 9. The Union army blocked every road. Lee said he would rather die than surrender. But he knew he had to. He met Grant in the living room of a farmer's house. Grant let the Southern soldiers go home and keep their horses. After four years, the war was over.",
                 beginner: "Lee tried one last escape at dawn on April 9, but Union soldiers blocked every road. Lee said, 'I would rather die a thousand deaths' than surrender, but he knew he had to. In the living room of a farmer's house, Grant offered kind terms: soldiers could go home, keep their horses, and officers could keep their swords. After four years, the war was finally over.",
                 intermediate: "Lee attempted one last breakout at dawn on April 9, but Union infantry blocked every road. Lee said, 'There is nothing left for me to do but to go and see General Grant, and I would rather die a thousand deaths.' In the parlor of the McLean house, Grant offered generous terms: soldiers could go home, keep their horses, and officers kept their sidearms. The war was over.",
                 advanced: "Lee's final breakout attempt at dawn on April 9 was stopped by Union infantry positioned behind Sheridan's cavalry screen, blocking every escape route. Confronting the irremediable military situation, Lee uttered his famous lament: 'There is nothing left for me to do but to go and see General Grant, and I would rather die a thousand deaths.' The surrender conference in the McLean house parlor produced remarkably generous terms: soldiers would be paroled, officers retained their sidearms, and enlisted men could keep their horses for spring plowing. Grant's terms embodied Lincoln's vision of reconciliation rather than retribution. Four years of war that claimed over 620,000 lives had ended."
@@ -2223,6 +2244,7 @@ const battles = [
             tech: {
                 name: "The Telegraph",
                 description: {
+                    extra: "News that Lee gave up traveled across the country in hours. The telegraph sent the news through wires. People in faraway cities heard right away. They started celebrating.",
                     beginner: "News that Lee surrendered traveled across the whole country in just a few hours through the telegraph (a machine that sends messages through electric wires). People in cities hundreds of miles away started celebrating almost immediately!",
                     intermediate: "News of Lee's surrender spread across the nation in hours via telegraph, allowing celebrations to erupt in cities hundreds of miles away almost immediately.",
                     advanced: "The telegraph's capacity for near-instantaneous communication transformed the surrender's impact: news reached Washington, New York, and cities across the North within hours, enabling coordinated celebrations and an immediate shift in national consciousness. The speed of communication \u2014 inconceivable at the war's outset \u2014 ensured that the end of the conflict was experienced as a shared national moment rather than a series of delayed local revelations."
@@ -2235,6 +2257,7 @@ const battles = [
                 explainer: "Joshua Chamberlain, a Union officer, is describing watching the Confederate soldiers march up to surrender. He admired their courage even though they were the enemy. He believed that these brave men deserved to be welcomed back into the United States."
             },
             biggerPicture: {
+                extra: "Lee chose to give up. He could have kept fighting in small groups for years. He didn't. Grant was kind to the defeated soldiers. The country could now start to heal. But the hardest job was just beginning. What did freedom really mean for four million people just freed from slavery?",
                 beginner: "Lee chose to surrender instead of starting a guerrilla war that could have lasted for years. Grant's kind treatment of the defeated soldiers helped the country start to come back together. But the hardest part \u2014 rebuilding the nation and deciding what freedom meant for four million formerly enslaved people \u2014 was just beginning.",
                 intermediate: "Lee chose surrender over guerrilla war. Grant's generous terms shaped how Reconstruction would unfold.",
                 advanced: "Lee's decision to surrender rather than wage guerrilla war \u2014 combined with Grant's generous terms \u2014 established the framework for national reunification. However, the war's end opened questions far more difficult than those settled on the battlefield: What would freedom mean for four million formerly enslaved people? What obligations did the nation owe to those who had been enslaved? How would the Southern states be reintegrated? The answers to these questions would define Reconstruction and shape American race relations for the next century and beyond."
@@ -2248,6 +2271,7 @@ const battles = [
             outcome: "Union victory - the Civil War ends",
             casualties: { union: 164, confederacy: 500 },
             keyFact: {
+                extra: "When Union soldiers started firing cannons to celebrate, Grant told them to stop. He said: 'The war is over. The rebels are our countrymen again.' Grant wanted the country to heal.",
                 beginner: "When Union soldiers started firing celebration cannons, Grant ordered them to stop immediately. He said: 'The war is over. The rebels are our countrymen again.' That tells you a lot about the kind of peace Grant wanted.",
                 intermediate: "Grant's generous surrender terms set the tone for reconciliation. When Union troops began firing celebration cannons, Grant ordered them to stop: 'The war is over. The rebels are our countrymen again.'",
                 advanced: "Grant's order silencing celebratory cannons \u2014 'The war is over. The rebels are our countrymen again' \u2014 encapsulated the Union's approach to the war's end. Chamberlain's decision to have Union troops present arms as Confederates marched to stack their weapons further embodied this spirit. These gestures of magnanimity, however, existed in tension with the unresolved question of justice for four million formerly enslaved people \u2014 a tension that would define the troubled era of Reconstruction."
