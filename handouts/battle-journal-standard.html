@@ -230,12 +230,9 @@ body { font-family: 'Old Standard TT', Georgia, serif; font-size: 13.5pt; line-h
         color: black !important;
     }
 
-    /* Page flow: page break only between the two halves (Part 1 / Part 2) */
-    .page-break {
-        page-break-before: always;
-        break-before: page;
-    }
-    /* Avoid breaking inside cards, but allow grids to flow */
+    /* Page flow: let content flow naturally. Cards won't split mid-content
+       because of break-inside:avoid, so they'll push to the next page when
+       they don't fit, with no forced gaps. */
     .pat-list, .act-box, .q-embed, .wordbank {
         break-inside: avoid; page-break-inside: avoid;
     }
@@ -351,15 +348,10 @@ body { font-family: 'Old Standard TT', Georgia, serif; font-size: 13.5pt; line-h
 
     </div>
 
-    <div class="foot">PAGE 1 · KEEP GOING ON THE BACK</div>
+    <div class="foot">CONTINUED BELOW</div>
 </div>
 
-<div class="page page-break">
-
-    <div class="cont-line">
-        <span class="left-cont">Battle Journal · Standard · Large Text</span>
-        <span class="right-cont">page 2 of 2</span>
-    </div>
+<div class="page">
 
     <div class="section-head">
         <span class="badge">Part 2 · Build Your Answer</span>
@@ -435,7 +427,7 @@ body { font-family: 'Old Standard TT', Georgia, serif; font-size: 13.5pt; line-h
         <span class="lineW"></span>
     </div>
 
-    <div class="foot">PAGE 2 · BATTLE JOURNAL</div>
+    <div class="foot">BATTLE JOURNAL · END</div>
 </div>
 
 </body>
