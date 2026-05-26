@@ -201,6 +201,22 @@ var firebaseLeaderboard = (function() {
         return function() { ref.off('value', handler); };
     }
 
+    function deleteProgressEntry(roomCode, studentId, callback) {
+        if (!isAvailable()) {
+            if (callback) callback(false, 'Offline.');
+            return;
+        }
+        var code = String(roomCode || '').toLowerCase().trim();
+        var sid = String(studentId || '').trim();
+        if (!code || !sid) {
+            if (callback) callback(false, 'Missing code or student id.');
+            return;
+        }
+        db.ref('rooms/' + code + '/progress/' + sid).remove()
+            .then(function() { if (callback) callback(true, ''); })
+            .catch(function() { if (callback) callback(false, 'Delete failed.'); });
+    }
+
     // Load leaderboard from a room (top 20 by score)
     function loadLeaderboard(roomCode, callback) {
         if (!isAvailable()) {
@@ -277,6 +293,7 @@ var firebaseLeaderboard = (function() {
         getStudentId: getStudentId,
         writeProgress: writeProgress,
         subscribeToProgress: subscribeToProgress,
+        deleteProgressEntry: deleteProgressEntry,
         getTeacherDashboardRoom: function() { return TEACHER_DASHBOARD_ROOM; },
         periodForRoom: periodForRoom,
         getAllPeriodRooms: getAllPeriodRooms,

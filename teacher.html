@@ -146,6 +146,18 @@
         }
         .finished-row .battle-label { color: #166534; }
         .finished-row .student-chip { background: #f0fdf4; border-color: #bbf7d0; }
+        .student-chip-delete {
+            margin-left: 4px;
+            background: transparent;
+            border: none;
+            color: #b91c1c;
+            cursor: pointer;
+            font-size: 14px;
+            line-height: 1;
+            padding: 0 2px;
+            opacity: 0.4;
+        }
+        .student-chip:hover .student-chip-delete { opacity: 1; }
         .sort-mode-period .battle-row,
         .sort-mode-name .battle-row {
             display: none;
@@ -382,6 +394,26 @@
             ls.className = 'last-seen';
             ls.textContent = formatLastSeen(entry.lastSeen);
             c.appendChild(ls);
+
+            var del = document.createElement('button');
+            del.type = 'button';
+            del.className = 'student-chip-delete';
+            del.textContent = '✕';
+            del.title = 'Delete ' + (entry.name || 'this student') + ' from dashboard';
+            del.addEventListener('click', function(ev) {
+                ev.stopPropagation();
+                if (!window.confirm('Delete ' + (entry.name || 'this student') + ' from the dashboard?')) return;
+                var sourceCode = entry._sourceRoom;
+                if (!sourceCode) {
+                    var rooms = firebaseLeaderboard.getAllPeriodRooms();
+                    sourceCode = rooms[entry.period];
+                }
+                if (!sourceCode || !entry.studentId) return;
+                firebaseLeaderboard.deleteProgressEntry(sourceCode, entry.studentId, function(ok, errMsg) {
+                    if (!ok) setStatus(errMsg || 'Delete failed.', true);
+                });
+            });
+            c.appendChild(del);
 
             return c;
         }
