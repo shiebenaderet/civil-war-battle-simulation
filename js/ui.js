@@ -151,8 +151,11 @@ function renderSideSelection() {
         var lastInitial = document.getElementById('lastInitialInput');
         if (firstName) firstName.value = '';
         if (lastInitial) lastInitial.value = '';
-        var periodSel = document.getElementById('periodSelect');
-        if (periodSel) periodSel.value = '';
+        var codeInput = document.getElementById('classCodeInput');
+        if (codeInput) {
+            var saved = firebaseLeaderboard.getSavedClassCode();
+            if (saved) codeInput.value = saved.toUpperCase();
+        }
         // Auto-focus first name
         if (firstName) setTimeout(function() { firstName.focus(); }, 100);
     } else {
@@ -181,8 +184,14 @@ function getStudentNameFromForm() {
 }
 
 function getPeriodFromForm() {
-    var sel = document.getElementById('periodSelect');
-    return sel ? (sel.value || '') : '';
+    var input = document.getElementById('classCodeInput');
+    if (!input) return '';
+    var code = String(input.value || '').toLowerCase().trim();
+    var period = firebaseLeaderboard.periodForRoom(code);
+    if (!period) return '';
+    // Side effect: persist the validated code so app.js can use it for writes.
+    firebaseLeaderboard.saveClassCode(code);
+    return period;
 }
 
 // ============================================================
