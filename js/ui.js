@@ -1310,6 +1310,9 @@ function renderHistoricalBattle() {
     var techBox = document.getElementById('histTechBox');
     if (techBox) techBox.style.display = isLowReadingTier ? 'none' : '';
 
+    // Battlefield Tours: post-battle video card for this battle
+    renderBattleVideoCard(battles[gameState.currentBattle].id, 'histBattleVideoSlot');
+
     // --- Section 5: A Voice From the War ---
     document.getElementById('histVoiceQuote').textContent = content.voice.quote;
     document.getElementById('histVoiceAttribution').textContent = '\u2014 ' + content.voice.attribution;
@@ -2507,6 +2510,7 @@ function renderFreeplayResults(result) {
         document.getElementById('histContextOutcome').textContent =
             'Historical result: ' + histOutcome + ' (' + winnerLabel + ' victory)';
         histContextBox.style.display = 'block';
+        renderBattleVideoCard(battleData.id, 'fpBattleVideoSlot');
     }
 
     // Momentum meter - map momentum to percentage (center = 0, range -25 to +25)
@@ -2948,7 +2952,7 @@ function switchLogTab(tabName) {
         warMapTab.classList.add('active');
         progressContent.style.display = 'none';
         warMapContent.style.display = 'block';
-        loadWarMap();
+        loadBattlefieldTours();
     } else {
         progressTab.classList.add('active');
         warMapTab.classList.remove('active');
@@ -2957,25 +2961,237 @@ function switchLogTab(tabName) {
     }
 }
 
-function loadWarMap() {
+var battlefieldTours = [
+    { battleId: 'fort_sumter',     name: 'Fort Sumter',                date: 'April 1861',     youtubeId: 'Hfn5BZZBpoU', type: 'Animated Map', hook: 'The opening shots that started the war.' },
+    { battleId: 'bull_run',        name: 'First Bull Run',             date: 'July 1861',      youtubeId: 'vGR02nZ03uY', type: 'Animated Map', hook: 'The day both sides learned the war would not be short.' },
+    { battleId: 'shiloh',          name: 'Shiloh',                     date: 'April 1862',     youtubeId: 'Tlhlk3bp-f4', type: 'Animated Map', hook: 'A surprise dawn attack and the bloodiest two days yet.' },
+    { battleId: 'antietam',        name: 'Antietam',                   date: 'September 1862', youtubeId: '_8ybkoGmHww', type: 'Animated Map', hook: 'The single bloodiest day in American history.' },
+    { battleId: 'fredericksburg',  name: 'Fredericksburg',             date: 'December 1862',  youtubeId: 'nJodzkWBjDk', type: 'Animated Map', hook: 'Wave after wave of Union troops thrown against a stone wall.' },
+    { battleId: 'chancellorsville', name: 'Chancellorsville',          date: 'May 1863',       youtubeId: '3o7WcBQ8pYg', type: 'Animated Map', hook: "Lee's boldest gamble and the loss of Stonewall Jackson." },
+    { battleId: 'vicksburg',       name: 'Vicksburg',                  date: 'May-July 1863',  youtubeId: '1eSgimZ8GKQ', type: 'Animated Map', hook: 'A 47-day siege that split the Confederacy in two.' },
+    { battleId: 'gettysburg',      name: 'Gettysburg',                 date: 'July 1863',      youtubeId: 'DUXpCfcJ7Ng', type: 'Animated Map', hook: 'Three days that decided the fate of the invasion North.' },
+    { battleId: 'chickamauga',     name: 'Chickamauga',                date: 'September 1863', youtubeId: 'vlJUuNny9mc', type: 'Animated Map', hook: 'A rare Confederate victory in the Western theater.' },
+    { battleId: 'wilderness',      name: 'The Wilderness',             date: 'May 1864',       youtubeId: 'gxJTfwQjixE', type: 'Animated Map', hook: "Grant's Overland Campaign opens in tangled woods and fire." },
+    { battleId: 'atlanta',         name: 'Atlanta',                    date: 'July-Sept 1864', youtubeId: 'bh4vSOx2cMI', type: 'Documentary',  hook: 'The campaign that helped reelect Lincoln.' },
+    { battleId: 'shermans_march',  name: "Sherman's March to the Sea", date: 'Nov-Dec 1864',   youtubeId: 'FtD787nRFn4', type: 'Documentary',  hook: 'Total war from Atlanta to the sea.' },
+    { battleId: 'appomattox',      name: 'Appomattox Court House',     date: 'April 1865',     youtubeId: 'lV3YPw_Mly8', type: 'Documentary',  hook: "Lee's surrender and the end of the Confederacy." }
+];
+
+function clearChildren(node) {
+    while (node.firstChild) node.removeChild(node.firstChild);
+}
+
+function loadBattlefieldTours() {
     if (warmapLoaded) return;
 
-    var wrapper = document.getElementById('warmapFrameWrapper');
-    // Check if we're likely online (file:// won't have ArcGIS access)
-    if (window.location.protocol === 'file:') {
-        wrapper.innerHTML = '<div class="warmap-offline-msg">The interactive war map requires an internet connection.<br>Visit the game on GitHub Pages to use this feature.</div>';
-        warmapLoaded = true;
+    var grid = document.getElementById('toursGrid');
+    if (!grid) return;
+
+    var offline = (window.location.protocol === 'file:');
+
+    for (var i = 0; i < battlefieldTours.length; i++) {
+        grid.appendChild(buildTourCard(battlefieldTours[i], offline));
+    }
+    warmapLoaded = true;
+}
+
+function buildTourCard(tour, offline) {
+    var card = document.createElement('div');
+    card.className = 'tour-card';
+    card.setAttribute('data-youtube-id', tour.youtubeId);
+    card.setAttribute('role', 'button');
+    card.setAttribute('tabindex', '0');
+    card.setAttribute('aria-label', 'Watch ' + tour.name + ' video');
+
+    var thumb = document.createElement('div');
+    thumb.className = 'tour-thumb';
+    var img = document.createElement('img');
+    img.src = 'https://img.youtube.com/vi/' + tour.youtubeId + '/hqdefault.jpg';
+    img.alt = '';
+    img.setAttribute('loading', 'lazy');
+    thumb.appendChild(img);
+
+    var playIcon = document.createElement('div');
+    playIcon.className = 'tour-play-icon';
+    playIcon.textContent = '▶';
+    thumb.appendChild(playIcon);
+
+    var badge = document.createElement('span');
+    badge.className = 'tour-badge tour-badge-' + (tour.type === 'Animated Map' ? 'map' : 'doc');
+    badge.textContent = tour.type;
+    thumb.appendChild(badge);
+
+    card.appendChild(thumb);
+
+    var body = document.createElement('div');
+    body.className = 'tour-body';
+
+    var title = document.createElement('div');
+    title.className = 'tour-title';
+    title.textContent = tour.name;
+    body.appendChild(title);
+
+    var meta = document.createElement('div');
+    meta.className = 'tour-meta';
+    meta.textContent = tour.date;
+    body.appendChild(meta);
+
+    var hook = document.createElement('div');
+    hook.className = 'tour-hook';
+    hook.textContent = tour.hook;
+    body.appendChild(hook);
+
+    var fallback = document.createElement('a');
+    fallback.className = 'tour-fallback';
+    fallback.href = 'https://www.youtube.com/watch?v=' + tour.youtubeId;
+    fallback.target = '_blank';
+    fallback.rel = 'noopener';
+    fallback.textContent = 'Watch on YouTube';
+    body.appendChild(fallback);
+
+    card.appendChild(body);
+
+    var activate = function() { expandTourCard(card, tour, offline); };
+    card.addEventListener('click', activate);
+    card.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            activate();
+        }
+    });
+
+    return card;
+}
+
+function expandTourCard(card, tour, offline) {
+    if (card.classList.contains('tour-card-expanded')) return;
+    card.classList.add('tour-card-expanded');
+
+    var thumb = card.querySelector('.tour-thumb');
+    if (!thumb) return;
+
+    if (offline) {
+        var msg = document.createElement('div');
+        msg.className = 'tour-offline-msg';
+        msg.textContent = 'Videos require an internet connection. Use the Watch on YouTube link below.';
+        clearChildren(thumb);
+        thumb.appendChild(msg);
         return;
     }
 
     var iframe = document.createElement('iframe');
-    iframe.src = 'https://storymaps.esri.com/stories/civilwar/';
-    iframe.title = 'Civil War Interactive StoryMap';
-    iframe.setAttribute('loading', 'lazy');
+    iframe.src = 'https://www.youtube.com/embed/' + tour.youtubeId + '?autoplay=1&rel=0';
+    iframe.title = tour.name + ' video';
+    iframe.setAttribute('allow', 'accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture');
     iframe.setAttribute('allowfullscreen', 'true');
-    wrapper.innerHTML = '';
-    wrapper.appendChild(iframe);
-    warmapLoaded = true;
+    iframe.setAttribute('loading', 'lazy');
+    clearChildren(thumb);
+    thumb.appendChild(iframe);
+}
+
+function findTourForBattle(battleId) {
+    for (var i = 0; i < battlefieldTours.length; i++) {
+        if (battlefieldTours[i].battleId === battleId) return battlefieldTours[i];
+    }
+    return null;
+}
+
+function renderBattleVideoCard(battleId, slotId) {
+    var slot = document.getElementById(slotId);
+    if (!slot) return;
+    clearChildren(slot);
+
+    var tour = findTourForBattle(battleId);
+    if (!tour) return;
+
+    var offline = (window.location.protocol === 'file:');
+
+    var heading = document.createElement('div');
+    heading.className = 'battle-video-heading';
+    heading.textContent = 'See how it actually unfolded';
+    slot.appendChild(heading);
+
+    var card = document.createElement('div');
+    card.className = 'battle-video-card';
+    card.setAttribute('data-youtube-id', tour.youtubeId);
+    card.setAttribute('role', 'button');
+    card.setAttribute('tabindex', '0');
+    card.setAttribute('aria-label', 'Watch ' + tour.name + ' video');
+
+    var thumb = document.createElement('div');
+    thumb.className = 'battle-video-thumb';
+    var img = document.createElement('img');
+    img.src = 'https://img.youtube.com/vi/' + tour.youtubeId + '/hqdefault.jpg';
+    img.alt = '';
+    img.setAttribute('loading', 'lazy');
+    thumb.appendChild(img);
+
+    var playIcon = document.createElement('div');
+    playIcon.className = 'battle-video-play';
+    playIcon.textContent = '▶';
+    thumb.appendChild(playIcon);
+
+    card.appendChild(thumb);
+
+    var meta = document.createElement('div');
+    meta.className = 'battle-video-meta';
+
+    var title = document.createElement('div');
+    title.className = 'battle-video-title';
+    title.textContent = tour.name;
+    meta.appendChild(title);
+
+    var sub = document.createElement('div');
+    sub.className = 'battle-video-sub';
+    sub.textContent = tour.type + ' from the American Battlefield Trust';
+    meta.appendChild(sub);
+
+    var fallback = document.createElement('a');
+    fallback.className = 'battle-video-fallback';
+    fallback.href = 'https://www.youtube.com/watch?v=' + tour.youtubeId;
+    fallback.target = '_blank';
+    fallback.rel = 'noopener';
+    fallback.textContent = 'Watch on YouTube ↗';
+    fallback.addEventListener('click', function(e) { e.stopPropagation(); });
+    meta.appendChild(fallback);
+
+    card.appendChild(meta);
+
+    var activate = function() { expandBattleVideoCard(card, tour, offline); };
+    card.addEventListener('click', activate);
+    card.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            activate();
+        }
+    });
+
+    slot.appendChild(card);
+}
+
+function expandBattleVideoCard(card, tour, offline) {
+    if (card.classList.contains('battle-video-expanded')) return;
+    card.classList.add('battle-video-expanded');
+
+    var thumb = card.querySelector('.battle-video-thumb');
+    if (!thumb) return;
+
+    if (offline) {
+        var msg = document.createElement('div');
+        msg.className = 'battle-video-offline';
+        msg.textContent = 'Videos require an internet connection. Use the Watch on YouTube link.';
+        clearChildren(thumb);
+        thumb.appendChild(msg);
+        return;
+    }
+
+    var iframe = document.createElement('iframe');
+    iframe.src = 'https://www.youtube.com/embed/' + tour.youtubeId + '?autoplay=1&rel=0';
+    iframe.title = tour.name + ' video';
+    iframe.setAttribute('allow', 'accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture');
+    iframe.setAttribute('allowfullscreen', 'true');
+    clearChildren(thumb);
+    thumb.appendChild(iframe);
 }
 
 function closeCampaignLog() {

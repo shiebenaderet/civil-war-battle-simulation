@@ -1877,47 +1877,322 @@ a.settings-item:visited { color: var(--color-ink); }
     box-shadow: var(--shadow-sm);
 }
 
-/* War Map container */
-.warmap-container {
+/* Battlefield Tours */
+.tours-container {
     text-align: center;
 }
 
-.warmap-hint {
+.tours-hint {
     font-size: var(--font-size-sm);
     color: var(--color-text-secondary);
-    margin-bottom: var(--space-3);
+    margin-bottom: var(--space-4);
 }
 
-.warmap-frame-wrapper {
+.tours-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-4);
+    text-align: left;
+}
+
+@media (max-width: 900px) {
+    .tours-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 600px) {
+    .tours-grid { grid-template-columns: 1fr; }
+}
+
+.tour-card {
+    background: var(--color-surface-secondary);
+    border: 1px solid var(--color-border-secondary);
     border-radius: var(--radius-lg);
     overflow: hidden;
-    border: 1px solid var(--color-border-secondary);
-    background: var(--color-surface-secondary);
-    min-height: 350px;
+    cursor: pointer;
+    transition: transform 120ms ease, box-shadow 120ms ease, border-color 120ms ease;
+    display: flex;
+    flex-direction: column;
 }
 
-.warmap-frame-wrapper iframe {
+.tour-card:hover,
+.tour-card:focus {
+    transform: translateY(-2px);
+    border-color: var(--color-primary);
+    box-shadow: var(--shadow-sm);
+    outline: none;
+}
+
+.tour-thumb {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    background: #000;
+    overflow: hidden;
+}
+
+.tour-thumb img {
     width: 100%;
-    height: 400px;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.tour-play-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.7);
+    color: #fff;
+    font-size: 20px;
+    line-height: 48px;
+    text-align: center;
+    pointer-events: none;
+}
+
+.tour-card:hover .tour-play-icon {
+    background: var(--color-primary);
+}
+
+.tour-badge {
+    position: absolute;
+    top: var(--space-2);
+    right: var(--space-2);
+    padding: 2px 8px;
+    border-radius: var(--radius-sm);
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+    color: #fff;
+    pointer-events: none;
+}
+
+.tour-badge-map { background: rgba(37, 99, 235, 0.9); }
+.tour-badge-doc { background: rgba(120, 53, 15, 0.9); }
+
+.tour-body {
+    padding: var(--space-3);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+}
+
+.tour-title {
+    font-weight: 700;
+    font-size: var(--font-size-base);
+    color: var(--color-text);
+}
+
+.tour-meta {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-tertiary);
+}
+
+.tour-hook {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    margin-top: var(--space-1);
+}
+
+.tour-fallback {
+    margin-top: var(--space-2);
+    font-size: var(--font-size-xs);
+    color: var(--color-primary);
+    text-decoration: underline;
+    align-self: flex-start;
+}
+
+.tour-card-expanded {
+    grid-column: 1 / -1;
+    cursor: default;
+}
+
+.tour-card-expanded:hover {
+    transform: none;
+}
+
+.tour-card-expanded .tour-thumb {
+    aspect-ratio: 16 / 9;
+}
+
+.tour-card-expanded .tour-thumb iframe {
+    width: 100%;
+    height: 100%;
     border: none;
     display: block;
 }
 
-.warmap-credit {
-    font-size: var(--font-size-xs);
-    color: var(--color-text-tertiary);
-    margin-top: var(--space-3);
+.tour-card-expanded .tour-play-icon,
+.tour-card-expanded .tour-badge {
+    display: none;
 }
 
-.warmap-credit a {
+.tour-offline-msg {
+    padding: var(--space-8) var(--space-4);
+    color: #ddd;
+    font-style: italic;
+    text-align: center;
+}
+
+.tours-credit {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-tertiary);
+    margin-top: var(--space-4);
+}
+
+.tours-credit a {
     color: var(--color-primary);
     text-decoration: underline;
 }
 
-.warmap-offline-msg {
-    padding: var(--space-8) var(--space-4);
-    color: var(--color-text-secondary);
+/* Post-battle video card (Battlefield Tours, contextual surface) */
+.battle-video-slot {
+    margin-top: var(--space-4);
+}
+
+.battle-video-slot:empty {
+    display: none;
+}
+
+.battle-video-heading {
+    font-size: var(--font-size-sm);
+    font-weight: 700;
+    color: var(--color-text);
+    margin-bottom: var(--space-2);
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+}
+
+.battle-video-heading::before {
+    content: '▶';
+    color: var(--color-primary);
+    font-size: var(--font-size-xs);
+}
+
+.battle-video-card {
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    gap: var(--space-3);
+    align-items: center;
+    background: var(--color-surface-secondary);
+    border: 1px solid var(--color-border-secondary);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 120ms ease, box-shadow 120ms ease, border-color 120ms ease;
+}
+
+.battle-video-card:hover,
+.battle-video-card:focus {
+    transform: translateY(-1px);
+    border-color: var(--color-primary);
+    box-shadow: var(--shadow-sm);
+    outline: none;
+}
+
+.battle-video-thumb {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    background: #000;
+    overflow: hidden;
+}
+
+.battle-video-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.battle-video-play {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.7);
+    color: #fff;
+    font-size: 16px;
+    line-height: 40px;
+    text-align: center;
+    pointer-events: none;
+}
+
+.battle-video-card:hover .battle-video-play {
+    background: var(--color-primary);
+}
+
+.battle-video-meta {
+    padding: var(--space-2) var(--space-3) var(--space-2) 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.battle-video-title {
+    font-weight: 700;
+    color: var(--color-text);
+}
+
+.battle-video-sub {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-tertiary);
+}
+
+.battle-video-fallback {
+    margin-top: var(--space-1);
+    font-size: var(--font-size-xs);
+    color: var(--color-primary);
+    text-decoration: underline;
+    align-self: flex-start;
+}
+
+.battle-video-expanded {
+    grid-template-columns: 1fr;
+    cursor: default;
+}
+
+.battle-video-expanded:hover {
+    transform: none;
+}
+
+.battle-video-expanded .battle-video-thumb {
+    aspect-ratio: 16 / 9;
+}
+
+.battle-video-expanded .battle-video-thumb iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    display: block;
+}
+
+.battle-video-expanded .battle-video-play {
+    display: none;
+}
+
+.battle-video-expanded .battle-video-meta {
+    padding: var(--space-2) var(--space-3) var(--space-3);
+}
+
+.battle-video-offline {
+    padding: var(--space-6) var(--space-3);
+    color: #ddd;
     font-style: italic;
+    text-align: center;
+}
+
+@media (max-width: 500px) {
+    .battle-video-card {
+        grid-template-columns: 1fr;
+    }
+    .battle-video-meta {
+        padding: 0 var(--space-3) var(--space-3);
+    }
 }
 
 /* Progress summary */

@@ -200,7 +200,7 @@
                         <div class="menu-section" id="menuNavSection">
                             <div class="menu-section-title">Navigation</div>
                             <button class="settings-item" id="warMapMenuBtn" role="menuitem" style="display:none;">
-                                <span class="menu-icon">&#x1F5FA;&#xFE0F;</span> War Map
+                                <span class="menu-icon">&#x1F3AC;</span> Battlefield Tours
                             </button>
                             <button class="settings-item" id="campaignLogMenuBtn" role="menuitem" style="display:none;">
                                 <span class="menu-icon">&#x1F4CA;</span> Campaign Log
@@ -630,6 +630,10 @@
                         <div class="tech-name" id="histTechName"></div>
                         <p class="tech-description" id="histTechDesc"></p>
                     </div>
+
+                    <!-- Battlefield Tours: video card for this battle -->
+                    <div class="battle-video-slot" id="histBattleVideoSlot"></div>
+
                     <div class="note-nudge" id="noteNudgeOutcome" style="display:none;"></div>
                 </div>
 
@@ -845,6 +849,7 @@
                     <div class="hist-context-label">What Really Happened</div>
                     <p class="hist-context-text" id="histContextText"></p>
                     <div class="hist-context-outcome" id="histContextOutcome"></div>
+                    <div class="battle-video-slot" id="fpBattleVideoSlot"></div>
                 </div>
 
                 <div class="momentum-meter">
@@ -875,10 +880,10 @@
                     <button class="modal-close" id="closeLogBtn">&times;</button>
                 </div>
                 <div class="modal-body">
-                    <!-- Tab switcher: Progress / War Map -->
+                    <!-- Tab switcher: Progress / Battlefield Tours -->
                     <div class="log-tabs" id="logTabs">
                         <button class="log-tab active" data-log-tab="progress" id="logTabProgress">Progress</button>
-                        <button class="log-tab" data-log-tab="warmap" id="logTabWarMap">War Map</button>
+                        <button class="log-tab" data-log-tab="warmap" id="logTabWarMap">Battlefield Tours</button>
                     </div>
 
                     <!-- Progress tab -->
@@ -906,14 +911,14 @@
                         <div class="battle-timeline" id="logTimeline"></div>
                     </div>
 
-                    <!-- War Map tab (Esri StoryMap embed) -->
+                    <!-- Battlefield Tours tab (American Battlefield Trust videos) -->
                     <div class="log-tab-content" id="logWarMapContent" style="display:none;">
-                        <div class="warmap-container" id="warmapContainer">
-                            <p class="warmap-hint">Interactive Civil War timeline and battle map. Scroll through the story to explore each campaign.</p>
-                            <div class="warmap-frame-wrapper" id="warmapFrameWrapper">
-                                <!-- iframe loaded on first tab click to save bandwidth -->
+                        <div class="tours-container" id="toursContainer">
+                            <p class="tours-hint">Videos from the American Battlefield Trust. Pick a battle to see how it unfolded.</p>
+                            <div class="tours-grid" id="toursGrid">
+                                <!-- Cards rendered by loadBattlefieldTours() on first tab click -->
                             </div>
-                            <p class="warmap-credit">Map data: <a href="https://storymaps.esri.com/stories/civilwar/" target="_blank" rel="noopener">Esri StoryMaps</a></p>
+                            <p class="tours-credit">Videos from <a href="https://www.youtube.com/@AmericanBattlefieldTrust" target="_blank" rel="noopener">American Battlefield Trust</a></p>
                         </div>
                     </div>
                 </div>
