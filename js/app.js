@@ -697,15 +697,21 @@ function startWithSide(side) {
 }
 
 // Writes the current student's progress to the teacher dashboard.
-// Historical mode only — freeplay state shape is different.
+// Historical mode only. Requires a valid saved class code (AMS-p1..p5).
+// No code = no write, so strangers never appear in the dashboard.
 function reportProgressToDashboard(finished) {
     if (gameState.mode !== 'historical') return;
     if (typeof firebaseLeaderboard === 'undefined' || !firebaseLeaderboard.isAvailable()) return;
+
+    var savedCode = firebaseLeaderboard.getSavedClassCode();
+    var period = firebaseLeaderboard.periodForRoom(savedCode);
+    if (!period) return;
+
     firebaseLeaderboard.writeProgress(
-        firebaseLeaderboard.getTeacherDashboardRoom(),
+        savedCode,
         {
             name: gameState.studentName || 'Student',
-            period: gameState.period || '',
+            period: period,
             currentBattle: gameState.currentBattle || 0,
             totalBattles: (typeof battles !== 'undefined' ? battles.length : 13),
             side: gameState.side || '',
