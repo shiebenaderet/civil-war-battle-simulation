@@ -437,6 +437,106 @@ function setupEventListeners() {
         });
     })();
 
+    // === v3.17: Teacher Jump-to-Battle (hidden — typed "jump" trigger) ===
+    (function wireJumpToBattle() {
+        const modal = document.getElementById('jumpToBattleModal');
+        const grid = document.getElementById('jumpBattleGrid');
+        const cancelBtn = document.getElementById('jumpToBattleCancel');
+        const backdrop = document.getElementById('jumpToBattleBackdrop');
+        if (!modal || !grid) return;
+
+        const TRIGGER = 'jump';
+        const TRIGGER_WINDOW_MS = 1500;
+        let buffer = '';
+        let lastKeyAt = 0;
+
+        function openJumpModal() {
+            if (typeof battles === 'undefined' || !battles.length) return;
+            // Build battle list each open so the "current" highlight stays accurate
+            while (grid.firstChild) grid.removeChild(grid.firstChild);
+            const current = (typeof gameState !== 'undefined') ? (gameState.currentBattle || 0) : -1;
+            for (let i = 0; i < battles.length; i++) {
+                const btn = document.createElement('button');
+                btn.className = 'jump-battle-btn' + (i === current ? ' jump-battle-btn-current' : '');
+                btn.setAttribute('data-battle-idx', String(i));
+                const num = document.createElement('span');
+                num.className = 'jump-battle-num';
+                num.textContent = (i + 1) + '.';
+                const name = document.createElement('span');
+                name.className = 'jump-battle-name';
+                name.textContent = battles[i].name;
+                btn.appendChild(num);
+                btn.appendChild(name);
+                btn.addEventListener('click', function() {
+                    performJump(i);
+                });
+                grid.appendChild(btn);
+            }
+            modal.removeAttribute('hidden');
+        }
+
+        function closeJumpModal() {
+            modal.setAttribute('hidden', '');
+        }
+
+        function performJump(idx) {
+            if (typeof gameState === 'undefined' || typeof battles === 'undefined' || !battles[idx]) {
+                closeJumpModal();
+                return;
+            }
+            // Force historical mode — this feature is historical-only by design
+            gameState.mode = 'historical';
+            // If side isn't set, default to union so the game can render
+            if (!gameState.side) gameState.side = 'union';
+            gameState.currentBattle = idx;
+            gameState.isInBattle = false;
+            // Truncate responses to only include battles strictly before idx
+            if (Array.isArray(gameState.responses)) {
+                const keptIds = battles.slice(0, idx).map(function(b) { return b.id; });
+                gameState.responses = gameState.responses.filter(function(r) {
+                    return r && keptIds.indexOf(r.battleId) !== -1;
+                });
+            }
+            if (typeof saveProgress === 'function') saveProgress();
+            if (typeof reportProgressToDashboard === 'function') reportProgressToDashboard(false);
+
+            closeJumpModal();
+
+            if (typeof enterBattleScreen === 'function') {
+                enterBattleScreen();
+            }
+        }
+
+        // Typed-word trigger: "j-u-m-p" within 1.5s, outside text inputs
+        document.addEventListener('keydown', function(e) {
+            // Ignore if focus is in a typing context
+            const target = e.target;
+            if (target && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.tagName === 'SELECT' || target.isContentEditable)) {
+                return;
+            }
+            // Only respond to plain letter keys; ignore modifiers
+            if (e.ctrlKey || e.metaKey || e.altKey) return;
+            if (e.key.length !== 1) {
+                // Allow Escape to close if open
+                if (e.key === 'Escape' && !modal.hasAttribute('hidden')) {
+                    closeJumpModal();
+                }
+                return;
+            }
+            const now = Date.now();
+            if (now - lastKeyAt > TRIGGER_WINDOW_MS) buffer = '';
+            lastKeyAt = now;
+            buffer = (buffer + e.key.toLowerCase()).slice(-TRIGGER.length);
+            if (buffer === TRIGGER) {
+                buffer = '';
+                openJumpModal();
+            }
+        });
+
+        if (cancelBtn) cancelBtn.addEventListener('click', closeJumpModal);
+        if (backdrop) backdrop.addEventListener('click', closeJumpModal);
+    })();
+
     // === v3.15: TTS — voice select + per-section play buttons ===
     function populateVoiceSelect() {
         const select = document.getElementById('accVoiceSelect');
