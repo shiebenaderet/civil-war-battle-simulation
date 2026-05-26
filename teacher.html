@@ -244,29 +244,46 @@
             sort: 'battle',
             filter: 'all',
             entries: [],
+            perRoom: {},
             lastUpdate: 0
         };
 
         function init() {
             firebaseLeaderboard.init();
-            var room = firebaseLeaderboard.getTeacherDashboardRoom();
-            document.getElementById('roomLabel').textContent = room;
 
             if (!firebaseLeaderboard.isAvailable()) {
                 setStatus('Firebase unavailable. Check your internet connection.', true);
                 return;
             }
 
+            var rooms = firebaseLeaderboard.getAllPeriodRooms();
+            document.getElementById('roomLabel').textContent =
+                Object.keys(rooms).map(function(p) { return 'P' + p; }).join(', ');
+
+            state.perRoom = {};
+
             setStatus('Listening for student progress…');
-            firebaseLeaderboard.subscribeToProgress(room, function(entries, err) {
-                if (err) {
-                    setStatus(err, true);
-                    return;
-                }
-                state.entries = entries || [];
-                state.lastUpdate = Date.now();
-                render();
-                setStatus('Updated ' + new Date().toLocaleTimeString() + ' · ' + state.entries.length + ' student' + (state.entries.length === 1 ? '' : 's'));
+            Object.keys(rooms).forEach(function(period) {
+                var code = rooms[period];
+                firebaseLeaderboard.subscribeToProgress(code, function(entries, err) {
+                    if (err) {
+                        setStatus('Period ' + period + ': ' + err, true);
+                        return;
+                    }
+                    state.perRoom[period] = (entries || []).map(function(e) {
+                        e.period = period;
+                        e._sourceRoom = code;
+                        return e;
+                    });
+                    state.entries = Object.keys(state.perRoom).reduce(function(acc, p) {
+                        return acc.concat(state.perRoom[p]);
+                    }, []);
+                    state.lastUpdate = Date.now();
+                    render();
+                    setStatus('Updated ' + new Date().toLocaleTimeString() +
+                              ' · ' + state.entries.length + ' student' +
+                              (state.entries.length === 1 ? '' : 's'));
+                });
             });
 
             wireControls();
