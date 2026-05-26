@@ -4,12 +4,21 @@
 
 var firebaseLeaderboard = (function() {
 
-    var ROOM_CODE_KEY = 'civilWarRoomCode';
+    var ROOM_CODE_KEY = 'civilWarRoomCode';      // leaderboard feature (unchanged)
     var STUDENT_ID_KEY = 'civilWarStudentId';
-    // Fixed room for the teacher progress dashboard. Change this string to
-    // rotate to a fresh dashboard (e.g., new semester). The teacher.html page
-    // reads the same constant. End-of-game leaderboard scores still use the
-    // student-entered room code, not this one.
+    var CLASS_CODE_KEY = 'civilWarClassCode';    // NEW: teacher dashboard gate
+
+    // Per-period room codes for the teacher progress dashboard.
+    // To rotate: edit these four strings and delete the old rooms/<oldcode>/progress
+    // trees from the Firebase console.
+    var ROOM_CODES = {
+        '1': 'ams-p1',
+        '2': 'ams-p2',
+        '4': 'ams-p4',
+        '5': 'ams-p5'
+    };
+
+    // Kept until Tasks 2 and 5 migrate the two callsites that reference it.
     var TEACHER_DASHBOARD_ROOM = 'shie-class';
     var firebaseReady = false;
     var db = null;
@@ -221,6 +230,41 @@ var firebaseLeaderboard = (function() {
             });
     }
 
+    function periodForRoom(code) {
+        var normalized = String(code || '').toLowerCase().trim();
+        for (var p in ROOM_CODES) {
+            if (Object.prototype.hasOwnProperty.call(ROOM_CODES, p) && ROOM_CODES[p] === normalized) {
+                return p;
+            }
+        }
+        return null;
+    }
+
+    function getAllPeriodRooms() {
+        var copy = {};
+        for (var p in ROOM_CODES) {
+            if (Object.prototype.hasOwnProperty.call(ROOM_CODES, p)) {
+                copy[p] = ROOM_CODES[p];
+            }
+        }
+        return copy;
+    }
+
+    function getSavedClassCode() {
+        try { return localStorage.getItem(CLASS_CODE_KEY) || ''; }
+        catch (e) { return ''; }
+    }
+
+    function saveClassCode(code) {
+        try { localStorage.setItem(CLASS_CODE_KEY, String(code || '').toLowerCase().trim()); }
+        catch (e) {}
+    }
+
+    function clearClassCode() {
+        try { localStorage.removeItem(CLASS_CODE_KEY); }
+        catch (e) {}
+    }
+
     return {
         init: init,
         isAvailable: isAvailable,
@@ -233,7 +277,12 @@ var firebaseLeaderboard = (function() {
         getStudentId: getStudentId,
         writeProgress: writeProgress,
         subscribeToProgress: subscribeToProgress,
-        getTeacherDashboardRoom: function() { return TEACHER_DASHBOARD_ROOM; }
+        getTeacherDashboardRoom: function() { return TEACHER_DASHBOARD_ROOM; },
+        periodForRoom: periodForRoom,
+        getAllPeriodRooms: getAllPeriodRooms,
+        getSavedClassCode: getSavedClassCode,
+        saveClassCode: saveClassCode,
+        clearClassCode: clearClassCode
     };
 
 })();
