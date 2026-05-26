@@ -217,6 +217,25 @@ var firebaseLeaderboard = (function() {
             .catch(function() { if (callback) callback(false, 'Delete failed.'); });
     }
 
+    function clearAllProgress(roomCodes, callback) {
+        if (!isAvailable()) {
+            if (callback) callback(false, 'Offline.');
+            return;
+        }
+        if (!Array.isArray(roomCodes) || roomCodes.length === 0) {
+            if (callback) callback(false, 'No rooms to clear.');
+            return;
+        }
+        var promises = roomCodes.map(function(code) {
+            var c = String(code || '').toLowerCase().trim();
+            if (!c) return Promise.resolve();
+            return db.ref('rooms/' + c + '/progress').remove();
+        });
+        Promise.all(promises)
+            .then(function() { if (callback) callback(true, ''); })
+            .catch(function() { if (callback) callback(false, 'Clear failed (partial).'); });
+    }
+
     // Load leaderboard from a room (top 20 by score)
     function loadLeaderboard(roomCode, callback) {
         if (!isAvailable()) {
@@ -294,6 +313,7 @@ var firebaseLeaderboard = (function() {
         writeProgress: writeProgress,
         subscribeToProgress: subscribeToProgress,
         deleteProgressEntry: deleteProgressEntry,
+        clearAllProgress: clearAllProgress,
         getTeacherDashboardRoom: function() { return TEACHER_DASHBOARD_ROOM; },
         periodForRoom: periodForRoom,
         getAllPeriodRooms: getAllPeriodRooms,

@@ -232,6 +232,7 @@
             </div>
         </div>
         <button class="refresh-btn" id="refreshBtn">Refresh</button>
+        <button class="refresh-btn" id="clearAllBtn" style="border-color:#b91c1c;color:#b91c1c;">Clear all</button>
     </div>
 
     <div class="status-line" id="statusLine">Connecting…</div>
@@ -338,6 +339,14 @@
             });
             document.getElementById('refreshBtn').addEventListener('click', function() {
                 render();
+            });
+            document.getElementById('clearAllBtn').addEventListener('click', function() {
+                if (!window.confirm('Delete ALL student progress from ALL four periods? This cannot be undone.')) return;
+                var rooms = firebaseLeaderboard.getAllPeriodRooms();
+                var codes = Object.keys(rooms).map(function(p) { return rooms[p]; });
+                firebaseLeaderboard.clearAllProgress(codes, function(ok, errMsg) {
+                    if (!ok) setStatus(errMsg || 'Clear failed.', true);
+                });
             });
         }
 
