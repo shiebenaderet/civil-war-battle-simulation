@@ -3302,3 +3302,67 @@ if (document.readyState === 'loading') {
 } else {
     initReadingLevelOnBoot();
 }
+
+// ============================================================
+// "Teacher won't see you" banner (no valid class code saved)
+// ============================================================
+
+var NO_TEACHER_BANNER_SKIP_KEY = 'noTeacherBannerSkipped';
+
+function shouldShowNoTeacherBanner() {
+    if (gameState.mode !== 'historical') return false;
+    if (typeof firebaseLeaderboard === 'undefined') return false;
+    try {
+        if (sessionStorage.getItem(NO_TEACHER_BANNER_SKIP_KEY) === '1') return false;
+    } catch (e) {}
+    var saved = firebaseLeaderboard.getSavedClassCode();
+    var period = firebaseLeaderboard.periodForRoom(saved);
+    return !period;
+}
+
+function showNoTeacherBannerIfNeeded() {
+    var banner = document.getElementById('noTeacherBanner');
+    if (!banner) return;
+    banner.style.display = shouldShowNoTeacherBanner() ? 'flex' : 'none';
+}
+
+function wireNoTeacherBanner() {
+    var openBtn = document.getElementById('noTeacherBannerOpenBtn');
+    var skipBtn = document.getElementById('noTeacherBannerSkipBtn');
+    var saveBtn = document.getElementById('noTeacherBannerSaveBtn');
+    var form = document.getElementById('noTeacherBannerForm');
+    var input = document.getElementById('noTeacherBannerInput');
+    var errorEl = document.getElementById('noTeacherBannerError');
+    var banner = document.getElementById('noTeacherBanner');
+    if (!openBtn || !skipBtn || !saveBtn || !form || !input || !errorEl || !banner) return;
+
+    openBtn.addEventListener('click', function() {
+        form.style.display = 'flex';
+        input.focus();
+    });
+
+    skipBtn.addEventListener('click', function() {
+        try { sessionStorage.setItem(NO_TEACHER_BANNER_SKIP_KEY, '1'); } catch (e) {}
+        banner.style.display = 'none';
+    });
+
+    saveBtn.addEventListener('click', function() {
+        var raw = String(input.value || '').toLowerCase().trim();
+        var period = firebaseLeaderboard.periodForRoom(raw);
+        if (!period) {
+            errorEl.style.display = 'block';
+            return;
+        }
+        errorEl.style.display = 'none';
+        firebaseLeaderboard.saveClassCode(raw);
+        gameState.period = period;
+        banner.style.display = 'none';
+        if (typeof reportProgressToDashboard === 'function') {
+            reportProgressToDashboard(false);
+        }
+    });
+
+    input.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') saveBtn.click();
+    });
+}

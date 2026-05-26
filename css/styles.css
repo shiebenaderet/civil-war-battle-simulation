@@ -4991,3 +4991,38 @@ a.settings-item:visited { color: var(--color-ink); }
     border-color: var(--color-accent);
     color: var(--color-paper);
 }
+
+/* ============================================================ */
+/* No-teacher banner - shown when student has no valid class code */
+/* ============================================================ */
+.no-teacher-banner {
+    background: #fef3c7;
+    border: 1px solid #f59e0b;
+    color: #78350f;
+    padding: 10px 14px;
+    border-radius: 6px;
+    margin: 12px auto;
+    max-width: 720px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+.no-teacher-banner-icon { font-size: 18px; }
+.no-teacher-banner-text { flex: 1; }
+.no-teacher-banner-link,
+.no-teacher-banner-skip,
+.no-teacher-banner-form button {
+    background: #92400e;
+    color: #fff;
+    border: none;
+    padding: 4px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 13px;
+}
+.no-teacher-banner-skip { background: transparent; color: #78350f; padding: 4px 6px; font-size: 16px; }
+.no-teacher-banner-form { width: 100%; display: flex; gap: 6px; align-items: center; margin-top: 6px; }
+.no-teacher-banner-form input { flex: 1; padding: 6px 8px; border: 1px solid #f59e0b; border-radius: 4px; font-size: 14px; }
+.no-teacher-banner-error { width: 100%; color: #b91c1c; font-size: 13px; }

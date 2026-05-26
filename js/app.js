@@ -15,6 +15,8 @@ function boot() {
     } else {
         showScreen('introSplash');
     }
+
+    if (typeof wireNoTeacherBanner === 'function') wireNoTeacherBanner();
 }
 
 function setupEventListeners() {
@@ -689,6 +691,7 @@ function startWithSide(side) {
     if (gameState.mode === 'historical') {
         // Write initial progress to the teacher dashboard
         reportProgressToDashboard(false);
+        showNoTeacherBannerIfNeeded();
         // Show the leader's letter before diving into battles
         renderLeaderLetter();
     } else {
