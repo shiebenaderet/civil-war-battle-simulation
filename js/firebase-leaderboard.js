@@ -18,8 +18,6 @@ var firebaseLeaderboard = (function() {
         '5': 'ams-p5'
     };
 
-    // Kept until Tasks 2 and 5 migrate the two callsites that reference it.
-    var TEACHER_DASHBOARD_ROOM = 'shie-class';
     var firebaseReady = false;
     var db = null;
 
@@ -314,7 +312,6 @@ var firebaseLeaderboard = (function() {
         subscribeToProgress: subscribeToProgress,
         deleteProgressEntry: deleteProgressEntry,
         clearAllProgress: clearAllProgress,
-        getTeacherDashboardRoom: function() { return TEACHER_DASHBOARD_ROOM; },
         periodForRoom: periodForRoom,
         getAllPeriodRooms: getAllPeriodRooms,
         getSavedClassCode: getSavedClassCode,
