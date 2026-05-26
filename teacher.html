@@ -240,6 +240,25 @@
     <script>
     (function() {
         var STALE_AFTER_MS = 5 * 60 * 1000; // 5 minutes since lastSeen = stale
+        var DASHBOARD_PASSWORD = 'amsmustangs';
+        var SESSION_AUTH_KEY = 'teacherDashboardAuthed';
+
+        function requireAuth() {
+            try {
+                if (sessionStorage.getItem(SESSION_AUTH_KEY) === '1') return true;
+            } catch (e) {}
+            var entered = window.prompt('Teacher password:');
+            if (entered === DASHBOARD_PASSWORD) {
+                try { sessionStorage.setItem(SESSION_AUTH_KEY, '1'); } catch (e) {}
+                return true;
+            }
+            var deny = document.createElement('div');
+            deny.style.cssText = 'padding:40px;text-align:center;font-family:sans-serif;font-size:18px;color:#666';
+            deny.textContent = 'Access denied.';
+            document.body.replaceChildren(deny);
+            return false;
+        }
+
         var state = {
             sort: 'battle',
             filter: 'all',
@@ -249,6 +268,7 @@
         };
 
         function init() {
+            if (!requireAuth()) return;
             firebaseLeaderboard.init();
 
             if (!firebaseLeaderboard.isAvailable()) {
