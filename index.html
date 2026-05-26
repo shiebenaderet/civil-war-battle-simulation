@@ -231,9 +231,6 @@
                             <button class="settings-item danger-item" id="startOverMenuBtn" role="menuitem" style="display:none;">
                                 <span class="menu-icon">&#x1F504;</span> Start Over
                             </button>
-                            <button class="settings-item" id="printSummaryMenuBtn" role="menuitem" style="display:none;">
-                                <span class="menu-icon">&#x1F5B6;</span> Print Summary
-                            </button>
                         </div>
                     </div>
                 </div>
@@ -687,16 +684,12 @@
 
                     <p class="reflect-prompt" id="histReflectPrompt"></p>
 
-                    <!-- Reflection scaffolding - shown based on difficulty level -->
+                    <!-- v3.17.1: Reflection scaffolding kept in DOM but hidden — kids reflect on the Battle Journal handout instead of typing -->
                     <div class="reflect-scaffolding" id="reflectScaffolding" style="display:none;">
-                        <!-- Beginner/Intermediate: clickable sentence starters -->
                         <div class="starter-chips" id="starterChips" style="display:none;">
                             <div class="starter-label" id="starterLabel">Click a sentence starter to begin:</div>
-                            <div class="starter-chip-list" id="starterChipList" role="group" aria-label="Sentence starters">
-                                <!-- Populated by JS -->
-                            </div>
+                            <div class="starter-chip-list" id="starterChipList" role="group" aria-label="Sentence starters"></div>
                         </div>
-                        <!-- Advanced: RACE reminder -->
                         <div class="race-reminder" id="raceReminder" style="display:none;">
                             <div class="race-title">Use the RACE method:</div>
                             <div class="race-steps">
@@ -709,17 +702,24 @@
                         </div>
                     </div>
 
-                    <!-- Teacher tip - expandable coaching hint -->
+                    <!-- Teacher tip kept in DOM but no longer surfaced -->
                     <div class="teacher-tip" id="teacherTip" style="display:none;">
-                        <button class="teacher-tip-toggle" id="teacherTipToggle" type="button" aria-expanded="false" aria-controls="teacherTipContent">
-                            Need a hint?
-                        </button>
+                        <button class="teacher-tip-toggle" id="teacherTipToggle" type="button" aria-expanded="false" aria-controls="teacherTipContent">Need a hint?</button>
                         <div class="teacher-tip-content" id="teacherTipContent" style="display:none;">
                             <p class="teacher-tip-text" id="teacherTipText"></p>
                         </div>
                     </div>
 
-                    <textarea class="reflect-input" id="histReflectInput" rows="4" placeholder="Write your thoughts here..." aria-label="Your reflection"></textarea>
+                    <!-- Journal callout: this is where reflection now lives -->
+                    <div class="journal-callout">
+                        <div class="journal-callout-icon">&#x270D;&#xFE0F;</div>
+                        <div class="journal-callout-body">
+                            <div class="journal-callout-title">Reflect on your Battle Journal</div>
+                            <div class="journal-callout-text">Use the prompt above to write your answer in your handout. When you are done, click Continue.</div>
+                        </div>
+                    </div>
+
+                    <textarea class="reflect-input" id="histReflectInput" rows="4" aria-label="Your reflection" style="display:none;"></textarea>
                     <button class="act-review-link" id="histReflectReviewLink" type="button" style="display:none;">Review this act + update your journal</button>
                 </div>
             </div>
@@ -946,8 +946,8 @@
 
             <div id="endContent"></div>
 
-            <!-- PDF export button (historical mode) -->
-            <div id="pdfExportSection" class="pdf-export-section" style="display:none;">
+            <!-- v3.17.1: PDF export removed; Battle Journal handout is the capture surface. Section kept hidden in markup for safety; will be deleted in next major release. -->
+            <div id="pdfExportSection" class="pdf-export-section" style="display:none;" hidden>
                 <button class="btn-primary pdf-export-btn" id="exportPdfBtn">Download Response Sheet (PDF)</button>
                 <p class="pdf-hint">Opens a printable page. Use Print &rarr; Save as PDF to submit on Canvas.</p>
             </div>
@@ -1041,7 +1041,7 @@
 
     <!-- Version Display -->
     <div class="version-info">
-        <span>Civil War Battle Simulation v3.17.0</span>
+        <span>Civil War Battle Simulation v3.17.1</span>
     </div>
 
     <!-- v3.15: Reset Battle confirmation -->

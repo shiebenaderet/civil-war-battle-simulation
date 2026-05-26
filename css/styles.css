@@ -4920,6 +4920,43 @@ a.settings-item:visited { color: var(--color-ink); }
 .jump-battle-name {
     flex: 1;
 }
+
+/* v3.17.1: Battle Journal reflection callout (replaces typing UI) */
+.journal-callout {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-3);
+    padding: var(--space-4);
+    margin-top: var(--space-3);
+    background: var(--color-paper-card);
+    border: 1px solid var(--color-ink);
+    border-left: 4px solid var(--color-accent);
+}
+
+.journal-callout-icon {
+    font-size: 1.5rem;
+    line-height: 1.2;
+    flex-shrink: 0;
+}
+
+.journal-callout-body {
+    flex: 1;
+}
+
+.journal-callout-title {
+    font-family: var(--font-serif);
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: var(--color-ink);
+    margin-bottom: var(--space-1);
+}
+
+.journal-callout-text {
+    font-family: var(--font-serif);
+    color: var(--color-ink);
+    font-size: 0.95rem;
+    line-height: 1.4;
+}
 .btn-primary.danger:hover {
     background: var(--color-accent-hover);
     border-color: var(--color-accent-hover);

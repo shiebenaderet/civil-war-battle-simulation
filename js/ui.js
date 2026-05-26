@@ -1478,75 +1478,9 @@ var reflectionStarters = {
 };
 
 function showReflectScaffolding() {
-    var scaffolding = document.getElementById('reflectScaffolding');
-    var chipSection = document.getElementById('starterChips');
-    var chipList = document.getElementById('starterChipList');
-    var raceReminder = document.getElementById('raceReminder');
-    var starterLabel = document.getElementById('starterLabel');
-
-    if (!scaffolding) return;
-
-    var difficulty = gameState.difficulty || 'intermediate';
-    // ES uses beginner starters until ES-specific starters are authored
-    var starterLevel = (difficulty === 'extra') ? 'beginner' : difficulty;
-
-    if (starterLevel === 'beginner' || starterLevel === 'intermediate') {
-        // Use group-specific starters if available, fallback to generic
-        var groupIdx = getReflectionGroupIndex(gameState.currentBattle);
-        var group = groupedReflections[groupIdx];
-        var starters;
-        if (group && group.starters && group.starters[starterLevel]) {
-            starters = group.starters[starterLevel];
-        } else {
-            starters = reflectionStarters[starterLevel] || reflectionStarters.intermediate;
-        }
-
-        chipList.innerHTML = '';
-        starters.forEach(function(text) {
-            var chip = document.createElement('button');
-            chip.className = 'starter-chip';
-            chip.type = 'button';
-            chip.textContent = text;
-            chip.addEventListener('click', function() {
-                insertStarter(text, chip);
-            });
-            chipList.appendChild(chip);
-        });
-
-        starterLabel.textContent = (difficulty === 'beginner' || difficulty === 'extra')
-            ? 'Click a sentence starter to begin:'
-            : 'Need help getting started?';
-
-        chipSection.style.display = 'block';
-        raceReminder.style.display = 'none';
-    } else {
-        // Advanced: show RACE reminder
-        chipSection.style.display = 'none';
-        raceReminder.style.display = 'block';
-    }
-
-    scaffolding.style.display = 'block';
-}
-
-function insertStarter(text, chipEl) {
-    var textarea = document.getElementById('histReflectInput');
-    if (!textarea) return;
-
-    // Only insert if textarea is empty or has just a starter
-    if (textarea.value.trim() === '' || textarea.value.trim().endsWith('...')) {
-        textarea.value = text + ' ';
-    } else {
-        // Append on a new line if there's already content
-        textarea.value = textarea.value + '\n' + text + ' ';
-    }
-
-    textarea.focus();
-    // Move cursor to end
-    textarea.selectionStart = textarea.value.length;
-    textarea.selectionEnd = textarea.value.length;
-
-    // Mark chip as used
-    if (chipEl) chipEl.classList.add('used');
+    // v3.17.1: Reflection happens on the Battle Journal handout; the textarea
+    // and scaffolding (sentence starters, RACE reminder) are hidden in markup.
+    // The journal-callout div is the visible reflection surface now.
 }
 
 // ============================================================
@@ -1570,17 +1504,10 @@ function showGroupedReflection() {
     // Clear textarea
     document.getElementById('histReflectInput').value = '';
 
-    // Show teacher tip
+    // v3.17.1: "Need a hint?" tip is hidden — reflection happens on the handout
+    // and the handout's own scaffolding covers hint surface area.
     var tipSection = document.getElementById('teacherTip');
-    var tipText = document.getElementById('teacherTipText');
-    var tipContent = document.getElementById('teacherTipContent');
-    var tipToggle = document.getElementById('teacherTipToggle');
-    if (tipSection && tipText) {
-        tipText.textContent = getContent(group.teacherTip);
-        tipSection.style.display = 'block';
-        tipContent.style.display = 'none';
-        tipToggle.setAttribute('aria-expanded', 'false');
-    }
+    if (tipSection) tipSection.style.display = 'none';
 }
 
 function toggleTeacherTip() {
@@ -2116,8 +2043,7 @@ function advanceNarrative() {
 }
 
 function renderHistoricalComplete() {
-    // v3.15: reveal the Print Summary menu item now that the campaign is finished.
-    if (typeof showPrintSummaryMenuItem === 'function') showPrintSummaryMenuItem();
+    // v3.17.1: Print Summary menu item removed; Battle Journal handout is the capture surface.
 
     var endBanner = document.getElementById('endBanner');
     endBanner.className = 'outcome-banner victory-banner';
@@ -2153,22 +2079,9 @@ function renderHistoricalComplete() {
         '</div>' +
         '</div>';
 
-    // Show PDF export section
-    var pdfExportSection = document.getElementById('pdfExportSection');
-    if (pdfExportSection) {
-        pdfExportSection.style.display = 'block';
-
-        // Wire up the export button
-        var exportBtn = document.getElementById('exportPdfBtn');
-        if (exportBtn) {
-            // Remove old listeners by replacing the node
-            var newBtn = exportBtn.cloneNode(true);
-            exportBtn.parentNode.replaceChild(newBtn, exportBtn);
-            newBtn.addEventListener('click', function() {
-                generatePdfReport();
-            });
-        }
-    }
+    // v3.17.1: PDF export removed. Battle Journal handout is the capture surface.
+    // pdfExportSection remains hidden in markup; generatePdfReport() is left intact
+    // but no longer reachable from UI.
 
     // Hide scoreboard and class leaderboard for historical mode
     document.getElementById('scoreboardSection').style.display = 'none';
