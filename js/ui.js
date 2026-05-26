@@ -151,6 +151,8 @@ function renderSideSelection() {
         var lastInitial = document.getElementById('lastInitialInput');
         if (firstName) firstName.value = '';
         if (lastInitial) lastInitial.value = '';
+        var periodSel = document.getElementById('periodSelect');
+        if (periodSel) periodSel.value = '';
         // Auto-focus first name
         if (firstName) setTimeout(function() { firstName.focus(); }, 100);
     } else {
@@ -176,6 +178,11 @@ function getStudentNameFromForm() {
     if (first) first = first.charAt(0).toUpperCase() + first.slice(1);
     if (!first) return 'Student';
     return last ? first + ' ' + last + '.' : first;
+}
+
+function getPeriodFromForm() {
+    var sel = document.getElementById('periodSelect');
+    return sel ? (sel.value || '') : '';
 }
 
 // ============================================================

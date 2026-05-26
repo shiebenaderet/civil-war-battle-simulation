@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Dashboard — Civil War Battle Simulation</title>
+    <meta name="robots" content="noindex,nofollow">
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            margin: 0;
+            background: #f5f5f0;
+            color: #222;
+        }
+        header {
+            background: #2c3e50;
+            color: #fff;
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 18px;
+            font-weight: 700;
+        }
+        .room-info {
+            font-size: 13px;
+            opacity: 0.85;
+        }
+        .controls {
+            background: #fff;
+            border-bottom: 1px solid #ddd;
+            padding: 12px 24px;
+            display: flex;
+            gap: 24px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .control-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .control-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #555;
+        }
+        .pill-group {
+            display: flex;
+            gap: 4px;
+        }
+        .pill {
+            padding: 4px 12px;
+            border: 1px solid #ccc;
+            background: #fff;
+            border-radius: 16px;
+            cursor: pointer;
+            font-size: 13px;
+            color: #444;
+        }
+        .pill.active {
+            background: #2c3e50;
+            color: #fff;
+            border-color: #2c3e50;
+        }
+        .status-line {
+            font-size: 12px;
+            color: #666;
+            padding: 8px 24px;
+            background: #fafafa;
+            border-bottom: 1px solid #eee;
+        }
+        .status-line.error {
+            color: #b00;
+            background: #fff5f5;
+        }
+        main {
+            padding: 16px 24px 48px;
+        }
+        .battle-row {
+            display: grid;
+            grid-template-columns: 240px 1fr;
+            gap: 16px;
+            padding: 12px 0;
+            border-bottom: 1px solid #e5e5e0;
+            align-items: start;
+        }
+        .battle-label {
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 14px;
+        }
+        .battle-label .date {
+            font-weight: 400;
+            color: #888;
+            font-size: 12px;
+            display: block;
+            margin-top: 2px;
+        }
+        .battle-row.empty .student-list {
+            color: #aaa;
+            font-style: italic;
+            font-size: 13px;
+        }
+        .student-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+        .student-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 14px;
+            font-size: 13px;
+            color: #222;
+        }
+        .student-chip.stale {
+            opacity: 0.5;
+        }
+        .student-chip .period-tag {
+            font-size: 11px;
+            font-weight: 700;
+            padding: 1px 6px;
+            border-radius: 8px;
+            background: #eee;
+            color: #555;
+        }
+        .student-chip .period-tag.p1 { background: #fde2e2; color: #9a3412; }
+        .student-chip .period-tag.p2 { background: #fef3c7; color: #92400e; }
+        .student-chip .period-tag.p4 { background: #d1fae5; color: #065f46; }
+        .student-chip .period-tag.p5 { background: #dbeafe; color: #1e40af; }
+        .student-chip .period-tag.unknown { background: #e5e5e5; color: #666; }
+        .student-chip .last-seen {
+            font-size: 11px;
+            color: #888;
+        }
+        .finished-row .battle-label { color: #166534; }
+        .finished-row .student-chip { background: #f0fdf4; border-color: #bbf7d0; }
+        .sort-mode-period .battle-row,
+        .sort-mode-name .battle-row {
+            display: none;
+        }
+        .sort-mode-period .grouped-section,
+        .sort-mode-name .grouped-section {
+            margin-bottom: 24px;
+        }
+        .grouped-section {
+            display: none;
+        }
+        .sort-mode-period .grouped-section,
+        .sort-mode-name .grouped-section {
+            display: block;
+        }
+        .group-heading {
+            font-weight: 700;
+            color: #2c3e50;
+            font-size: 14px;
+            padding: 12px 0 6px;
+            border-bottom: 1px solid #e5e5e0;
+            margin-bottom: 8px;
+        }
+        .group-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+        .totals {
+            font-size: 13px;
+            color: #555;
+        }
+        button.refresh-btn {
+            background: #fff;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 4px 10px;
+            font-size: 12px;
+            cursor: pointer;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Teacher Dashboard</h1>
+        <div class="room-info">
+            Room: <strong id="roomLabel">…</strong>
+            &nbsp;·&nbsp;
+            <span class="totals" id="totalsLabel">0 students</span>
+        </div>
+    </header>
+
+    <div class="controls">
+        <div class="control-group">
+            <span class="control-label">Sort:</span>
+            <div class="pill-group" id="sortGroup">
+                <button class="pill active" data-sort="battle">Battle</button>
+                <button class="pill" data-sort="period">Period</button>
+                <button class="pill" data-sort="name">Name</button>
+            </div>
+        </div>
+        <div class="control-group">
+            <span class="control-label">Period:</span>
+            <div class="pill-group" id="filterGroup">
+                <button class="pill active" data-filter="all">All</button>
+                <button class="pill" data-filter="1">1st</button>
+                <button class="pill" data-filter="2">2nd</button>
+                <button class="pill" data-filter="4">4th</button>
+                <button class="pill" data-filter="5">5th</button>
+                <button class="pill" data-filter="?">No period</button>
+            </div>
+        </div>
+        <button class="refresh-btn" id="refreshBtn">Refresh</button>
+    </div>
+
+    <div class="status-line" id="statusLine">Connecting…</div>
+
+    <main id="dashboardMain">
+        <div id="battleList"></div>
+        <div id="groupedView"></div>
+    </main>
+
+    <!-- Firebase SDK (same versions as main app) -->
+    <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"></script>
+
+    <!-- App data + Firebase wrapper -->
+    <script src="js/data/battles.js"></script>
+    <script src="js/firebase-leaderboard.js"></script>
+
+    <script>
+    (function() {
+        var STALE_AFTER_MS = 5 * 60 * 1000; // 5 minutes since lastSeen = stale
+        var state = {
+            sort: 'battle',
+            filter: 'all',
+            entries: [],
+            lastUpdate: 0
+        };
+
+        function init() {
+            firebaseLeaderboard.init();
+            var room = firebaseLeaderboard.getTeacherDashboardRoom();
+            document.getElementById('roomLabel').textContent = room;
+
+            if (!firebaseLeaderboard.isAvailable()) {
+                setStatus('Firebase unavailable. Check your internet connection.', true);
+                return;
+            }
+
+            setStatus('Listening for student progress…');
+            firebaseLeaderboard.subscribeToProgress(room, function(entries, err) {
+                if (err) {
+                    setStatus(err, true);
+                    return;
+                }
+                state.entries = entries || [];
+                state.lastUpdate = Date.now();
+                render();
+                setStatus('Updated ' + new Date().toLocaleTimeString() + ' · ' + state.entries.length + ' student' + (state.entries.length === 1 ? '' : 's'));
+            });
+
+            wireControls();
+        }
+
+        function wireControls() {
+            document.getElementById('sortGroup').addEventListener('click', function(e) {
+                var btn = e.target.closest('.pill');
+                if (!btn) return;
+                state.sort = btn.dataset.sort;
+                setActivePill('sortGroup', btn);
+                render();
+            });
+            document.getElementById('filterGroup').addEventListener('click', function(e) {
+                var btn = e.target.closest('.pill');
+                if (!btn) return;
+                state.filter = btn.dataset.filter;
+                setActivePill('filterGroup', btn);
+                render();
+            });
+            document.getElementById('refreshBtn').addEventListener('click', function() {
+                render();
+            });
+        }
+
+        function setActivePill(groupId, activeBtn) {
+            var group = document.getElementById(groupId);
+            var pills = group.querySelectorAll('.pill');
+            for (var i = 0; i < pills.length; i++) {
+                pills[i].classList.toggle('active', pills[i] === activeBtn);
+            }
+        }
+
+        function setStatus(text, isError) {
+            var el = document.getElementById('statusLine');
+            el.textContent = text;
+            el.classList.toggle('error', !!isError);
+        }
+
+        function periodKey(p) {
+            return (p === '1' || p === '2' || p === '4' || p === '5') ? p : '?';
+        }
+
+        function passesFilter(entry) {
+            if (state.filter === 'all') return true;
+            return periodKey(entry.period) === state.filter;
+        }
+
+        function formatLastSeen(ts) {
+            if (!ts) return '';
+            var diff = Date.now() - ts;
+            if (diff < 60000) return 'just now';
+            if (diff < 3600000) return Math.floor(diff / 60000) + 'm ago';
+            return Math.floor(diff / 3600000) + 'h ago';
+        }
+
+        function isStale(ts) {
+            return ts && (Date.now() - ts) > STALE_AFTER_MS;
+        }
+
+        function chip(entry) {
+            var c = document.createElement('span');
+            c.className = 'student-chip' + (isStale(entry.lastSeen) ? ' stale' : '');
+
+            var pk = periodKey(entry.period);
+            var tag = document.createElement('span');
+            tag.className = 'period-tag ' + (pk === '?' ? 'unknown' : 'p' + pk);
+            tag.textContent = pk === '?' ? '?' : 'P' + pk;
+            c.appendChild(tag);
+
+            var name = document.createElement('span');
+            name.textContent = entry.name || 'Student';
+            c.appendChild(name);
+
+            var ls = document.createElement('span');
+            ls.className = 'last-seen';
+            ls.textContent = formatLastSeen(entry.lastSeen);
+            c.appendChild(ls);
+
+            return c;
+        }
+
+        function render() {
+            var main = document.getElementById('dashboardMain');
+            main.classList.remove('sort-mode-battle', 'sort-mode-period', 'sort-mode-name');
+            main.classList.add('sort-mode-' + state.sort);
+
+            document.getElementById('totalsLabel').textContent =
+                state.entries.length + ' student' + (state.entries.length === 1 ? '' : 's');
+
+            if (state.sort === 'battle') {
+                renderByBattle();
+            } else if (state.sort === 'period') {
+                renderByGroup(function(e) { return periodKey(e.period); }, function(k) {
+                    return k === '?' ? 'No period' : 'Period ' + k;
+                }, ['1', '2', '4', '5', '?']);
+            } else {
+                renderByGroup(function() { return 'all'; }, function() { return 'All students (by name)'; }, ['all'], function(a, b) {
+                    return (a.name || '').localeCompare(b.name || '');
+                });
+            }
+        }
+
+        function renderByBattle() {
+            var list = document.getElementById('battleList');
+            clear(list);
+            document.getElementById('groupedView').textContent = '';
+
+            var visible = state.entries.filter(passesFilter);
+
+            // Group students by currentBattle index
+            var byBattle = {};
+            var finished = [];
+            for (var i = 0; i < visible.length; i++) {
+                var e = visible[i];
+                if (e.finished || (e.currentBattle >= (e.totalBattles || battles.length))) {
+                    finished.push(e);
+                } else {
+                    var idx = Math.max(0, Math.min(battles.length - 1, e.currentBattle || 0));
+                    if (!byBattle[idx]) byBattle[idx] = [];
+                    byBattle[idx].push(e);
+                }
+            }
+
+            for (var b = 0; b < battles.length; b++) {
+                var students = byBattle[b] || [];
+                students.sort(function(a, c) { return (a.name || '').localeCompare(c.name || ''); });
+                var row = document.createElement('div');
+                row.className = 'battle-row' + (students.length === 0 ? ' empty' : '');
+
+                var label = document.createElement('div');
+                label.className = 'battle-label';
+                label.textContent = (b + 1) + '. ' + battles[b].name;
+                var date = document.createElement('span');
+                date.className = 'date';
+                date.textContent = battles[b].date;
+                label.appendChild(date);
+                row.appendChild(label);
+
+                var sl = document.createElement('div');
+                sl.className = 'student-list';
+                if (students.length === 0) {
+                    sl.textContent = '—';
+                } else {
+                    for (var s = 0; s < students.length; s++) {
+                        sl.appendChild(chip(students[s]));
+                    }
+                }
+                row.appendChild(sl);
+                list.appendChild(row);
+            }
+
+            // Finished row
+            if (finished.length > 0) {
+                var fRow = document.createElement('div');
+                fRow.className = 'battle-row finished-row';
+                var fLabel = document.createElement('div');
+                fLabel.className = 'battle-label';
+                fLabel.textContent = '✓ Finished';
+                fRow.appendChild(fLabel);
+                var fList = document.createElement('div');
+                fList.className = 'student-list';
+                finished.sort(function(a, c) { return (a.name || '').localeCompare(c.name || ''); });
+                for (var f = 0; f < finished.length; f++) {
+                    fList.appendChild(chip(finished[f]));
+                }
+                fRow.appendChild(fList);
+                list.appendChild(fRow);
+            }
+        }
+
+        function renderByGroup(keyFn, labelFn, order, sortFn) {
+            var grouped = document.getElementById('groupedView');
+            clear(grouped);
+            document.getElementById('battleList').textContent = '';
+
+            var visible = state.entries.filter(passesFilter);
+            var groups = {};
+            for (var i = 0; i < visible.length; i++) {
+                var k = keyFn(visible[i]);
+                if (!groups[k]) groups[k] = [];
+                groups[k].push(visible[i]);
+            }
+
+            for (var o = 0; o < order.length; o++) {
+                var key = order[o];
+                if (!groups[key] || groups[key].length === 0) continue;
+                var section = document.createElement('div');
+                section.className = 'grouped-section';
+
+                var heading = document.createElement('div');
+                heading.className = 'group-heading';
+                heading.textContent = labelFn(key) + ' (' + groups[key].length + ')';
+                section.appendChild(heading);
+
+                var list = document.createElement('div');
+                list.className = 'group-list';
+
+                var arr = groups[key].slice();
+                arr.sort(sortFn || function(a, b) {
+                    // default: sort by progress descending, then name
+                    var diff = (b.currentBattle || 0) - (a.currentBattle || 0);
+                    if (diff !== 0) return diff;
+                    return (a.name || '').localeCompare(b.name || '');
+                });
+                for (var s = 0; s < arr.length; s++) {
+                    var c = chip(arr[s]);
+                    // Append current battle label to the chip for context in non-battle views
+                    var battleNum = document.createElement('span');
+                    battleNum.className = 'last-seen';
+                    var bi = Math.max(0, Math.min(battles.length - 1, arr[s].currentBattle || 0));
+                    if (arr[s].finished || arr[s].currentBattle >= battles.length) {
+                        battleNum.textContent = '✓ done';
+                    } else {
+                        battleNum.textContent = 'Battle ' + (bi + 1);
+                    }
+                    c.insertBefore(battleNum, c.querySelector('.last-seen'));
+                    list.appendChild(c);
+                }
+                section.appendChild(list);
+                grouped.appendChild(section);
+            }
+        }
+
+        function clear(node) {
+            while (node.firstChild) node.removeChild(node.firstChild);
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', init);
+        } else {
+            init();
+        }
+    })();
+    </script>
+</body>
+</html>

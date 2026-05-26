@@ -69,6 +69,7 @@ function setupEventListeners() {
         if (saved) {
             restoreGameState(saved);
             if (saved.mode === 'historical') {
+                reportProgressToDashboard(false);
                 enterBattleScreen();
             } else {
                 renderFreeplayBriefing();
@@ -594,19 +595,40 @@ function hideResetBattleMenuItem() {
 }
 
 function startWithSide(side) {
-    // Read student name from inline fields (historical mode only)
+    // Read student name + period from inline fields (historical mode only)
     if (gameState.mode === 'historical') {
         gameState.studentName = getStudentNameFromForm();
+        gameState.period = getPeriodFromForm();
     }
 
     initializeGame(gameState.mode, side);
 
     if (gameState.mode === 'historical') {
+        // Write initial progress to the teacher dashboard
+        reportProgressToDashboard(false);
         // Show the leader's letter before diving into battles
         renderLeaderLetter();
     } else {
         renderFreeplayBriefing();
     }
+}
+
+// Writes the current student's progress to the teacher dashboard.
+// Historical mode only — freeplay state shape is different.
+function reportProgressToDashboard(finished) {
+    if (gameState.mode !== 'historical') return;
+    if (typeof firebaseLeaderboard === 'undefined' || !firebaseLeaderboard.isAvailable()) return;
+    firebaseLeaderboard.writeProgress(
+        firebaseLeaderboard.getTeacherDashboardRoom(),
+        {
+            name: gameState.studentName || 'Student',
+            period: gameState.period || '',
+            currentBattle: gameState.currentBattle || 0,
+            totalBattles: (typeof battles !== 'undefined' ? battles.length : 13),
+            side: gameState.side || '',
+            finished: !!finished
+        }
+    );
 }
 
 // Initialize when DOM is ready

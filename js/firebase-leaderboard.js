@@ -5,6 +5,12 @@
 var firebaseLeaderboard = (function() {
 
     var ROOM_CODE_KEY = 'civilWarRoomCode';
+    var STUDENT_ID_KEY = 'civilWarStudentId';
+    // Fixed room for the teacher progress dashboard. Change this string to
+    // rotate to a fresh dashboard (e.g., new semester). The teacher.html page
+    // reads the same constant. End-of-game leaderboard scores still use the
+    // student-entered room code, not this one.
+    var TEACHER_DASHBOARD_ROOM = 'shie-class';
     var firebaseReady = false;
     var db = null;
 
@@ -115,6 +121,77 @@ var firebaseLeaderboard = (function() {
             });
     }
 
+    // Stable per-device student ID. Created on first call, reused thereafter.
+    function getStudentId() {
+        try {
+            var existing = localStorage.getItem(STUDENT_ID_KEY);
+            if (existing) return existing;
+            var rand = Math.random().toString(36).slice(2, 10) + Date.now().toString(36);
+            localStorage.setItem(STUDENT_ID_KEY, rand);
+            return rand;
+        } catch (e) {
+            return 'anon_' + Math.random().toString(36).slice(2, 10);
+        }
+    }
+
+    // Write/update a student's current progress for the teacher dashboard.
+    // Overwrites prior entry for this studentId — the dashboard wants
+    // "where are they now," not history.
+    function writeProgress(roomCode, progressData, callback) {
+        if (!isAvailable()) {
+            if (callback) callback(false, 'Offline.');
+            return;
+        }
+        var code = String(roomCode || '').toLowerCase().trim();
+        if (!code) {
+            if (callback) callback(false, 'No room code.');
+            return;
+        }
+        var studentId = getStudentId();
+        var entry = {
+            name: String(progressData.name || 'Student').substring(0, 30),
+            period: String(progressData.period || ''),
+            currentBattle: Number(progressData.currentBattle) || 0,
+            totalBattles: Number(progressData.totalBattles) || 13,
+            side: progressData.side === 'union' ? 'union' :
+                  progressData.side === 'confederacy' ? 'confederacy' : '',
+            finished: Boolean(progressData.finished),
+            lastSeen: firebase.database.ServerValue.TIMESTAMP
+        };
+        db.ref('rooms/' + code + '/progress/' + studentId).set(entry)
+            .then(function() { if (callback) callback(true, ''); })
+            .catch(function() { if (callback) callback(false, 'Write failed.'); });
+    }
+
+    // Subscribe to all student progress entries for a room. The callback
+    // fires whenever any student's entry changes. Returns an unsubscribe fn.
+    function subscribeToProgress(roomCode, callback) {
+        if (!isAvailable()) {
+            callback(null, 'Offline.');
+            return function() {};
+        }
+        var code = String(roomCode || '').toLowerCase().trim();
+        if (!code) {
+            callback(null, 'No room code.');
+            return function() {};
+        }
+        var ref = db.ref('rooms/' + code + '/progress');
+        var handler = ref.on('value', function(snapshot) {
+            var entries = [];
+            snapshot.forEach(function(child) {
+                var v = child.val();
+                if (v) {
+                    v.studentId = child.key;
+                    entries.push(v);
+                }
+            });
+            callback(entries, '');
+        }, function() {
+            callback(null, 'Listener error.');
+        });
+        return function() { ref.off('value', handler); };
+    }
+
     // Load leaderboard from a room (top 20 by score)
     function loadLeaderboard(roomCode, callback) {
         if (!isAvailable()) {
@@ -152,7 +229,11 @@ var firebaseLeaderboard = (function() {
         clearRoomCode: clearRoomCode,
         validateRoom: validateRoom,
         submitScore: submitScore,
-        loadLeaderboard: loadLeaderboard
+        loadLeaderboard: loadLeaderboard,
+        getStudentId: getStudentId,
+        writeProgress: writeProgress,
+        subscribeToProgress: subscribeToProgress,
+        getTeacherDashboardRoom: function() { return TEACHER_DASHBOARD_ROOM; }
     };
 
 })();

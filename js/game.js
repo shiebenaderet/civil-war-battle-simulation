@@ -11,6 +11,7 @@ let gameState = {
     difficulty: 'intermediate', // 'beginner', 'intermediate', 'advanced'
     currentBattle: 0,
     studentName: '',
+    period: '',
     isInBattle: false,
     // Historical mode - response tracking
     responses: [],        // { battleId, wwydChoice, reflectionText }
@@ -161,6 +162,7 @@ function restoreGameState(saved) {
     // Ensure new fields exist for saves from older versions
     if (!gameState.responses) gameState.responses = [];
     if (!gameState.studentName) gameState.studentName = '';
+    if (!gameState.period) gameState.period = '';
     if (!gameState.difficulty) gameState.difficulty = 'intermediate';
     // v3.15: isInBattle is session state, not persisted across reloads.
     // A reload mid-battle shows the resume prompt; the user opts in via Resume,
@@ -240,10 +242,15 @@ function advanceHistorical() {
     gameState.currentBattle++;
     saveProgress();
 
-    if (gameState.currentBattle >= battles.length) {
+    var done = gameState.currentBattle >= battles.length;
+    if (typeof reportProgressToDashboard === 'function') {
+        reportProgressToDashboard(done);
+    }
+
+    if (done) {
         markHistoricalComplete();
         clearSave();
-        return true; // done
+        return true;
     }
     return false;
 }
