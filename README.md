@@ -1,6 +1,6 @@
 # Civil War Battle Simulation - Educational Edition
 
-An interactive educational game that takes students through 13 major battles of the American Civil War. Designed for 8th grade history classes.
+An interactive educational game that takes 8th-grade students through 13 major battles of the American Civil War. Students play the simulation in class while filling in a paper handout, then use the evidence they collected to answer one big question: **How was the Union able to defeat the Confederacy?**
 
 ## Play the Game
 
@@ -12,38 +12,87 @@ An interactive educational game that takes students through 13 major battles of 
 2. Identify turning-point battles and explain their strategic significance
 3. Analyze the advantages and disadvantages that shaped the war
 4. Describe lived experiences using primary sources
-5. Examine the war across race, gender, social class (54th Massachusetts, women, enslaved people, Indigenous nations, conscription)
+5. Examine the war across race, gender, and social class (54th Massachusetts, women, enslaved people, Indigenous nations, conscription)
 6. Evaluate how technology and tactics transformed warfare
 7. Assess how battles influenced political decisions and legacy
+8. Build a thesis-and-evidence argument in writing using a structured paper handout
 
-## Two Game Modes
+## How Students Use This
 
-### Historical Mode (Guided)
-Students choose Union or Confederacy, select a reading level (Extra Support / Beginner / Intermediate / Advanced), and experience all 13 battles through a streamlined 4-step flow per battle:
-1. **Briefing** - Intel report + situation context shown together
-2. **Your Call** - What Would You Do? with personalized feedback after choosing
-3. **What Happened** - Historical outcome, Technology Spotlight, A Voice From the War (with plain-English explainer at Beginner level), and The Bigger Picture with Perspectives sidebars
-4. **Reflect** - Writing prompt with scaffolding: clickable sentence starters (Beginner), shorter starters (Intermediate), or RACE method reminders (Advanced)
+Students work through the 13 battles in **Historical Mode** while filling in a printed **Battle Journal** handout. The simulation and the handout are designed to work together. The game presents the evidence; the handout makes students synthesize an argument from it.
 
-All text content adapts to the selected reading level across all 13 battles. Students receive a personalized letter from Lincoln (Union) or Davis (Confederacy) before their journey begins. At the end, they can export all their responses as a PDF.
+### The Battle Journal (paper handout)
 
-### Free-play Mode (Strategic)
-Unlocked after completing Historical Mode. Students make strategic choices with real consequences:
-- **Momentum system**: victories build power, defeats erode it
-- **Fog of war**: random events change battle outcomes unpredictably
-- **Historical events**: side-dependent modifiers based on real events (e.g., finding Lee's lost orders at Antietam)
-- **Class leaderboard**: Firebase-powered shared leaderboard with room codes, plus local top-10 fallback
+The unit answers one question: **How was the Union able to defeat the Confederacy?**
+
+The handout is two pages.
+
+**Page 1** is an act-by-act evidence log organized around the four acts of the war:
+
+- Act I: The War Begins (1861-1862, Fort Sumter through Shiloh)
+- Act II: A New Kind of War (1862-1863, Antietam through Chancellorsville)
+- Act III: The Tide Turns (1863, Vicksburg through Chickamauga)
+- Act IV: The War's Legacy (1864-1865, Wilderness through Appomattox)
+
+After each act of in-game battles, students stop and fill in that act's box: key events they want to remember, and why the act mattered for the Union. The simulation prompts them with a clear "Reflect on your Battle Journal" callout at every act review screen, so they aren't tempted to wait until the end.
+
+**Page 2** builds the answer. Students see a Word Bank of 8 key terms (Anaconda Plan, Emancipation Proclamation, total war, etc.) which they circle as they encounter them during play. Then they:
+
+1. Construct a three-part thesis: "The Union defeated the Confederacy because X, Y, and Z."
+2. Cite a specific battle, person, or event as evidence for each reason.
+3. Identify which Word Bank term they think was most important and explain why.
+4. Write one sentence explaining why bravery and leadership alone were not enough for the Confederacy to win.
+
+The handout ships in three tiers (Standard, Some Support, Extra Support) so students with different reading and writing supports are all answering the same essential question, just with different levels of scaffolding. The teacher prints whichever tier(s) match their students. Tier-to-tier mapping is left as a teacher's judgment — there's no hard rule that a Beginner-tier player must get the Some Support handout, since some students need more support in writing than in reading and vice versa.
+
+### Historical Mode (the simulation)
+
+Students choose Union or Confederacy, pick a reading level, and play through all 13 battles. Each battle follows a four-step flow:
+
+1. **Briefing.** Intel report and situation context for the battle they're about to face.
+2. **Your Call.** A "What Would You Do?" decision with personalized feedback comparing their choice to the historical decision. The options shuffle so the historically-correct answer isn't always in the same position.
+3. **What Happened.** The historical outcome, plus three side panels: a Technology Spotlight (rifled musket, ironclads, telegraph, and so on), a primary-source Voice From the War (Sullivan Ballou, Clara Barton, Susie King Taylor, Sam Watkins, and others), and a Bigger Picture section with Perspectives sidebars on race, class, gender, and Indigenous experiences. Each sub-section ends with a Note Nudge pointing students to a specific fact worth recording in their Battle Journal.
+4. **Reflect.** A "Reflect on your Battle Journal" callout. For most battles this is a short pause to update the handout. After the final battle of each act (Shiloh, Chancellorsville, Chickamauga, Appomattox), this step expands into an **act review**: a three-question multiple-choice recall moment drawn from that act's content, followed by a grouped reflection prompt on the act's bigger themes. The act review is also where the handout-nudge banner appears.
+
+After all 13 battles, students reach a final summary screen. Their argument lives on the paper handout, which the teacher collects.
+
+### Free-play Mode (unlocked after Historical Mode)
+
+Once a student completes Historical Mode, Free-play Mode unlocks on the start screen. This is a strategic replay where their decisions actually shape outcomes:
+
+- **Momentum system:** victories build power, defeats erode it.
+- **Fog of war:** random events change battle outcomes unpredictably.
+- **Historical events:** side-dependent modifiers based on real events (e.g., finding Lee's lost orders at Antietam).
+- **Class leaderboard:** a Firebase-powered shared leaderboard with room codes, plus a local top-10 fallback if Firebase is unreachable.
+
+Free-play is the engagement reward, not the assessment. The Battle Journal handout is the assessment.
+
+## Reading Levels and Differentiation
+
+The simulation ships every battle in **four reading-level tiers** so students with different reading and writing supports can all engage with the same historical content:
+
+- **Extra Support (E)** — written at roughly a 1st-3rd grade reading level for ML/IEP students underserved by typical "beginner" tiers. The Intel grid, Technology Spotlight, and Key Fact panels are hidden; the Voice From the War quote ships with a plain-English explainer; the Bigger Picture and Voice sections start collapsed with a "tap to read" hint so the screen isn't a wall of text.
+- **Beginner (B)** — written at roughly a 5th-6th grade reading level. Same structural simplifications as Extra Support, with grade-appropriate vocabulary.
+- **Intermediate (I)** — on-grade 8th-grade level. This is the default experience: all sections visible, Perspectives sidebars hidden to keep cognitive load reasonable.
+- **Advanced (A)** — written for stronger readers. All sections visible including Perspectives sidebars. Reflection prompts (in the grouped reflection moments) use RACE method reminders (Restate, Answer, Cite, Explain) instead of sentence starters.
+
+Two things make this work in a real classroom:
+
+1. **Switch tier mid-game.** The toolbar shows E/B/I/A pills at all times. A student who picked Beginner at the start screen but finds it patronizing — or picked Advanced and is drowning — can change tiers at any moment without losing progress, including mid-battle, mid-recall, or mid-reflection. The chosen tier persists in localStorage.
+
+2. **Content fallback chain.** When a battle field is missing in a tier (which can happen during authoring), the game falls back gracefully: Extra Support → Beginner → Intermediate. The student never sees an empty section.
 
 ## For Educators
 
-- Designed for 8th grade history classes (CCSS aligned)
-- No installation required - runs in any web browser
-- Works offline on classroom tablets and Chromebooks (no server needed)
-- Four reading levels (Extra Support, Beginner, Intermediate, Advanced) with adaptive content
-- Dark/light theme for different classroom environments
-- Screen reader support, keyboard navigation, accessibility compliant
-- Student responses exportable as PDF for Canvas/LMS submission
-- Printable Battle Journal handout in three differentiation tiers (see below)
+- Designed for 8th-grade history classes; aligns loosely with Washington State Social Studies Learning Standards and the Since Time Immemorial framework on Indigenous perspectives. Alignment notes for other states are welcome (see Contribute below).
+- No installation required — runs in any web browser.
+- Works on classroom Chromebooks and tablets without a server.
+- Four reading levels with adaptive content and mid-game tier switching.
+- OpenDyslexic font toggle, font size scale, and read-aloud voice/rate controls via the accessibility panel.
+- Screen reader support and keyboard navigation.
+- Printable Battle Journal handout in three differentiation tiers.
+- **Teacher Dashboard** at `/teacher.html` (password-gated) shows where every student in each of your class periods is in real time, with per-student and clear-all controls. See the "Teacher Dashboard" section below.
+- **Battlefield Tours** embed curated American Battlefield Trust videos (10 Animated Maps, 3 Documentaries) for every battle, surfacing on the post-battle results screen at the moment of maximum curiosity.
 
 ## Battle Journal Handout
 
@@ -53,7 +102,21 @@ A printable companion handout students fill in during Historical Mode. Captures 
 - **Some Support:** [civil.mrbsocialstudies.org/handouts/battle-journal-some-support.html](https://civil.mrbsocialstudies.org/handouts/battle-journal-some-support.html) — 5-6th grade level, sentence stems on every prompt
 - **Extra Support:** [civil.mrbsocialstudies.org/handouts/battle-journal-extra-support.html](https://civil.mrbsocialstudies.org/handouts/battle-journal-extra-support.html) — 1-3rd grade level, 6 Word Bank terms with plain-language definitions
 
-The in-game Act Review screens (one per act, four total) display a banner reminding students to fill in that act's box before continuing.
+The in-game act review screens (one per act, four total) display a banner reminding students to fill in that act's box before continuing.
+
+## Teacher Dashboard
+
+A standalone page at `/teacher.html` that shows live progress for every student in your class. As students play, the dashboard updates within a second or two. Features:
+
+- Live student chips for every period (P1, P2, P4, P5), grouped by current battle.
+- Sort modes: by Battle, by Period, or by Name. Period filter pills.
+- Chip dims after 5 minutes of inactivity to flag stuck or disconnected students.
+- Per-student delete (✕ on hover) and Clear All (between units).
+- Password-gated on page load; session-scoped so it only prompts once per browser tab.
+
+Students opt into being tracked by entering a **class code** (e.g. `AMS-p1`) on the name entry form. No code = no dashboard write. A banner in the game offers a way back in if a student starts without one. Codes are distributed out-of-band by the teacher (whiteboard, Google Classroom). To rotate codes, edit four strings in `js/firebase-leaderboard.js` and delete the old `rooms/<oldcode>/progress` trees from the Firebase console.
+
+This is intentionally lightweight authentication. The class code keeps the dashboard clean; the dashboard password keeps casual snoopers out. Real authentication via Firebase Auth or Google Workspace SSO is on the wishlist but blocked by district policy at the moment.
 
 ## The 13 Battles
 
@@ -76,84 +139,108 @@ The in-game Act Review screens (one per act, four total) display a banner remind
 ## Primary Source Voices
 
 The game features primary source quotes from diverse perspectives:
-- **Chaplain John Eaton** - Freedpeople fleeing to Union lines (Shiloh)
-- **Sullivan Ballou** - Union officer's letter to his wife (Bull Run)
-- **Clara Barton** - Volunteer nurse on the battlefield (Antietam)
-- **Captain William J. Nagle** - Irish Brigade at Fredericksburg
-- **Susie King Taylor** - Black nurse and teacher with the 33rd USCT (Chancellorsville)
-- **Corporal James Henry Gooding** - 54th Massachusetts, letter to Lincoln demanding equal pay (Wilderness)
-- **Sam Watkins** - Confederate enlisted soldier (Chickamauga)
-- **Mary Chesnut** - Senator's wife, diarist (Fort Sumter)
-- **Dora Miller** - Civilian under siege (Vicksburg)
-- **Dolly Sumner Lunt** - Plantation owner during Sherman's March
+
+- **Chaplain John Eaton** — Freedpeople fleeing to Union lines (Shiloh)
+- **Sullivan Ballou** — Union officer's letter to his wife (Bull Run)
+- **Clara Barton** — Volunteer nurse on the battlefield (Antietam)
+- **Captain William J. Nagle** — Irish Brigade at Fredericksburg
+- **Susie King Taylor** — Black nurse and teacher with the 33rd USCT (Chancellorsville)
+- **Corporal James Henry Gooding** — 54th Massachusetts, letter to Lincoln demanding equal pay (Wilderness)
+- **Sam Watkins** — Confederate enlisted soldier (Chickamauga)
+- **Mary Chesnut** — Senator's wife, diarist (Fort Sumter)
+- **Dora Miller** — Civilian under siege (Vicksburg)
+- **Dolly Sumner Lunt** — Plantation owner during Sherman's March
 - And more...
+
+## Contribute, Suggest, or Just Say Hi
+
+This is built by one teacher (hi, I'm Shie) for actual 8th-grade classrooms. I'd love feedback from anyone using it or thinking about using it — other social studies teachers, students, parents, historians, accessibility specialists, or developers. A few specific things I'd find valuable:
+
+**For teachers using or considering this with your students:**
+- What worked, what bombed, what your kids actually said
+- Battles or moments where the framing feels off, missing, or one-sided
+- Differentiation tiers that need more (or less) support
+- How it slotted into your unit and what you wish it did differently
+
+**For history educators and content experts:**
+- Primary-source suggestions, especially voices underrepresented in standard textbooks
+- Factual corrections or framings that mislead even when technically accurate
+- Connections to specific state standards (I teach in Washington State and align loosely to WA Social Studies Learning Standards plus the Since Time Immemorial framework — alignment notes for other states are welcome)
+
+**For accessibility specialists, ML/IEP teachers, and ELL teachers:**
+- Where the Extra Support tier still asks too much
+- Screen reader or keyboard navigation issues
+- Translation or multilingual support requests (currently English only)
+
+**For developers:**
+- Bug reports via [GitHub Issues](https://github.com/shiebenaderet/civil-war-battle-simulation/issues)
+- Pull requests welcome for clear bugs, accessibility improvements, or print-handout fixes. For anything touching pedagogy, content, or differentiation, please email first so we can talk through the change before you build it.
+
+**How to reach me:**
+- Email: shie@benaderet.com (best for substantive feedback, classroom stories, content suggestions)
+- GitHub Issues: [github.com/shiebenaderet/civil-war-battle-simulation/issues](https://github.com/shiebenaderet/civil-war-battle-simulation/issues) (best for bugs, broken links, technical problems)
+
+If you do use this in your classroom, even just once, I'd really like to hear how it went. There's no formal study, no analytics, no tracking — just a teacher trying to build something useful and wanting to know if it actually was.
 
 ## Project Structure
 
 ```
 civil-war-battle-simulation/
-├── index.html              # Markup, screens, inline theme script
+├── index.html              # Student-facing app: markup, screens, inline theme script
+├── teacher.html            # Standalone teacher dashboard (password-gated)
+├── favicon.svg             # Site icon
 ├── css/
-│   └── styles.css          # Design tokens, components, layouts, themes
+│   └── styles.css          # Design tokens, components, layouts
 ├── js/
 │   ├── data/
-│   │   ├── battles.js      # 13 battles with historical + freeplay data
-│   │   ├── leaders.js      # Lincoln & Davis messages
+│   │   ├── battles.js      # 13 battles with historical + freeplay data, all 4 reading tiers
+│   │   ├── acts.js         # Act intros, recall questions, grouped reflections
+│   │   ├── leaders.js      # Lincoln & Davis personalized letters
 │   │   └── maps.js         # SVG battle maps
-│   ├── firebase-leaderboard.js  # Firebase class leaderboard (room codes, shared scores)
+│   ├── firebase-leaderboard.js  # Firebase wrapper: room codes, class leaderboard, teacher dashboard writes
 │   ├── game.js             # State, save/load, momentum, fog of war, scoreboard
-│   ├── ui.js               # Screen management, rendering, DOM, tutorial, reflections
-│   └── app.js              # Init, event wiring, screen flow
-├── images/                 # Public domain artwork (Library of Congress, National Archives)
+│   ├── ui.js               # Screen management, rendering, DOM, tutorial, banners
+│   ├── app.js              # Init, event wiring, screen flow
+│   ├── tts.js              # Read-aloud voice controls (accessibility panel)
+│   ├── settings.js         # Settings menu wiring
+│   └── print-summary.js    # Legacy print-summary generator (unwired; kept for one release)
+├── images/                 # Public domain artwork (Library of Congress, National Archives, Wikimedia Commons)
 ├── handouts/               # Printable Battle Journal in 3 differentiation tiers
+├── docs/superpowers/       # Specs and implementation plans for major features
+├── mockups/                # Design mockups
 └── README.md
 ```
 
 ## Technical Notes
 
-- **No frameworks, no build tools** - pure HTML, CSS, and vanilla JavaScript
-- **No ES modules** - works with `file://` protocol for offline classroom use
-- **GitHub Pages deployment** - push to main branch to deploy
-- **localStorage** for persistence (game saves, leaderboard, theme preference)
-- **Firebase Realtime Database** for shared class leaderboards (gracefully degrades to local-only when offline)
-- Scripts load in dependency order: data files → game logic → Firebase → UI → app init
+- **No frameworks, no build tools** — pure HTML, CSS, and vanilla JavaScript.
+- **No ES modules** — works with `file://` protocol for offline classroom use.
+- **GitHub Pages deployment** — push to main branch to deploy.
+- **localStorage** for persistence (game saves, leaderboard, theme preference, class code, reading level).
+- **Firebase Realtime Database** for the class leaderboard and the teacher dashboard. Gracefully degrades to local-only when offline.
+- Scripts load in dependency order: data files → game logic → Firebase → UI → app init.
 
 ## Version History
 
-- **v3.17.1** - "Handout-first + Recovery": three classroom-facing fixes shipped together. Teacher Jump-to-Battle adds a hidden recovery shortcut for the day-2 scenario where a student loses their save and needs to be returned to the correct battle. Type "j-u-m-p" anywhere outside a text input (works on Chromebook, no modifier keys, dodges system shortcuts) to open a modal listing all 13 battles; click any battle to restore. Truncates responses[] to drop entries after the chosen battle, then enters the historical battle screen. Works regardless of Firebase availability (purely local state mutation). Handout-first cleanup retires the in-app reflection textarea: kids now reflect on the Battle Journal handout, not in a typing box. The textarea, sentence-starter chips, RACE reminder, and "Need a hint?" tip are all hidden; a clear "Reflect on your Battle Journal" callout replaces the typing UI on both per-battle and act-end reflections. The unused insertStarter() helper was deleted; showReflectScaffolding() is a no-op. End-of-game PDF export and the Print Summary menu item are removed since the handout is the only capture surface now; the underlying generators are left in code (not wired) for one release in case we need to revive them. No changes to battle content, save/load, or the Battlefield Tours/Teacher Dashboard features shipped in v3.17.0.
-- **v3.17.0** - "Battlefield Tours + Teacher Dashboard": two classroom-facing features in one release. Battlefield Tours replaces the abstract Esri StoryMap iframe with a 13-battle video grid sourced from the American Battlefield Trust. Every game battle has a curated video, 10 are Animated Maps and 3 (Atlanta, Sherman's March, Appomattox) are Documentaries, badged accordingly. The grid lives in the renamed Campaign Log tab, but the more important surface is a small video card that appears on the post-battle results screen for the specific battle just played, so the curious student finds it at the moment of maximum curiosity rather than buried in a settings menu. Card click expands inline into a YouTube iframe; a "Watch on YouTube" link on every card is the fallback for school networks that may block iframe embeds. Works in both historical and freeplay modes. Teacher Dashboard adds a standalone /teacher.html page that shows where every student in the class is in real time. Students pick their period (1st / 2nd / 4th / 5th) on the name entry screen along with first name and last initial. Every battle advance writes {name, period, currentBattle, lastSeen} to a fixed Firebase room (constant in firebase-leaderboard.js, change to rotate the dashboard). The dashboard subscribes to live updates, renders 13 battle rows with student chips at each, and offers sort modes (Battle / Period / Name) and period filters. Chips dim after 5 minutes of inactivity to flag stuck or disconnected students. URL is unlinked from the main app and noindexed; security by obscurity is fine for an 8th-grade classroom. New module exports: writeProgress, subscribeToProgress, getStudentId (stable per-device UUID in localStorage), getTeacherDashboardRoom. No changes to existing leaderboard, save/load, or battle content.
-- **v3.16.0** - "Extra Support Tier": adds a fourth reading level — Extra Support (E) — alongside Beginner / Intermediate / Advanced for ML/IEP students underserved by the Beginner tier. The pill row in the toolbar becomes E/B/I/A and the start-screen difficulty selector adds an Extra Support card with brand-red ink-fill styling. Code-side, getContent() in game.js gets a fallback chain (extra → beginner → intermediate) so any field without an ES version gracefully drops to Beginner; a new resolveDifficulty() helper handles direct-index callsites. ES mirrors Beginner's hide/show predicates (Intel grid, Tech Spotlight, Voice explainer, Key Fact, collapsible sections) and uses Beginner's reflection sentence-starters. Content-side: all 4 acts ship with ES intros, recall questions (12 total), review summaries, and PAT callouts; all 13 battles ship with ES situation (both sides), whatHappened, keyFact, biggerPicture, and tech.description (78 ES strings total at the battle level); both leader letters (Lincoln, Davis) and all 4 grouped reflection prompts ship in ES. Per-battle gameplay choices (whatWouldYouDo prompts/options/feedback) and voice quotes still fall back to Beginner content. Print summary, save/load, and TTS work unchanged. Adjacent UX shipped in same release: "Review the act" link promoted from text-link to prominent brand-red button with "+ update your journal" label; new PAT (Pay Attention To) callout on the act intro screen that lists per-act vocabulary and journal nudges, mirroring the Battle Journal handout's PAT visual style; note-nudge copy reframed from "Worth writing down:" to "One worth remembering:" since there are 39 nudges in a playthrough but the journal has only 3-5 lines per act; settings menu (...) gets a Battle Journal section with direct links to all three handout tiers; pill-sync bug fix (choosing a level on the side-selection screen now syncs navbar pills + persists to Settings); Intel Report visibility bug fix (line 1323 was unhiding it whenever step 0 rendered, overriding the isLowReadingTier hide). Also: handout print fixes — strip cream/red colors at print time for B&W laser, drop forced page break and "page X of Y" numbering so content flows naturally without huge blank gaps; Standard handout's Word Bank and q-embeds tightened to keep page 2 on a single sheet.
-- **v3.15.1** - "Battle Journal + Confederate Polish": adds a printable two-page Battle Journal handout in three differentiation tiers (Standard, Some Support, Extra Support) following the Unit 9 Field Report design system. Each tier captures evidence by act and scaffolds a thesis-and-evidence response to the unit prompt about how the Union won. Each handout has a sticky Print Handout toolbar that hides on print. The Act Review modal now displays a handout-nudge banner reminding students to fill in that act's box before continuing. Five tonal fixes to Confederate-side battle text: Fredericksburg's "mow them down" / "slaughter" framing replaced with sober description, Chancellorsville's celebratory "greatest victory!" feedback complicated with Jackson's death, Sherman's March now names the enslaved people who fled to Union lines, Chickamauga's "paid off big time" slang replaced, Antietam's European recognition framing now names the slavery dimension Britain and France would have been recognizing. No code changes to game logic, save/load, or content data structure.
-- **v3.15.0** - "Launch Polish": classroom-ready release. Toolbar redesigned in Field Report tokens with always-visible reading-level pills (B/I/A) — students can switch reading level mid-battle, mid-recall, or mid-reflection without losing progress; selection persists in localStorage. Accessibility panel (Aa) adds OpenDyslexic font toggle (self-hosted, swaps all text including chrome), font size scale (S/M/L), and read-aloud voice/rate controls using the browser's speech synthesis with quality filtering and per-section play buttons (auto-attached via MutationObserver). Settings menu (⋯) cleanup: Reset This Battle (with confirmation) lets students redo a single battle without nuking progress; Print Summary at end of game produces a printable per-act report of decisions, recall completion, and per-battle reflections (via Blob URL with auto-print). Browser refresh/back/close warning when mid-battle. Subtitle "Act II — 1862" relocated from navbar to battle header dateline to keep navbar single-row on desktop. No changes to battle content; this is the runway-cleanup release.
-- **v3.14.0** - "Battle Screen, Reshaped" — full release (code + content): Plan A code refactor plus Plan B content authoring. Per-sub-screen note nudges (Feedback / Outcome / Reflection) for all 13 battles at 3 reading levels (117 nudges total), each citing the source field it summarizes. Act review study guides for all 4 acts at 3 reading levels (12 guides total), organized around each act's synthesis prompts so students reach the recall question with the right framing. Acts II–IV explicitly handle the Emancipation Proclamation arc through to the 13th Amendment to prevent the conflation of Appomattox with full emancipation. No em dashes; teacher's voice throughout.
-- **v3.14.0-alpha** - "Battle Screen, Reshaped" Plan A (code refactor): step 2 of the historical battle screen splits into 3 sub-steps (Feedback, Outcome, Reflection from history). Each gets its own Continue button; cascade-reveal stagger animation removed. Recall option display order shuffled (drop-in WWYD pattern, same salt). Review overlay shell added: per-recall-question and per-reflection-textarea "Review the act" link opens a modal with battle thumbnails and act review content (content authored in Plan B). Note-nudge slots added inside step 2 sub-sections (content authored in Plan B). All sub-sections render gracefully when content is empty. No regression of tutorial, help bar, save/resume, PDF export, or step pills.
-- **v3.12.1** - "Acts of the War" (recall + WWYD shuffle): adds the recall moment that fires after each act's final battle and before the existing grouped reflection. Three multiple-choice questions per act per reading level (36 questions total) drawn directly from battles.js content with source citations. State machine: first wrong attempt shows a nudge with retry allowed; second wrong attempt reveals the correct answer with explanation and locks all options except the correct one (student must click it to advance, ensuring acknowledgment). Continue button gated until the correct option is selected. Recall completion tracked in gameState.completedRecalls so refreshes do not replay completed recalls. Bonus fix: WWYD options now shuffle their display order so the historically-accurate choice is no longer always option A. Internal index 0 = historical convention preserved everywhere; only the display order changes. Shuffle is deterministic per battle per side per session salt so navigating back inside a battle shows the same A/B/C, but a fresh playthrough re-randomizes.
-- **v3.12.0** - "Acts of the War" (intros only): surfaces the existing 4-act story structure that was already implicit in groupedReflections. Adds animated act intro screens before battles 0, 3, 6, and 9 (Fort Sumter, Antietam, Vicksburg, Wilderness). Each intro shows a dateline, an animated states map of the eastern theater (drawn from the studytools 1861 dataset), three or four battle pins fading in sequentially, the act name, and a one-sentence positioning at three reading levels. The map includes a "Show political alignment" toggle that fills states by Union, Confederate, or border-state allegiance. Skippability gate: Continue button appears only after the animation completes; reduced-motion path skips animations and gates Continue at 6 seconds. State persists across save/resume so an intro plays exactly once per playthrough. The recall moment (3 multiple-choice questions per act before each grouped reflection) is deferred to v3.12.1.
-- **v3.11.0** - "Documentary Pass": full visual reset from Blooket-inspired aesthetic to Field Report (period-newspaper) aesthetic. New Old Standard TT serif body and Special Elite typewriter chrome accents. Sepia paper palette replaces dark navy. Removed dark/light theme toggle (single sepia theme). Stripped decorative emoji from headings. Battle artwork given period-plate framing with subtle sepia tint. Buttons, inputs, and cards re-rendered as sharp-cornered ink-on-paper. No structural or content changes — same screens, same flow, same content; new worldview.
-- **v3.10.0** - Free-play mode overhaul: all 39 freeplay strategies across 13 battles now have side-specific text (name, description, detail, outcome) so Union and Confederate players see historically appropriate choices. Replaced ArcGIS war map with interactive Esri StoryMaps Civil War timeline. Fixed name capitalization bug (first name now auto-capitalizes). Full logic audit confirmed no remaining side-selection bugs.
-- **v3.9.0** - Fixed critical WWYD match logic: 7 of 26 battle scenarios had the historical choice at the wrong option index, causing students who picked the actual historical decision to be told "You chose a different path." Reordered options+feedback for Shiloh (CSA), Antietam (Union), Chancellorsville (Union), Vicksburg (both sides), Gettysburg (Union), and Chickamauga (CSA). Sentence starters now specific to each reflection prompt instead of generic. Added Fort Sumter battle map (Charleston Harbor 1861). Added dedicated War Map button in navbar for direct access to ArcGIS interactive map.
-- **v3.8.0** - Beginner difficulty polish: fixed blank "Did You Know?" box (label was showing with no content), hidden Tech Spotlight at beginner to reduce reading load, Voice and Bigger Picture sections now collapsible at beginner (start collapsed with "tap to read" hint). Battle review buttons added to grouped reflection screens - students can click any battle in the group to see a quick recap of what happened and what they chose, with match/different badges, helping them reference events while writing reflections.
-- **v3.7.1** - Firebase-powered class leaderboard with room codes. Teachers create rooms in Firebase, students enter a code to join and see class-wide rankings. Scores include name, side, win/loss record, and momentum. Graceful offline fallback to device-only leaderboard. ArcGIS interactive war map embedded in Campaign Log modal.
-- **v3.7.0** - Progressive reveal animation for What Happened sections (staggered cascade instead of wall of text), PDF export now tracks match history (summary box + per-battle badges), free-play results show historical context ("What Really Happened"), combined name + side + difficulty into single setup screen, comprehensive mobile responsive improvements (step pills, touch targets, button sizing)
-- **v3.6.0** - Redesigned WWYD feedback (shows student's choice vs. historical decision with match/different badge), grouped reflections every 3-4 battles around bigger themes (4 reflections instead of 13), expandable "Need a hint?" teacher tips on reflection prompts
-- **v3.5.1** - Intro splash screen explaining both game modes and learning objectives (shown on first visit), difficulty level descriptions no longer mention grade levels (avoids stigma)
-- **v3.5.0** - Guided tutorial system (auto-plays on first battle, highlights UI elements with explanatory tooltips), toggleable help bar with contextual tips per step, help button in navbar, fixed WWYD re-selection bug (students can now change their choice)
-- **v3.4.1** - Fixed broken battle map URLs (Vicksburg, Wilderness, Atlanta, Sherman's March), reduced reading load by difficulty level (beginner hides Intel grid + Key Fact + Perspectives; intermediate hides Perspectives; advanced shows all), removed Fort Sumter map tab (restored in v3.9.0)
-- **v3.4.0** - 3-level difficulty system (Beginner/Intermediate/Advanced) with adaptive content for all 13 battles, WWYD personalized feedback, voice explainers for beginners, reflection scaffolding (sentence starters + RACE method reminders), battle maps from Wikimedia Commons (Hal Jespersen), removed Google Translate (non-functional), fixed name entry alignment
-- **v3.3.0** - Blooket-inspired UI redesign (Nunito font, vibrant colors, bold rounded cards, pill buttons), streamlined Historical Mode (4 steps per battle instead of 7), step indicator pills
-- **v3.2.0** - Diverse primary source voices, Perspectives sidebars (race, class, gender, Indigenous), strengthened reflection prompts
-- **v3.1.0** - 13 battles, interactive Historical Mode (7-section narrative), fog of war, PDF export, student response tracking
-- **v3.0.0** - Two-mode system (Historical + Free-play), momentum system, complete rebuild
-- **v2.0.0** - Modular structure, scoreboard, historical comparison
-- **v1.0.0** - Original single-file prototype
+Recent releases:
 
-## Feedback
+- **v3.18 (in progress)** - Per-period room codes for the teacher dashboard. Replaces the single shared room code with four per-period codes (AMS-p1 through AMS-p5) and adds password-gated delete/clear controls on the dashboard. Strangers from other classrooms no longer appear in the dashboard because every dashboard write now requires a valid class code. New student-facing class code field (masked) on the name entry form, plus a "your teacher won't see your progress" banner with inline code entry for kids who skip it. Dashboard subscribes to all four period rooms in parallel and merges entries.
+- **v3.17.1** - Handout-first reflection cleanup. The in-app reflection textarea, sentence-starter chips, RACE reminder, and "Need a hint?" tip are hidden; a clear "Reflect on your Battle Journal" callout replaces the typing UI. PDF export retired since the handout is the only capture surface now. Teacher Jump-to-Battle hidden recovery shortcut: type `jump` anywhere outside a text input to open a battle picker.
+- **v3.17.0** - Battlefield Tours + Teacher Dashboard. Curated American Battlefield Trust videos (10 Animated Maps, 3 Documentaries) for every battle, surfacing on the post-battle results screen. New standalone /teacher.html shows live student progress with sort and filter controls.
+- **v3.16.0** - Extra Support reading tier added (fourth tier alongside Beginner / Intermediate / Advanced) for ML/IEP students. All 13 battles, 4 acts, leader letters, and reflection prompts ship in ES.
+- **v3.15.x** - Launch polish. Toolbar redesigned with always-visible reading-level pills (mid-game tier switching). Accessibility panel: OpenDyslexic font, font size scale, read-aloud voice controls. Reset This Battle, browser refresh warning, settings menu cleanup. Battle Journal handout added in three differentiation tiers with Confederate-side tonal fixes.
+- **v3.14.0** - Battle Screen reshape. Step 2 splits into Feedback / Outcome / Reflection-from-history sub-steps; per-sub-screen note nudges (117 total) point students at specific facts worth journaling. Act review study guides for all 4 acts at 3 reading levels.
+- **v3.12.x** - Acts of the War. Animated act intros before battles 0, 3, 6, 9. Recall moment (3 multiple-choice questions per act) before each grouped reflection.
+- **v3.11.0** - Documentary Pass. Full visual reset from Blooket-inspired aesthetic to Field Report (period newspaper) aesthetic with Old Standard TT serif and Special Elite typewriter accents.
+- **v3.10.0** - Free-play overhaul: all 39 freeplay strategies have side-specific text. Esri StoryMaps Civil War timeline replaced ArcGIS war map.
+- **v3.9.0** - Fixed critical WWYD match logic across 7 battle scenarios where the historical choice was at the wrong option index.
+- **v3.7.x** - Firebase-powered class leaderboard with room codes. Progressive reveal animations. PDF export with match tracking (since retired in v3.17.1).
+- **v3.6.x** - Redesigned WWYD feedback with match/different badges. Grouped reflections every 3-4 battles around bigger themes.
+- **v3.5.x** - Guided tutorial system. Difficulty levels stop referencing grade levels to avoid stigma.
+- **v3.4.x** - Three-level difficulty system (Beginner / Intermediate / Advanced — Extra Support added later in v3.16). Reflection scaffolding. Battle maps from Wikimedia Commons.
 
-This is an educational project in active development.
-
-- **Issues**: Report bugs or suggestions via [GitHub Issues](https://github.com/shiebenaderet/civil-war-battle-simulation/issues)
-- **Contact**: shie@benaderet.com
+Earlier history (v3.0 - v3.3): two-mode system established, momentum system, Blooket-inspired UI, primary source voices, Perspectives sidebars.
 
 ## Sources & Credits
 
-All battles and strategies are based on historical events. Primary source quotes are drawn from the Library of Congress, National Archives, Freedmen and Southern Society Project, and published memoirs. All images are in the public domain.
+All battles and strategies are based on historical events. Primary source quotes are drawn from the Library of Congress, National Archives, Freedmen and Southern Society Project, and published memoirs. All images are in the public domain. Battlefield Tours videos are hosted by the American Battlefield Trust and embedded under their public-facing YouTube channel.
