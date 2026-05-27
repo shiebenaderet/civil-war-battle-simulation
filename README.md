@@ -8,22 +8,18 @@ The floor is the same for everyone: by the end of the unit, every student can ex
 
 **Live site:** [civil.mrbsocialstudies.org](https://civil.mrbsocialstudies.org)
 
-<!-- SCREENSHOT TRIPTYCH PLACEHOLDER
-Once images/screenshots/ has the three files, replace this comment block with:
-
 <table>
   <tr>
-    <td align="center"><img src="images/screenshots/mode-select.png" alt="Mode selection screen showing Historical and Free-play modes" width="100%"></td>
-    <td align="center"><img src="images/screenshots/battle-decision.png" alt="Battle decision screen with What Would You Do prompt and feedback" width="100%"></td>
-    <td align="center"><img src="images/screenshots/handout-completed.jpg" alt="Completed Battle Journal handout with student handwriting" width="100%"></td>
+    <td align="center" width="33%"><img src="images/screenshots/mode-select.png" alt="Mode selection screen showing Historical Mode and Free-play Mode cards"></td>
+    <td align="center" width="33%"><img src="images/screenshots/battle-briefing.png" alt="Battle of Fort Sumter briefing screen with period artwork from Currier and Ives"></td>
+    <td align="center" width="33%"><img src="images/screenshots/battle-journal-page1.png" alt="Battle Journal handout page one, organized into four acts of the war"></td>
   </tr>
   <tr>
     <td align="center"><sub>Students pick a side and a reading level.</sub></td>
-    <td align="center"><sub>They make decisions and compare to history.</sub></td>
-    <td align="center"><sub>They build an argument on paper.</sub></td>
+    <td align="center"><sub>Each battle opens with period artwork and historical context.</sub></td>
+    <td align="center"><sub>They build their answer on paper, act by act.</sub></td>
   </tr>
 </table>
--->
 
 ## Contents
 
