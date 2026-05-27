@@ -1,23 +1,46 @@
-# Civil War Battle Simulation - Educational Edition
+# Civil War Battle Simulation
 
-An interactive educational game that takes 8th-grade students through 13 major battles of the American Civil War. Students play the simulation in class while filling in a paper handout, then use the evidence they collected to answer one big question: **How was the Union able to defeat the Confederacy?**
+*An 8th-grade history unit I built for my own classroom.*
 
-## Play the Game
+I wanted to teach the Civil War in a way that's engaging, accurate, and gives students multiple ways to engage with the content — and multiple ways to struggle with it. Some students will scratch the surface and walk away with the main ideas. Others will dig in: read the primary-source voices, watch the battlefield videos, replay Free-play Mode for hours, argue about whether the Anaconda Plan or Emancipation Proclamation mattered more. Both kinds of students belong here.
 
-**Live site:** https://civil.mrbsocialstudies.org
+The floor is the same for everyone: by the end of the unit, every student can explain who won the Civil War and give specific reasons why.
 
-## Learning Objectives
+**Live site:** [civil.mrbsocialstudies.org](https://civil.mrbsocialstudies.org)
 
-1. Compare motivations for fighting across race, class, and region
-2. Identify turning-point battles and explain their strategic significance
-3. Analyze the advantages and disadvantages that shaped the war
-4. Describe lived experiences using primary sources
-5. Examine the war across race, gender, and social class (54th Massachusetts, women, enslaved people, Indigenous nations, conscription)
-6. Evaluate how technology and tactics transformed warfare
-7. Assess how battles influenced political decisions and legacy
-8. Build a thesis-and-evidence argument in writing using a structured paper handout
+<!-- SCREENSHOT TRIPTYCH PLACEHOLDER
+Once images/screenshots/ has the three files, replace this comment block with:
 
-## How Students Use This
+<table>
+  <tr>
+    <td align="center"><img src="images/screenshots/mode-select.png" alt="Mode selection screen showing Historical and Free-play modes" width="100%"></td>
+    <td align="center"><img src="images/screenshots/battle-decision.png" alt="Battle decision screen with What Would You Do prompt and feedback" width="100%"></td>
+    <td align="center"><img src="images/screenshots/handout-completed.jpg" alt="Completed Battle Journal handout with student handwriting" width="100%"></td>
+  </tr>
+  <tr>
+    <td align="center"><sub>Students pick a side and a reading level.</sub></td>
+    <td align="center"><sub>They make decisions and compare to history.</sub></td>
+    <td align="center"><sub>They build an argument on paper.</sub></td>
+  </tr>
+</table>
+-->
+
+## Contents
+
+- [How students use this](#how-students-use-this)
+- [Reading levels and differentiation](#reading-levels-and-differentiation)
+- [For educators](#for-educators)
+- [Battle Journal handout](#battle-journal-handout)
+- [Teacher Dashboard](#teacher-dashboard)
+- [The 13 battles](#the-13-battles)
+- [Primary source voices](#primary-source-voices)
+- [Contribute, suggest, or just say hi](#contribute-suggest-or-just-say-hi)
+- [Project structure](#project-structure)
+- [Technical notes](#technical-notes)
+- [Version history](#version-history)
+- [Sources & credits](#sources--credits)
+
+## How students use this
 
 Students work through the 13 battles in **Historical Mode** while filling in a printed **Battle Journal** handout. The simulation and the handout are designed to work together. The game presents the evidence; the handout makes students synthesize an argument from it.
 
@@ -36,21 +59,21 @@ The handout is two pages.
 
 After each act of in-game battles, students stop and fill in that act's box: key events they want to remember, and why the act mattered for the Union. The simulation prompts them with a clear "Reflect on your Battle Journal" callout at every act review screen, so they aren't tempted to wait until the end.
 
-**Page 2** builds the answer. Students see a Word Bank of 8 key terms (Anaconda Plan, Emancipation Proclamation, total war, etc.) which they circle as they encounter them during play. Then they:
+**Page 2** builds the answer. Students see a Word Bank of 8 key terms (Anaconda Plan, Emancipation Proclamation, total war, and so on) which they circle as they encounter them during play. Then they:
 
 1. Construct a three-part thesis: "The Union defeated the Confederacy because X, Y, and Z."
 2. Cite a specific battle, person, or event as evidence for each reason.
 3. Identify which Word Bank term they think was most important and explain why.
 4. Write one sentence explaining why bravery and leadership alone were not enough for the Confederacy to win.
 
-The handout ships in three tiers (Standard, Some Support, Extra Support) so students with different reading and writing supports are all answering the same essential question, just with different levels of scaffolding. The teacher prints whichever tier(s) match their students. Tier-to-tier mapping is left as a teacher's judgment — there's no hard rule that a Beginner-tier player must get the Some Support handout, since some students need more support in writing than in reading and vice versa.
+The handout ships in three tiers (Standard, Some Support, Extra Support) so students with different reading and writing supports are all answering the same essential question, just with different levels of scaffolding. The teacher prints whichever tier(s) match their students. There's no hard rule that a Beginner-tier player must get the Some Support handout. Some students need more support in writing than in reading, and vice versa, so the matching is left as a teacher's judgment call.
 
 ### Historical Mode (the simulation)
 
 Students choose Union or Confederacy, pick a reading level, and play through all 13 battles. Each battle follows a four-step flow:
 
 1. **Briefing.** Intel report and situation context for the battle they're about to face.
-2. **Your Call.** A "What Would You Do?" decision with personalized feedback comparing their choice to the historical decision. The options shuffle so the historically-correct answer isn't always in the same position.
+2. **Your Call.** A "What Would You Do?" decision with personalized feedback comparing their choice to the historical decision. The options shuffle so the historically correct answer isn't always in the same position.
 3. **What Happened.** The historical outcome, plus three side panels: a Technology Spotlight (rifled musket, ironclads, telegraph, and so on), a primary-source Voice From the War (Sullivan Ballou, Clara Barton, Susie King Taylor, Sam Watkins, and others), and a Bigger Picture section with Perspectives sidebars on race, class, gender, and Indigenous experiences. Each sub-section ends with a Note Nudge pointing students to a specific fact worth recording in their Battle Journal.
 4. **Reflect.** A "Reflect on your Battle Journal" callout. For most battles this is a short pause to update the handout. After the final battle of each act (Shiloh, Chancellorsville, Chickamauga, Appomattox), this step expands into an **act review**: a three-question multiple-choice recall moment drawn from that act's content, followed by a grouped reflection prompt on the act's bigger themes. The act review is also where the handout-nudge banner appears.
 
@@ -67,7 +90,7 @@ Once a student completes Historical Mode, Free-play Mode unlocks on the start sc
 
 Free-play is the engagement reward, not the assessment. The Battle Journal handout is the assessment.
 
-## Reading Levels and Differentiation
+## Reading levels and differentiation
 
 The simulation ships every battle in **four reading-level tiers** so students with different reading and writing supports can all engage with the same historical content:
 
@@ -82,7 +105,7 @@ Two things make this work in a real classroom:
 
 2. **Content fallback chain.** When a battle field is missing in a tier (which can happen during authoring), the game falls back gracefully: Extra Support → Beginner → Intermediate. The student never sees an empty section.
 
-## For Educators
+## For educators
 
 - Designed for 8th-grade history classes; aligns loosely with Washington State Social Studies Learning Standards and the Since Time Immemorial framework on Indigenous perspectives. Alignment notes for other states are welcome (see Contribute below).
 - No installation required — runs in any web browser.
@@ -91,10 +114,10 @@ Two things make this work in a real classroom:
 - OpenDyslexic font toggle, font size scale, and read-aloud voice/rate controls via the accessibility panel.
 - Screen reader support and keyboard navigation.
 - Printable Battle Journal handout in three differentiation tiers.
-- **Teacher Dashboard** at `/teacher.html` (password-gated) shows where every student in each of your class periods is in real time, with per-student and clear-all controls. See the "Teacher Dashboard" section below.
+- **Teacher Dashboard** at `/teacher.html` (password-gated) shows where every student in each class period is in real time, with per-student and clear-all controls. See the Teacher Dashboard section below.
 - **Battlefield Tours** embed curated American Battlefield Trust videos (10 Animated Maps, 3 Documentaries) for every battle, surfacing on the post-battle results screen at the moment of maximum curiosity.
 
-## Battle Journal Handout
+## Battle Journal handout
 
 A printable companion handout students fill in during Historical Mode. Captures battle evidence by act, then scaffolds a thesis-and-evidence response to "How was the Union able to defeat the Confederacy?" Available in three tiers, all large-text, two pages each. Open in a browser and click the Print Handout button at the top.
 
@@ -118,7 +141,10 @@ Students opt into being tracked by entering a **class code** (e.g. `AMS-p1`) on 
 
 This is intentionally lightweight authentication. The class code keeps the dashboard clean; the dashboard password keeps casual snoopers out. Real authentication via Firebase Auth or Google Workspace SSO is on the wishlist but blocked by district policy at the moment.
 
-## The 13 Battles
+## The 13 battles
+
+<details>
+<summary>Expand the battle list</summary>
 
 | # | Battle | Year | Key Theme |
 |---|--------|------|-----------|
@@ -136,7 +162,12 @@ This is intentionally lightweight authentication. The class code keeps the dashb
 | 12 | Sherman's March | 1864 | Total war and its consequences |
 | 13 | Appomattox | 1865 | Surrender, assassination, 13th Amendment |
 
-## Primary Source Voices
+</details>
+
+## Primary source voices
+
+<details>
+<summary>Expand the list of voices featured in the game</summary>
 
 The game features primary source quotes from diverse perspectives:
 
@@ -152,7 +183,9 @@ The game features primary source quotes from diverse perspectives:
 - **Dolly Sumner Lunt** — Plantation owner during Sherman's March
 - And more...
 
-## Contribute, Suggest, or Just Say Hi
+</details>
+
+## Contribute, suggest, or just say hi
 
 This is built by one teacher (hi, I'm Shie) for actual 8th-grade classrooms. I'd love feedback from anyone using it or thinking about using it — other social studies teachers, students, parents, historians, accessibility specialists, or developers. A few specific things I'd find valuable:
 
@@ -182,7 +215,10 @@ This is built by one teacher (hi, I'm Shie) for actual 8th-grade classrooms. I'd
 
 If you do use this in your classroom, even just once, I'd really like to hear how it went. There's no formal study, no analytics, no tracking — just a teacher trying to build something useful and wanting to know if it actually was.
 
-## Project Structure
+## Project structure
+
+<details>
+<summary>Expand the file tree</summary>
 
 ```
 civil-war-battle-simulation/
@@ -211,7 +247,9 @@ civil-war-battle-simulation/
 └── README.md
 ```
 
-## Technical Notes
+</details>
+
+## Technical notes
 
 - **No frameworks, no build tools** — pure HTML, CSS, and vanilla JavaScript.
 - **No ES modules** — works with `file://` protocol for offline classroom use.
@@ -220,9 +258,10 @@ civil-war-battle-simulation/
 - **Firebase Realtime Database** for the class leaderboard and the teacher dashboard. Gracefully degrades to local-only when offline.
 - Scripts load in dependency order: data files → game logic → Firebase → UI → app init.
 
-## Version History
+## Version history
 
-Recent releases:
+<details>
+<summary>Expand version history</summary>
 
 - **v3.18 (in progress)** - Per-period room codes for the teacher dashboard. Replaces the single shared room code with four per-period codes (AMS-p1 through AMS-p5) and adds password-gated delete/clear controls on the dashboard. Strangers from other classrooms no longer appear in the dashboard because every dashboard write now requires a valid class code. New student-facing class code field (masked) on the name entry form, plus a "your teacher won't see your progress" banner with inline code entry for kids who skip it. Dashboard subscribes to all four period rooms in parallel and merges entries.
 - **v3.17.1** - Handout-first reflection cleanup. The in-app reflection textarea, sentence-starter chips, RACE reminder, and "Need a hint?" tip are hidden; a clear "Reflect on your Battle Journal" callout replaces the typing UI. PDF export retired since the handout is the only capture surface now. Teacher Jump-to-Battle hidden recovery shortcut: type `jump` anywhere outside a text input to open a battle picker.
@@ -241,6 +280,8 @@ Recent releases:
 
 Earlier history (v3.0 - v3.3): two-mode system established, momentum system, Blooket-inspired UI, primary source voices, Perspectives sidebars.
 
-## Sources & Credits
+</details>
+
+## Sources & credits
 
 All battles and strategies are based on historical events. Primary source quotes are drawn from the Library of Congress, National Archives, Freedmen and Southern Society Project, and published memoirs. All images are in the public domain. Battlefield Tours videos are hosted by the American Battlefield Trust and embedded under their public-facing YouTube channel.
