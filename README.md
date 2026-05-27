@@ -32,7 +32,7 @@ Once images/screenshots/ has the three files, replace this comment block with:
 - [For educators](#for-educators)
 - [Battle Journal handout](#battle-journal-handout)
 - [Teacher Dashboard](#teacher-dashboard)
-- [The 13 battles](#the-13-battles)
+- [The 13 battles (with companion videos)](#the-13-battles)
 - [Primary source voices](#primary-source-voices)
 - [Contribute, suggest, or just say hi](#contribute-suggest-or-just-say-hi)
 - [Project structure](#project-structure)
@@ -143,26 +143,25 @@ This is intentionally lightweight authentication. The class code keeps the dashb
 
 ## The 13 battles
 
-<details>
-<summary>Expand the battle list</summary>
+Every battle has a curated companion video from the American Battlefield Trust, surfaced inside the game at the moment of post-battle curiosity. They're linked here too for teachers who want to preview the unit without playing through.
 
-| # | Battle | Year | Key Theme |
-|---|--------|------|-----------|
-| 1 | Fort Sumter | 1861 | The war begins |
-| 2 | Bull Run | 1861 | The myth of a short war dies |
-| 3 | Shiloh | 1862 | Industrial-scale carnage |
-| 4 | Antietam | 1862 | Emancipation Proclamation |
-| 5 | Fredericksburg | 1862 | Irish Brigade, class tensions |
-| 6 | Chancellorsville | 1863 | Black troops and women serving |
-| 7 | Vicksburg | 1863 | The Confederacy split in two |
-| 8 | Gettysburg | 1863 | 54th Massachusetts, Draft Riots |
-| 9 | Chickamauga | 1863 | The bloodiest day in the West |
-| 10 | Wilderness | 1864 | Grant's relentless campaign |
-| 11 | Atlanta | 1864 | Lincoln's re-election secured |
-| 12 | Sherman's March | 1864 | Total war and its consequences |
-| 13 | Appomattox | 1865 | Surrender, assassination, 13th Amendment |
+| # | Battle | Year | Key theme | Watch |
+|---|--------|------|-----------|-------|
+| 1 | Fort Sumter | 1861 | The war begins | [Animated Map](https://www.youtube.com/watch?v=Hfn5BZZBpoU) |
+| 2 | Bull Run | 1861 | The myth of a short war dies | [Animated Map](https://www.youtube.com/watch?v=vGR02nZ03uY) |
+| 3 | Shiloh | 1862 | Industrial-scale carnage | [Animated Map](https://www.youtube.com/watch?v=Tlhlk3bp-f4) |
+| 4 | Antietam | 1862 | Emancipation Proclamation | [Animated Map](https://www.youtube.com/watch?v=_8ybkoGmHww) |
+| 5 | Fredericksburg | 1862 | Irish Brigade, class tensions | [Animated Map](https://www.youtube.com/watch?v=nJodzkWBjDk) |
+| 6 | Chancellorsville | 1863 | Black troops and women serving | [Animated Map](https://www.youtube.com/watch?v=3o7WcBQ8pYg) |
+| 7 | Vicksburg | 1863 | The Confederacy split in two | [Animated Map](https://www.youtube.com/watch?v=1eSgimZ8GKQ) |
+| 8 | Gettysburg | 1863 | 54th Massachusetts, Draft Riots | [Animated Map](https://www.youtube.com/watch?v=DUXpCfcJ7Ng) |
+| 9 | Chickamauga | 1863 | The bloodiest day in the West | [Animated Map](https://www.youtube.com/watch?v=vlJUuNny9mc) |
+| 10 | Wilderness | 1864 | Grant's relentless campaign | [Animated Map](https://www.youtube.com/watch?v=gxJTfwQjixE) |
+| 11 | Atlanta | 1864 | Lincoln's re-election secured | [Documentary](https://www.youtube.com/watch?v=bh4vSOx2cMI) |
+| 12 | Sherman's March | 1864 | Total war and its consequences | [Documentary](https://www.youtube.com/watch?v=FtD787nRFn4) |
+| 13 | Appomattox | 1865 | Surrender, assassination, 13th Amendment | [Documentary](https://www.youtube.com/watch?v=lV3YPw_Mly8) |
 
-</details>
+All videos are hosted by the [American Battlefield Trust](https://www.youtube.com/@AmericanBattlefieldTrust) on their public YouTube channel.
 
 ## Primary source voices
 
