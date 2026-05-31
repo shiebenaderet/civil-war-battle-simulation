@@ -309,6 +309,18 @@ function switchVisualTab(clickedTab, showId, hideId) {
     document.getElementById(hideId).style.display = 'none';
 }
 
+// 3-way tab switch for the post-battle "Learn More" panel.
+function switchLearnTab(clickedTab, showId) {
+    var tabs = clickedTab.parentElement.querySelectorAll('.visual-tab');
+    for (var i = 0; i < tabs.length; i++) tabs[i].classList.remove('active');
+    clickedTab.classList.add('active');
+    var bodies = ['learnBigPicture', 'learnVoice', 'learnTech'];
+    for (var j = 0; j < bodies.length; j++) {
+        var el = document.getElementById(bodies[j]);
+        if (el) el.style.display = (bodies[j] === showId) ? '' : 'none';
+    }
+}
+
 // ============================================================
 // Battle Image Helper
 // ============================================================
@@ -1353,11 +1365,11 @@ function renderHistoricalBattle() {
         ' (Union: ' + content.casualties.union.toLocaleString() +
         ', Confederate: ' + content.casualties.confederacy.toLocaleString() + ')';
 
-    document.getElementById('histTechName').textContent = content.tech.name;
-    document.getElementById('histTechDesc').textContent = content.tech.description;
-    // Tech Spotlight: hide at beginner/ES to reduce cognitive load
-    var techBox = document.getElementById('histTechBox');
-    if (techBox) techBox.style.display = isLowReadingTier ? 'none' : '';
+    // Technology Spotlight now lives in the Learn More tab panel — shown for all tiers.
+    var techNameEl = document.getElementById('histTechName');
+    if (techNameEl) techNameEl.textContent = content.tech.name;
+    var techDescEl = document.getElementById('histTechDesc');
+    if (techDescEl) techDescEl.textContent = content.tech.description;
 
     // Battlefield Tours: post-battle video card for this battle
     renderBattleVideoCard(battles[gameState.currentBattle].id, 'histBattleVideoSlot');
@@ -1376,22 +1388,14 @@ function renderHistoricalBattle() {
         explainerEl.style.display = 'none';
     }
 
-    // --- Section 6: The Bigger Picture ---
+    // --- Section 6: The Bigger Picture (now a Learn More tab) ---
     var histBigPictureEl = document.getElementById('histBigPicture');
     histBigPictureEl.textContent = content.biggerPicture;
     // v3.15: TTS — mark the reflection-from-history paragraph as readable.
     histBigPictureEl.classList.add('tts-readable');
     histBigPictureEl.setAttribute('data-tts-label', 'The Bigger Picture');
 
-    // Key Fact: hide entire box at beginner/ES to reduce reading
-    var keyFactEl = document.getElementById('histKeyFact');
-    var keyFactBox = keyFactEl ? keyFactEl.closest('.key-fact-box') : null;
-    if (isLowReadingTier) {
-        if (keyFactBox) keyFactBox.style.display = 'none';
-    } else {
-        keyFactEl.textContent = content.keyFact;
-        if (keyFactBox) keyFactBox.style.display = '';
-    }
+    // v3.19: "Did You Know" key-fact box removed — the Key Idea callout carries the takeaway.
 
     // Perspectives: only show at advanced level
     var perspectivesEl = document.getElementById('histPerspectives');
@@ -1425,8 +1429,7 @@ function renderHistoricalBattle() {
     document.getElementById('sectionWWYD').style.display = 'none';
     document.getElementById('wwydFeedback').style.display = 'none';
     document.getElementById('sectionHappened').style.display = 'none';
-    document.getElementById('sectionVoice').style.display = 'none';
-    document.getElementById('sectionBigPicture').style.display = 'none';
+    document.getElementById('sectionLearnMore').style.display = 'none';
     document.getElementById('sectionReflect').style.display = 'none';
     var nudgeFeedback = document.getElementById('noteNudgeFeedback');
     if (nudgeFeedback) nudgeFeedback.style.display = 'none';
@@ -1812,8 +1815,7 @@ function advanceNarrative() {
 
             // Hide later sub-sections in case they were visible from a prior re-render
             document.getElementById('sectionHappened').style.display = 'none';
-            document.getElementById('sectionVoice').style.display = 'none';
-            document.getElementById('sectionBigPicture').style.display = 'none';
+            document.getElementById('sectionLearnMore').style.display = 'none';
 
             populateNoteNudge('noteNudgeFeedback', 'feedback');
             break;
@@ -1830,18 +1832,20 @@ function advanceNarrative() {
             break;
 
         case 4:
-            // REFLECTION FROM HISTORY sub-step: show Voice + Bigger Picture.
+            // REFLECTION FROM HISTORY sub-step: show the tabbed Learn More panel.
             updateStepPills(narrativeStep);
 
-            var voice = document.getElementById('sectionVoice');
-            var bigPicture = document.getElementById('sectionBigPicture');
-            voice.style.display = 'block';
-            bigPicture.style.display = 'block';
-            targetSection = voice;
+            var learnMore = document.getElementById('sectionLearnMore');
+            learnMore.style.display = 'block';
+            targetSection = learnMore;
 
-            // v3.18: deeper content is opt-in for ALL tiers (the Key Idea callout carries the takeaway).
-            setupCollapsibleSection('voiceHeading', 'voiceBody', false);
-            setupCollapsibleSection('bigPictureHeading', 'bigPictureBody', false);
+            // Reset to the default tab (The Bigger Picture) for each battle.
+            var lmTabs = learnMore.querySelectorAll('.visual-tab');
+            for (var li = 0; li < lmTabs.length; li++) lmTabs[li].classList.remove('active');
+            if (lmTabs[0]) lmTabs[0].classList.add('active');
+            document.getElementById('learnBigPicture').style.display = '';
+            document.getElementById('learnVoice').style.display = 'none';
+            document.getElementById('learnTech').style.display = 'none';
 
             populateNoteNudge('noteNudgeReflection', 'reflectionFromHistory');
 

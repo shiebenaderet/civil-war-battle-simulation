@@ -588,7 +588,7 @@
                     <div class="note-nudge" id="noteNudgeFeedback" style="display:none;"></div>
                 </div>
 
-                <!-- Section 4: What Really Happened + Tech -->
+                <!-- Section 4: What Really Happened -->
                 <div class="narrative-section happened-section" id="sectionHappened" style="display:none;">
                     <h3 class="narrative-heading">What Really Happened</h3>
                     <p class="narrative-text" id="histWhatHappened"></p>
@@ -604,42 +604,37 @@
                         <p class="key-idea-text" id="keyIdeaText"></p>
                     </div>
 
-                    <div class="tech-highlight" id="histTechBox">
-                        <div class="tech-label">Technology Spotlight</div>
-                        <div class="tech-name" id="histTechName"></div>
-                        <p class="tech-description" id="histTechDesc"></p>
-                    </div>
-
-                    <!-- Battlefield Tours: video card for this battle -->
+                    <!-- Battlefield Tours: small video thumbnail for this battle -->
                     <div class="battle-video-slot" id="histBattleVideoSlot"></div>
 
                     <div class="note-nudge" id="noteNudgeOutcome" style="display:none;"></div>
                 </div>
 
-                <!-- Section 5: A Voice From the Field -->
-                <div class="narrative-section voice-section" id="sectionVoice" style="display:none;">
-                    <h3 class="narrative-heading collapsible-heading" id="voiceHeading">A Voice From the Field <span class="collapse-icon"></span></h3>
-                    <div class="collapsible-body" id="voiceBody">
+                <!-- Section 5: Learn More (tabbed) -->
+                <div class="narrative-section learn-more-section" id="sectionLearnMore" style="display:none;">
+                    <div class="visual-tabs learn-tabs">
+                        <button class="visual-tab active" data-tab="bigpicture" onclick="switchLearnTab(this, 'learnBigPicture')">The Bigger Picture</button>
+                        <button class="visual-tab" data-tab="voice" onclick="switchLearnTab(this, 'learnVoice')">A Voice From the Field</button>
+                        <button class="visual-tab" data-tab="tech" onclick="switchLearnTab(this, 'learnTech')">Technology Spotlight</button>
+                    </div>
+
+                    <div class="learn-tab-body" id="learnBigPicture">
+                        <p class="narrative-text" id="histBigPicture"></p>
+                        <div class="perspectives-container" id="histPerspectives"></div>
+                    </div>
+
+                    <div class="learn-tab-body" id="learnVoice" style="display:none;">
                         <blockquote class="voice-quote" id="histVoiceQuote"></blockquote>
                         <div class="voice-attribution" id="histVoiceAttribution"></div>
                         <div class="voice-source" id="histVoiceSource"></div>
                         <div class="voice-explainer" id="histVoiceExplainer" style="display:none;"></div>
                     </div>
-                </div>
 
-                <!-- Section 6: The Bigger Picture -->
-                <div class="narrative-section bigger-picture-section" id="sectionBigPicture" style="display:none;">
-                    <h3 class="narrative-heading collapsible-heading" id="bigPictureHeading">The Bigger Picture <span class="collapse-icon"></span></h3>
-                    <div class="collapsible-body" id="bigPictureBody">
-                        <p class="narrative-text" id="histBigPicture"></p>
-
-                        <div class="key-fact-box">
-                            <div class="key-fact-label">Did You Know</div>
-                            <p class="key-fact-text" id="histKeyFact"></p>
-                        </div>
-
-                        <div class="perspectives-container" id="histPerspectives"></div>
+                    <div class="learn-tab-body" id="learnTech" style="display:none;">
+                        <div class="tech-name" id="histTechName"></div>
+                        <p class="tech-description" id="histTechDesc"></p>
                     </div>
+
                     <div class="note-nudge" id="noteNudgeReflection" style="display:none;"></div>
                 </div>
 
