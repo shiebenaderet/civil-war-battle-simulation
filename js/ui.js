@@ -2190,7 +2190,7 @@ function renderFreeplayBriefing() {
 
     // Briefing
     var fpBriefingEl = document.getElementById('fpBriefing');
-    applyGlossary(fpBriefingEl, battle.freeplay.briefing);
+    applyGlossary(fpBriefingEl, getContent(battle.freeplay.briefing));
     // v3.20: read-aloud parity with Historical Mode
     if (fpBriefingEl) {
         fpBriefingEl.classList.add('tts-readable');
@@ -3710,6 +3710,8 @@ function rerenderForReadingLevel() {
                typeof getActForBattle === 'function') {
         var aIdx = getActForBattle(gameState.currentBattle);
         if (aIdx !== -1) renderActRecall(aIdx);
+    } else if (screen === 'freeplayBriefing' && typeof renderFreeplayBriefing === 'function') {
+        renderFreeplayBriefing();
     }
 
     // Act review modal open? Re-render it on top of whatever screen is showing.
