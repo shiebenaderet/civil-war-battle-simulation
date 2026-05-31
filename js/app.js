@@ -295,6 +295,9 @@ function setupEventListeners() {
     // Credits toggle
     setupCreditsToggle();
 
+    // v3.19: vocabulary click-to-define tooltips (delegated; bound once)
+    if (typeof setupVocabTooltips === 'function') setupVocabTooltips();
+
     // === v3.15: Accessibility panel (Aa button) ===
     (function wireAccessibilityPanel() {
         const btn = document.getElementById('accessibilityBtn');
@@ -603,11 +606,15 @@ function setupEventListeners() {
                 other.setAttribute('data-playing', 'false');
                 other.textContent = '▶ Read';
             });
-            const text = Array.from(targetEl.childNodes)
-                .filter(function(n) { return n !== btn; })
-                .map(function(n) { return (n.textContent || '').trim(); })
-                .filter(function(s) { return s.length > 0; })
-                .join(' ');
+            // Build the read-aloud text from a clone so we can strip non-narrated
+            // bits: the play button itself, and (v3.19) any .vocab-tooltip
+            // definitions injected by the glossary auto-linker — otherwise TTS
+            // would read each term's definition aloud inline and garble the prose.
+            const clone = targetEl.cloneNode(true);
+            clone.querySelectorAll('.tts-play-btn, .vocab-tooltip').forEach(function(n) {
+                n.parentNode && n.parentNode.removeChild(n);
+            });
+            const text = (clone.textContent || '').replace(/\s+/g, ' ').trim();
             if (!text) return;
             btn.setAttribute('data-playing', 'true');
             btn.textContent = '■ Stop';

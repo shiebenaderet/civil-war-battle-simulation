@@ -890,7 +890,7 @@ function populateKeyIdeaCallout() {
         callout.style.display = 'none';
         return;
     }
-    textEl.textContent = keyIdea;
+    applyGlossary(textEl, keyIdea);
     callout.style.display = '';
     // TTS: make the key idea readable aloud, consistent with other narrative text.
     textEl.classList.add('tts-readable');
@@ -1320,7 +1320,7 @@ function renderHistoricalBattle() {
 
     // --- Section 2: The Situation ---
     var histSituationEl = document.getElementById('histSituation');
-    histSituationEl.textContent = content.situation;
+    applyGlossary(histSituationEl, content.situation);
     // v3.15: TTS — mark this paragraph as readable. A MutationObserver in app.js
     // attaches a play button when the class is added.
     histSituationEl.classList.add('tts-readable');
@@ -1369,7 +1369,7 @@ function renderHistoricalBattle() {
 
     // --- Section 4: What Really Happened ---
     var histWhatHappenedEl = document.getElementById('histWhatHappened');
-    histWhatHappenedEl.textContent = content.whatHappened;
+    applyGlossary(histWhatHappenedEl, content.whatHappened);
     // v3.15: TTS — mark the outcome narrative as readable.
     histWhatHappenedEl.classList.add('tts-readable');
     histWhatHappenedEl.setAttribute('data-tts-label', 'What Really Happened');
@@ -1385,13 +1385,13 @@ function renderHistoricalBattle() {
     var techNameEl = document.getElementById('histTechName');
     if (techNameEl) techNameEl.textContent = content.tech.name;
     var techDescEl = document.getElementById('histTechDesc');
-    if (techDescEl) techDescEl.textContent = content.tech.description;
+    if (techDescEl) applyGlossary(techDescEl, content.tech.description);
 
     // Battlefield Tours: post-battle video card for this battle
     renderBattleVideoCard(battles[gameState.currentBattle].id, 'histBattleVideoSlot');
 
     // --- Section 5: A Voice From the War ---
-    document.getElementById('histVoiceQuote').textContent = content.voice.quote;
+    applyGlossary(document.getElementById('histVoiceQuote'), content.voice.quote);
     document.getElementById('histVoiceAttribution').textContent = '\u2014 ' + content.voice.attribution;
     document.getElementById('histVoiceSource').textContent = content.voice.source;
 
@@ -1406,7 +1406,7 @@ function renderHistoricalBattle() {
 
     // --- Section 6: The Bigger Picture (now a Learn More tab) ---
     var histBigPictureEl = document.getElementById('histBigPicture');
-    histBigPictureEl.textContent = content.biggerPicture;
+    applyGlossary(histBigPictureEl, content.biggerPicture);
     // v3.15: TTS — mark the reflection-from-history paragraph as readable.
     histBigPictureEl.classList.add('tts-readable');
     histBigPictureEl.setAttribute('data-tts-label', 'The Bigger Picture');
@@ -1820,7 +1820,7 @@ function advanceNarrative() {
 
                 var detailEl = document.getElementById('feedbackDetail');
                 if (detailEl) {
-                    detailEl.textContent = feedbackList[wwydSelected];
+                    applyGlossary(detailEl, feedbackList[wwydSelected]);
                     // v3.15: TTS — read the explanatory feedback paragraph.
                     detailEl.classList.add('tts-readable');
                     detailEl.setAttribute('data-tts-label', 'Choice feedback');
@@ -2151,7 +2151,7 @@ function renderFreeplayBriefing() {
     document.getElementById('fpMap').style.display = 'none';
 
     // Briefing
-    document.getElementById('fpBriefing').textContent = battle.freeplay.briefing;
+    applyGlossary(document.getElementById('fpBriefing'), battle.freeplay.briefing);
 
     // Historical event notice
     var histEventNotice = document.getElementById('fpHistEventNotice');
@@ -2655,6 +2655,226 @@ function escapeHtml(text) {
 }
 
 // ============================================================
+// v3.19: Vocabulary auto-linker (applyGlossary) + click-to-define tooltips
+// ============================================================
+//
+// applyGlossary(el, text) takes a DOM element and a PLAIN-TEXT string, finds
+// glossary terms (from the global `glossary` array in js/data/glossary.js),
+// and wraps matches in clickable .vocab-term spans, then sets el.innerHTML.
+// This REPLACES `el.textContent = text` at the substantive reading-text render
+// points (situation, what-happened, key idea, bigger picture, voice quote,
+// tech description, choice feedback, freeplay briefing, battle revisit).
+//
+// SAFETY: `text` is escaped FIRST (so the base is injection-proof), then only
+// our own known-safe <span> markup is inserted for matched terms. Term text and
+// definitions are escaped too. Nothing from the data reaches innerHTML un-escaped.
+//
+// ALGORITHM:
+//   1. Build a flat match list of {matchText, termObj} from every term + alias.
+//   2. Sort by matchText length DESCENDING so "Battle of Gettysburg" beats
+//      "Gettysburg" and "Robert E. Lee" beats "Lee".
+//   3. Escape the full text. Then for each matchText (longest first) build a
+//      whole-word regex `(^|[^A-Za-z0-9])(ESCAPED_TERM)(?![A-Za-z0-9])` and
+//      replace matches with a placeholder token ("\x00N\x00"). The span HTML for
+//      token N is stored aside. Because the matched text is replaced by a token
+//      that contains no word characters, no SHORTER term can later match inside
+//      an already-wrapped region — this is the anti-nesting / anti-overlap trick.
+//   4. TIER: 'common' terms replace only the FIRST occurrence per call (per
+//      screen render). 'distinctive' terms replace EVERY occurrence.
+//   5. After all terms processed, swap each "\x00N\x00" placeholder back to its
+//      stored span HTML.
+
+// Cache the flattened+sorted match list so we don't rebuild it on every render.
+var _glossaryMatchCache = null;
+
+function buildGlossaryMatchList() {
+    if (_glossaryMatchCache) return _glossaryMatchCache;
+    var list = [];
+    for (var i = 0; i < glossary.length; i++) {
+        var t = glossary[i];
+        if (!t || !t.term) continue;
+        list.push({ matchText: t.term, termObj: t });
+        if (t.aliases && t.aliases.length) {
+            for (var a = 0; a < t.aliases.length; a++) {
+                if (t.aliases[a]) list.push({ matchText: t.aliases[a], termObj: t });
+            }
+        }
+    }
+    // Longest matchText first so multi-word / longer terms win over substrings.
+    list.sort(function(x, y) { return y.matchText.length - x.matchText.length; });
+    _glossaryMatchCache = list;
+    return list;
+}
+
+// Escape a string for safe use inside a RegExp (literal match of periods, etc).
+function escapeRegExp(str) {
+    return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function applyGlossary(el, text) {
+    if (!el) return el;
+    text = (text === null || text === undefined) ? '' : String(text);
+
+    // Fallback: no glossary loaded -> behave like textContent (no crash).
+    if (typeof glossary === 'undefined' || !glossary || !glossary.length) {
+        el.textContent = text;
+        return el;
+    }
+
+    var matchList = buildGlossaryMatchList();
+
+    // Escape the FULL text ONCE so the base is injection-proof. ALL term matching
+    // and final stitching happens against this single immutable escaped string —
+    // we never mutate it, so positions stay valid throughout (no shift bugs).
+    var escaped = escapeHtml(text);
+
+    function makeSpan(matchedText, termObj) {
+        // matchedText is the captured substring from the ALREADY-escaped source,
+        // so it is HTML-safe to drop straight into element content. The definition
+        // is raw glossary data -> escape it. The aria-label sits inside double
+        // quotes, so also neutralize any double-quote (escapeHtml does not touch
+        // quotes) to keep the attribute well-formed even if a future definition
+        // contains one.
+        var def = escapeHtml(termObj.definition);
+        var label = (matchedText + ': ' + def).replace(/"/g, '&quot;');
+        return '<span class="vocab-term" tabindex="0" role="button" aria-label="' +
+            label + '">' + matchedText +
+            '<span class="vocab-tooltip"><span class="vocab-definition">' + def +
+            '</span></span></span>';
+    }
+
+    // --- Pass 1: collect EVERY candidate match across all term/alias variants ---
+    // Whole-word regex: leading boundary is start-of-string or a non-alphanumeric
+    // char (captured, group 1) so it is preserved; trailing boundary is a
+    // lookahead so it is not consumed (lets adjacent matches share a separator).
+    // matchCase terms (USCT) omit the 'i' flag. Periods in "Robert E. Lee" are
+    // made literal by escapeRegExp.
+    var candidates = [];
+    for (var m = 0; m < matchList.length; m++) {
+        var matchText = matchList[m].matchText;
+        var termObj = matchList[m].termObj;
+        var escapedTerm = escapeHtml(matchText);
+        var pattern = '(^|[^A-Za-z0-9])(' + escapeRegExp(escapedTerm) + ')(?![A-Za-z0-9])';
+        var re = new RegExp(pattern, termObj.matchCase ? 'g' : 'gi');
+        var hit;
+        while ((hit = re.exec(escaped)) !== null) {
+            var boundaryLen = hit[1].length;          // 0 (start) or 1
+            var start = hit.index + boundaryLen;       // term start (excl. boundary)
+            var captured = hit[2];                     // the matched term text
+            candidates.push({
+                start: start,
+                end: start + captured.length,
+                length: captured.length,
+                captured: captured,
+                termObj: termObj
+            });
+            if (re.lastIndex === hit.index) re.lastIndex++; // guard zero-width
+        }
+    }
+
+    if (!candidates.length) {
+        el.innerHTML = escaped;
+        return el;
+    }
+
+    // --- Pass 2: choose non-overlapping winners, left-to-right, longest-first ---
+    // Sort by start ascending; ties resolved by LENGTH descending so a longer
+    // term ("Robert E. Lee") beats a contained shorter one ("Lee") at the same
+    // anchor. Then greedily accept a candidate only if it starts at or after the
+    // end of the last accepted span — this prevents nesting/overlap entirely.
+    candidates.sort(function(a, b) {
+        if (a.start !== b.start) return a.start - b.start;
+        return b.length - a.length;
+    });
+
+    var accepted = [];
+    var lastEnd = 0;
+    var usedCommon = []; // common termObjs already linked this screen (first-occ rule)
+    for (var c = 0; c < candidates.length; c++) {
+        var cand = candidates[c];
+        if (cand.start < lastEnd) continue; // overlaps an accepted span -> skip
+        if (cand.termObj.tier === 'common') {
+            // First occurrence only, per underlying term (canonical + aliases share
+            // one budget). Because we walk left-to-right, the first accepted is the
+            // textually-earliest occurrence of any of the term's variants.
+            if (usedCommon.indexOf(cand.termObj) !== -1) continue;
+            usedCommon.push(cand.termObj);
+        }
+        accepted.push(cand);
+        lastEnd = cand.end;
+    }
+
+    // --- Pass 3: stitch plain escaped text + accepted spans (no string mutation) ---
+    var out = '';
+    var cursor = 0;
+    for (var a = 0; a < accepted.length; a++) {
+        var acc = accepted[a];
+        if (acc.start > cursor) out += escaped.slice(cursor, acc.start);
+        out += makeSpan(acc.captured, acc.termObj);
+        cursor = acc.end;
+    }
+    if (cursor < escaped.length) out += escaped.slice(cursor);
+
+    el.innerHTML = out;
+    return el;
+}
+
+// Delegated click / keyboard handler for vocab tooltips. Bound ONCE; survives
+// innerHTML rebuilds because it listens at the document level.
+var _vocabListenersBound = false;
+
+function setupVocabTooltips() {
+    if (_vocabListenersBound) return;
+    _vocabListenersBound = true;
+
+    function closeAllExcept(keep) {
+        var open = document.querySelectorAll('.vocab-term.open');
+        for (var i = 0; i < open.length; i++) {
+            if (open[i] !== keep) open[i].classList.remove('open');
+        }
+    }
+
+    // Click (also handles tap on mobile). Toggle the clicked term; close others.
+    document.addEventListener('click', function(e) {
+        var term = e.target.closest ? e.target.closest('.vocab-term') : null;
+        if (term) {
+            // Don't let the click bubble to handlers that might close things.
+            var wasOpen = term.classList.contains('open');
+            closeAllExcept(term);
+            if (wasOpen) {
+                term.classList.remove('open');
+            } else {
+                term.classList.add('open');
+            }
+            return;
+        }
+        // Click outside any term closes all open tooltips.
+        closeAllExcept(null);
+    });
+
+    // Keyboard: Enter/Space toggles a focused term; Escape closes everything.
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' || e.key === 'Esc') {
+            closeAllExcept(null);
+            return;
+        }
+        var term = (document.activeElement && document.activeElement.classList &&
+            document.activeElement.classList.contains('vocab-term'))
+            ? document.activeElement : null;
+        if (term && (e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar')) {
+            e.preventDefault();
+            var wasOpen = term.classList.contains('open');
+            closeAllExcept(term);
+            if (wasOpen) {
+                term.classList.remove('open');
+            } else {
+                term.classList.add('open');
+            }
+        }
+    });
+}
+
+// ============================================================
 // Collapsible Sections (used to reduce wall-of-text at beginner)
 // ============================================================
 
@@ -3074,16 +3294,21 @@ function openBattleRevisit(index) {
         html += '</div>';
     }
 
-    html += '<div class="revisit-section"><div class="revisit-label">What really happened</div><p>' +
-            escapeHtml(getContent(h.whatHappened)) + '</p>';
+    // v3.19: whatHappened / keyIdea / biggerPicture get ids and are filled via
+    // applyGlossary AFTER body.innerHTML is set (raw text in, applyGlossary
+    // escapes once — so we must NOT pre-escape these three or they'd double-escape).
+    // wwydChoice and h.outcome remain escaped inline as before.
+    var rawWhatHappened = getContent(h.whatHappened);
+    var rawKeyIdea = getContent(h.keyIdea);
+    var rawBiggerPicture = getContent(h.biggerPicture);
+
+    html += '<div class="revisit-section"><div class="revisit-label">What really happened</div><p id="revisitWhatHappened"></p>';
     if (h.outcome) html += '<p class="revisit-outcome">' + escapeHtml(h.outcome) + '</p>';
     html += '</div>';
 
-    html += '<div class="revisit-keyidea"><div class="revisit-label">Key idea</div><p>' +
-            escapeHtml(getContent(h.keyIdea)) + '</p></div>';
+    html += '<div class="revisit-keyidea"><div class="revisit-label">Key idea</div><p id="revisitKeyIdea"></p></div>';
 
-    html += '<div class="revisit-section"><div class="revisit-label">The bigger picture</div><p>' +
-            escapeHtml(getContent(h.biggerPicture)) + '</p></div>';
+    html += '<div class="revisit-section"><div class="revisit-label">The bigger picture</div><p id="revisitBiggerPicture"></p></div>';
 
     // Explicit, obvious way back to the battle list (the small X alone wasn't clear).
     html += '<div class="revisit-actions">' +
@@ -3091,6 +3316,13 @@ function openBattleRevisit(index) {
             '</div>';
 
     body.innerHTML = html;
+
+    // v3.19: fill the three reading-text paragraphs through the glossary linker
+    // (raw text -> applyGlossary escapes once). Tooltips work via the delegated
+    // listener already bound at init.
+    applyGlossary(document.getElementById('revisitWhatHappened'), rawWhatHappened);
+    applyGlossary(document.getElementById('revisitKeyIdea'), rawKeyIdea);
+    applyGlossary(document.getElementById('revisitBiggerPicture'), rawBiggerPicture);
 
     var backBtn = document.getElementById('revisitBackBtn');
     if (backBtn) backBtn.addEventListener('click', closeBattleRevisit);
