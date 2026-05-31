@@ -643,14 +643,18 @@ function setupEventListeners() {
     window.refreshTtsButtons = refreshTtsButtons;
 
     // MutationObserver: auto-attach play buttons whenever a `.tts-readable`
-    // element appears (or has the class added) anywhere under historicalScreen
-    // or actRecallScreen. This avoids having to call refreshTtsButtons() at
-    // every reveal point in ui.js.
+    // element appears (or has the class added) anywhere under one of the watched
+    // containers. This avoids having to call refreshTtsButtons() at every reveal
+    // point in ui.js. Every screen/modal that marks reading text as tts-readable
+    // must be listed here, or its play buttons won't attach.
     (function observeTtsReadable() {
         if (typeof TTS === 'undefined' || !TTS.isAvailable()) return;
         const targets = [
             document.getElementById('historicalScreen'),
-            document.getElementById('actRecallScreen')
+            document.getElementById('actRecallScreen'),
+            document.getElementById('leaderLetterScreen'),
+            document.getElementById('actIntroScreen'),
+            document.getElementById('battleRevisitModal')
         ].filter(Boolean);
         if (!targets.length) return;
         const obs = new MutationObserver(function(mutations) {

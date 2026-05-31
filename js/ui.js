@@ -298,6 +298,10 @@ function renderLeaderLetter() {
         body.appendChild(p);
     });
 
+    // v3.20: TTS — read-aloud the full commander's letter (high value for struggling readers).
+    body.classList.add('tts-readable');
+    body.setAttribute('data-tts-label', 'Letter from your commander');
+
     showScreen('leaderLetterScreen');
 }
 
@@ -721,6 +725,10 @@ function renderActIntro(actIndex) {
     headlineEl.textContent = act.name;
     positioningEl.textContent = (act.intro.positioning && act.intro.positioning[difficulty]) ||
                                  (act.intro.positioning && act.intro.positioning.intermediate) || '';
+
+    // v3.20: TTS — read-aloud the act setup narration (independent of the fade-in below).
+    positioningEl.classList.add('tts-readable');
+    positioningEl.setAttribute('data-tts-label', 'Act introduction');
 
     // PAT (Pay Attention To) callout: per-act vocab + journal nudge
     var patEl = document.getElementById('actIntroPat');
@@ -1150,7 +1158,7 @@ function renderActRecall(actIndex) {
         if (wrongAttempts === 1) {
             // First wrong: nudge, retry allowed
             feedbackEl.className = 'act-recall-feedback feedback-nudge';
-            setFeedback(feedbackEl, 'Not quite — try again',
+            setFeedback(feedbackEl, 'Not quite. Try again.',
                         q.nudge || 'Think it through once more.', null);
         } else {
             // Second wrong: reveal correct, require click to advance
@@ -1385,14 +1393,25 @@ function renderHistoricalBattle() {
     var techNameEl = document.getElementById('histTechName');
     if (techNameEl) techNameEl.textContent = content.tech.name;
     var techDescEl = document.getElementById('histTechDesc');
-    if (techDescEl) applyGlossary(techDescEl, content.tech.description);
+    if (techDescEl) {
+        applyGlossary(techDescEl, content.tech.description);
+        // v3.20: TTS — read-aloud the technology spotlight description.
+        techDescEl.classList.add('tts-readable');
+        techDescEl.setAttribute('data-tts-label', 'Technology spotlight');
+    }
 
     // Battlefield Tours: post-battle video card for this battle
     renderBattleVideoCard(battles[gameState.currentBattle].id, 'histBattleVideoSlot');
 
     // --- Section 5: A Voice From the War ---
     applyGlossary(document.getElementById('histVoiceQuote'), content.voice.quote);
-    document.getElementById('histVoiceAttribution').textContent = '\u2014 ' + content.voice.attribution;
+    // v3.20: TTS \u2014 read-aloud this primary-source quote (glossary spans are stripped before reading).
+    var histVoiceQuoteEl = document.getElementById('histVoiceQuote');
+    if (histVoiceQuoteEl) {
+        histVoiceQuoteEl.classList.add('tts-readable');
+        histVoiceQuoteEl.setAttribute('data-tts-label', 'Voice from the war');
+    }
+    document.getElementById('histVoiceAttribution').textContent = '- ' + content.voice.attribution;
     document.getElementById('histVoiceSource').textContent = content.voice.source;
 
     // Voice explainer (beginner/ES level)
@@ -1400,6 +1419,9 @@ function renderHistoricalBattle() {
     if (content.voice.explainer && isLowReadingTier) {
         explainerEl.textContent = '\uD83D\uDCA1 In simpler words: ' + content.voice.explainer;
         explainerEl.style.display = 'block';
+        // v3.20: TTS \u2014 read-aloud the plain-English version (only in the branch where it's shown).
+        explainerEl.classList.add('tts-readable');
+        explainerEl.setAttribute('data-tts-label', 'In simpler words');
     } else {
         explainerEl.style.display = 'none';
     }
@@ -3325,9 +3347,26 @@ function openBattleRevisit(index) {
     // v3.19: fill the three reading-text paragraphs through the glossary linker
     // (raw text -> applyGlossary escapes once). Tooltips work via the delegated
     // listener already bound at init.
-    applyGlossary(document.getElementById('revisitWhatHappened'), rawWhatHappened);
-    applyGlossary(document.getElementById('revisitKeyIdea'), rawKeyIdea);
-    applyGlossary(document.getElementById('revisitBiggerPicture'), rawBiggerPicture);
+    var revisitWhatHappenedEl = document.getElementById('revisitWhatHappened');
+    var revisitKeyIdeaEl = document.getElementById('revisitKeyIdea');
+    var revisitBiggerPictureEl = document.getElementById('revisitBiggerPicture');
+    applyGlossary(revisitWhatHappenedEl, rawWhatHappened);
+    applyGlossary(revisitKeyIdeaEl, rawKeyIdea);
+    applyGlossary(revisitBiggerPictureEl, rawBiggerPicture);
+
+    // v3.20: TTS — read-aloud the three revisit reading paragraphs (glossary spans stripped before reading).
+    if (revisitWhatHappenedEl) {
+        revisitWhatHappenedEl.classList.add('tts-readable');
+        revisitWhatHappenedEl.setAttribute('data-tts-label', 'What really happened');
+    }
+    if (revisitKeyIdeaEl) {
+        revisitKeyIdeaEl.classList.add('tts-readable');
+        revisitKeyIdeaEl.setAttribute('data-tts-label', 'Key idea');
+    }
+    if (revisitBiggerPictureEl) {
+        revisitBiggerPictureEl.classList.add('tts-readable');
+        revisitBiggerPictureEl.setAttribute('data-tts-label', 'The bigger picture');
+    }
 
     var backBtn = document.getElementById('revisitBackBtn');
     if (backBtn) backBtn.addEventListener('click', closeBattleRevisit);
@@ -3444,6 +3483,24 @@ function rerenderForReadingLevel() {
     if (typeof gameState === 'undefined' || !gameState) return;
 
     var screen = gameState.currentScreen;
+
+    // Reflect step (grouped reflection) lives on historicalScreen at narrativeStep 5
+    // with #sectionReflect visible. The full battle re-render below would reset to
+    // Briefing and hide the reflect prompt (kicking the student out and wiping their
+    // typed answer). Instead, re-render JUST the reflect prompt at the new tier and
+    // preserve what they've typed.
+    var reflectSection = document.getElementById('sectionReflect');
+    var onReflectStep = screen === 'historicalScreen' && narrativeStep === 5 &&
+                        reflectSection && reflectSection.style.display !== 'none';
+    if (onReflectStep) {
+        var reflectInput = document.getElementById('histReflectInput');
+        var typed = reflectInput ? reflectInput.value : '';
+        if (typeof showGroupedReflection === 'function') {
+            showGroupedReflection(); // rebuilds the prompt at the current tier (and clears the textarea)
+        }
+        if (reflectInput) reflectInput.value = typed; // restore what the student wrote
+        return;
+    }
 
     // Battle screen (historical mode) — uses gameState.currentBattle internally
     if (screen === 'historicalScreen' && typeof renderHistoricalBattle === 'function') {
