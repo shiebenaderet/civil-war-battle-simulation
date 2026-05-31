@@ -857,6 +857,26 @@ function populateNoteNudge(slotId, subStepKey) {
     slot.style.display = '';
 }
 
+// v3.18: Always-visible key-idea takeaway, shown to EVERY tier in sectionHappened.
+// Sources the per-tier keyFact (the same field the handout "why it mattered" box expects),
+// so the takeaway is never hidden -- fixing the old gap where low tiers never saw it.
+function populateKeyIdeaCallout() {
+    var callout = document.getElementById('keyIdeaCallout');
+    var textEl = document.getElementById('keyIdeaText');
+    if (!callout || !textEl) return;
+    var content = getHistoricalContent();
+    var keyFact = content && content.keyFact;
+    if (!keyFact || !String(keyFact).trim()) {
+        callout.style.display = 'none';
+        return;
+    }
+    textEl.textContent = keyFact;
+    callout.style.display = '';
+    // TTS: make the key idea readable aloud, consistent with other narrative text.
+    textEl.classList.add('tts-readable');
+    textEl.setAttribute('data-tts-label', 'Key idea');
+}
+
 // ============================================================
 // v3.14 - Act Review Overlay
 // ============================================================
@@ -1803,6 +1823,7 @@ function advanceNarrative() {
             happened.style.display = 'block';
             targetSection = happened;
             populateNoteNudge('noteNudgeOutcome', 'outcome');
+            populateKeyIdeaCallout();
             break;
 
         case 4:

@@ -4363,6 +4363,31 @@ a.settings-item:visited { color: var(--color-ink); }
     margin-right: 0.4em;
 }
 
+/* v3.18: always-visible per-battle key idea takeaway */
+.key-idea-callout {
+    background: var(--color-paper-card);
+    border-left: 4px solid var(--color-accent);
+    border-top: 1px solid var(--color-rule);
+    border-right: 1px solid var(--color-rule);
+    border-bottom: 1px solid var(--color-rule);
+    padding: 12px 16px;
+    margin: 16px 0;
+}
+.key-idea-label {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-accent);
+    margin-bottom: 6px;
+}
+.key-idea-text {
+    font-family: var(--font-serif);
+    color: var(--color-ink);
+    margin: 0;
+    line-height: 1.5;
+}
+
 /* ===============================================
    ACT REVIEW OVERLAY (v3.14)
    =============================================== */
