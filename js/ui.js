@@ -2669,20 +2669,23 @@ function escapeHtml(text) {
 // our own known-safe <span> markup is inserted for matched terms. Term text and
 // definitions are escaped too. Nothing from the data reaches innerHTML un-escaped.
 //
-// ALGORITHM:
-//   1. Build a flat match list of {matchText, termObj} from every term + alias.
-//   2. Sort by matchText length DESCENDING so "Battle of Gettysburg" beats
-//      "Gettysburg" and "Robert E. Lee" beats "Lee".
-//   3. Escape the full text. Then for each matchText (longest first) build a
-//      whole-word regex `(^|[^A-Za-z0-9])(ESCAPED_TERM)(?![A-Za-z0-9])` and
-//      replace matches with a placeholder token ("\x00N\x00"). The span HTML for
-//      token N is stored aside. Because the matched text is replaced by a token
-//      that contains no word characters, no SHORTER term can later match inside
-//      an already-wrapped region — this is the anti-nesting / anti-overlap trick.
-//   4. TIER: 'common' terms replace only the FIRST occurrence per call (per
-//      screen render). 'distinctive' terms replace EVERY occurrence.
-//   5. After all terms processed, swap each "\x00N\x00" placeholder back to its
-//      stored span HTML.
+// ALGORITHM (interval selection — immune to position-shift bugs):
+//   1. Escape the full text ONCE up front. All matching runs against this
+//      immutable escaped string, so character positions never drift.
+//   2. Build a flat match list of {matchText, termObj} from every term + alias.
+//      For each, run a whole-word regex `(^|[^A-Za-z0-9])(ESCAPED_TERM)(?![A-Za-z0-9])`
+//      against the escaped text and record every hit as a candidate interval
+//      {start, end, length, termObj}.
+//   3. Sort candidates by start ASC, ties by length DESC (so "Robert E. Lee"
+//      beats "Lee" and "Battle of Gettysburg" beats "Gettysburg" at the same
+//      anchor). Greedily accept a candidate only if start >= lastAcceptedEnd —
+//      this is the anti-nesting / anti-overlap guarantee (a shorter term inside
+//      an already-accepted span is skipped).
+//   4. TIER: 'common' terms are accepted only ONCE per call (first occurrence
+//      across the term and all its aliases, since they share one termObj).
+//      'distinctive' terms are accepted at every non-overlapping occurrence.
+//   5. Stitch: concatenate the escaped slices between accepted spans with the
+//      generated span HTML. No string mutation, so no offset drift.
 
 // Cache the flattened+sorted match list so we don't rebuild it on every render.
 var _glossaryMatchCache = null;
@@ -2838,7 +2841,9 @@ function setupVocabTooltips() {
     document.addEventListener('click', function(e) {
         var term = e.target.closest ? e.target.closest('.vocab-term') : null;
         if (term) {
-            // Don't let the click bubble to handlers that might close things.
+            // Toggle this term; the outside-click branch below handles closing
+            // when the click is NOT on a term. (Modal backdrops use an
+            // e.target === backdrop guard, so they ignore these descendant clicks.)
             var wasOpen = term.classList.contains('open');
             closeAllExcept(term);
             if (wasOpen) {
