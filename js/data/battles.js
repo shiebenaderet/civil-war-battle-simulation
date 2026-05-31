@@ -681,14 +681,14 @@ const battles = [
 
         notes: {
             feedback: {
-                beginner: 'McClellan\'s choice to attack in three slow waves — instead of all at once — let Lee survive a fight he should have lost.',
+                beginner: 'McClellan\'s choice to attack in three slow waves, instead of all at once, let Lee survive a fight he should have lost.',
                 intermediate: 'McClellan attacked cautiously despite holding Lee\'s actual battle plans, letting Lee shift his thin forces between Union waves.',
                 advanced: 'McClellan\'s tactical caution wasted the strategic gift of Lee\'s captured plans; Lee escaped destruction by exploiting the Union\'s piecemeal commitment.',
                 source: 'battles[3].historical.whatHappened.intermediate'
             },
             outcome: {
                 beginner: '22,000 killed or wounded in 12 hours. The bloodiest single day in American history.',
-                intermediate: 'Over 22,000 casualties in 12 hours — September 17, 1862 is still the bloodiest single day on American soil.',
+                intermediate: 'Over 22,000 casualties in 12 hours. September 17, 1862 is still the bloodiest single day on American soil.',
                 advanced: '22,000+ casualties in 12 hours; the highest single-day toll in any American war, and the first battle photographed in the immediate aftermath.',
                 source: 'battles[3].historical.keyFact.intermediate'
             },
@@ -1437,7 +1437,7 @@ const battles = [
         notes: {
             feedback: {
                 beginner: 'Meade\'s army held the high ground. Lee kept attacking it for three days.',
-                intermediate: 'Meade\'s defensive position on Cemetery Ridge was strong; Lee\'s repeated assaults — including Pickett\'s Charge — failed to dislodge it.',
+                intermediate: 'Meade\'s defensive position on Cemetery Ridge was strong; Lee\'s repeated assaults, including Pickett\'s Charge, failed to dislodge it.',
                 advanced: 'Meade\'s selection and defense of the Cemetery Ridge position transformed Gettysburg into a Union victory; Lee\'s offensive culminated in Pickett\'s Charge, which collapsed against entrenched Union artillery and infantry.',
                 source: 'battles[7].historical.whatHappened.intermediate'
             },
@@ -2219,7 +2219,7 @@ const battles = [
                 {
                     name: { union: "Speed March", confederacy: "Concentrate and Block" },
                     description: { union: "Move as fast as possible, taking only what you need to survive.", confederacy: "Gather every available soldier and try to block the enemy at a river crossing or narrow pass." },
-                    detail: { union: "Speed is your weapon. March so fast the enemy can't organize a defense. Take food and supplies but don't waste time burning everything. Reach Savannah before anyone can stop you.", confederacy: "Scattered forces can't stop a 60,000-man army, but concentrated at a chokepoint — a river, a swamp, a narrow bridge — even 13,000 might hold long enough for reinforcements to arrive." },
+                    detail: { union: "Speed is your weapon. March so fast the enemy can't organize a defense. Take food and supplies but don't waste time burning everything. Reach Savannah before anyone can stop you.", confederacy: "Scattered forces can't stop a 60,000-man army, but concentrated at a chokepoint, such as a river, a swamp, or a narrow bridge, even 13,000 might hold long enough for reinforcements to arrive." },
                     power: { union: 7, confederacy: 4 },
                     casualties: { union: 18000, confederacy: 25000 },
                     outcome: {
