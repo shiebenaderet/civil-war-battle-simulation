@@ -136,14 +136,20 @@ function renderSideSelection() {
     var confCount = document.getElementById('confederacySoldierCount');
     var nameSection = document.getElementById('nameInlineSection');
     var difficultySection = document.getElementById('difficultySelectorSection');
+    var unionCardEl = document.getElementById('unionCard');
+    var confedCardEl = document.getElementById('confederacyCard');
 
     if (gameState.mode === 'historical') {
-        title.textContent = 'Set Up Your Journey';
-        subtitle.textContent = 'Enter your name, choose a reading level, and pick your side';
+        // v3.18: Historical Mode is Union-only — hide the side picker, auto-select Union.
+        title.textContent = 'Set Up Your Journal';
+        subtitle.textContent = 'You will lead the Union through the war. Enter your name and choose your reading level.';
         unionCount.textContent = '';
         confCount.textContent = '';
         nameSection.style.display = 'block';
         difficultySection.style.display = '';
+        if (unionCardEl) unionCardEl.style.display = 'none';
+        if (confedCardEl) confedCardEl.style.display = 'none';
+        gameState.side = 'union';
 
         // Clear inputs
         var firstName = document.getElementById('firstNameInput');
@@ -164,6 +170,8 @@ function renderSideSelection() {
         confCount.textContent = 'Starting Army: 1,000,000 soldiers';
         nameSection.style.display = 'none';
         difficultySection.style.display = 'none';
+        if (unionCardEl) unionCardEl.style.display = '';
+        if (confedCardEl) confedCardEl.style.display = '';
     }
 
     showScreen('sideSelection');

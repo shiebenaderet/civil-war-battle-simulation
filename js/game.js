@@ -168,6 +168,10 @@ function restoreGameState(saved) {
     // A reload mid-battle shows the resume prompt; the user opts in via Resume,
     // which re-renders the battle and re-sets the flag in renderHistoricalBattle.
     gameState.isInBattle = false;
+    // v3.18: Historical Mode is Union-only. Coerce any legacy Confederate historical save.
+    if (gameState.mode === 'historical' && gameState.side !== 'union') {
+        gameState.side = 'union';
+    }
 }
 
 // ============================================================
