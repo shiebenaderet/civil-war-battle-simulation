@@ -1286,22 +1286,27 @@ a.settings-item:visited { color: var(--color-ink); }
     margin-bottom: var(--space-6);
 }
 
+/* v3.20: slim single-line stat strip (was a tall 4-card row that pushed the
+   battle title below the fold). Each stat is "LABEL value" on one line. */
 .war-stats {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: var(--space-2);
-    margin-top: var(--space-3);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-2) var(--space-3);
+    margin-top: var(--space-2);
 }
 
 .stat-item {
+    display: inline-flex;
+    align-items: baseline;
+    gap: var(--space-2);
     background: var(--color-surface-secondary);
-    border-radius: var(--radius-lg);
-    padding: var(--space-2) var(--space-3);
-    text-align: center;
+    border-radius: var(--radius-md);
+    padding: var(--space-1) var(--space-3);
+    text-align: left;
 }
 
 .stat-label {
-    display: block;
     font-size: var(--font-size-xs);
     color: var(--color-text-tertiary);
     text-transform: uppercase;
@@ -1309,9 +1314,8 @@ a.settings-item:visited { color: var(--color-ink); }
 }
 
 .stat-value {
-    display: block;
-    font-size: var(--font-size-lg);
-    font-weight: 600;
+    font-size: var(--font-size-base);
+    font-weight: 700;
     color: var(--color-text-primary);
 }
 
@@ -1357,6 +1361,12 @@ a.settings-item:visited { color: var(--color-ink); }
     display: flex;
     flex-direction: column;
     gap: var(--space-3);
+}
+
+/* v3.20: breathing room between the strategy boxes and the progress bar that
+   now sits at the bottom of the Free-play briefing screen. */
+#freeplayBriefing .battle-progress {
+    margin-top: var(--space-8);
 }
 
 .strategy-card {
@@ -2826,9 +2836,6 @@ a.settings-item:visited { color: var(--color-ink); }
         font-size: var(--font-size-xl);
     }
 
-    .war-stats {
-        grid-template-columns: repeat(2, 1fr);
-    }
 
     .progress-summary {
         grid-template-columns: repeat(2, 1fr);
