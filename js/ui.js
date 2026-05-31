@@ -66,6 +66,13 @@ function showScreen(screenId) {
     } else {
         if (typeof hideResetBattleMenuItem === 'function') hideResetBattleMenuItem();
     }
+
+    // v3.18: navbar act label only lives on the historical battle screen.
+    // renderHistoricalBattle shows it; hide it everywhere else so it never lingers.
+    if (screenId !== 'historicalScreen') {
+        var navActLabel = document.getElementById('navbarActLabel');
+        if (navActLabel) navActLabel.style.display = 'none';
+    }
 }
 
 function showGameActions(show) {
@@ -1206,9 +1213,8 @@ function renderHistoricalBattle() {
     wwydSelected = -1;
 
     // v3.15: populate act/year dateline above battle name
+    // v3.18: also drive the centered navbar act label (separator is a middot, not an em dash)
     (function populateBattleDateline() {
-        const datelines = document.querySelectorAll('.battle-act-dateline');
-        if (datelines.length === 0) return;
         const battleIndex = gameState.currentBattle;
         if (typeof battleIndex !== 'number' || !battles[battleIndex]) return;
 
@@ -1216,13 +1222,23 @@ function renderHistoricalBattle() {
         if (typeof getActForBattle === 'function') {
             const actIndex = getActForBattle(battleIndex);
             if (actIndex !== -1 && typeof acts !== 'undefined' && acts[actIndex]) {
-                datelineText = 'Act ' + acts[actIndex].number + ' — ' + acts[actIndex].years;
+                datelineText = 'Act ' + acts[actIndex].number + ' · ' + acts[actIndex].years;
             }
         }
         if (!datelineText) {
             datelineText = String(battles[battleIndex].year || '');
         }
 
+        // v3.18: navbar act label (centered, opens campaign log on click)
+        var navAct = document.getElementById('navbarActLabel');
+        if (navAct) {
+            navAct.textContent = datelineText;
+            navAct.style.display = datelineText ? '' : 'none';
+        }
+
+        // Legacy in-battle datelines (markup removed in v3.18; early-return if absent)
+        const datelines = document.querySelectorAll('.battle-act-dateline');
+        if (datelines.length === 0) return;
         datelines.forEach(function(el) { el.textContent = datelineText; });
     })();
 
@@ -2090,7 +2106,7 @@ function renderFreeplayBriefing() {
         if (typeof getActForBattle === 'function') {
             const actIndex = getActForBattle(battleIndex);
             if (actIndex !== -1 && typeof acts !== 'undefined' && acts[actIndex]) {
-                datelineText = 'Act ' + acts[actIndex].number + ' — ' + acts[actIndex].years;
+                datelineText = 'Act ' + acts[actIndex].number + ' · ' + acts[actIndex].years;
             }
         }
         if (!datelineText) {

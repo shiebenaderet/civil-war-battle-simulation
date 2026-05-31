@@ -170,6 +170,9 @@ function setupEventListeners() {
     // Campaign log + war map shortcut
     document.getElementById('campaignLogMenuBtn').addEventListener('click', showCampaignLog);
     document.getElementById('warMapMenuBtn').addEventListener('click', showWarMapDirect);
+    // v3.18: centered navbar act label opens the campaign log
+    var navActLabel = document.getElementById('navbarActLabel');
+    if (navActLabel) navActLabel.addEventListener('click', showCampaignLog);
     document.getElementById('closeLogBtn').addEventListener('click', closeCampaignLog);
 
     // Campaign log tabs (Progress / War Map)

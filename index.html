@@ -182,6 +182,9 @@
                 <h1 class="nav-game-title">Civil War Simulation</h1>
             </div>
 
+            <button class="navbar-act-label" id="navbarActLabel" style="display:none;" title="Open campaign log to review battles" aria-label="Current act, open campaign log">
+            </button>
+
             <div class="navbar-controls">
                 <div class="navbar-reading-level" id="navbarReadingLevel" style="display:none;">
                     <span class="navbar-reading-label">Reading</span>
@@ -513,25 +516,8 @@
         <!-- HISTORICAL MODE: BATTLE SCREEN    -->
         <!-- ================================= -->
         <div class="screen" id="historicalScreen" style="display:none;" role="region" aria-label="Historical battle">
-            <!-- Progress bar -->
-            <div class="battle-progress">
-                <div class="progress-label" id="historicalProgressLabel">Battle 1 of 13</div>
-                <div class="progress-bar">
-                    <div class="progress-fill" id="historicalProgressFill" style="width: 7.7%"></div>
-                </div>
-            </div>
-
-            <!-- Step indicator pills -->
-            <div class="step-pills" id="stepPills">
-                <span class="step-pill active">1. Briefing</span>
-                <span class="step-pill">2. Your Call</span>
-                <span class="step-pill">3. What Happened</span>
-                <span class="step-pill">4. Reflect</span>
-            </div>
-
             <!-- Battle header -->
             <div class="battle-header">
-                <div class="battle-act-dateline"></div>
                 <h2 class="battle-name" id="histBattleName"></h2>
                 <div class="battle-meta">
                     <span class="battle-date" id="histBattleDate"></span>
@@ -697,6 +683,22 @@
             <!-- Navigation buttons -->
             <div class="narrative-nav">
                 <button class="btn-primary" id="narrativeContinueBtn">Continue</button>
+            </div>
+
+            <!-- Progress bar + step pills (moved to bottom in v3.18) -->
+            <div class="battle-progress">
+                <div class="progress-label" id="historicalProgressLabel">Battle 1 of 13</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="historicalProgressFill" style="width: 7.7%"></div>
+                </div>
+            </div>
+
+            <!-- Step indicator pills -->
+            <div class="step-pills" id="stepPills">
+                <span class="step-pill active">1. Briefing</span>
+                <span class="step-pill">2. Your Call</span>
+                <span class="step-pill">3. What Happened</span>
+                <span class="step-pill">4. Reflect</span>
             </div>
         </div>
 

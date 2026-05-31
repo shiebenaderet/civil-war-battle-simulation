@@ -219,6 +219,7 @@ img {
 }
 
 .navbar-content {
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -228,6 +229,34 @@ img {
 }
 
 .navbar-brand { min-width: 0; }
+
+/* ----- Centered act label (opens campaign log) ----- */
+
+.navbar-act-label {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-ink-muted);
+    background: transparent;
+    border: none;
+    padding: var(--space-1) var(--space-2);
+    cursor: pointer;
+    white-space: nowrap;
+    transition: color 0.15s ease;
+}
+
+.navbar-act-label:hover,
+.navbar-act-label:focus-visible {
+    color: var(--color-ink);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+    text-decoration-color: var(--color-accent);
+}
 
 .nav-game-title {
     font-family: var(--font-serif);
@@ -549,6 +578,9 @@ a.settings-item:visited { color: var(--color-ink); }
 @media (max-width: 767px) {
     .navbar-content { flex-wrap: wrap; }
     .nav-game-title { font-size: 1.05rem; }
+    /* v3.18: drop the centered act label on narrow widths so it can't overlap
+       the wrapped two-row navbar. The act is still reachable via the campaign log. */
+    .navbar-act-label { display: none !important; }
     .navbar-reading-level {
         order: 3;
         width: 100%;
