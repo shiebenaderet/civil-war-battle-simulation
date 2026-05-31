@@ -307,6 +307,13 @@ function resolveBattle(strategyIndex) {
     const effectivePower = basePower + momentumBonus + fogMod + histMod + underdogBonus;
     const won = effectivePower >= battle.freeplay.difficulty;
 
+    // FP-6: final-battle decider. On the LAST battle, if the war is still close
+    // (|momentum| <= 4 at entry, matching the briefing's decider banner), this
+    // battle carries double weight, so the final choice actually decides the war.
+    var isDecider = (gameState.currentBattle === battles.length - 1) &&
+                    (Math.abs(gameState.momentum) <= 4);
+    var momentumSwing = battle.freeplay.momentumValue * (isDecider ? 2 : 1);
+
     // Update state
     const casualties = strategy.casualties[side];
     gameState.soldiers -= casualties;
@@ -314,11 +321,11 @@ function resolveBattle(strategyIndex) {
 
     if (won) {
         gameState.wins++;
-        gameState.momentum += battle.freeplay.momentumValue;
-        gameState.score += (basePower * 100) + (battle.freeplay.momentumValue * 50);
+        gameState.momentum += momentumSwing;
+        gameState.score += (basePower * 100) + (momentumSwing * 50);
     } else {
         gameState.losses++;
-        gameState.momentum -= battle.freeplay.momentumValue;
+        gameState.momentum -= momentumSwing;
         gameState.score += Math.max(0, basePower * 25);
     }
 
@@ -342,7 +349,8 @@ function resolveBattle(strategyIndex) {
         casualties: casualties,
         outcomeText: won ? getSideText(strategy.outcome.win) : getSideText(strategy.outcome.lose),
         momentum: gameState.momentum,
-        momentumChange: won ? battle.freeplay.momentumValue : -battle.freeplay.momentumValue,
+        momentumChange: won ? momentumSwing : -momentumSwing,
+        isDecider: isDecider,
         fogEvent: fogEvent,
         histEvent: histEvent,
         fogMod: fogMod,
