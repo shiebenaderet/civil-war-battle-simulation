@@ -529,7 +529,14 @@ function getVictoryRating(warEndReason) {
     if (m >= 15) return { label: 'Crushing Victory', tone: 'victory', note: 'You dominated the war from start to finish. The enemy never recovered.' };
     if (m >= 5)  return { label: 'Clear Victory', tone: 'victory', note: 'A strong campaign. Your choices kept you ahead through the hard battles.' };
     if (m >= 1)  return { label: 'Narrow Victory', tone: 'victory', note: 'You won, but only just. A few different choices and it could have gone the other way.' };
-    if (m === 0) return { label: 'Stalemate', tone: 'neutral', note: 'Neither side could break the other. The war ground to an even, exhausting halt.' };
+    if (m === 0) {
+        // At dead-even momentum, tiebreak on the win/loss record so this badge
+        // agrees with getFreeplayResult (which calls a wins>losses edge a narrow win).
+        if (gameState.wins > gameState.losses) {
+            return { label: 'Narrow Victory', tone: 'victory', note: 'You won, but only just. A few different choices and it could have gone the other way.' };
+        }
+        return { label: 'Stalemate', tone: 'neutral', note: 'Neither side could break the other. The war ground to an even, exhausting halt.' };
+    }
     if (m <= -15) return { label: 'Decisive Defeat', tone: 'defeat', note: 'The enemy outfought you at nearly every turn. There was no way back.' };
     return { label: 'Defeat', tone: 'defeat', note: 'You lost more ground than you gained. The war slipped away from you.' };
 }
