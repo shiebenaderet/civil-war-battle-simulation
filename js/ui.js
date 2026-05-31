@@ -2694,10 +2694,12 @@ function openLeaderboardModal() {
         deviceMount.innerHTML = renderScoreboardTable(getScoreboard());
     }
 
-    // 2. Relocate the class leaderboard section into the modal, remembering home
+    // 2. Relocate the class leaderboard section into the modal, remembering home.
+    //    Guard against a double-open overwriting the captured home with the modal
+    //    mount (which would strand the section in the modal on the next close).
     var classSection = document.getElementById('classLeaderboardSection');
     var mount = document.getElementById('menuLeaderboardClassMount');
-    if (classSection && mount) {
+    if (classSection && mount && !_leaderboardClassSectionHome) {
         _leaderboardClassSectionHome = {
             parent: classSection.parentNode,
             nextSibling: classSection.nextSibling
