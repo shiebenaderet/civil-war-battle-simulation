@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Battle Journal — Civil War Simulation (More Support)</title>
+<title>Battle Journal (Extra Challenge) — Civil War Simulation</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Old+Standard+TT:ital,wght@0,400;0,700;1,400&family=Special+Elite&display=swap" rel="stylesheet">
@@ -16,14 +16,14 @@
     --rule: #C9B486;
     --rule-strong: #A08A5E;
     --brand: #6B2419;
-    --stem-green: #2F5D3A;
 }
 @page { size: letter portrait; margin: 0.4in; }
 * { box-sizing: border-box; }
 html, body { background: var(--paper); color: var(--ink); margin: 0; padding: 0; }
-body { font-family: 'Old Standard TT', Georgia, serif; font-size: 14pt; line-height: 1.5; }
+body { font-family: 'Old Standard TT', Georgia, serif; font-size: 13.5pt; line-height: 1.45; }
 .page { width: 7.7in; margin: 0 auto; padding: 0; }
 
+/* Top-line strip */
 .top-line {
     display: flex; justify-content: space-between; align-items: flex-end;
     border-bottom: 1.5px solid var(--ink); padding-bottom: 6px; margin-bottom: 14px;
@@ -42,6 +42,7 @@ body { font-family: 'Old Standard TT', Georgia, serif; font-size: 14pt; line-hei
     border-bottom: 1px solid var(--ink); margin-left: 4px;
 }
 
+/* Section header */
 .section-head {
     border-top: none !important; border-bottom: none !important;
     margin-bottom: 10px;
@@ -57,9 +58,10 @@ body { font-family: 'Old Standard TT', Georgia, serif; font-size: 14pt; line-hei
     font-size: 26pt; margin: 2px 0 0 0; line-height: 1.1;
 }
 
+/* PAT box */
 .pat-list {
     background: var(--card); border-left: 4px solid var(--brand);
-    padding: 10px 14px; margin: 12px 0;
+    padding: 10px 14px 10px 14px; margin: 12px 0;
     border-top: 1px solid var(--rule); border-right: 1px solid var(--rule); border-bottom: 1px solid var(--rule);
     break-inside: avoid; page-break-inside: avoid;
 }
@@ -72,6 +74,7 @@ body { font-family: 'Old Standard TT', Georgia, serif; font-size: 14pt; line-hei
 .pat-list li { margin-bottom: 4px; }
 .pat-list b { color: var(--brand); }
 
+/* Annotation guide */
 .annot {
     background: var(--card-warm); border: 1px solid var(--rule-strong);
     padding: 10px 14px; margin: 12px 0;
@@ -89,6 +92,7 @@ body { font-family: 'Old Standard TT', Georgia, serif; font-size: 14pt; line-hei
     display: inline-block; width: 1.4em; font-weight: 700;
 }
 
+/* Act capture boxes */
 .act-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 10px 0; }
 .act-box {
     background: var(--card); border: 1px solid var(--rule-strong);
@@ -114,14 +118,11 @@ body { font-family: 'Old Standard TT', Georgia, serif; font-size: 14pt; line-hei
     color: var(--brand); text-transform: uppercase; letter-spacing: 0.05em;
     margin-top: 6px;
 }
-.act-box .stem {
-    font-style: italic; font-size: 11pt; color: var(--stem-green);
-    margin: 2px 0 4px 0;
-}
 .lineW {
-    display: block; border-bottom: 1px solid var(--ink); height: 1.4em; margin: 2px 0;
+    display: block; border-bottom: 1px solid var(--ink); height: 1.35em; margin: 2px 0;
 }
 
+/* Q-embed (essay scaffolding) */
 .q-embed {
     background: var(--card); border: 1px solid var(--rule-strong);
     padding: 10px 14px; margin: 10px 0;
@@ -135,15 +136,9 @@ body { font-family: 'Old Standard TT', Georgia, serif; font-size: 14pt; line-hei
 }
 .qtext { font-size: 13pt; margin-bottom: 6px; }
 .qtext b { color: var(--brand); }
-.stem {
-    font-style: italic; font-size: 12pt; color: var(--stem-green);
-    margin: 4px 0 6px 0;
-}
-.stem b { color: var(--stem-green); font-style: normal; }
-
 .thesis-line {
     display: inline-block; border-bottom: 1px solid var(--ink);
-    width: 5.5em; height: 1.3em; margin: 0 4px; vertical-align: bottom;
+    width: 5.5em; height: 1.2em; margin: 0 4px; vertical-align: bottom;
 }
 .evidence-row {
     display: grid; grid-template-columns: 90px 1fr; gap: 10px;
@@ -156,7 +151,9 @@ body { font-family: 'Old Standard TT', Georgia, serif; font-size: 14pt; line-hei
     padding: 2px 6px; letter-spacing: 0.05em; text-transform: uppercase;
     text-align: center;
 }
+.evidence-row .reason-body { }
 
+/* Word Bank */
 .wordbank {
     background: var(--card-warm); border: 1px solid var(--rule-strong);
     padding: 10px 14px; margin: 12px 0;
@@ -173,12 +170,14 @@ body { font-family: 'Old Standard TT', Georgia, serif; font-size: 14pt; line-hei
     font-family: 'Old Standard TT', serif;
 }
 
+/* Footer */
 .foot {
     font-family: 'Special Elite', monospace; font-size: 9pt;
     color: var(--ink-soft); text-align: right; margin-top: 10px;
     border-top: 1px solid var(--rule); padding-top: 4px;
 }
 
+/* Print toolbar (screen only) */
 .print-toolbar {
     position: sticky; top: 0; z-index: 10;
     background: var(--ink); color: var(--paper);
@@ -196,6 +195,7 @@ body { font-family: 'Old Standard TT', Georgia, serif; font-size: 14pt; line-hei
 }
 .print-toolbar button:hover { background: #8c2f1f; }
 
+/* Page 2 continuation strip (lighter than top-line) */
 .cont-line {
     font-family: 'Special Elite', monospace; font-size: 10pt;
     color: var(--ink-soft); border-bottom: 1px solid var(--rule);
@@ -226,6 +226,7 @@ body { font-family: 'Old Standard TT', Georgia, serif; font-size: 14pt; line-hei
 .reflect-box .rlbl { font-family: 'Special Elite', monospace; font-size: 9.5pt; color: var(--brand); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
 .reflect-box .rtext { font-size: 12.5pt; margin-bottom: 6px; }
 
+/* Print: B&W classroom laser. Strip backgrounds, keep borders + text. */
 @media print {
     html, body {
         background: white !important;
@@ -235,6 +236,7 @@ body { font-family: 'Old Standard TT', Georgia, serif; font-size: 14pt; line-hei
     .page { width: auto; margin: 0; padding: 0; }
     .print-toolbar { display: none !important; }
 
+    /* Strip all decorative backgrounds for B&W printing */
     .pat-list, .act-box, .q-embed, .wordbank, .cont-line {
         background: white !important;
     }
@@ -248,17 +250,35 @@ body { font-family: 'Old Standard TT', Georgia, serif; font-size: 14pt; line-hei
     .pat-list b, .qtext b, .field-lbl, .wordbank-grid .term {
         color: black !important;
     }
-    .stem, .act-box .stem { color: black !important; }
 
+    /* Page flow: let content flow naturally. Cards won't split mid-content
+       because of break-inside:avoid, so they'll push to the next page when
+       they don't fit, with no forced gaps. */
     .pat-list, .act-box, .q-embed, .wordbank {
         break-inside: avoid; page-break-inside: avoid;
     }
+    /* Tighten vertical rhythm so each half fits on one page */
     .section-head { margin-bottom: 6px; }
     .section-head h1 { font-size: 22pt; margin-top: 0; }
     .pat-list, .act-box, .q-embed, .wordbank { margin: 6px 0; padding: 6px 10px; }
     .act-grid { gap: 6px; margin: 6px 0; }
     .lineW { height: 1.2em; margin: 1px 0; }
     .foot { display: none; }
+
+    /* Word Bank: shrink to fit page 2 on a single sheet */
+    .wordbank { padding: 5px 10px; margin: 4px 0; }
+    .wordbank .lbl { font-size: 9pt; margin-bottom: 3px; }
+    .wordbank-grid { font-size: 10.5pt; line-height: 1.3; gap: 2px 14px; }
+
+    /* Page 2 tighten: keep Prompt + Q1-Q4 on one sheet */
+    .q-embed { padding: 4px 10px; margin: 4px 0; }
+    .qtext { font-size: 11.5pt; margin-bottom: 3px; }
+    .qtext .qtag { padding: 1px 5px; }
+    .stem { font-size: 10pt; margin: 2px 0 3px 0; }
+    .evidence-row { margin-top: 4px; padding-top: 4px; gap: 8px; }
+    .evidence-row .reason-tag { padding: 1px 4px; font-size: 9pt; }
+    .thesis-line { height: 1em; }
+    .cont-line { margin-bottom: 8px; }
 
     /* Per-battle log B&W overrides */
     .battle-row, .reflect-box { background: white !important; border: 1px solid black; break-inside: avoid; page-break-inside: avoid; }
@@ -269,14 +289,14 @@ body { font-family: 'Old Standard TT', Georgia, serif; font-size: 14pt; line-hei
 </head>
 <body>
 <div class="print-toolbar">
-    <span class="hint">Battle Journal · ★★ More Support</span>
+    <span class="hint">Battle Journal · ★★★★ Extra Challenge</span>
     <button onclick="window.print()">Print Handout</button>
 </div>
 
 <div class="page">
 
     <div class="top-line">
-        <div class="left"><span class="mod-tag">★★ · More Support</span></div>
+        <div class="left"><span class="mod-tag">★★★★ · Extra Challenge</span></div>
         <div class="namebar">
             Name <b></b>
             Period <b style="min-width:60px;"></b>
@@ -290,9 +310,9 @@ body { font-family: 'Old Standard TT', Georgia, serif; font-size: 14pt; line-hei
     </div>
 
     <div class="pat-list">
-        <div class="lbl">What to do · while you play Historical Mode</div>
+        <div class="lbl">Pay attention to · while you play Historical Mode</div>
         <ol>
-            <li>You will play all 13 battles. On this page, you write about <b>two key battles per act</b> (the others you just play).</li>
+            <li>After <b>each battle</b>, write your choice, check whether it <b>matched history</b>, and <b>sum up the key idea</b> in your own words (don't just copy it).</li>
             <li>After each <b>Act review screen</b>, answer that act's <b>reflection question</b> in the box.</li>
             <li>Your final job: <b>How was the Union able to defeat the Confederacy?</b> Build evidence as you play, then answer on the back.</li>
         </ol>
@@ -302,11 +322,19 @@ body { font-family: 'Old Standard TT', Georgia, serif; font-size: 14pt; line-hei
         <span class="act-section-head">Act I · The War Begins · 1861-1862</span>
 
         <div class="battle-row">
+            <div class="bname">Fort Sumter</div>
+            <div class="frow"><span class="field-lbl">My choice</span><span class="matched">Matched history?<span class="box"></span>Yes<span class="box"></span>No</span></div>
+            <span class="lineW"></span>
+            <div class="field-lbl" style="margin-top:6px;">Why it mattered (sum up the key idea in your own words)</div>
+            <span class="lineW"></span>
+            <span class="lineW"></span>
+        </div>
+
+        <div class="battle-row">
             <div class="bname">Bull Run</div>
             <div class="frow"><span class="field-lbl">My choice</span><span class="matched">Matched history?<span class="box"></span>Yes<span class="box"></span>No</span></div>
             <span class="lineW"></span>
             <div class="field-lbl" style="margin-top:6px;">Why it mattered (sum up the key idea in your own words)</div>
-            <div class="stem">This battle mattered because...</div>
             <span class="lineW"></span>
             <span class="lineW"></span>
         </div>
@@ -316,20 +344,19 @@ body { font-family: 'Old Standard TT', Georgia, serif; font-size: 14pt; line-hei
             <div class="frow"><span class="field-lbl">My choice</span><span class="matched">Matched history?<span class="box"></span>Yes<span class="box"></span>No</span></div>
             <span class="lineW"></span>
             <div class="field-lbl" style="margin-top:6px;">Why it mattered (sum up the key idea in your own words)</div>
-            <div class="stem">This battle mattered because...</div>
             <span class="lineW"></span>
             <span class="lineW"></span>
         </div>
 
         <div class="reflect-box">
             <div class="rlbl">Act I reflection · answer after the Act I review screen</div>
-            <div class="rtext">After Shiloh, Grant said the only way to save the country was to completely beat the South, not just win one battle. Why do you think seeing so much fighting changed how he thought about the war?</div>
+            <div class="rtext">After Shiloh, Grant wrote that he abandoned all hope of saving the Union 'except by complete conquest.' How did the unprecedented scale of violence at Shiloh reshape military thinking about the war's nature? What does Grant's evolution from expecting a short war to embracing 'complete conquest' reveal about how warfare transforms those who wage it?</div>
+            <span class="lineW"></span>
             <span class="lineW"></span>
             <span class="lineW"></span>
             <span class="lineW"></span>
             <div class="rlbl" style="margin-top:8px; color: var(--ink-soft);">Evidence for the big question</div>
             <div class="rtext" style="font-size:11.5pt;">One way this act helped the Union win:</div>
-            <div class="stem">This act helped the Union because...</div>
             <span class="lineW"></span>
         </div>
     </div>
@@ -342,7 +369,15 @@ body { font-family: 'Old Standard TT', Georgia, serif; font-size: 14pt; line-hei
             <div class="frow"><span class="field-lbl">My choice</span><span class="matched">Matched history?<span class="box"></span>Yes<span class="box"></span>No</span></div>
             <span class="lineW"></span>
             <div class="field-lbl" style="margin-top:6px;">Why it mattered (sum up the key idea in your own words)</div>
-            <div class="stem">This battle mattered because...</div>
+            <span class="lineW"></span>
+            <span class="lineW"></span>
+        </div>
+
+        <div class="battle-row">
+            <div class="bname">Fredericksburg</div>
+            <div class="frow"><span class="field-lbl">My choice</span><span class="matched">Matched history?<span class="box"></span>Yes<span class="box"></span>No</span></div>
+            <span class="lineW"></span>
+            <div class="field-lbl" style="margin-top:6px;">Why it mattered (sum up the key idea in your own words)</div>
             <span class="lineW"></span>
             <span class="lineW"></span>
         </div>
@@ -352,20 +387,19 @@ body { font-family: 'Old Standard TT', Georgia, serif; font-size: 14pt; line-hei
             <div class="frow"><span class="field-lbl">My choice</span><span class="matched">Matched history?<span class="box"></span>Yes<span class="box"></span>No</span></div>
             <span class="lineW"></span>
             <div class="field-lbl" style="margin-top:6px;">Why it mattered (sum up the key idea in your own words)</div>
-            <div class="stem">This battle mattered because...</div>
             <span class="lineW"></span>
             <span class="lineW"></span>
         </div>
 
         <div class="reflect-box">
             <div class="rlbl">Act II reflection · answer after the Act II review screen</div>
-            <div class="rtext">Lee won a huge battle, but he lost his best general, Stonewall Jackson. Was this victory worth it? When can winning still feel like losing?</div>
+            <div class="rtext">Chancellorsville is often called Lee's masterpiece, yet it cost him Jackson, arguably the Confederacy's single most irreplaceable asset. How do we evaluate a tactical triumph that inflicts strategic damage on the victor? Consider the concept of a 'Pyrrhic victory': when does the cost of winning exceed the benefit?</div>
+            <span class="lineW"></span>
             <span class="lineW"></span>
             <span class="lineW"></span>
             <span class="lineW"></span>
             <div class="rlbl" style="margin-top:8px; color: var(--ink-soft);">Evidence for the big question</div>
             <div class="rtext" style="font-size:11.5pt;">One way this act helped the Union win:</div>
-            <div class="stem">This act helped the Union because...</div>
             <span class="lineW"></span>
         </div>
     </div>
@@ -374,11 +408,19 @@ body { font-family: 'Old Standard TT', Georgia, serif; font-size: 14pt; line-hei
         <span class="act-section-head">Act III · The Tide Turns · 1863</span>
 
         <div class="battle-row">
+            <div class="bname">Vicksburg</div>
+            <div class="frow"><span class="field-lbl">My choice</span><span class="matched">Matched history?<span class="box"></span>Yes<span class="box"></span>No</span></div>
+            <span class="lineW"></span>
+            <div class="field-lbl" style="margin-top:6px;">Why it mattered (sum up the key idea in your own words)</div>
+            <span class="lineW"></span>
+            <span class="lineW"></span>
+        </div>
+
+        <div class="battle-row">
             <div class="bname">Gettysburg</div>
             <div class="frow"><span class="field-lbl">My choice</span><span class="matched">Matched history?<span class="box"></span>Yes<span class="box"></span>No</span></div>
             <span class="lineW"></span>
             <div class="field-lbl" style="margin-top:6px;">Why it mattered (sum up the key idea in your own words)</div>
-            <div class="stem">This battle mattered because...</div>
             <span class="lineW"></span>
             <span class="lineW"></span>
         </div>
@@ -388,20 +430,19 @@ body { font-family: 'Old Standard TT', Georgia, serif; font-size: 14pt; line-hei
             <div class="frow"><span class="field-lbl">My choice</span><span class="matched">Matched history?<span class="box"></span>Yes<span class="box"></span>No</span></div>
             <span class="lineW"></span>
             <div class="field-lbl" style="margin-top:6px;">Why it mattered (sum up the key idea in your own words)</div>
-            <div class="stem">This battle mattered because...</div>
             <span class="lineW"></span>
             <span class="lineW"></span>
         </div>
 
         <div class="reflect-box">
             <div class="rlbl">Act III reflection · answer after the Act III review screen</div>
-            <div class="rtext">One mixed-up order created the gap that lost the whole battle. How much of war comes down to luck or mistakes versus actual skill and planning?</div>
+            <div class="rtext">A single miscommunicated order created the gap that enabled the Confederate breakthrough. To what extent does this illustrate the role of chance versus planning in warfare? The Prussian theorist Clausewitz called this 'friction': the unpredictable factors that make real war chaotic. How do modern militaries attempt to reduce the impact of such friction?</div>
+            <span class="lineW"></span>
             <span class="lineW"></span>
             <span class="lineW"></span>
             <span class="lineW"></span>
             <div class="rlbl" style="margin-top:8px; color: var(--ink-soft);">Evidence for the big question</div>
             <div class="rtext" style="font-size:11.5pt;">One way this act helped the Union win:</div>
-            <div class="stem">This act helped the Union because...</div>
             <span class="lineW"></span>
         </div>
     </div>
@@ -410,11 +451,28 @@ body { font-family: 'Old Standard TT', Georgia, serif; font-size: 14pt; line-hei
         <span class="act-section-head">Act IV · The War's Legacy · 1864-1865</span>
 
         <div class="battle-row">
+            <div class="bname">Wilderness</div>
+            <div class="frow"><span class="field-lbl">My choice</span><span class="matched">Matched history?<span class="box"></span>Yes<span class="box"></span>No</span></div>
+            <span class="lineW"></span>
+            <div class="field-lbl" style="margin-top:6px;">Why it mattered (sum up the key idea in your own words)</div>
+            <span class="lineW"></span>
+            <span class="lineW"></span>
+        </div>
+
+        <div class="battle-row">
             <div class="bname">Atlanta</div>
             <div class="frow"><span class="field-lbl">My choice</span><span class="matched">Matched history?<span class="box"></span>Yes<span class="box"></span>No</span></div>
             <span class="lineW"></span>
             <div class="field-lbl" style="margin-top:6px;">Why it mattered (sum up the key idea in your own words)</div>
-            <div class="stem">This battle mattered because...</div>
+            <span class="lineW"></span>
+            <span class="lineW"></span>
+        </div>
+
+        <div class="battle-row">
+            <div class="bname">Sherman's March</div>
+            <div class="frow"><span class="field-lbl">My choice</span><span class="matched">Matched history?<span class="box"></span>Yes<span class="box"></span>No</span></div>
+            <span class="lineW"></span>
+            <div class="field-lbl" style="margin-top:6px;">Why it mattered (sum up the key idea in your own words)</div>
             <span class="lineW"></span>
             <span class="lineW"></span>
         </div>
@@ -424,20 +482,19 @@ body { font-family: 'Old Standard TT', Georgia, serif; font-size: 14pt; line-hei
             <div class="frow"><span class="field-lbl">My choice</span><span class="matched">Matched history?<span class="box"></span>Yes<span class="box"></span>No</span></div>
             <span class="lineW"></span>
             <div class="field-lbl" style="margin-top:6px;">Why it mattered (sum up the key idea in your own words)</div>
-            <div class="stem">This battle mattered because...</div>
             <span class="lineW"></span>
             <span class="lineW"></span>
         </div>
 
         <div class="reflect-box">
             <div class="rlbl">Act IV reflection · answer after the Act IV review screen</div>
-            <div class="rtext">Grant let the Confederate soldiers go home in peace. Five days later, Lincoln was killed. How might things have been different if Lincoln had lived? When a war ends, what does a country owe to the people who suffered?</div>
+            <div class="rtext">Grant's generous terms embodied Lincoln's vision of reconciliation: 'with malice toward none, with charity for all.' Five days later, Lincoln's assassination placed Reconstruction in the hands of Andrew Johnson, a figure far less sympathetic to Black rights. How might Reconstruction have differed under Lincoln's leadership? More broadly, how do nations balance the competing imperatives of reconciliation with former enemies and justice for those who suffered? Consider modern examples of post-conflict societies grappling with these same questions.</div>
+            <span class="lineW"></span>
             <span class="lineW"></span>
             <span class="lineW"></span>
             <span class="lineW"></span>
             <div class="rlbl" style="margin-top:8px; color: var(--ink-soft);">Evidence for the big question</div>
             <div class="rtext" style="font-size:11.5pt;">One way this act helped the Union win:</div>
-            <div class="stem">This act helped the Union because...</div>
             <span class="lineW"></span>
         </div>
     </div>
@@ -459,26 +516,25 @@ body { font-family: 'Old Standard TT', Georgia, serif; font-size: 14pt; line-hei
     <div class="wordbank">
         <div class="lbl">Word Bank · circle each term when you find it in the game</div>
         <div class="wordbank-grid">
-            <div><span class="term">Anaconda Plan</span>: the Union's plan to block Southern ports and take the Mississippi River, like a snake squeezing the South.</div>
-            <div><span class="term">Emancipation Proclamation</span>: Lincoln's order in 1863 freeing enslaved people in the South. The war was now also about ending slavery.</div>
-            <div><span class="term">total war</span>: destroying not just the enemy army, but also farms, factories, and railroads that help them fight.</div>
-            <div><span class="term">Battle of Gettysburg</span>: A huge Union win in July 1863. Lee tried to invade the North and failed.</div>
-            <div><span class="term">Siege of Vicksburg</span>: A 47-day siege ending July 4, 1863. The Union got control of the entire Mississippi River.</div>
-            <div><span class="term">Ulysses S. Grant</span>: A Union general who would not give up after a hard battle. Lincoln put him in charge in 1864.</div>
-            <div><span class="term">William T. Sherman</span>: A Union general who marched through Georgia in 1864, destroying everything that helped the South fight.</div>
-            <div><span class="term">54th Massachusetts</span>: A Black Union regiment that fought bravely at Fort Wagner in 1863, proving Black soldiers would fight for freedom.</div>
+            <div><span class="term">Anaconda Plan</span>: the Union strategy to blockade Southern ports and take the Mississippi River, squeezing the South like a snake.</div>
+            <div><span class="term">Emancipation Proclamation</span>: Lincoln's 1863 order freeing enslaved people in Confederate states; turned the war into a fight against slavery.</div>
+            <div><span class="term">total war</span>: destroying not just enemy armies but the farms, factories, and railroads that support them.</div>
+            <div><span class="term">Battle of Gettysburg</span>: July 1863 battle in Pennsylvania; Lee's invasion failed and the Confederacy never went on offense again.</div>
+            <div><span class="term">Siege of Vicksburg</span>: 47-day siege ending July 4, 1863; the Union won the entire Mississippi River and split the Confederacy in two.</div>
+            <div><span class="term">Ulysses S. Grant</span>: Union general who refused to retreat after hard battles; promoted to lead all Union armies in 1864.</div>
+            <div><span class="term">William T. Sherman</span>: Union general whose 1864 march from Atlanta to Savannah pioneered total war in the South.</div>
+            <div><span class="term">54th Massachusetts</span>: Black Union regiment that fought heroically at Fort Wagner in 1863, proving Black soldiers would fight for their freedom.</div>
         </div>
     </div>
 
     <div class="q-embed">
-        <div class="qtext"><span class="qtag">Prompt</span> How was the Union able to defeat the Confederacy? Use at least <b>three things</b> from the game.</div>
+        <div class="qtext"><span class="qtag">Prompt</span> How was the Union able to defeat the Confederacy? Use at least <b>three specific advantages or events</b> from the game.</div>
     </div>
 
     <div class="q-embed">
-        <div class="qtext"><span class="qtag">Q1</span> Build your thesis. Fill in three reasons the Union won.</div>
-        <div class="stem"><b>Try:</b> Pick three things from the Word Bank, or three battles from the front of this paper.</div>
-        <div style="font-size: 13pt; line-height: 2.2; margin-top: 6px;">
-            The Union won the Civil War because of
+        <div class="qtext"><span class="qtag">Q1</span> Build your thesis. Fill in three reasons.</div>
+        <div style="font-size: 13pt; line-height: 2; margin-top: 6px;">
+            The Union defeated the Confederacy because
             <span class="thesis-line"></span>,
             <span class="thesis-line"></span>, and
             <span class="thesis-line"></span>.
@@ -486,8 +542,7 @@ body { font-family: 'Old Standard TT', Georgia, serif; font-size: 14pt; line-hei
     </div>
 
     <div class="q-embed">
-        <div class="qtext"><span class="qtag">Q2</span> Evidence. For each reason, give one specific battle, person, or event.</div>
-        <div class="stem"><b>Try:</b> "This helped the Union win because ______."</div>
+        <div class="qtext"><span class="qtag">Q2</span> Evidence from your journal. For each reason, give one specific battle, person, or event that proves it.</div>
 
         <div class="evidence-row">
             <div class="reason-tag">Reason 1</div>
@@ -515,16 +570,14 @@ body { font-family: 'Old Standard TT', Georgia, serif; font-size: 14pt; line-hei
     </div>
 
     <div class="q-embed">
-        <div class="qtext"><span class="qtag">Q3</span> Pick one word from the Word Bank that was <b>most important</b> to the Union's win. Tell why in one sentence.</div>
-        <div class="stem"><b>Try:</b> "I picked ______ because ______."</div>
+        <div class="qtext"><span class="qtag">Q3</span> Of the 8 Word Bank terms, which one was <b>most important</b> to the Union's victory? Pick one and explain in one sentence why.</div>
         <div style="font-family: 'Special Elite', monospace; font-size: 10.5pt; color: var(--ink-soft); margin-top: 4px;">My pick: ____________________________________</div>
         <span class="lineW"></span>
         <span class="lineW"></span>
     </div>
 
     <div class="q-embed">
-        <div class="qtext"><span class="qtag">Q4</span> The South had brave soldiers and good generals too. Why was that <b>not enough</b> for them to win?</div>
-        <div class="stem"><b>Try:</b> "Bravery was not enough because the South did not have ______."</div>
+        <div class="qtext"><span class="qtag">Q4</span> The South had brave soldiers and skilled generals too. Write one sentence explaining why <b>bravery and leadership were not enough</b> for the Confederacy to win.</div>
         <span class="lineW"></span>
         <span class="lineW"></span>
     </div>

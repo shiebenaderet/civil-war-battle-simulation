@@ -8,13 +8,7 @@ function boot() {
     // Initialize Firebase leaderboard (no-op if SDK didn't load)
     firebaseLeaderboard.init();
 
-    // Show intro splash on first visit, mode selection on return
-    var hasSeenIntro = localStorage.getItem('civilWarIntroSeen');
-    if (hasSeenIntro) {
-        renderModeSelection();
-    } else {
-        showScreen('introSplash');
-    }
+    renderModeSelection();
 
     if (typeof wireNoTeacherBanner === 'function') wireNoTeacherBanner();
 }
@@ -27,12 +21,6 @@ function setupEventListeners() {
             e.returnValue = '';
             return '';
         }
-    });
-
-    // Intro splash - proceed to mode selection
-    document.getElementById('splashStartBtn').addEventListener('click', function() {
-        localStorage.setItem('civilWarIntroSeen', '1');
-        renderModeSelection();
     });
 
     // Mode selection - both go directly to side selection (name is inline now)
@@ -103,10 +91,10 @@ function setupEventListeners() {
     // Difficulty toggle
     var difficultyPills = document.querySelectorAll('.difficulty-pill');
     var difficultyHints = {
-        extra: 'Easiest reading, lots of writing help, fewer choices',
-        beginner: 'Shorter text, extra help with writing',
-        intermediate: 'Standard text, some writing help',
-        advanced: 'More detail, deeper questions, full challenge'
+        extra: 'Most Support. Easiest reading, lots of writing help.',
+        beginner: 'More Support. Shorter text, extra writing help.',
+        intermediate: 'Standard. Standard text, some writing help.',
+        advanced: 'Extra Challenge. More detail, deeper questions.'
     };
     difficultyPills.forEach(function(pill) {
         pill.addEventListener('click', function() {
@@ -159,6 +147,11 @@ function setupEventListeners() {
         renderModeSelection();
     });
 
+    // v3.18: Historical setup -> begin (Union-only; replaces the now-hidden side cards)
+    document.getElementById('beginSetupBtn').addEventListener('click', function() {
+        startWithSide('union');
+    });
+
     // Leader letter - begin journey
     document.getElementById('beginJourneyBtn').addEventListener('click', function() {
         enterBattleScreen();
@@ -177,6 +170,9 @@ function setupEventListeners() {
     // Campaign log + war map shortcut
     document.getElementById('campaignLogMenuBtn').addEventListener('click', showCampaignLog);
     document.getElementById('warMapMenuBtn').addEventListener('click', showWarMapDirect);
+    // v3.18: centered navbar act label opens the campaign log
+    var navActLabel = document.getElementById('navbarActLabel');
+    if (navActLabel) navActLabel.addEventListener('click', showCampaignLog);
     document.getElementById('closeLogBtn').addEventListener('click', closeCampaignLog);
 
     // Campaign log tabs (Progress / War Map)
@@ -211,7 +207,7 @@ function setupEventListeners() {
     // Handout links: close the menu after clicking (the link still opens in a
     // new tab via target="_blank"; closing the menu prevents it from staying
     // open behind the new tab).
-    ['handoutStandardMenuBtn', 'handoutSomeSupportMenuBtn', 'handoutExtraSupportMenuBtn'].forEach(function(id) {
+    ['handoutStandardMenuBtn', 'handoutSomeSupportMenuBtn', 'handoutExtraSupportMenuBtn', 'handoutAdvancedMenuBtn', 'emailTeacherMenuBtn'].forEach(function(id) {
         var el = document.getElementById(id);
         if (el) {
             el.addEventListener('click', function() {
@@ -239,12 +235,27 @@ function setupEventListeners() {
         }
     });
 
-    // Keyboard: Escape closes modals and tutorial
+    // Battle revisit (read-only review) modal: close button + backdrop click
+    var closeRevisitBtn = document.getElementById('closeRevisitBtn');
+    if (closeRevisitBtn) {
+        closeRevisitBtn.addEventListener('click', closeBattleRevisit);
+    }
+    var battleRevisitModal = document.getElementById('battleRevisitModal');
+    if (battleRevisitModal) {
+        battleRevisitModal.addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeBattleRevisit();
+            }
+        });
+    }
+
+    // Keyboard: Escape closes modals
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') {
-            var tutorialOverlay = document.getElementById('tutorialOverlay');
-            if (tutorialOverlay && tutorialOverlay.style.display === 'block') {
-                endTutorial();
+            // Revisit modal takes priority (it can open on top of the campaign log).
+            var revisitModal = document.getElementById('battleRevisitModal');
+            if (revisitModal && revisitModal.style.display === 'block') {
+                closeBattleRevisit();
             } else if (screens.campaignLogModal.style.display === 'block') {
                 closeCampaignLog();
             } else {
@@ -260,8 +271,6 @@ function setupEventListeners() {
     // Tutorial / Help
     document.getElementById('helpToggleMenuBtn').addEventListener('click', toggleHelpBar);
     document.getElementById('helpBarClose').addEventListener('click', hideHelpBar);
-    document.getElementById('tutorialNext').addEventListener('click', nextTutorialStep);
-    document.getElementById('tutorialSkip').addEventListener('click', endTutorial);
 
     // Teacher tip toggle
     document.getElementById('teacherTipToggle').addEventListener('click', toggleTeacherTip);
@@ -285,6 +294,9 @@ function setupEventListeners() {
 
     // Credits toggle
     setupCreditsToggle();
+
+    // v3.19: vocabulary click-to-define tooltips (delegated; bound once)
+    if (typeof setupVocabTooltips === 'function') setupVocabTooltips();
 
     // === v3.15: Accessibility panel (Aa button) ===
     (function wireAccessibilityPanel() {
@@ -594,11 +606,15 @@ function setupEventListeners() {
                 other.setAttribute('data-playing', 'false');
                 other.textContent = '▶ Read';
             });
-            const text = Array.from(targetEl.childNodes)
-                .filter(function(n) { return n !== btn; })
-                .map(function(n) { return (n.textContent || '').trim(); })
-                .filter(function(s) { return s.length > 0; })
-                .join(' ');
+            // Build the read-aloud text from a clone so we can strip non-narrated
+            // bits: the play button itself, and (v3.19) any .vocab-tooltip
+            // definitions injected by the glossary auto-linker — otherwise TTS
+            // would read each term's definition aloud inline and garble the prose.
+            const clone = targetEl.cloneNode(true);
+            clone.querySelectorAll('.tts-play-btn, .vocab-tooltip').forEach(function(n) {
+                n.parentNode && n.parentNode.removeChild(n);
+            });
+            const text = (clone.textContent || '').replace(/\s+/g, ' ').trim();
             if (!text) return;
             btn.setAttribute('data-playing', 'true');
             btn.textContent = '■ Stop';

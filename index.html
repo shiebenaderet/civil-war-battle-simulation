@@ -182,14 +182,17 @@
                 <h1 class="nav-game-title">Civil War Simulation</h1>
             </div>
 
+            <button class="navbar-act-label" id="navbarActLabel" style="display:none;" title="Open campaign log to review battles" aria-label="Current act, open campaign log">
+            </button>
+
             <div class="navbar-controls">
                 <div class="navbar-reading-level" id="navbarReadingLevel" style="display:none;">
                     <span class="navbar-reading-label">Reading</span>
                     <div class="reading-pills" role="radiogroup" aria-label="Reading level">
-                        <button class="reading-pill reading-pill-extra" data-level="extra" aria-pressed="false" title="Extra Support">E</button>
-                        <button class="reading-pill" data-level="beginner" aria-pressed="false" title="Beginner">B</button>
-                        <button class="reading-pill" data-level="intermediate" aria-pressed="true" title="Intermediate">I</button>
-                        <button class="reading-pill" data-level="advanced" aria-pressed="false" title="Advanced">A</button>
+                        <button class="reading-pill reading-pill-extra" data-level="extra" aria-pressed="false" aria-label="Most Support reading level, 1 of 4" title="Most Support"><span aria-hidden="true">★</span></button>
+                        <button class="reading-pill" data-level="beginner" aria-pressed="false" aria-label="More Support reading level, 2 of 4" title="More Support"><span aria-hidden="true">★★</span></button>
+                        <button class="reading-pill" data-level="intermediate" aria-pressed="true" aria-label="Standard reading level, 3 of 4" title="Standard"><span aria-hidden="true">★★★</span></button>
+                        <button class="reading-pill" data-level="advanced" aria-pressed="false" aria-label="Extra Challenge reading level, 4 of 4" title="Extra Challenge"><span aria-hidden="true">★★★★</span></button>
                     </div>
                 </div>
 
@@ -207,20 +210,26 @@
                                 <span class="menu-icon">&#x1F4CA;</span> Campaign Log
                             </button>
                             <button class="settings-item" id="helpToggleMenuBtn" role="menuitem">
-                                <span class="menu-icon">?</span> Help &amp; Tutorial
+                                <span class="menu-icon">?</span> Help &amp; Tips
                             </button>
+                            <a class="settings-item" id="emailTeacherMenuBtn" href="mailto:benaderets885@edmonds.wednet.edu?subject=Civil%20War%20Simulation" role="menuitem">
+                                <span class="menu-icon">&#x2709;</span> Email Mr. B
+                            </a>
                         </div>
 <div class="menu-divider"></div>
                         <div class="menu-section" id="menuResourcesSection">
                             <div class="menu-section-title">Battle Journal</div>
-                            <a class="settings-item" id="handoutStandardMenuBtn" href="handouts/battle-journal-standard.html" target="_blank" rel="noopener" role="menuitem">
-                                <span class="menu-icon">&#x270E;</span> Standard tier
+                            <a class="settings-item" id="handoutExtraSupportMenuBtn" href="handouts/battle-journal-extra-support.html" target="_blank" rel="noopener" role="menuitem">
+                                <span class="menu-icon">&#x270E;</span> &#x2605; Most Support
                             </a>
                             <a class="settings-item" id="handoutSomeSupportMenuBtn" href="handouts/battle-journal-some-support.html" target="_blank" rel="noopener" role="menuitem">
-                                <span class="menu-icon">&#x270E;</span> Some Support tier
+                                <span class="menu-icon">&#x270E;</span> &#x2605;&#x2605; More Support
                             </a>
-                            <a class="settings-item" id="handoutExtraSupportMenuBtn" href="handouts/battle-journal-extra-support.html" target="_blank" rel="noopener" role="menuitem">
-                                <span class="menu-icon">&#x270E;</span> Extra Support tier
+                            <a class="settings-item" id="handoutStandardMenuBtn" href="handouts/battle-journal-standard.html" target="_blank" rel="noopener" role="menuitem">
+                                <span class="menu-icon">&#x270E;</span> &#x2605;&#x2605;&#x2605; Standard
+                            </a>
+                            <a class="settings-item" id="handoutAdvancedMenuBtn" href="handouts/battle-journal-advanced.html" target="_blank" rel="noopener" role="menuitem">
+                                <span class="menu-icon">&#x270E;</span> &#x2605;&#x2605;&#x2605;&#x2605; Extra Challenge
                             </a>
                         </div>
                         <div class="menu-divider"></div>
@@ -283,61 +292,8 @@
         <button class="help-bar-close" id="helpBarClose" aria-label="Close help">&times;</button>
     </div>
 
-    <!-- Tutorial Overlay -->
-    <div class="tutorial-overlay" id="tutorialOverlay" style="display:none;">
-        <div class="tutorial-backdrop" id="tutorialBackdrop"></div>
-        <div class="tutorial-tooltip" id="tutorialTooltip">
-            <div class="tutorial-step-count" id="tutorialStepCount"></div>
-            <p class="tutorial-text" id="tutorialText"></p>
-            <div class="tutorial-actions">
-                <button class="tutorial-skip" id="tutorialSkip">Skip Tutorial</button>
-                <button class="tutorial-next btn-primary" id="tutorialNext">Next</button>
-            </div>
-        </div>
-    </div>
 
     <main class="game-container" id="main-content" role="main" aria-label="Civil War Battle Simulation Game">
-
-        <!-- ======================== -->
-        <!-- INTRO SPLASH SCREEN      -->
-        <!-- ======================== -->
-        <div class="screen" id="introSplash" style="display:none;" role="region" aria-label="Welcome to the Civil War Simulation">
-            <div class="splash-hero">
-                <div class="splash-icon" aria-hidden="true">&#x2694;&#xFE0F;</div>
-                <h2 class="splash-title">Civil War Battle Simulation</h2>
-                <p class="splash-tagline">Step into American history and experience the decisions that shaped a nation.</p>
-            </div>
-
-            <div class="splash-overview">
-                <p class="splash-intro">From 1861 to 1865, the United States fought its deadliest war. Over 13 major battles, you'll make real decisions, hear from the people who lived through it, and discover how this war changed America forever.</p>
-            </div>
-
-            <div class="splash-modes">
-                <div class="splash-mode-card">
-                    <h3 class="splash-mode-title">Historical Mode</h3>
-                    <p class="splash-mode-desc">Walk through each battle step by step. Read real accounts from soldiers, nurses, and civilians. Make the same choices commanders faced, then reflect on what you've learned.</p>
-                </div>
-                <div class="splash-mode-card">
-                    <h3 class="splash-mode-title">Free-play Mode</h3>
-                    <p class="splash-mode-desc">Take command and make your own strategic choices. Build momentum, face unpredictable events, and see if you can change the course of history.</p>
-                </div>
-            </div>
-
-            <div class="splash-learn">
-                <h3 class="splash-learn-title">What You'll Discover</h3>
-                <ul class="splash-learn-list">
-                    <li>Why people on both sides chose to fight &mdash; and at what cost</li>
-                    <li>Which battles turned the tide of the war and why they mattered</li>
-                    <li>How new technology and tactics changed warfare forever</li>
-                    <li>The stories of soldiers, women, Black Americans, and Indigenous peoples</li>
-                    <li>How military events shaped political decisions that still affect us today</li>
-                </ul>
-            </div>
-
-            <div class="splash-actions">
-                <button class="btn-primary splash-start-btn" id="splashStartBtn">Let's Get Started</button>
-            </div>
-        </div>
 
         <!-- ======================== -->
         <!-- MODE SELECTION SCREEN    -->
@@ -416,10 +372,10 @@
             <div class="difficulty-selector" id="difficultySelectorSection">
                 <div class="difficulty-label">Reading Level</div>
                 <div class="difficulty-pills" role="radiogroup" aria-label="Select reading level">
-                    <button class="difficulty-pill difficulty-pill-extra" data-level="extra" role="radio" aria-checked="false">Extra Support</button>
-                    <button class="difficulty-pill" data-level="beginner" role="radio" aria-checked="false">Beginner</button>
-                    <button class="difficulty-pill active" data-level="intermediate" role="radio" aria-checked="true">Intermediate</button>
-                    <button class="difficulty-pill" data-level="advanced" role="radio" aria-checked="false">Advanced</button>
+                    <button class="difficulty-pill difficulty-pill-extra" data-level="extra" role="radio" aria-checked="false" aria-label="Most Support, 1 of 4" title="Most Support"><span aria-hidden="true">★</span></button>
+                    <button class="difficulty-pill" data-level="beginner" role="radio" aria-checked="false" aria-label="More Support, 2 of 4" title="More Support"><span aria-hidden="true">★★</span></button>
+                    <button class="difficulty-pill active" data-level="intermediate" role="radio" aria-checked="true" aria-label="Standard, 3 of 4" title="Standard"><span aria-hidden="true">★★★</span></button>
+                    <button class="difficulty-pill" data-level="advanced" role="radio" aria-checked="false" aria-label="Extra Challenge, 4 of 4" title="Extra Challenge"><span aria-hidden="true">★★★★</span></button>
                 </div>
                 <div class="difficulty-hint" id="difficultyHint">Standard text, some writing help</div>
             </div>
@@ -444,6 +400,11 @@
                     </p>
                     <p class="soldier-count" id="confederacySoldierCount"></p>
                 </div>
+            </div>
+
+            <!-- Historical Mode start button (Union-only; side cards are hidden). -->
+            <div class="setup-start-actions" id="setupStartActions" style="display:none;">
+                <button class="btn-primary setup-start-btn" id="beginSetupBtn">Begin Your Journey</button>
             </div>
 
             <button class="back-btn" id="backToModeBtn">&#x2190; Back to Mode Selection</button>
@@ -555,25 +516,8 @@
         <!-- HISTORICAL MODE: BATTLE SCREEN    -->
         <!-- ================================= -->
         <div class="screen" id="historicalScreen" style="display:none;" role="region" aria-label="Historical battle">
-            <!-- Progress bar -->
-            <div class="battle-progress">
-                <div class="progress-label" id="historicalProgressLabel">Battle 1 of 13</div>
-                <div class="progress-bar">
-                    <div class="progress-fill" id="historicalProgressFill" style="width: 7.7%"></div>
-                </div>
-            </div>
-
-            <!-- Step indicator pills -->
-            <div class="step-pills" id="stepPills">
-                <span class="step-pill active">1. Briefing</span>
-                <span class="step-pill">2. Your Call</span>
-                <span class="step-pill">3. What Happened</span>
-                <span class="step-pill">4. Reflect</span>
-            </div>
-
             <!-- Battle header -->
             <div class="battle-header">
-                <div class="battle-act-dateline"></div>
                 <h2 class="battle-name" id="histBattleName"></h2>
                 <div class="battle-meta">
                     <span class="battle-date" id="histBattleDate"></span>
@@ -633,7 +577,7 @@
                     <div class="note-nudge" id="noteNudgeFeedback" style="display:none;"></div>
                 </div>
 
-                <!-- Section 4: What Really Happened + Tech -->
+                <!-- Section 4: What Really Happened -->
                 <div class="narrative-section happened-section" id="sectionHappened" style="display:none;">
                     <h3 class="narrative-heading">What Really Happened</h3>
                     <p class="narrative-text" id="histWhatHappened"></p>
@@ -644,42 +588,42 @@
                         <div class="outcome-casualties" id="histCasualties"></div>
                     </div>
 
-                    <div class="tech-highlight" id="histTechBox">
-                        <div class="tech-label">Technology Spotlight</div>
-                        <div class="tech-name" id="histTechName"></div>
-                        <p class="tech-description" id="histTechDesc"></p>
+                    <div class="key-idea-callout" id="keyIdeaCallout" style="display:none;">
+                        <div class="key-idea-label">Key idea: write this in your journal</div>
+                        <p class="key-idea-text" id="keyIdeaText"></p>
                     </div>
 
-                    <!-- Battlefield Tours: video card for this battle -->
+                    <!-- Battlefield Tours: small video thumbnail for this battle -->
                     <div class="battle-video-slot" id="histBattleVideoSlot"></div>
 
                     <div class="note-nudge" id="noteNudgeOutcome" style="display:none;"></div>
                 </div>
 
-                <!-- Section 5: A Voice From the Field -->
-                <div class="narrative-section voice-section" id="sectionVoice" style="display:none;">
-                    <h3 class="narrative-heading collapsible-heading" id="voiceHeading">A Voice From the Field <span class="collapse-icon"></span></h3>
-                    <div class="collapsible-body" id="voiceBody">
+                <!-- Section 5: Learn More (tabbed) -->
+                <div class="narrative-section learn-more-section" id="sectionLearnMore" style="display:none;">
+                    <div class="visual-tabs learn-tabs">
+                        <button class="visual-tab active" data-tab="bigpicture" onclick="switchLearnTab(this, 'learnBigPicture')">The Bigger Picture</button>
+                        <button class="visual-tab" data-tab="voice" onclick="switchLearnTab(this, 'learnVoice')">A Voice From the Field</button>
+                        <button class="visual-tab" data-tab="tech" onclick="switchLearnTab(this, 'learnTech')">Technology Spotlight</button>
+                    </div>
+
+                    <div class="learn-tab-body" id="learnBigPicture">
+                        <p class="narrative-text" id="histBigPicture"></p>
+                        <div class="perspectives-container" id="histPerspectives"></div>
+                    </div>
+
+                    <div class="learn-tab-body" id="learnVoice" style="display:none;">
                         <blockquote class="voice-quote" id="histVoiceQuote"></blockquote>
                         <div class="voice-attribution" id="histVoiceAttribution"></div>
                         <div class="voice-source" id="histVoiceSource"></div>
                         <div class="voice-explainer" id="histVoiceExplainer" style="display:none;"></div>
                     </div>
-                </div>
 
-                <!-- Section 6: The Bigger Picture -->
-                <div class="narrative-section bigger-picture-section" id="sectionBigPicture" style="display:none;">
-                    <h3 class="narrative-heading collapsible-heading" id="bigPictureHeading">The Bigger Picture <span class="collapse-icon"></span></h3>
-                    <div class="collapsible-body" id="bigPictureBody">
-                        <p class="narrative-text" id="histBigPicture"></p>
-
-                        <div class="key-fact-box">
-                            <div class="key-fact-label">Did You Know</div>
-                            <p class="key-fact-text" id="histKeyFact"></p>
-                        </div>
-
-                        <div class="perspectives-container" id="histPerspectives"></div>
+                    <div class="learn-tab-body" id="learnTech" style="display:none;">
+                        <div class="tech-name" id="histTechName"></div>
+                        <p class="tech-description" id="histTechDesc"></p>
                     </div>
+
                     <div class="note-nudge" id="noteNudgeReflection" style="display:none;"></div>
                 </div>
 
@@ -739,6 +683,22 @@
             <!-- Navigation buttons -->
             <div class="narrative-nav">
                 <button class="btn-primary" id="narrativeContinueBtn">Continue</button>
+            </div>
+
+            <!-- Progress bar + step pills (moved to bottom in v3.18) -->
+            <div class="battle-progress">
+                <div class="progress-label" id="historicalProgressLabel">Battle 1 of 13</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="historicalProgressFill" style="width: 7.7%"></div>
+                </div>
+            </div>
+
+            <!-- Step indicator pills -->
+            <div class="step-pills" id="stepPills">
+                <span class="step-pill active">1. Briefing</span>
+                <span class="step-pill">2. Your Call</span>
+                <span class="step-pill">3. What Happened</span>
+                <span class="step-pill">4. Reflect</span>
             </div>
         </div>
 
@@ -948,6 +908,21 @@
         </div>
 
         <!-- ============================= -->
+        <!-- BATTLE REVISIT (read-only)    -->
+        <!-- Opened by clicking a completed battle in the campaign log. -->
+        <!-- Pure read view: never mutates game state. -->
+        <!-- ============================= -->
+        <div class="modal" id="battleRevisitModal" style="display:none;">
+            <div class="modal-container">
+                <div class="modal-header">
+                    <h2 class="modal-title" id="revisitTitle">Battle Review</h2>
+                    <button class="modal-close" id="closeRevisitBtn">&times;</button>
+                </div>
+                <div class="modal-body" id="revisitBody"></div>
+            </div>
+        </div>
+
+        <!-- ============================= -->
         <!-- END GAME SUMMARY              -->
         <!-- ============================= -->
         <div class="screen" id="endGameScreen" style="display:none;" role="region" aria-label="Game results">
@@ -1046,6 +1021,7 @@
     <script src="js/data/leaders.js"></script>
     <script src="js/data/maps.js"></script>
     <script src="js/data/acts.js"></script>
+    <script src="js/data/glossary.js"></script>
     <script src="js/game.js"></script>
     <script src="js/firebase-leaderboard.js"></script>
     <script src="js/ui.js"></script>
@@ -1053,7 +1029,7 @@
 
     <!-- Version Display -->
     <div class="version-info">
-        <span>Civil War Battle Simulation v3.17.1</span>
+        <span>Civil War Battle Simulation v3.19.0</span>
     </div>
 
     <!-- v3.15: Reset Battle confirmation -->

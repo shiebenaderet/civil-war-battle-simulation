@@ -219,6 +219,7 @@ img {
 }
 
 .navbar-content {
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -228,6 +229,34 @@ img {
 }
 
 .navbar-brand { min-width: 0; }
+
+/* ----- Centered act label (opens campaign log) ----- */
+
+.navbar-act-label {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-ink-muted);
+    background: transparent;
+    border: none;
+    padding: var(--space-1) var(--space-2);
+    cursor: pointer;
+    white-space: nowrap;
+    transition: color 0.15s ease;
+}
+
+.navbar-act-label:hover,
+.navbar-act-label:focus-visible {
+    color: var(--color-ink);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+    text-decoration-color: var(--color-accent);
+}
 
 .nav-game-title {
     font-family: var(--font-serif);
@@ -274,7 +303,7 @@ img {
 
 .reading-pill {
     height: 34px;
-    width: 34px;
+    min-width: 34px;
     background: transparent;
     border: 0;
     border-right: 1px solid var(--color-rule);
@@ -283,7 +312,8 @@ img {
     font-family: var(--font-mono);
     font-size: 0.95rem;
     font-weight: 700;
-    padding: 0;
+    padding: 0 8px;
+    white-space: nowrap;
     transition: background var(--transition-fast);
 }
 
@@ -548,6 +578,9 @@ a.settings-item:visited { color: var(--color-ink); }
 @media (max-width: 767px) {
     .navbar-content { flex-wrap: wrap; }
     .nav-game-title { font-size: 1.05rem; }
+    /* v3.18: drop the centered act label on narrow widths so it can't overlap
+       the wrapped two-row navbar. The act is still reachable via the campaign log. */
+    .navbar-act-label { display: none !important; }
     .navbar-reading-level {
         order: 3;
         width: 100%;
@@ -609,80 +642,6 @@ a.settings-item:visited { color: var(--color-ink); }
     line-height: 1;
 }
 
-/* Tutorial Overlay */
-.tutorial-overlay {
-    position: fixed;
-    inset: 0;
-    z-index: calc(var(--z-modal) + 10);
-}
-
-.tutorial-backdrop {
-    position: absolute;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.45);
-    pointer-events: none;
-}
-
-.tutorial-highlight {
-    position: relative;
-    z-index: calc(var(--z-modal) + 11);
-    box-shadow: 0 0 0 4px var(--color-primary), 0 0 24px rgba(var(--color-primary-rgb), 0.4);
-    border-radius: var(--radius-md);
-    background: var(--color-surface-primary);
-}
-
-.tutorial-tooltip {
-    position: fixed;
-    z-index: calc(var(--z-modal) + 12);
-    background: var(--color-surface-primary);
-    border: 2px solid var(--color-primary);
-    border-radius: var(--radius-lg);
-    padding: var(--space-4);
-    max-width: 340px;
-    width: calc(100vw - var(--space-8));
-    box-shadow: var(--shadow-lg);
-}
-
-.tutorial-step-count {
-    font-size: var(--font-size-xs);
-    font-weight: 700;
-    color: var(--color-primary);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    margin-bottom: var(--space-1);
-}
-
-.tutorial-text {
-    font-size: var(--font-size-sm);
-    line-height: 1.5;
-    color: var(--color-text-primary);
-    margin: 0 0 var(--space-3);
-}
-
-.tutorial-actions {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.tutorial-skip {
-    background: none;
-    border: none;
-    color: var(--color-text-tertiary);
-    font-size: var(--font-size-xs);
-    cursor: pointer;
-    padding: var(--space-1) 0;
-    text-decoration: underline;
-}
-
-.tutorial-skip:hover {
-    color: var(--color-text-secondary);
-}
-
-.tutorial-next {
-    padding: var(--space-2) var(--space-6);
-    font-size: var(--font-size-sm);
-}
 
 /* ===============================================
    GAME CONTAINER
@@ -775,6 +734,16 @@ a.settings-item:visited { color: var(--color-ink); }
 
 .btn-secondary:hover {
     background: var(--color-paper-deep);
+}
+
+/* v3.18: Historical setup Begin button (replaces side-card start in Union-only mode) */
+.setup-start-actions {
+    display: flex;
+    justify-content: center;
+    margin-top: var(--space-8);
+}
+.setup-start-btn {
+    min-width: 16rem;
 }
 
 .back-btn {
@@ -942,166 +911,6 @@ a.settings-item:visited { color: var(--color-ink); }
     gap: var(--space-3);
     justify-content: center;
     flex-wrap: wrap;
-}
-
-/* ===============================================
-   INTRO SPLASH SCREEN
-   =============================================== */
-
-.splash-hero {
-    text-align: center;
-    margin-bottom: var(--space-8);
-}
-
-.splash-icon {
-    font-size: 4rem;
-    margin-bottom: var(--space-4);
-    display: block;
-    color: var(--color-ink);
-}
-
-.splash-title {
-    font-family: var(--font-serif);
-    font-size: var(--font-size-3xl);
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: -0.005em;
-    color: var(--color-ink);
-    margin-bottom: var(--space-3);
-}
-
-.splash-tagline {
-    font-family: var(--font-serif);
-    font-size: var(--font-size-lg);
-    color: var(--color-ink-muted);
-    max-width: 600px;
-    margin: 0 auto;
-    line-height: 1.55;
-}
-
-.splash-overview {
-    max-width: 700px;
-    margin: 0 auto var(--space-8);
-    text-align: center;
-}
-
-.splash-intro {
-    font-family: var(--font-serif);
-    font-size: var(--font-size-base);
-    color: var(--color-ink);
-    line-height: 1.55;
-}
-
-.splash-modes {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: var(--space-6);
-    margin-bottom: var(--space-8);
-    max-width: 700px;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-@media (min-width: 640px) {
-    .splash-modes {
-        grid-template-columns: 1fr 1fr;
-    }
-}
-
-.splash-mode-card {
-    background: var(--color-paper-card);
-    border: 1px solid var(--color-ink);
-    border-radius: 0;
-    padding: var(--space-6);
-    text-align: center;
-    box-shadow: none;
-}
-
-.splash-mode-icon {
-    font-size: 2.5rem;
-    margin-bottom: var(--space-3);
-}
-
-.splash-mode-title {
-    font-family: var(--font-serif);
-    font-size: var(--font-size-lg);
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: -0.005em;
-    color: var(--color-ink);
-    margin-bottom: var(--space-2);
-}
-
-.splash-mode-desc {
-    font-family: var(--font-serif);
-    font-size: var(--font-size-sm);
-    color: var(--color-ink-muted);
-    line-height: 1.55;
-}
-
-.splash-learn {
-    max-width: 600px;
-    margin: 0 auto var(--space-8);
-    background: var(--color-surface-secondary);
-    border: 2px solid var(--color-border-primary);
-    border-radius: var(--radius-xl);
-    padding: var(--space-6);
-}
-
-.splash-learn-title {
-    font-family: var(--font-serif);
-    font-size: var(--font-size-lg);
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: -0.005em;
-    color: var(--color-ink);
-    text-align: center;
-    margin-bottom: var(--space-4);
-}
-
-.splash-learn-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.splash-learn-list li {
-    font-family: var(--font-serif);
-    font-size: var(--font-size-sm);
-    color: var(--color-ink);
-    padding: var(--space-2) 0;
-    padding-left: 1.75em;
-    position: relative;
-    line-height: 1.55;
-}
-
-.splash-learn-list li::before {
-    content: '\2605';
-    position: absolute;
-    left: 0;
-    color: var(--color-accent);
-    font-size: 0.9em;
-}
-
-.splash-actions {
-    text-align: center;
-    margin-top: var(--space-6);
-}
-
-.splash-start-btn {
-    background: var(--color-ink);
-    color: var(--color-paper);
-    font-family: var(--font-mono);
-    font-size: var(--font-size-sm);
-    text-transform: uppercase;
-    letter-spacing: 0.15em;
-    border: 0;
-    border-radius: 0;
-    padding: var(--space-3) var(--space-6);
-}
-
-.splash-start-btn:hover {
-    background: var(--color-accent);
 }
 
 /* ===============================================
@@ -1826,12 +1635,28 @@ a.settings-item:visited { color: var(--color-ink); }
     display: flex;
     align-items: center;
     justify-content: center;
-    border: none;
-    background: transparent;
-    color: var(--color-text-tertiary);
+    border: 1px solid var(--color-rule);
+    background: var(--color-paper-card);
+    color: var(--color-ink);
     cursor: pointer;
     font-size: 1.5rem;
     border-radius: var(--radius-md);
+}
+.modal-close:hover {
+    background: var(--color-paper-deep);
+    color: var(--color-accent);
+}
+
+/* Battle revisit: explicit "back to list" action so the way out is obvious */
+.revisit-actions {
+    margin-top: var(--space-5);
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--color-rule);
+    display: flex;
+    justify-content: center;
+}
+.revisit-back-btn {
+    font-family: var(--font-mono);
 }
 
 .modal-close:hover {
@@ -2053,6 +1878,12 @@ a.settings-item:visited { color: var(--color-ink); }
 
 .battle-video-slot:empty {
     display: none;
+}
+
+/* v3.19: post-battle video reads as a small thumbnail beneath the Key Idea callout */
+#sectionHappened .battle-video-card {
+    max-width: 360px;
+    grid-template-columns: 120px 1fr;
 }
 
 .battle-video-heading {
@@ -2865,11 +2696,6 @@ a.settings-item:visited { color: var(--color-ink); }
     .name-field-initial {
         flex: none;
         width: 100%;
-    }
-
-    /* Splash screen tweaks */
-    .splash-title {
-        font-size: var(--font-size-xl);
     }
 
     /* Difficulty pills: smaller */
@@ -3903,6 +3729,7 @@ a.settings-item:visited { color: var(--color-ink); }
     border: 1px solid var(--color-ink);
     border-radius: 0;
     padding: var(--space-2) var(--space-4);
+    white-space: nowrap;
     cursor: pointer;
 }
 
@@ -4590,6 +4417,113 @@ a.settings-item:visited { color: var(--color-ink); }
     margin-right: 0.4em;
 }
 
+/* v3.18: always-visible per-battle key idea takeaway */
+.key-idea-callout {
+    background: var(--color-paper-card);
+    border: 2px solid var(--color-accent);
+    border-left-width: 8px;
+    border-radius: 0;
+    padding: var(--space-4) var(--space-5);
+    margin: var(--space-5) 0;
+    box-shadow: var(--shadow-sm);
+}
+.key-idea-label {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-sm);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-accent);
+    margin-bottom: var(--space-2);
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+}
+.key-idea-label::before {
+    content: '\270E'; /* pencil */
+    font-size: 1.1em;
+    line-height: 1;
+}
+.key-idea-text {
+    font-family: var(--font-serif);
+    font-size: var(--font-size-lg);
+    font-weight: 600;
+    color: var(--color-ink);
+    margin: 0;
+    line-height: 1.5;
+}
+
+/* ===============================================
+   LEARN MORE TABBED PANEL (v3.19)
+   =============================================== */
+
+/* Manila folder tabs: active tab sits "in front", connected to the panel
+   below; inactive tabs sit recessed and darker "behind". Scoped to
+   .learn-tabs only so the artwork/map .visual-tab styling is untouched. */
+.learn-more-section .learn-tabs,
+.learn-tabs {
+    display: flex;
+    align-items: flex-end;
+    gap: var(--space-1);
+    margin-bottom: 0;
+    /* the strip baseline the active tab merges into */
+    border-bottom: 2px solid var(--color-rule-strong);
+}
+
+/* Inactive (recessed) folder tabs */
+.learn-tabs .visual-tab {
+    position: relative;
+    background: var(--color-paper-deep);
+    color: var(--color-ink-muted);
+    font-family: var(--font-mono);
+    font-size: var(--font-size-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-top: 5px;
+    padding: var(--space-1) var(--space-3);
+    border: 1px solid var(--color-rule-strong);
+    border-radius: 6px 6px 0 0;
+    cursor: pointer;
+    transition: background 0.12s ease, color 0.12s ease,
+        margin-top 0.12s ease, padding 0.12s ease;
+}
+
+/* Hover: lift and darken so it reads as interactive */
+.learn-tabs .visual-tab:not(.active):hover {
+    background: var(--color-paper-elev);
+    color: var(--color-ink);
+    margin-top: 3px;
+}
+
+/* Active (in front) folder tab — accent top edge, taller, merged with panel */
+.learn-tabs .visual-tab.active {
+    background: var(--color-paper-card);
+    color: var(--color-ink);
+    font-weight: 700;
+    margin-top: 0;
+    padding-top: var(--space-2);
+    padding-bottom: var(--space-2);
+    border: 1px solid var(--color-rule-strong);
+    border-top: 3px solid var(--color-accent);
+    /* the folder-tab connect trick: cover the strip's border so the tab
+       merges into the content panel below */
+    border-bottom-color: var(--color-paper-card);
+    margin-bottom: -2px;
+    z-index: 1;
+}
+
+/* Content panel: card surface with a border the active tab joins into */
+.learn-tab-body {
+    background: var(--color-paper-card);
+    border: 1px solid var(--color-rule-strong);
+    border-top: none;
+    padding: var(--space-3);
+}
+
+.learn-tab-body .narrative-text {
+    margin-top: 0;
+}
+
 /* ===============================================
    ACT REVIEW OVERLAY (v3.14)
    =============================================== */
@@ -5026,3 +4960,178 @@ a.settings-item:visited { color: var(--color-ink); }
 .no-teacher-banner-form { width: 100%; display: flex; gap: 6px; align-items: center; margin-top: 6px; }
 .no-teacher-banner-form input { flex: 1; padding: 6px 8px; border: 1px solid #f59e0b; border-radius: 4px; font-size: 14px; }
 .no-teacher-banner-error { width: 100%; color: #b91c1c; font-size: 13px; }
+
+/* ===============================================
+   CAMPAIGN LOG: CLICKABLE COMPLETED BATTLES
+   Completed battles in the campaign log open a read-only review.
+   =============================================== */
+.timeline-clickable {
+    cursor: pointer;
+    transition: background 0.12s ease, box-shadow 0.12s ease;
+}
+.timeline-clickable:hover {
+    background: var(--color-paper-card);
+    box-shadow: var(--shadow-sm);
+}
+.timeline-clickable:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+}
+.timeline-review-hint {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-sm);
+    color: var(--color-accent);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-left: var(--space-2);
+    white-space: nowrap;
+}
+
+/* ===============================================
+   BATTLE REVISIT (read-only review panel)
+   =============================================== */
+.revisit-date {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-ink-muted);
+    margin-bottom: var(--space-4);
+}
+.revisit-label {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-sm);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-accent);
+    margin-bottom: var(--space-2);
+}
+.revisit-section {
+    margin: var(--space-5) 0;
+}
+.revisit-section p,
+.revisit-choice p,
+.revisit-keyidea p {
+    font-family: var(--font-serif);
+    color: var(--color-ink);
+    line-height: 1.6;
+    margin: 0 0 var(--space-2);
+}
+.revisit-choice {
+    background: var(--color-surface-secondary);
+    border: 1px solid var(--color-rule);
+    border-radius: var(--radius-md);
+    padding: var(--space-4);
+    margin: var(--space-4) 0 var(--space-5);
+}
+.revisit-badge {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: var(--font-size-sm);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: var(--space-1) var(--space-3);
+    border-radius: var(--radius-md);
+}
+.revisit-badge.matched {
+    background: var(--color-success);
+    color: #fff;
+}
+.revisit-badge.different {
+    background: var(--color-paper-elev);
+    color: var(--color-ink-muted);
+    border: 1px solid var(--color-rule-strong);
+}
+.revisit-outcome {
+    font-family: var(--font-mono) !important;
+    font-size: var(--font-size-sm);
+    color: var(--color-ink-muted) !important;
+    font-style: italic;
+}
+.revisit-keyidea {
+    background: var(--color-paper-card);
+    border: 2px solid var(--color-accent);
+    border-left-width: 8px;
+    border-radius: 0;
+    padding: var(--space-4) var(--space-5);
+    margin: var(--space-5) 0;
+    box-shadow: var(--shadow-sm);
+}
+.revisit-keyidea p {
+    font-size: var(--font-size-lg);
+    font-weight: 600;
+}
+
+/* ============================================================
+   v3.19: Vocabulary glossary terms + click-to-define tooltips
+   ============================================================ */
+
+/* The clickable term inside reading text. Subtle dotted underline + accent
+   color signals "tap me for a definition" without shouting. */
+.vocab-term {
+    position: relative;
+    color: var(--color-accent);
+    border-bottom: 1px dotted var(--color-accent);
+    cursor: pointer;
+    /* keep the term on the text baseline; it is an inline span */
+    display: inline;
+    font-weight: inherit;
+}
+.vocab-term:hover,
+.vocab-term:focus {
+    border-bottom-style: solid;
+    background: rgba(var(--color-accent-rgb), 0.07);
+}
+.vocab-term:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+}
+
+/* The tooltip wrapper is positioned below the term and hidden by default.
+   It shows when the term has .open (click/tap/keyboard) and, on devices that
+   support real hover, on :hover / :focus-within for desktop convenience. */
+.vocab-tooltip {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    margin-top: var(--space-2);
+    z-index: var(--z-overlay);
+    display: none;
+    /* never let it run off the left/right edge on small screens */
+    max-width: min(260px, 86vw);
+    width: max-content;
+}
+.vocab-term.open .vocab-tooltip {
+    display: block;
+}
+@media (hover: hover) {
+    .vocab-term:hover .vocab-tooltip,
+    .vocab-term:focus-within .vocab-tooltip {
+        display: block;
+    }
+}
+
+/* The readable definition card. Paper-card surface, ruled border, drop shadow. */
+.vocab-definition {
+    display: block;
+    background: var(--color-paper-card);
+    color: var(--color-ink);
+    border: 1px solid var(--color-rule);
+    border-left: 4px solid var(--color-accent);
+    border-radius: var(--radius-md);
+    padding: var(--space-3) var(--space-4);
+    box-shadow: var(--shadow-lg);
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-style: normal;
+    font-size: var(--font-size-sm);
+    line-height: 1.45;
+    text-align: left;
+    /* normalize inheritance from emphasized host text (e.g. voice quote) */
+    text-transform: none;
+    letter-spacing: normal;
+    white-space: normal;
+}

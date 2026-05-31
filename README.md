@@ -2,7 +2,7 @@
 
 *An 8th-grade history unit I built for my own classroom.*
 
-I wanted to teach the Civil War in a way that's engaging, accurate, and gives students multiple ways to engage with the content — and multiple ways to struggle with it. Some students will scratch the surface and walk away with the main ideas. Others will dig in: read the primary-source voices, watch the battlefield videos, replay Free-play Mode for hours, argue about whether the Anaconda Plan or Emancipation Proclamation mattered more. Both kinds of students belong here.
+I wanted to teach the Civil War in a way that's engaging, accurate, and gives students multiple ways to engage with the content, and multiple ways to struggle with it. Some students will scratch the surface and walk away with the main ideas. Others will dig in: read the primary-source voices, watch the battlefield videos, replay Free-play Mode for hours, argue about whether the Anaconda Plan or Emancipation Proclamation mattered more. Both kinds of students belong here.
 
 The floor is the same for everyone: by the end of the unit, every student can explain who won the Civil War and give specific reasons why.
 
@@ -15,7 +15,7 @@ The floor is the same for everyone: by the end of the unit, every student can ex
     <td align="center" width="33%"><img src="images/screenshots/battle-journal-page1.png" alt="Battle Journal handout page one, organized into four acts of the war"></td>
   </tr>
   <tr>
-    <td align="center"><sub>Students pick a side and a reading level.</sub></td>
+    <td align="center"><sub>Students enter a name and reading level, then begin.</sub></td>
     <td align="center"><sub>Each battle opens with period artwork and historical context.</sub></td>
     <td align="center"><sub>They build their answer on paper, act by act.</sub></td>
   </tr>
@@ -44,34 +44,41 @@ Students work through the 13 battles in **Historical Mode** while filling in a p
 
 The unit answers one question: **How was the Union able to defeat the Confederacy?**
 
-The handout is two pages.
-
-**Page 1** is an act-by-act evidence log organized around the four acts of the war:
+The handout is a single coherent flow in three parts. It is built around the four acts of the war:
 
 - Act I: The War Begins (1861-1862, Fort Sumter through Shiloh)
 - Act II: A New Kind of War (1862-1863, Antietam through Chancellorsville)
 - Act III: The Tide Turns (1863, Vicksburg through Chickamauga)
 - Act IV: The War's Legacy (1864-1865, Wilderness through Appomattox)
 
-After each act of in-game battles, students stop and fill in that act's box: key events they want to remember, and why the act mattered for the Union. The simulation prompts them with a clear "Reflect on your Battle Journal" callout at every act review screen, so they aren't tempted to wait until the end.
+**Part 1, Battle Log.** One row per battle, grouped by act. For each battle the student records the choice they made, checks "Matched history? Yes/No," and writes a short "why it mattered" summary in their own words. They do not copy: the game gives them a key idea on screen and they summarize it. The simulation prompts them with a "Key idea, write this in your journal" callout on every battle so they aren't tempted to wait until the end.
 
-**Page 2** builds the answer. Students see a Word Bank of 8 key terms (Anaconda Plan, Emancipation Proclamation, total war, and so on) which they circle as they encounter them during play. Then they:
+**Part 2, Act Checkpoints.** After each act, students answer that act's reflection question, then add a bridge line: "one way this act helped the Union win." Those four bridge lines bank the evidence they'll need at the end.
+
+**Part 3, Final Answer.** The thesis builder for "How was the Union able to defeat the Confederacy?" It now pulls straight from the four act-checkpoint evidence lines (the prompt reminds them, "you already have your evidence"). Students see a Word Bank of 8 key terms (Anaconda Plan, Emancipation Proclamation, total war, and so on) which they circle as they encounter them during play. Then they:
 
 1. Construct a three-part thesis: "The Union defeated the Confederacy because X, Y, and Z."
 2. Cite a specific battle, person, or event as evidence for each reason.
 3. Identify which Word Bank term they think was most important and explain why.
 4. Write one sentence explaining why bravery and leadership alone were not enough for the Confederacy to win.
 
-The handout ships in three tiers (Standard, Some Support, Extra Support) so students with different reading and writing supports are all answering the same essential question, just with different levels of scaffolding. The teacher prints whichever tier(s) match their students. There's no hard rule that a Beginner-tier player must get the Some Support handout. Some students need more support in writing than in reading, and vice versa, so the matching is left as a teacher's judgment call.
+The handout ships in four tiers (Most Support, More Support, Standard, Extra Challenge) so students with different reading and writing supports are all answering the same essential question, just with different levels of scaffolding. Two things scale with the tier:
+
+- **Scaffolding.** Most Support has fill-in-the-blank sentences and sentence stems above the write-lines. More Support has stems above the lines. Standard has fewer, and Extra Challenge has the least. All four keep the 8-term Word Bank.
+- **Writing load.** Everyone plays all 13 battles, but lower tiers log fewer of them. Most Support logs 4 anchor battles (one per act), More Support logs 8 (two per act), and Standard and Extra Challenge log all 13.
+
+The teacher prints whichever tier(s) match their students. There's no hard rule that a More Support player must get the More Support handout. Some students need more support in writing than in reading, and vice versa, so the matching is left as a teacher's judgment call.
 
 ### Historical Mode (the simulation)
 
-Students choose Union or Confederacy, pick a reading level, and play through all 13 battles. Each battle follows a four-step flow:
+The app boots straight to mode selection (no intro splash). In Historical Mode students always play the Union, so there's no side to pick. A short setup screen greets them ("Welcome, Commander"), takes their name and reading level, and a "Begin Your Journey" button drops them into the war. They play through all 13 battles. Each battle follows a four-step flow:
 
 1. **Briefing.** Intel report and situation context for the battle they're about to face.
 2. **Your Call.** A "What Would You Do?" decision with personalized feedback comparing their choice to the historical decision. The options shuffle so the historically correct answer isn't always in the same position.
-3. **What Happened.** The historical outcome, plus three side panels: a Technology Spotlight (rifled musket, ironclads, telegraph, and so on), a primary-source Voice From the War (Sullivan Ballou, Clara Barton, Susie King Taylor, Sam Watkins, and others), and a Bigger Picture section with Perspectives sidebars on race, class, gender, and Indigenous experiences. Each sub-section ends with a Note Nudge pointing students to a specific fact worth recording in their Battle Journal.
+3. **What Happened.** The historical outcome, led by a prominent "Key idea, write this in your journal" callout. Every tier sees this callout: it's the per-battle key idea students summarize on the handout in their own words. The deeper content sits behind three folder-style tabs the student can click through if they want more: A Voice From the Field (a primary-source voice such as Sullivan Ballou, Clara Barton, Susie King Taylor, or Sam Watkins), The Bigger Picture (with Perspectives sidebars on race, class, gender, and Indigenous experiences), and Technology Spotlight (rifled musket, ironclads, telegraph, and so on). The Battlefield Trust video shows as a small thumbnail.
 4. **Reflect.** A "Reflect on your Battle Journal" callout. For most battles this is a short pause to update the handout. After the final battle of each act (Shiloh, Chancellorsville, Chickamauga, Appomattox), this step expands into an **act review**: a three-question multiple-choice recall moment drawn from that act's content, followed by a grouped reflection prompt on the act's bigger themes. The act review is also where the handout-nudge banner appears.
+
+During a battle, the current act and years (e.g. "Act II · 1862-1863") show centered in the top bar. Clicking that label, or the Campaign Log in the menu, opens the campaign log. From there a student can click any battle they've already finished to open a read-only review of it (what they picked versus what happened, the key idea, the bigger picture). That lets them catch up their handout without losing their place; it does not change their progress.
 
 After all 13 battles, students reach a final summary screen. Their argument lives on the paper handout, which the teacher collects.
 
@@ -88,40 +95,50 @@ Free-play is the engagement reward, not the assessment. The Battle Journal hando
 
 ## Reading levels and differentiation
 
-The simulation ships every battle in **four reading-level tiers** so students with different reading and writing supports can all engage with the same historical content:
+The simulation ships every battle in **four reading-level tiers**, shown as 1 to 4 stars with a plain support-level name, so students with different reading and writing supports can all engage with the same historical content:
 
-- **Extra Support (E)** — written at roughly a 1st-3rd grade reading level for ML/IEP students underserved by typical "beginner" tiers. The Intel grid, Technology Spotlight, and Key Fact panels are hidden; the Voice From the War quote ships with a plain-English explainer; the Bigger Picture and Voice sections start collapsed with a "tap to read" hint so the screen isn't a wall of text.
-- **Beginner (B)** — written at roughly a 5th-6th grade reading level. Same structural simplifications as Extra Support, with grade-appropriate vocabulary.
-- **Intermediate (I)** — on-grade 8th-grade level. This is the default experience: all sections visible, Perspectives sidebars hidden to keep cognitive load reasonable.
-- **Advanced (A)** — written for stronger readers. All sections visible including Perspectives sidebars. Reflection prompts (in the grouped reflection moments) use RACE method reminders (Restate, Answer, Cite, Explain) instead of sentence starters.
+- **★ Most Support** (`extra`): written at roughly a 1st-3rd grade reading level for ML/IEP students underserved by typical "beginner" tiers. The Intel grid, Technology Spotlight, and Key Fact panels are hidden; the Voice From the Field quote ships with a plain-English explainer; the Bigger Picture and Voice tabs keep the screen from becoming a wall of text.
+- **★★ More Support** (`beginner`): written at roughly a 5th-6th grade reading level. Same structural simplifications as Most Support, with grade-appropriate vocabulary.
+- **★★★ Standard** (`intermediate`): on-grade 8th-grade level. This is the default experience: all sections available, Perspectives sidebars hidden to keep cognitive load reasonable.
+- **★★★★ Extra Challenge** (`advanced`): written for stronger readers. All sections available including Perspectives sidebars. Reflection prompts (in the grouped reflection moments) use RACE method reminders (Restate, Answer, Cite, Explain) instead of sentence starters.
+
+(The names in parentheses are the internal data keys, unchanged.)
 
 Two things make this work in a real classroom:
 
-1. **Switch tier mid-game.** The toolbar shows E/B/I/A pills at all times. A student who picked Beginner at the start screen but finds it patronizing — or picked Advanced and is drowning — can change tiers at any moment without losing progress, including mid-battle, mid-recall, or mid-reflection. The chosen tier persists in localStorage.
+1. **Switch tier mid-battle.** The toolbar shows the four star pills (★ to ★★★★) at all times, with the tier name in the tooltip. A student who picked More Support at the start but finds it patronizing, or picked Extra Challenge and is drowning, can change tiers at any moment without losing progress. It now keeps their exact step in the battle, too (it used to jump back to the start of the battle; that's fixed). Switching works mid-battle, mid-recall, or mid-reflection, and the chosen tier persists in localStorage.
 
-2. **Content fallback chain.** When a battle field is missing in a tier (which can happen during authoring), the game falls back gracefully: Extra Support → Beginner → Intermediate. The student never sees an empty section.
+2. **Content fallback chain.** When a battle field is missing in a tier (which can happen during authoring), the game falls back gracefully: Most Support → More Support → Standard. The student never sees an empty section.
+
+### Vocabulary glossary (click to define)
+
+25 key unit terms (Emancipation Proclamation, Anaconda Plan, 54th Massachusetts, habeas corpus, total war, plus the generals and presidents) are auto-highlighted in the game's reading text. A student clicks a highlighted term to see a plain-language definition in a popup. Common words like Union, Confederacy, and the major figures link on their first appearance per screen; rarer, more distinctive terms link every time. The glossary works on the battle text, the key ideas, the bigger picture, the voices, and the read-only battle-review screens.
 
 ## For educators
 
 - Designed for 8th-grade history classes; aligns loosely with Washington State Social Studies Learning Standards and the Since Time Immemorial framework on Indigenous perspectives. Alignment notes for other states are welcome (see Contribute below).
-- No installation required — runs in any web browser.
+- No installation required: runs in any web browser.
 - Works on classroom Chromebooks and tablets without a server.
-- Four reading levels with adaptive content and mid-game tier switching.
+- Four reading levels (★ Most Support to ★★★★ Extra Challenge) with adaptive content and mid-battle tier switching that keeps the student's place.
+- A 25-term vocabulary glossary with click-to-define tooltips on the reading text (see Reading levels and differentiation above).
+- Students can revisit any completed battle read-only from the campaign log to catch up their handout, without losing their place or changing their progress.
 - OpenDyslexic font toggle, font size scale, and read-aloud voice/rate controls via the accessibility panel.
 - Screen reader support and keyboard navigation.
-- Printable Battle Journal handout in three differentiation tiers.
+- Printable Battle Journal handout in four differentiation tiers.
+- The Help menu has an "Email Mr. B" button (a mailto link) for students who want to reach the teacher.
 - **Teacher Dashboard** at `/teacher.html` (password-gated) shows where every student in each class period is in real time, with per-student and clear-all controls. See the Teacher Dashboard section below.
 - **Battlefield Tours** embed curated American Battlefield Trust videos (10 Animated Maps, 3 Documentaries) for every battle, surfacing on the post-battle results screen at the moment of maximum curiosity.
 
 ## Battle Journal handout
 
-A printable companion handout students fill in during Historical Mode. Captures battle evidence by act, then scaffolds a thesis-and-evidence response to "How was the Union able to defeat the Confederacy?" Available in three tiers, all large-text, two pages each. Open in a browser and click the Print Handout button at the top.
+A printable companion handout students fill in during Historical Mode. It runs as a single flow: a per-battle log, then an act checkpoint after each act, then the final thesis-and-evidence answer to "How was the Union able to defeat the Confederacy?" Available in four tiers, all large-text. Open in a browser and click the Print Handout button at the top.
 
-- **Standard:** [civil.mrbsocialstudies.org/handouts/battle-journal-standard.html](https://civil.mrbsocialstudies.org/handouts/battle-journal-standard.html) — on-grade 8th-grade level, 8 vocabulary terms in Word Bank
-- **Some Support:** [civil.mrbsocialstudies.org/handouts/battle-journal-some-support.html](https://civil.mrbsocialstudies.org/handouts/battle-journal-some-support.html) — 5-6th grade level, sentence stems on every prompt
-- **Extra Support:** [civil.mrbsocialstudies.org/handouts/battle-journal-extra-support.html](https://civil.mrbsocialstudies.org/handouts/battle-journal-extra-support.html) — 1-3rd grade level, 6 Word Bank terms with plain-language definitions
+- **★ Most Support:** [civil.mrbsocialstudies.org/handouts/battle-journal-extra-support.html](https://civil.mrbsocialstudies.org/handouts/battle-journal-extra-support.html) (1-3rd grade level, fill-in-the-blank sentences and sentence stems above the write-lines, 8 Word Bank terms with plain-language definitions, logs 4 anchor battles, one per act)
+- **★★ More Support:** [civil.mrbsocialstudies.org/handouts/battle-journal-some-support.html](https://civil.mrbsocialstudies.org/handouts/battle-journal-some-support.html) (5-6th grade level, sentence stems above the lines, 8 Word Bank terms, logs 8 battles, two per act)
+- **★★★ Standard:** [civil.mrbsocialstudies.org/handouts/battle-journal-standard.html](https://civil.mrbsocialstudies.org/handouts/battle-journal-standard.html) (on-grade 8th-grade level, 8 vocabulary terms in Word Bank, logs all 13 battles)
+- **★★★★ Extra Challenge:** [civil.mrbsocialstudies.org/handouts/battle-journal-advanced.html](https://civil.mrbsocialstudies.org/handouts/battle-journal-advanced.html) (for stronger writers, the least scaffolding, 8 Word Bank terms, logs all 13 battles)
 
-The in-game act review screens (one per act, four total) display a banner reminding students to fill in that act's box before continuing.
+Everyone plays all 13 battles; the lower tiers just log fewer of them to keep the writing load reasonable. The in-game act review screens (one per act, four total) display a banner reminding students to fill in that act's checkpoint before continuing.
 
 ## Teacher Dashboard
 
@@ -166,23 +183,23 @@ All videos are hosted by the [American Battlefield Trust](https://www.youtube.co
 
 The game features primary source quotes from diverse perspectives:
 
-- **Chaplain John Eaton** — Freedpeople fleeing to Union lines (Shiloh)
-- **Sullivan Ballou** — Union officer's letter to his wife (Bull Run)
-- **Clara Barton** — Volunteer nurse on the battlefield (Antietam)
-- **Captain William J. Nagle** — Irish Brigade at Fredericksburg
-- **Susie King Taylor** — Black nurse and teacher with the 33rd USCT (Chancellorsville)
-- **Corporal James Henry Gooding** — 54th Massachusetts, letter to Lincoln demanding equal pay (Wilderness)
-- **Sam Watkins** — Confederate enlisted soldier (Chickamauga)
-- **Mary Chesnut** — Senator's wife, diarist (Fort Sumter)
-- **Dora Miller** — Civilian under siege (Vicksburg)
-- **Dolly Sumner Lunt** — Plantation owner during Sherman's March
+- **Chaplain John Eaton:** Freedpeople fleeing to Union lines (Shiloh)
+- **Sullivan Ballou:** Union officer's letter to his wife (Bull Run)
+- **Clara Barton:** Volunteer nurse on the battlefield (Antietam)
+- **Captain William J. Nagle:** Irish Brigade at Fredericksburg
+- **Susie King Taylor:** Black nurse and teacher with the 33rd USCT (Chancellorsville)
+- **Corporal James Henry Gooding:** 54th Massachusetts, letter to Lincoln demanding equal pay (Wilderness)
+- **Sam Watkins:** Confederate enlisted soldier (Chickamauga)
+- **Mary Chesnut:** Senator's wife, diarist (Fort Sumter)
+- **Dora Miller:** Civilian under siege (Vicksburg)
+- **Dolly Sumner Lunt:** Plantation owner during Sherman's March
 - And more...
 
 </details>
 
 ## Contribute, suggest, or just say hi
 
-This is built by one teacher (hi, I'm Shie) for actual 8th-grade classrooms. I'd love feedback from anyone using it or thinking about using it — other social studies teachers, students, parents, historians, accessibility specialists, or developers. A few specific things I'd find valuable:
+This is built by one teacher (hi, I'm Shie) for actual 8th-grade classrooms. I'd love feedback from anyone using it or thinking about using it: other social studies teachers, students, parents, historians, accessibility specialists, or developers. A few specific things I'd find valuable:
 
 **For teachers using or considering this with your students:**
 - What worked, what bombed, what your kids actually said
@@ -193,7 +210,7 @@ This is built by one teacher (hi, I'm Shie) for actual 8th-grade classrooms. I'd
 **For history educators and content experts:**
 - Primary-source suggestions, especially voices underrepresented in standard textbooks
 - Factual corrections or framings that mislead even when technically accurate
-- Connections to specific state standards (I teach in Washington State and align loosely to WA Social Studies Learning Standards plus the Since Time Immemorial framework — alignment notes for other states are welcome)
+- Connections to specific state standards (I teach in Washington State and align loosely to WA Social Studies Learning Standards plus the Since Time Immemorial framework, and alignment notes for other states are welcome)
 
 **For accessibility specialists, ML/IEP teachers, and ELL teachers:**
 - Where the Extra Support tier still asks too much
@@ -208,7 +225,7 @@ This is built by one teacher (hi, I'm Shie) for actual 8th-grade classrooms. I'd
 - Email: shie@benaderet.com (best for substantive feedback, classroom stories, content suggestions)
 - GitHub Issues: [github.com/shiebenaderet/civil-war-battle-simulation/issues](https://github.com/shiebenaderet/civil-war-battle-simulation/issues) (best for bugs, broken links, technical problems)
 
-If you do use this in your classroom, even just once, I'd really like to hear how it went. There's no formal study, no analytics, no tracking — just a teacher trying to build something useful and wanting to know if it actually was.
+If you do use this in your classroom, even just once, I'd really like to hear how it went. There's no formal study, no analytics, no tracking, just a teacher trying to build something useful and wanting to know if it actually was.
 
 ## Project structure
 
@@ -226,17 +243,18 @@ civil-war-battle-simulation/
 │   ├── data/
 │   │   ├── battles.js      # 13 battles with historical + freeplay data, all 4 reading tiers
 │   │   ├── acts.js         # Act intros, recall questions, grouped reflections
+│   │   ├── glossary.js     # Vocabulary terms + plain-language definitions (click-to-define)
 │   │   ├── leaders.js      # Lincoln & Davis personalized letters
 │   │   └── maps.js         # SVG battle maps
 │   ├── firebase-leaderboard.js  # Firebase wrapper: room codes, class leaderboard, teacher dashboard writes
 │   ├── game.js             # State, save/load, momentum, fog of war, scoreboard
-│   ├── ui.js               # Screen management, rendering, DOM, tutorial, banners
+│   ├── ui.js               # Screen management, rendering, DOM, banners
 │   ├── app.js              # Init, event wiring, screen flow
 │   ├── tts.js              # Read-aloud voice controls (accessibility panel)
 │   ├── settings.js         # Settings menu wiring
 │   └── print-summary.js    # Legacy print-summary generator (unwired; kept for one release)
 ├── images/                 # Public domain artwork (Library of Congress, National Archives, Wikimedia Commons)
-├── handouts/               # Printable Battle Journal in 3 differentiation tiers
+├── handouts/               # Printable Battle Journal in four differentiation tiers
 ├── docs/superpowers/       # Specs and implementation plans for major features
 ├── mockups/                # Design mockups
 └── README.md
@@ -246,9 +264,9 @@ civil-war-battle-simulation/
 
 ## Technical notes
 
-- **No frameworks, no build tools** — pure HTML, CSS, and vanilla JavaScript.
-- **No ES modules** — works with `file://` protocol for offline classroom use.
-- **GitHub Pages deployment** — push to main branch to deploy.
+- **No frameworks, no build tools:** pure HTML, CSS, and vanilla JavaScript.
+- **No ES modules:** works with `file://` protocol for offline classroom use.
+- **GitHub Pages deployment:** push to main branch to deploy.
 - **localStorage** for persistence (game saves, leaderboard, theme preference, class code, reading level).
 - **Firebase Realtime Database** for the class leaderboard and the teacher dashboard. Gracefully degrades to local-only when offline.
 - Scripts load in dependency order: data files → game logic → Firebase → UI → app init.
@@ -258,7 +276,8 @@ civil-war-battle-simulation/
 <details>
 <summary>Expand version history</summary>
 
-- **v3.18 (in progress)** - Per-period room codes for the teacher dashboard. Replaces the single shared room code with four per-period codes (AMS-p1 through AMS-p5) and adds password-gated delete/clear controls on the dashboard. Strangers from other classrooms no longer appear in the dashboard because every dashboard write now requires a valid class code. New student-facing class code field (masked) on the name entry form, plus a "your teacher won't see your progress" banner with inline code entry for kids who skip it. Dashboard subscribes to all four period rooms in parallel and merges entries.
+- **v3.19.0** - Lower the on-ramp and redesign the journal. The intro splash and how-to-play tutorial are gone; the app boots straight to mode selection (a one-line help bar remains, toggleable from the menu). Historical Mode is now Union-only, with a streamlined setup screen (name and reading level, then "Begin Your Journey"). Reading tiers show as 1 to 4 stars with support-level names (★ Most Support to ★★★★ Extra Challenge). A new always-visible "Key idea, write this in your journal" callout leads the after-battle screen, and the deeper content (A Voice From the Field, The Bigger Picture, Technology Spotlight) is consolidated into three folder tabs. Full Battle Journal redesign: a per-battle log, then act checkpoints, then the final answer, now in four tiers, with lower tiers logging fewer battles to cut writing load. New 25-term vocabulary glossary with click-to-define tooltips. Students can revisit any completed battle read-only from the campaign log. The current act shows centered in the top bar. The mid-battle difficulty toggle now preserves your exact place in the battle.
+- **v3.18.0** - Per-period room codes for the teacher dashboard. Replaces the single shared room code with four per-period codes (AMS-p1 through AMS-p5) and adds password-gated delete/clear controls on the dashboard. Strangers from other classrooms no longer appear in the dashboard because every dashboard write now requires a valid class code. New student-facing class code field (masked) on the name entry form, plus a "your teacher won't see your progress" banner with inline code entry for kids who skip it. Dashboard subscribes to all four period rooms in parallel and merges entries.
 - **v3.17.1** - Handout-first reflection cleanup. The in-app reflection textarea, sentence-starter chips, RACE reminder, and "Need a hint?" tip are hidden; a clear "Reflect on your Battle Journal" callout replaces the typing UI. PDF export retired since the handout is the only capture surface now. Teacher Jump-to-Battle hidden recovery shortcut: type `jump` anywhere outside a text input to open a battle picker.
 - **v3.17.0** - Battlefield Tours + Teacher Dashboard. Curated American Battlefield Trust videos (10 Animated Maps, 3 Documentaries) for every battle, surfacing on the post-battle results screen. New standalone /teacher.html shows live student progress with sort and filter controls.
 - **v3.16.0** - Extra Support reading tier added (fourth tier alongside Beginner / Intermediate / Advanced) for ML/IEP students. All 13 battles, 4 acts, leader letters, and reflection prompts ship in ES.
@@ -271,7 +290,7 @@ civil-war-battle-simulation/
 - **v3.7.x** - Firebase-powered class leaderboard with room codes. Progressive reveal animations. PDF export with match tracking (since retired in v3.17.1).
 - **v3.6.x** - Redesigned WWYD feedback with match/different badges. Grouped reflections every 3-4 battles around bigger themes.
 - **v3.5.x** - Guided tutorial system. Difficulty levels stop referencing grade levels to avoid stigma.
-- **v3.4.x** - Three-level difficulty system (Beginner / Intermediate / Advanced — Extra Support added later in v3.16). Reflection scaffolding. Battle maps from Wikimedia Commons.
+- **v3.4.x** - Three-level difficulty system (Beginner / Intermediate / Advanced, with Extra Support added later in v3.16). Reflection scaffolding. Battle maps from Wikimedia Commons.
 
 Earlier history (v3.0 - v3.3): two-mode system established, momentum system, Blooket-inspired UI, primary source voices, Perspectives sidebars.
 

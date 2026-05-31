@@ -8,7 +8,6 @@
 var screens = {};
 
 function cacheScreens() {
-    screens.introSplash = document.getElementById('introSplash');
     screens.modeSelection = document.getElementById('modeSelection');
     screens.sideSelection = document.getElementById('sideSelection');
     screens.leaderLetterScreen = document.getElementById('leaderLetterScreen');
@@ -54,7 +53,7 @@ function showScreen(screenId) {
     if (typeof gameState !== 'undefined' && gameState) {
         gameState.currentScreen = screenId;
     }
-    var preGameScreens = ['introSplash', 'modeSelection', 'sideSelection', 'leaderLetterScreen'];
+    var preGameScreens = ['modeSelection', 'sideSelection', 'leaderLetterScreen'];
     if (preGameScreens.indexOf(screenId) !== -1) {
         hideNavbarReadingPills();
     } else {
@@ -66,6 +65,13 @@ function showScreen(screenId) {
         if (typeof showResetBattleMenuItem === 'function') showResetBattleMenuItem();
     } else {
         if (typeof hideResetBattleMenuItem === 'function') hideResetBattleMenuItem();
+    }
+
+    // v3.18: navbar act label only lives on the historical battle screen.
+    // renderHistoricalBattle shows it; hide it everywhere else so it never lingers.
+    if (screenId !== 'historicalScreen') {
+        var navActLabel = document.getElementById('navbarActLabel');
+        if (navActLabel) navActLabel.style.display = 'none';
     }
 }
 
@@ -137,14 +143,24 @@ function renderSideSelection() {
     var confCount = document.getElementById('confederacySoldierCount');
     var nameSection = document.getElementById('nameInlineSection');
     var difficultySection = document.getElementById('difficultySelectorSection');
+    var unionCardEl = document.getElementById('unionCard');
+    var confedCardEl = document.getElementById('confederacyCard');
+    var startActions = document.getElementById('setupStartActions');
 
     if (gameState.mode === 'historical') {
-        title.textContent = 'Set Up Your Journey';
-        subtitle.textContent = 'Enter your name, choose a reading level, and pick your side';
+        // v3.18: Historical Mode is Union-only — hide the side picker, auto-select Union.
+        // The hidden side cards used to be the only way to start, so we show an
+        // explicit Begin button instead.
+        title.textContent = 'Welcome, Commander';
+        subtitle.textContent = 'You will lead the Union through the war. Enter your name and choose your reading level.';
         unionCount.textContent = '';
         confCount.textContent = '';
         nameSection.style.display = 'block';
         difficultySection.style.display = '';
+        if (unionCardEl) unionCardEl.style.display = 'none';
+        if (confedCardEl) confedCardEl.style.display = 'none';
+        if (startActions) startActions.style.display = '';
+        gameState.side = 'union';
 
         // Clear inputs
         var firstName = document.getElementById('firstNameInput');
@@ -165,6 +181,9 @@ function renderSideSelection() {
         confCount.textContent = 'Starting Army: 1,000,000 soldiers';
         nameSection.style.display = 'none';
         difficultySection.style.display = 'none';
+        if (unionCardEl) unionCardEl.style.display = '';
+        if (confedCardEl) confedCardEl.style.display = '';
+        if (startActions) startActions.style.display = 'none';
     }
 
     showScreen('sideSelection');
@@ -295,6 +314,18 @@ function switchVisualTab(clickedTab, showId, hideId) {
     // Show/hide panels
     document.getElementById(showId).style.display = 'block';
     document.getElementById(hideId).style.display = 'none';
+}
+
+// 3-way tab switch for the post-battle "Learn More" panel.
+function switchLearnTab(clickedTab, showId) {
+    var tabs = clickedTab.parentElement.querySelectorAll('.visual-tab');
+    for (var i = 0; i < tabs.length; i++) tabs[i].classList.remove('active');
+    clickedTab.classList.add('active');
+    var bodies = ['learnBigPicture', 'learnVoice', 'learnTech'];
+    for (var j = 0; j < bodies.length; j++) {
+        var el = document.getElementById(bodies[j]);
+        if (el) el.style.display = (bodies[j] === showId) ? '' : 'none';
+    }
 }
 
 // ============================================================
@@ -845,6 +876,27 @@ function populateNoteNudge(slotId, subStepKey) {
     slot.style.display = '';
 }
 
+// v3.18: Always-visible key-idea takeaway, shown to EVERY tier in sectionHappened.
+// Sources the per-tier keyIdea (the battle's real significance, the same field the
+// handout "why it mattered" box expects), so the takeaway is never hidden -- fixing
+// the old gap where low tiers never saw it.
+function populateKeyIdeaCallout() {
+    var callout = document.getElementById('keyIdeaCallout');
+    var textEl = document.getElementById('keyIdeaText');
+    if (!callout || !textEl) return;
+    var content = getHistoricalContent();
+    var keyIdea = content && content.keyIdea;
+    if (!keyIdea || !String(keyIdea).trim()) {
+        callout.style.display = 'none';
+        return;
+    }
+    applyGlossary(textEl, keyIdea);
+    callout.style.display = '';
+    // TTS: make the key idea readable aloud, consistent with other narrative text.
+    textEl.classList.add('tts-readable');
+    textEl.setAttribute('data-tts-label', 'Key idea');
+}
+
 // ============================================================
 // v3.14 - Act Review Overlay
 // ============================================================
@@ -1161,9 +1213,8 @@ function renderHistoricalBattle() {
     wwydSelected = -1;
 
     // v3.15: populate act/year dateline above battle name
+    // v3.18: also drive the centered navbar act label (separator is a middot, not an em dash)
     (function populateBattleDateline() {
-        const datelines = document.querySelectorAll('.battle-act-dateline');
-        if (datelines.length === 0) return;
         const battleIndex = gameState.currentBattle;
         if (typeof battleIndex !== 'number' || !battles[battleIndex]) return;
 
@@ -1171,13 +1222,23 @@ function renderHistoricalBattle() {
         if (typeof getActForBattle === 'function') {
             const actIndex = getActForBattle(battleIndex);
             if (actIndex !== -1 && typeof acts !== 'undefined' && acts[actIndex]) {
-                datelineText = 'Act ' + acts[actIndex].number + ' — ' + acts[actIndex].years;
+                datelineText = 'Act ' + acts[actIndex].number + ' · ' + acts[actIndex].years;
             }
         }
         if (!datelineText) {
             datelineText = String(battles[battleIndex].year || '');
         }
 
+        // v3.18: navbar act label (centered, opens campaign log on click)
+        var navAct = document.getElementById('navbarActLabel');
+        if (navAct) {
+            navAct.textContent = datelineText;
+            navAct.style.display = datelineText ? '' : 'none';
+        }
+
+        // Legacy in-battle datelines (markup removed in v3.18; early-return if absent)
+        const datelines = document.querySelectorAll('.battle-act-dateline');
+        if (datelines.length === 0) return;
         datelines.forEach(function(el) { el.textContent = datelineText; });
     })();
 
@@ -1259,7 +1320,7 @@ function renderHistoricalBattle() {
 
     // --- Section 2: The Situation ---
     var histSituationEl = document.getElementById('histSituation');
-    histSituationEl.textContent = content.situation;
+    applyGlossary(histSituationEl, content.situation);
     // v3.15: TTS — mark this paragraph as readable. A MutationObserver in app.js
     // attaches a play button when the class is added.
     histSituationEl.classList.add('tts-readable');
@@ -1308,7 +1369,7 @@ function renderHistoricalBattle() {
 
     // --- Section 4: What Really Happened ---
     var histWhatHappenedEl = document.getElementById('histWhatHappened');
-    histWhatHappenedEl.textContent = content.whatHappened;
+    applyGlossary(histWhatHappenedEl, content.whatHappened);
     // v3.15: TTS — mark the outcome narrative as readable.
     histWhatHappenedEl.classList.add('tts-readable');
     histWhatHappenedEl.setAttribute('data-tts-label', 'What Really Happened');
@@ -1320,17 +1381,17 @@ function renderHistoricalBattle() {
         ' (Union: ' + content.casualties.union.toLocaleString() +
         ', Confederate: ' + content.casualties.confederacy.toLocaleString() + ')';
 
-    document.getElementById('histTechName').textContent = content.tech.name;
-    document.getElementById('histTechDesc').textContent = content.tech.description;
-    // Tech Spotlight: hide at beginner/ES to reduce cognitive load
-    var techBox = document.getElementById('histTechBox');
-    if (techBox) techBox.style.display = isLowReadingTier ? 'none' : '';
+    // Technology Spotlight now lives in the Learn More tab panel — shown for all tiers.
+    var techNameEl = document.getElementById('histTechName');
+    if (techNameEl) techNameEl.textContent = content.tech.name;
+    var techDescEl = document.getElementById('histTechDesc');
+    if (techDescEl) applyGlossary(techDescEl, content.tech.description);
 
     // Battlefield Tours: post-battle video card for this battle
     renderBattleVideoCard(battles[gameState.currentBattle].id, 'histBattleVideoSlot');
 
     // --- Section 5: A Voice From the War ---
-    document.getElementById('histVoiceQuote').textContent = content.voice.quote;
+    applyGlossary(document.getElementById('histVoiceQuote'), content.voice.quote);
     document.getElementById('histVoiceAttribution').textContent = '\u2014 ' + content.voice.attribution;
     document.getElementById('histVoiceSource').textContent = content.voice.source;
 
@@ -1343,22 +1404,14 @@ function renderHistoricalBattle() {
         explainerEl.style.display = 'none';
     }
 
-    // --- Section 6: The Bigger Picture ---
+    // --- Section 6: The Bigger Picture (now a Learn More tab) ---
     var histBigPictureEl = document.getElementById('histBigPicture');
-    histBigPictureEl.textContent = content.biggerPicture;
+    applyGlossary(histBigPictureEl, content.biggerPicture);
     // v3.15: TTS — mark the reflection-from-history paragraph as readable.
     histBigPictureEl.classList.add('tts-readable');
     histBigPictureEl.setAttribute('data-tts-label', 'The Bigger Picture');
 
-    // Key Fact: hide entire box at beginner/ES to reduce reading
-    var keyFactEl = document.getElementById('histKeyFact');
-    var keyFactBox = keyFactEl ? keyFactEl.closest('.key-fact-box') : null;
-    if (isLowReadingTier) {
-        if (keyFactBox) keyFactBox.style.display = 'none';
-    } else {
-        keyFactEl.textContent = content.keyFact;
-        if (keyFactBox) keyFactBox.style.display = '';
-    }
+    // v3.19: "Did You Know" key-fact box removed — the Key Idea callout carries the takeaway.
 
     // Perspectives: only show at advanced level
     var perspectivesEl = document.getElementById('histPerspectives');
@@ -1392,8 +1445,7 @@ function renderHistoricalBattle() {
     document.getElementById('sectionWWYD').style.display = 'none';
     document.getElementById('wwydFeedback').style.display = 'none';
     document.getElementById('sectionHappened').style.display = 'none';
-    document.getElementById('sectionVoice').style.display = 'none';
-    document.getElementById('sectionBigPicture').style.display = 'none';
+    document.getElementById('sectionLearnMore').style.display = 'none';
     document.getElementById('sectionReflect').style.display = 'none';
     var nudgeFeedback = document.getElementById('noteNudgeFeedback');
     if (nudgeFeedback) nudgeFeedback.style.display = 'none';
@@ -1401,6 +1453,8 @@ function renderHistoricalBattle() {
     if (nudgeOutcome) nudgeOutcome.style.display = 'none';
     var nudgeReflection = document.getElementById('noteNudgeReflection');
     if (nudgeReflection) nudgeReflection.style.display = 'none';
+    var keyIdeaCalloutReset = document.getElementById('keyIdeaCallout');
+    if (keyIdeaCalloutReset) keyIdeaCalloutReset.style.display = 'none';
     document.getElementById('teacherTip').style.display = 'none';
 
     // Button text
@@ -1411,7 +1465,7 @@ function renderHistoricalBattle() {
     showGameActions(true);
     showCampaignLogBtn(true);
 
-    // Show tutorial on first battle only
+    // Show the help bar on first battle
     if (gameState.currentBattle === 0) {
         maybeStartTutorial('historical');
     }
@@ -1633,56 +1687,9 @@ function toggleBattleReviewPanel(battleIdx, groupIdx) {
 }
 
 // ============================================================
-// Tutorial / Guided Help System
+// Guided Help System (help bar)
 // ============================================================
 
-var tutorialSteps = {
-    historical: [
-        {
-            target: '.battle-visuals',
-            text: 'This is the battle artwork. You can switch between the painting and a tactical battle map using the tabs above it.',
-            position: 'below'
-        },
-        {
-            target: '#sectionIntel',
-            fallback: '#sectionSituation',
-            text: 'This section gives you background on the battle \u2014 the forces, commanders, and advantages on each side. Read it to understand what both sides are facing.',
-            position: 'below'
-        },
-        {
-            target: '#sectionSituation',
-            text: 'The Situation puts you in the shoes of your chosen side. Read carefully \u2014 you\'ll need to make a decision next!',
-            position: 'below'
-        },
-        {
-            target: '#narrativeContinueBtn',
-            text: 'Click Continue to move through the steps of each battle. The pills at the top show which step you\'re on.',
-            position: 'above'
-        },
-        {
-            target: '.step-pills',
-            text: 'These show your progress through each battle: Briefing \u2192 Your Call \u2192 What Happened \u2192 Reflect. You\'ll do this for all 13 battles!',
-            position: 'below'
-        }
-    ],
-    freeplay: [
-        {
-            target: '.battle-visuals',
-            text: 'Each battle has artwork and a tactical map. Use the map to help plan your strategy!',
-            position: 'below'
-        },
-        {
-            target: '.strategy-cards',
-            text: 'Choose one of three strategies for each battle. Each has different strengths \u2014 read the details before picking.',
-            position: 'below'
-        },
-        {
-            target: '.momentum-display',
-            text: 'Your momentum builds with victories and drops with defeats. Higher momentum gives you a power bonus in future battles!',
-            position: 'below'
-        }
-    ]
-};
 
 var helpTips = {
     historical: [
@@ -1698,128 +1705,6 @@ var helpTips = {
     ]
 };
 
-var currentTutorialStep = 0;
-var currentTutorialMode = '';
-var previousHighlight = null;
-
-function shouldShowTutorial(mode) {
-    var key = 'civilWarTutorial_' + mode;
-    return !localStorage.getItem(key);
-}
-
-function markTutorialDone(mode) {
-    var key = 'civilWarTutorial_' + mode;
-    localStorage.setItem(key, 'done');
-}
-
-function startTutorial(mode) {
-    currentTutorialMode = mode;
-    currentTutorialStep = 0;
-
-    var steps = tutorialSteps[mode];
-    if (!steps || steps.length === 0) return;
-
-    document.getElementById('tutorialOverlay').style.display = 'block';
-    showTutorialStep();
-}
-
-function showTutorialStep() {
-    var steps = tutorialSteps[currentTutorialMode];
-    if (currentTutorialStep >= steps.length) {
-        endTutorial();
-        return;
-    }
-
-    var step = steps[currentTutorialStep];
-    var target = document.querySelector(step.target);
-
-    // Try fallback target if primary isn't visible
-    if ((!target || target.offsetParent === null || target.style.display === 'none') && step.fallback) {
-        target = document.querySelector(step.fallback);
-    }
-
-    // Remove previous highlight
-    if (previousHighlight) {
-        previousHighlight.classList.remove('tutorial-highlight');
-    }
-
-    // Update step count
-    document.getElementById('tutorialStepCount').textContent =
-        'Step ' + (currentTutorialStep + 1) + ' of ' + steps.length;
-
-    // Update text
-    document.getElementById('tutorialText').textContent = step.text;
-
-    // Update button text
-    var nextBtn = document.getElementById('tutorialNext');
-    nextBtn.textContent = (currentTutorialStep === steps.length - 1) ? 'Got It!' : 'Next';
-
-    if (target && target.offsetParent !== null) {
-        // Highlight element
-        target.classList.add('tutorial-highlight');
-        previousHighlight = target;
-
-        // Scroll into view
-        target.scrollIntoView({ behavior: 'smooth', block: 'center' });
-
-        // Position tooltip near target
-        setTimeout(function() {
-            positionTooltip(target, step.position || 'below');
-        }, 300);
-    } else {
-        // No visible target - center tooltip
-        previousHighlight = null;
-        var tooltip = document.getElementById('tutorialTooltip');
-        tooltip.style.top = '50%';
-        tooltip.style.left = '50%';
-        tooltip.style.transform = 'translate(-50%, -50%)';
-    }
-}
-
-function positionTooltip(target, position) {
-    var tooltip = document.getElementById('tutorialTooltip');
-    var rect = target.getBoundingClientRect();
-    var tooltipRect = tooltip.getBoundingClientRect();
-    var margin = 12;
-
-    tooltip.style.transform = 'none';
-
-    var left = Math.max(margin, Math.min(
-        rect.left + (rect.width / 2) - (tooltipRect.width / 2),
-        window.innerWidth - tooltipRect.width - margin
-    ));
-
-    if (position === 'above') {
-        var top = rect.top - tooltipRect.height - margin;
-        if (top < margin) top = rect.bottom + margin;
-        tooltip.style.top = top + 'px';
-    } else {
-        var top = rect.bottom + margin;
-        if (top + tooltipRect.height > window.innerHeight - margin) {
-            top = rect.top - tooltipRect.height - margin;
-        }
-        tooltip.style.top = top + 'px';
-    }
-
-    tooltip.style.left = left + 'px';
-}
-
-function nextTutorialStep() {
-    currentTutorialStep++;
-    showTutorialStep();
-}
-
-function endTutorial() {
-    document.getElementById('tutorialOverlay').style.display = 'none';
-
-    if (previousHighlight) {
-        previousHighlight.classList.remove('tutorial-highlight');
-        previousHighlight = null;
-    }
-
-    markTutorialDone(currentTutorialMode);
-    showHelpBar(currentTutorialMode);
-}
 
 // Help Bar (persistent, toggleable)
 var helpBarVisible = false;
@@ -1861,16 +1746,9 @@ function updateHelpBarText(mode, step) {
     if (el) el.textContent = text;
 }
 
-// Initialize tutorial on first battle
+// v3.18: tutorial overlay removed — first battle just shows the lightweight help bar.
 function maybeStartTutorial(mode) {
-    var btn = document.getElementById('helpToggleMenuBtn');
-    btn.style.display = '';
-
-    if (shouldShowTutorial(mode)) {
-        setTimeout(function() { startTutorial(mode); }, 600);
-    } else if (helpBarVisible) {
-        updateHelpBarText(mode, narrativeStep);
-    }
+    showHelpBar(mode);
 }
 
 function advanceNarrative() {
@@ -1942,7 +1820,7 @@ function advanceNarrative() {
 
                 var detailEl = document.getElementById('feedbackDetail');
                 if (detailEl) {
-                    detailEl.textContent = feedbackList[wwydSelected];
+                    applyGlossary(detailEl, feedbackList[wwydSelected]);
                     // v3.15: TTS — read the explanatory feedback paragraph.
                     detailEl.classList.add('tts-readable');
                     detailEl.setAttribute('data-tts-label', 'Choice feedback');
@@ -1953,8 +1831,7 @@ function advanceNarrative() {
 
             // Hide later sub-sections in case they were visible from a prior re-render
             document.getElementById('sectionHappened').style.display = 'none';
-            document.getElementById('sectionVoice').style.display = 'none';
-            document.getElementById('sectionBigPicture').style.display = 'none';
+            document.getElementById('sectionLearnMore').style.display = 'none';
 
             populateNoteNudge('noteNudgeFeedback', 'feedback');
             break;
@@ -1967,22 +1844,24 @@ function advanceNarrative() {
             happened.style.display = 'block';
             targetSection = happened;
             populateNoteNudge('noteNudgeOutcome', 'outcome');
+            populateKeyIdeaCallout();
             break;
 
         case 4:
-            // REFLECTION FROM HISTORY sub-step: show Voice + Bigger Picture.
+            // REFLECTION FROM HISTORY sub-step: show the tabbed Learn More panel.
             updateStepPills(narrativeStep);
 
-            var voice = document.getElementById('sectionVoice');
-            var bigPicture = document.getElementById('sectionBigPicture');
-            voice.style.display = 'block';
-            bigPicture.style.display = 'block';
-            targetSection = voice;
+            var learnMore = document.getElementById('sectionLearnMore');
+            learnMore.style.display = 'block';
+            targetSection = learnMore;
 
-            // At beginner/ES: collapse Voice and Bigger Picture
-            var isLowReadingTier = (gameState.difficulty === 'beginner' || gameState.difficulty === 'extra');
-            setupCollapsibleSection('voiceHeading', 'voiceBody', !isLowReadingTier);
-            setupCollapsibleSection('bigPictureHeading', 'bigPictureBody', !isLowReadingTier);
+            // Reset to the default tab (The Bigger Picture) for each battle.
+            var lmTabs = learnMore.querySelectorAll('.visual-tab');
+            for (var li = 0; li < lmTabs.length; li++) lmTabs[li].classList.remove('active');
+            if (lmTabs[0]) lmTabs[0].classList.add('active');
+            document.getElementById('learnBigPicture').style.display = '';
+            document.getElementById('learnVoice').style.display = 'none';
+            document.getElementById('learnTech').style.display = 'none';
 
             populateNoteNudge('noteNudgeReflection', 'reflectionFromHistory');
 
@@ -2227,7 +2106,7 @@ function renderFreeplayBriefing() {
         if (typeof getActForBattle === 'function') {
             const actIndex = getActForBattle(battleIndex);
             if (actIndex !== -1 && typeof acts !== 'undefined' && acts[actIndex]) {
-                datelineText = 'Act ' + acts[actIndex].number + ' — ' + acts[actIndex].years;
+                datelineText = 'Act ' + acts[actIndex].number + ' · ' + acts[actIndex].years;
             }
         }
         if (!datelineText) {
@@ -2272,7 +2151,7 @@ function renderFreeplayBriefing() {
     document.getElementById('fpMap').style.display = 'none';
 
     // Briefing
-    document.getElementById('fpBriefing').textContent = battle.freeplay.briefing;
+    applyGlossary(document.getElementById('fpBriefing'), battle.freeplay.briefing);
 
     // Historical event notice
     var histEventNotice = document.getElementById('fpHistEventNotice');
@@ -2322,7 +2201,7 @@ function renderFreeplayBriefing() {
     showGameActions(true);
     showCampaignLogBtn(true);
 
-    // Show tutorial on first battle only
+    // Show the help bar on first battle
     if (gameState.currentBattle === 0) {
         maybeStartTutorial('freeplay');
     }
@@ -2776,6 +2655,231 @@ function escapeHtml(text) {
 }
 
 // ============================================================
+// v3.19: Vocabulary auto-linker (applyGlossary) + click-to-define tooltips
+// ============================================================
+//
+// applyGlossary(el, text) takes a DOM element and a PLAIN-TEXT string, finds
+// glossary terms (from the global `glossary` array in js/data/glossary.js),
+// and wraps matches in clickable .vocab-term spans, then sets el.innerHTML.
+// This REPLACES `el.textContent = text` at the substantive reading-text render
+// points (situation, what-happened, key idea, bigger picture, voice quote,
+// tech description, choice feedback, freeplay briefing, battle revisit).
+//
+// SAFETY: `text` is escaped FIRST (so the base is injection-proof), then only
+// our own known-safe <span> markup is inserted for matched terms. Term text and
+// definitions are escaped too. Nothing from the data reaches innerHTML un-escaped.
+//
+// ALGORITHM (interval selection — immune to position-shift bugs):
+//   1. Escape the full text ONCE up front. All matching runs against this
+//      immutable escaped string, so character positions never drift.
+//   2. Build a flat match list of {matchText, termObj} from every term + alias.
+//      For each, run a whole-word regex `(^|[^A-Za-z0-9])(ESCAPED_TERM)(?![A-Za-z0-9])`
+//      against the escaped text and record every hit as a candidate interval
+//      {start, end, length, termObj}.
+//   3. Sort candidates by start ASC, ties by length DESC (so "Robert E. Lee"
+//      beats "Lee" and "Battle of Gettysburg" beats "Gettysburg" at the same
+//      anchor). Greedily accept a candidate only if start >= lastAcceptedEnd —
+//      this is the anti-nesting / anti-overlap guarantee (a shorter term inside
+//      an already-accepted span is skipped).
+//   4. TIER: 'common' terms are accepted only ONCE per call (first occurrence
+//      across the term and all its aliases, since they share one termObj).
+//      'distinctive' terms are accepted at every non-overlapping occurrence.
+//   5. Stitch: concatenate the escaped slices between accepted spans with the
+//      generated span HTML. No string mutation, so no offset drift.
+
+// Cache the flattened+sorted match list so we don't rebuild it on every render.
+var _glossaryMatchCache = null;
+
+function buildGlossaryMatchList() {
+    if (_glossaryMatchCache) return _glossaryMatchCache;
+    var list = [];
+    for (var i = 0; i < glossary.length; i++) {
+        var t = glossary[i];
+        if (!t || !t.term) continue;
+        list.push({ matchText: t.term, termObj: t });
+        if (t.aliases && t.aliases.length) {
+            for (var a = 0; a < t.aliases.length; a++) {
+                if (t.aliases[a]) list.push({ matchText: t.aliases[a], termObj: t });
+            }
+        }
+    }
+    // Longest matchText first so multi-word / longer terms win over substrings.
+    list.sort(function(x, y) { return y.matchText.length - x.matchText.length; });
+    _glossaryMatchCache = list;
+    return list;
+}
+
+// Escape a string for safe use inside a RegExp (literal match of periods, etc).
+function escapeRegExp(str) {
+    return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function applyGlossary(el, text) {
+    if (!el) return el;
+    text = (text === null || text === undefined) ? '' : String(text);
+
+    // Fallback: no glossary loaded -> behave like textContent (no crash).
+    if (typeof glossary === 'undefined' || !glossary || !glossary.length) {
+        el.textContent = text;
+        return el;
+    }
+
+    var matchList = buildGlossaryMatchList();
+
+    // Escape the FULL text ONCE so the base is injection-proof. ALL term matching
+    // and final stitching happens against this single immutable escaped string —
+    // we never mutate it, so positions stay valid throughout (no shift bugs).
+    var escaped = escapeHtml(text);
+
+    function makeSpan(matchedText, termObj) {
+        // matchedText is the captured substring from the ALREADY-escaped source,
+        // so it is HTML-safe to drop straight into element content. The definition
+        // is raw glossary data -> escape it. The aria-label sits inside double
+        // quotes, so also neutralize any double-quote (escapeHtml does not touch
+        // quotes) to keep the attribute well-formed even if a future definition
+        // contains one.
+        var def = escapeHtml(termObj.definition);
+        var label = (matchedText + ': ' + def).replace(/"/g, '&quot;');
+        return '<span class="vocab-term" tabindex="0" role="button" aria-label="' +
+            label + '">' + matchedText +
+            '<span class="vocab-tooltip"><span class="vocab-definition">' + def +
+            '</span></span></span>';
+    }
+
+    // --- Pass 1: collect EVERY candidate match across all term/alias variants ---
+    // Whole-word regex: leading boundary is start-of-string or a non-alphanumeric
+    // char (captured, group 1) so it is preserved; trailing boundary is a
+    // lookahead so it is not consumed (lets adjacent matches share a separator).
+    // matchCase terms (USCT) omit the 'i' flag. Periods in "Robert E. Lee" are
+    // made literal by escapeRegExp.
+    var candidates = [];
+    for (var m = 0; m < matchList.length; m++) {
+        var matchText = matchList[m].matchText;
+        var termObj = matchList[m].termObj;
+        var escapedTerm = escapeHtml(matchText);
+        var pattern = '(^|[^A-Za-z0-9])(' + escapeRegExp(escapedTerm) + ')(?![A-Za-z0-9])';
+        var re = new RegExp(pattern, termObj.matchCase ? 'g' : 'gi');
+        var hit;
+        while ((hit = re.exec(escaped)) !== null) {
+            var boundaryLen = hit[1].length;          // 0 (start) or 1
+            var start = hit.index + boundaryLen;       // term start (excl. boundary)
+            var captured = hit[2];                     // the matched term text
+            candidates.push({
+                start: start,
+                end: start + captured.length,
+                length: captured.length,
+                captured: captured,
+                termObj: termObj
+            });
+            if (re.lastIndex === hit.index) re.lastIndex++; // guard zero-width
+        }
+    }
+
+    if (!candidates.length) {
+        el.innerHTML = escaped;
+        return el;
+    }
+
+    // --- Pass 2: choose non-overlapping winners, left-to-right, longest-first ---
+    // Sort by start ascending; ties resolved by LENGTH descending so a longer
+    // term ("Robert E. Lee") beats a contained shorter one ("Lee") at the same
+    // anchor. Then greedily accept a candidate only if it starts at or after the
+    // end of the last accepted span — this prevents nesting/overlap entirely.
+    candidates.sort(function(a, b) {
+        if (a.start !== b.start) return a.start - b.start;
+        return b.length - a.length;
+    });
+
+    var accepted = [];
+    var lastEnd = 0;
+    var usedCommon = []; // common termObjs already linked this screen (first-occ rule)
+    for (var c = 0; c < candidates.length; c++) {
+        var cand = candidates[c];
+        if (cand.start < lastEnd) continue; // overlaps an accepted span -> skip
+        if (cand.termObj.tier === 'common') {
+            // First occurrence only, per underlying term (canonical + aliases share
+            // one budget). Because we walk left-to-right, the first accepted is the
+            // textually-earliest occurrence of any of the term's variants.
+            if (usedCommon.indexOf(cand.termObj) !== -1) continue;
+            usedCommon.push(cand.termObj);
+        }
+        accepted.push(cand);
+        lastEnd = cand.end;
+    }
+
+    // --- Pass 3: stitch plain escaped text + accepted spans (no string mutation) ---
+    var out = '';
+    var cursor = 0;
+    for (var a = 0; a < accepted.length; a++) {
+        var acc = accepted[a];
+        if (acc.start > cursor) out += escaped.slice(cursor, acc.start);
+        out += makeSpan(acc.captured, acc.termObj);
+        cursor = acc.end;
+    }
+    if (cursor < escaped.length) out += escaped.slice(cursor);
+
+    el.innerHTML = out;
+    return el;
+}
+
+// Delegated click / keyboard handler for vocab tooltips. Bound ONCE; survives
+// innerHTML rebuilds because it listens at the document level.
+var _vocabListenersBound = false;
+
+function setupVocabTooltips() {
+    if (_vocabListenersBound) return;
+    _vocabListenersBound = true;
+
+    function closeAllExcept(keep) {
+        var open = document.querySelectorAll('.vocab-term.open');
+        for (var i = 0; i < open.length; i++) {
+            if (open[i] !== keep) open[i].classList.remove('open');
+        }
+    }
+
+    // Click (also handles tap on mobile). Toggle the clicked term; close others.
+    document.addEventListener('click', function(e) {
+        var term = e.target.closest ? e.target.closest('.vocab-term') : null;
+        if (term) {
+            // Toggle this term; the outside-click branch below handles closing
+            // when the click is NOT on a term. (Modal backdrops use an
+            // e.target === backdrop guard, so they ignore these descendant clicks.)
+            var wasOpen = term.classList.contains('open');
+            closeAllExcept(term);
+            if (wasOpen) {
+                term.classList.remove('open');
+            } else {
+                term.classList.add('open');
+            }
+            return;
+        }
+        // Click outside any term closes all open tooltips.
+        closeAllExcept(null);
+    });
+
+    // Keyboard: Enter/Space toggles a focused term; Escape closes everything.
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' || e.key === 'Esc') {
+            closeAllExcept(null);
+            return;
+        }
+        var term = (document.activeElement && document.activeElement.classList &&
+            document.activeElement.classList.contains('vocab-term'))
+            ? document.activeElement : null;
+        if (term && (e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar')) {
+            e.preventDefault();
+            var wasOpen = term.classList.contains('open');
+            closeAllExcept(term);
+            if (wasOpen) {
+                term.classList.remove('open');
+            } else {
+                term.classList.add('open');
+            }
+        }
+    });
+}
+
+// ============================================================
 // Collapsible Sections (used to reduce wall-of-text at beginner)
 // ============================================================
 
@@ -2856,12 +2960,39 @@ function showCampaignLog() {
             var isCurrent = i === gameState.currentBattle;
             var cssClass = isCompleted ? 'victory' : (isCurrent ? '' : '');
             var status = isCompleted ? 'Complete' : (isCurrent ? 'Current' : 'Upcoming');
-            timelineHtml += '<div class="timeline-item ' + cssClass + '">' +
+            // Completed battles are clickable to open a read-only review.
+            // Current/Upcoming battles are NOT clickable.
+            var clickAttrs = isCompleted
+                ? ' timeline-clickable" data-battle-index="' + i + '" role="button" tabindex="0"'
+                : '"';
+            var reviewHint = isCompleted ? ' <span class="timeline-review-hint">Review &rsaquo;</span>' : '';
+            timelineHtml += '<div class="timeline-item ' + cssClass + clickAttrs + '>' +
                 '<div class="timeline-battle">' + (i + 1) + '. ' + battles[i].name + '</div>' +
-                '<div class="timeline-details">' + battles[i].date + ' &mdash; ' + status + '</div>' +
+                '<div class="timeline-details">' + battles[i].date + ' &mdash; ' + status + reviewHint + '</div>' +
                 '</div>';
         }
         timeline.innerHTML = timelineHtml;
+
+        // Wire revisit clicks via delegation. innerHTML is rebuilt each open,
+        // so a single delegated listener on the timeline container is robust.
+        // Guard against attaching more than once.
+        if (!timeline.dataset.revisitWired) {
+            timeline.dataset.revisitWired = '1';
+            timeline.addEventListener('click', function(e) {
+                var item = e.target.closest ? e.target.closest('.timeline-clickable') : null;
+                if (!item) return;
+                var idx = parseInt(item.getAttribute('data-battle-index'), 10);
+                if (!isNaN(idx)) openBattleRevisit(idx);
+            });
+            timeline.addEventListener('keydown', function(e) {
+                if (e.key !== 'Enter' && e.key !== ' ' && e.key !== 'Spacebar') return;
+                var item = e.target.closest ? e.target.closest('.timeline-clickable') : null;
+                if (!item) return;
+                e.preventDefault();
+                var idx = parseInt(item.getAttribute('data-battle-index'), 10);
+                if (!isNaN(idx)) openBattleRevisit(idx);
+            });
+        }
     }
 
     // Reset to progress tab
@@ -3131,6 +3262,86 @@ function closeCampaignLog() {
 }
 
 // ============================================================
+// Battle Revisit (READ-ONLY review of a completed battle)
+// ------------------------------------------------------------
+// Opened from the campaign log when a student clicks a COMPLETED battle.
+// HARD RULE: this is a pure READ view. It must NOT mutate game state
+// (gameState.currentBattle, narrativeStep, gameState.responses, etc.) and
+// must NOT call any advancing/rendering function (renderHistoricalBattle,
+// advanceNarrative, enterBattleScreen, saveHistoricalResponse). It only reads
+// battles[index] and gameState.responses[index] and writes display markup.
+// ============================================================
+
+function openBattleRevisit(index) {
+    if (typeof battles === 'undefined' || !battles[index]) return;
+    var battle = battles[index];
+    var h = battle.historical || {};
+    var resp = (gameState.responses && gameState.responses[index]) ? gameState.responses[index] : null;
+    var body = document.getElementById('revisitBody');
+    var title = document.getElementById('revisitTitle');
+    if (!body || !title) return;
+
+    title.textContent = battle.name;
+
+    // All student-derived text (wwydChoice) is escaped via escapeHtml before
+    // being placed into the HTML string. getContent() resolves the student's
+    // tier (reads gameState.difficulty). h.outcome is a plain string.
+    var html = '';
+    html += '<div class="revisit-date">' + escapeHtml(battle.date) + '</div>';
+
+    if (resp) {
+        var matched = resp.wwydMatchedHistory;
+        html += '<div class="revisit-choice">';
+        html += '<div class="revisit-label">What you picked</div>';
+        html += '<p>' + escapeHtml(resp.wwydChoice || '(no choice recorded)') + '</p>';
+        html += '<div class="revisit-badge ' + (matched ? 'matched' : 'different') + '">' +
+                (matched ? 'Matched history' : 'You chose a different path') + '</div>';
+        html += '</div>';
+    }
+
+    // v3.19: whatHappened / keyIdea / biggerPicture get ids and are filled via
+    // applyGlossary AFTER body.innerHTML is set (raw text in, applyGlossary
+    // escapes once — so we must NOT pre-escape these three or they'd double-escape).
+    // wwydChoice and h.outcome remain escaped inline as before.
+    var rawWhatHappened = getContent(h.whatHappened);
+    var rawKeyIdea = getContent(h.keyIdea);
+    var rawBiggerPicture = getContent(h.biggerPicture);
+
+    html += '<div class="revisit-section"><div class="revisit-label">What really happened</div><p id="revisitWhatHappened"></p>';
+    if (h.outcome) html += '<p class="revisit-outcome">' + escapeHtml(h.outcome) + '</p>';
+    html += '</div>';
+
+    html += '<div class="revisit-keyidea"><div class="revisit-label">Key idea</div><p id="revisitKeyIdea"></p></div>';
+
+    html += '<div class="revisit-section"><div class="revisit-label">The bigger picture</div><p id="revisitBiggerPicture"></p></div>';
+
+    // Explicit, obvious way back to the battle list (the small X alone wasn't clear).
+    html += '<div class="revisit-actions">' +
+            '<button type="button" class="btn-secondary revisit-back-btn" id="revisitBackBtn">← Back to battle list</button>' +
+            '</div>';
+
+    body.innerHTML = html;
+
+    // v3.19: fill the three reading-text paragraphs through the glossary linker
+    // (raw text -> applyGlossary escapes once). Tooltips work via the delegated
+    // listener already bound at init.
+    applyGlossary(document.getElementById('revisitWhatHappened'), rawWhatHappened);
+    applyGlossary(document.getElementById('revisitKeyIdea'), rawKeyIdea);
+    applyGlossary(document.getElementById('revisitBiggerPicture'), rawBiggerPicture);
+
+    var backBtn = document.getElementById('revisitBackBtn');
+    if (backBtn) backBtn.addEventListener('click', closeBattleRevisit);
+
+    var modal = document.getElementById('battleRevisitModal');
+    if (modal) modal.style.display = 'block';
+}
+
+function closeBattleRevisit() {
+    var m = document.getElementById('battleRevisitModal');
+    if (m) m.style.display = 'none';
+}
+
+// ============================================================
 // Settings Menu
 // ============================================================
 
@@ -3218,10 +3429,10 @@ function setReadingLevelEverywhere(level) {
 
     // Update difficulty hint text on start screen if visible
     var difficultyHints = {
-        extra: 'Easiest reading, lots of writing help, fewer choices',
-        beginner: 'Shorter text, extra help with writing',
-        intermediate: 'Standard text, some writing help',
-        advanced: 'More detail, deeper questions, full challenge'
+        extra: 'Most Support. Easiest reading, lots of writing help.',
+        beginner: 'More Support. Shorter text, extra writing help.',
+        intermediate: 'Standard. Standard text, some writing help.',
+        advanced: 'Extra Challenge. More detail, deeper questions.'
     };
     var hintEl = document.getElementById('difficultyHint');
     if (hintEl) hintEl.textContent = difficultyHints[level] || '';
@@ -3236,7 +3447,44 @@ function rerenderForReadingLevel() {
 
     // Battle screen (historical mode) — uses gameState.currentBattle internally
     if (screen === 'historicalScreen' && typeof renderHistoricalBattle === 'function') {
-        renderHistoricalBattle();
+        // Preserve the student's place in the battle's reveal sequence.
+        // renderHistoricalBattle() resets narrativeStep to 0 and wwydSelected to
+        // -1 (back to Briefing), so capture both BEFORE re-rendering, then replay
+        // the DISPLAY-ONLY reveals up to where the student was — never the terminal
+        // save/advance steps.
+        //
+        // Step map (see advanceNarrative): 0 Briefing, 1 Your Call (WWYD),
+        // 2 feedback, 3 What Happened, 4 Learn More — all reveal UI only.
+        // Steps 5/6 SAVE the response and advance to the next battle (or reflect/
+        // recall). SAFE_MAX is the last display-only step (4 = Learn More); the
+        // replay must never reach 5/6, or changing difficulty would save a
+        // duplicate response or jump to the next battle.
+        var savedStep = narrativeStep;
+        var savedSel = wwydSelected;
+        var SAFE_MAX = 4; // last display-only reveal step (Learn More)
+
+        renderHistoricalBattle(); // resets narrativeStep = 0, wwydSelected = -1
+
+        if (savedStep > 0) {
+            // Restore the WWYD selection (state + button highlight) so the
+            // step-1 guard (wwydSelected === -1 blocks advancing) doesn't stall
+            // the replay and the student's pick stays visible. selectWwydOption
+            // only touches the continue button when narrativeStep === 1, which is
+            // 0 here, so it has no terminal side effects.
+            if (savedSel >= 0 && typeof selectWwydOption === 'function') {
+                selectWwydOption(savedSel);
+            }
+            // Clamp to SAFE_MAX so the loop can never call advanceNarrative() once
+            // narrativeStep reaches 4 — it therefore never enters case 5/6
+            // (saveHistoricalResponse / advanceHistorical / enterBattleScreen /
+            // renderHistoricalComplete). If the student was on a terminal step,
+            // we re-show the last visible content (Learn More) and do NOT re-save
+            // or re-advance.
+            var replayTarget = Math.min(savedStep, SAFE_MAX);
+            while (narrativeStep < replayTarget) {
+                advanceNarrative();
+            }
+        }
     } else if (screen === 'actIntroScreen' && typeof renderActIntro === 'function' &&
                typeof getActForBattle === 'function') {
         var actIdx = getActForBattle(gameState.currentBattle);
