@@ -1158,7 +1158,7 @@ function renderActRecall(actIndex) {
         if (wrongAttempts === 1) {
             // First wrong: nudge, retry allowed
             feedbackEl.className = 'act-recall-feedback feedback-nudge';
-            setFeedback(feedbackEl, 'Not quite — try again',
+            setFeedback(feedbackEl, 'Not quite. Try again.',
                         q.nudge || 'Think it through once more.', null);
         } else {
             // Second wrong: reveal correct, require click to advance
