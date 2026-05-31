@@ -680,7 +680,9 @@ function setupEventListeners() {
             document.getElementById('actRecallScreen'),
             document.getElementById('leaderLetterScreen'),
             document.getElementById('actIntroScreen'),
-            document.getElementById('battleRevisitModal')
+            document.getElementById('battleRevisitModal'),
+            document.getElementById('freeplayBriefing'),
+            document.getElementById('freeplayResults')
         ].filter(Boolean);
         if (!targets.length) return;
         const obs = new MutationObserver(function(mutations) {

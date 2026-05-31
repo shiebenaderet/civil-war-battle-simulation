@@ -2173,7 +2173,13 @@ function renderFreeplayBriefing() {
     document.getElementById('fpMap').style.display = 'none';
 
     // Briefing
-    applyGlossary(document.getElementById('fpBriefing'), battle.freeplay.briefing);
+    var fpBriefingEl = document.getElementById('fpBriefing');
+    applyGlossary(fpBriefingEl, battle.freeplay.briefing);
+    // v3.20: read-aloud parity with Historical Mode
+    if (fpBriefingEl) {
+        fpBriefingEl.classList.add('tts-readable');
+        fpBriefingEl.setAttribute('data-tts-label', 'Battle briefing');
+    }
 
     // Historical event notice
     var histEventNotice = document.getElementById('fpHistEventNotice');
@@ -2256,7 +2262,11 @@ function renderFreeplayResults(result) {
     document.getElementById('resultTitle').textContent = result.won ? 'VICTORY!' : 'DEFEAT';
 
     // Outcome text
-    document.getElementById('resultOutcome').textContent = result.outcomeText;
+    var resultOutcomeEl = document.getElementById('resultOutcome');
+    resultOutcomeEl.textContent = result.outcomeText;
+    // v3.20: read-aloud parity with Historical Mode
+    resultOutcomeEl.classList.add('tts-readable');
+    resultOutcomeEl.setAttribute('data-tts-label', 'Battle result');
 
     // Fog of War / Historical Event display
     var fogSection = document.getElementById('fogOfWarSection');
