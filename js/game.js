@@ -70,7 +70,10 @@ function getSideText(field) {
         // tier; a plain string passes through unchanged (backward compatible).
         return getContent(sideVal);
     }
-    return field;
+    // v3.20: a field with no side keys may still be a shared reading-tier object
+    // (strategies whose text is the same for both sides). Resolve the tier here too.
+    // getContent returns a plain string/array unchanged, so this is backward compatible.
+    return getContent(field);
 }
 
 // ============================================================
