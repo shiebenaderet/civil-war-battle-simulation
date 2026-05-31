@@ -1423,7 +1423,7 @@ function renderHistoricalBattle() {
     showGameActions(true);
     showCampaignLogBtn(true);
 
-    // Show tutorial on first battle only
+    // Show the help bar on first battle
     if (gameState.currentBattle === 0) {
         maybeStartTutorial('historical');
     }
@@ -1645,7 +1645,7 @@ function toggleBattleReviewPanel(battleIdx, groupIdx) {
 }
 
 // ============================================================
-// Tutorial / Guided Help System
+// Guided Help System (help bar)
 // ============================================================
 
 
@@ -1706,8 +1706,6 @@ function updateHelpBarText(mode, step) {
 
 // v3.18: tutorial overlay removed — first battle just shows the lightweight help bar.
 function maybeStartTutorial(mode) {
-    var btn = document.getElementById('helpToggleMenuBtn');
-    if (btn) btn.style.display = '';
     showHelpBar(mode);
 }
 
@@ -2160,7 +2158,7 @@ function renderFreeplayBriefing() {
     showGameActions(true);
     showCampaignLogBtn(true);
 
-    // Show tutorial on first battle only
+    // Show the help bar on first battle
     if (gameState.currentBattle === 0) {
         maybeStartTutorial('freeplay');
     }
