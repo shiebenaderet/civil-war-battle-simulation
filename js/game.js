@@ -419,6 +419,17 @@ function advanceFreeplay() {
 
     if (gameState.currentBattle >= battles.length) {
         clearSave();
+        // FP-4: an army wiped out on the final battle is still an attrition defeat,
+        // not a normal completion. checkWarEnd's attrition test runs every battle,
+        // but the all-battles branch returns before it, so check the floor here too.
+        var attritionFloor = gameState.side === 'union' ? ATTRITION_FLOOR.union : ATTRITION_FLOOR.confederacy;
+        if (gameState.soldiers <= attritionFloor) {
+            return {
+                ended: true,
+                reason: 'attrition_defeat',
+                message: 'Your army has been bled white. With too few soldiers left to continue the fight, you are forced to surrender.'
+            };
+        }
         return { ended: true, reason: 'all_battles' };
     }
 
