@@ -84,12 +84,30 @@ After all 13 battles, students reach a final summary screen. Their argument live
 
 ### Free-play Mode (unlocked after Historical Mode)
 
-Once a student completes Historical Mode, Free-play Mode unlocks on the start screen. This is a strategic replay where their decisions actually shape outcomes:
+Once a student completes Historical Mode, Free-play Mode unlocks on the start screen. This is a strategic replay where their decisions actually shape outcomes. In v3.20 it got a lot deeper, and it now matches Historical Mode for accessibility.
+
+**How the war is won or lost:**
 
 - **Momentum system:** victories build power, defeats erode it.
 - **Fog of war:** random events change battle outcomes unpredictably.
 - **Historical events:** side-dependent modifiers based on real events (e.g., finding Lee's lost orders at Antietam).
-- **Class leaderboard:** a Firebase-powered shared leaderboard with room codes, plus a local top-10 fallback if Firebase is unreachable.
+- **Underdog comeback bonus:** when a player falls behind (negative momentum), they get a small boost so an early stumble isn't fatal. This softens the old death-spiral where one bad battle decided everything.
+- **Troops now matter:** the soldiers stat used to be cosmetic. Now if a side bleeds its army below a floor (Union 400,000, Confederacy 250,000), the war ends in an attrition defeat no matter how momentum looks. Reckless, high-casualty play can lose you the war even while you're "winning."
+- **Final-battle decider:** if the war is still close going into the last battle, that battle is framed as the decisive one and its momentum swing is doubled, so the final choice actually decides the war.
+- **Class leaderboard:** a Firebase-powered shared leaderboard with room codes, plus a local top-10 fallback if Firebase is unreachable. It's now a **Leaderboard** item in the menu that opens anytime (the device top-10 plus the class room-code board), instead of only appearing on the end-of-game screen after a full campaign.
+
+**The end-of-campaign screen:**
+
+- **"Did You Change History?" overview:** after a Free-play campaign, a panel compares the player's run to the real Civil War: who won (and whether that matched history), how long the war lasted (an early end versus the full 13 battles), the cost in lives, and the single biggest way they diverged from (or matched) history.
+- **Victory ratings:** the end screen grades the outcome (Crushing Victory, Clear Victory, Narrow Victory, Stalemate, Defeat, Decisive Defeat, or Costly Defeat for an army destroyed by attrition).
+
+**Accessibility parity with Historical Mode (new in v3.20):**
+
+- Read-aloud (text-to-speech) buttons now appear on Free-play battle briefings and results. They were Historical-only before.
+- All 13 Free-play battle briefings are now written in all four reading-level tiers (Most Support, More Support, Standard, Extra Challenge), like Historical content. Changing the reading-level pill updates the briefing live.
+- The Free-play strategy choices (each decision's name, description, and detail) are now written in all four reading levels too, so struggling readers get simpler strategy text. Changing the reading pill updates the decisions live as well.
+- The current battle's act and years show in the top navigation bar during Free-play (it used to be Historical-only), and clicking it opens the campaign log.
+- The Free-play battle progress bar moved to the bottom of the screen to match the Historical Mode layout.
 
 Free-play is the engagement reward, not the assessment. The Battle Journal handout is the assessment.
 
@@ -123,6 +141,7 @@ Two things make this work in a real classroom:
 - A 25-term vocabulary glossary with click-to-define tooltips on the reading text (see Reading levels and differentiation above).
 - Students can revisit any completed battle read-only from the campaign log to catch up their handout, without losing their place or changing their progress.
 - OpenDyslexic font toggle, font size scale, and read-aloud voice/rate controls via the accessibility panel.
+- **Read-aloud (text-to-speech) is broadly available.** Play buttons appear on the main battle reading text and, as of v3.20, on the leader's letter, act introductions, the primary-source voice quotes, the Technology Spotlight, the battle-review screens, and (with the rest of the Free-play accessibility work) on Free-play battle briefings and results.
 - Screen reader support and keyboard navigation.
 - Printable Battle Journal handout in four differentiation tiers.
 - The Help menu has an "Email Mr. B" button (a mailto link) for students who want to reach the teacher.
@@ -276,6 +295,7 @@ civil-war-battle-simulation/
 <details>
 <summary>Expand version history</summary>
 
+- **v3.20.0** - Free-play Mode overhaul and accessibility parity. Troops now matter (an army bled below its floor loses to attrition), an underdog comeback bonus softens early stumbles, a "Did You Change History?" end overview compares the run to the real war, victory ratings grade the outcome, and a final-battle decider doubles the stakes when the war is close. Free-play now matches Historical Mode for accessibility: read-aloud on briefings and results, all 13 briefings and all strategy choices written in four reading levels, the current act shown in the top bar, and the leaderboard openable from the menu anytime. Read-aloud coverage also expanded across the leader letter, act intros, primary-source voices, and battle-review screens.
 - **v3.19.0** - Lower the on-ramp and redesign the journal. The intro splash and how-to-play tutorial are gone; the app boots straight to mode selection (a one-line help bar remains, toggleable from the menu). Historical Mode is now Union-only, with a streamlined setup screen (name and reading level, then "Begin Your Journey"). Reading tiers show as 1 to 4 stars with support-level names (★ Most Support to ★★★★ Extra Challenge). A new always-visible "Key idea, write this in your journal" callout leads the after-battle screen, and the deeper content (A Voice From the Field, The Bigger Picture, Technology Spotlight) is consolidated into three folder tabs. Full Battle Journal redesign: a per-battle log, then act checkpoints, then the final answer, now in four tiers, with lower tiers logging fewer battles to cut writing load. New 25-term vocabulary glossary with click-to-define tooltips. Students can revisit any completed battle read-only from the campaign log. The current act shows centered in the top bar. The mid-battle difficulty toggle now preserves your exact place in the battle.
 - **v3.18.0** - Per-period room codes for the teacher dashboard. Replaces the single shared room code with four per-period codes (AMS-p1 through AMS-p5) and adds password-gated delete/clear controls on the dashboard. Strangers from other classrooms no longer appear in the dashboard because every dashboard write now requires a valid class code. New student-facing class code field (masked) on the name entry form, plus a "your teacher won't see your progress" banner with inline code entry for kids who skip it. Dashboard subscribes to all four period rooms in parallel and merges entries.
 - **v3.17.1** - Handout-first reflection cleanup. The in-app reflection textarea, sentence-starter chips, RACE reminder, and "Need a hint?" tip are hidden; a clear "Reflect on your Battle Journal" callout replaces the typing UI. PDF export retired since the handout is the only capture surface now. Teacher Jump-to-Battle hidden recovery shortcut: type `jump` anywhere outside a text input to open a battle picker.
