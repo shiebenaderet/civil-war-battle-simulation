@@ -232,13 +232,10 @@ function setupEventListeners() {
         }
     });
 
-    // Keyboard: Escape closes modals and tutorial
+    // Keyboard: Escape closes modals
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') {
-            var tutorialOverlay = document.getElementById('tutorialOverlay');
-            if (tutorialOverlay && tutorialOverlay.style.display === 'block') {
-                endTutorial();
-            } else if (screens.campaignLogModal.style.display === 'block') {
+            if (screens.campaignLogModal.style.display === 'block') {
                 closeCampaignLog();
             } else {
                 var settingsMenu = document.getElementById('settingsMenu');
@@ -253,8 +250,6 @@ function setupEventListeners() {
     // Tutorial / Help
     document.getElementById('helpToggleMenuBtn').addEventListener('click', toggleHelpBar);
     document.getElementById('helpBarClose').addEventListener('click', hideHelpBar);
-    document.getElementById('tutorialNext').addEventListener('click', nextTutorialStep);
-    document.getElementById('tutorialSkip').addEventListener('click', endTutorial);
 
     // Teacher tip toggle
     document.getElementById('teacherTipToggle').addEventListener('click', toggleTeacherTip);

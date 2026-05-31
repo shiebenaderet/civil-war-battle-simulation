@@ -1648,53 +1648,6 @@ function toggleBattleReviewPanel(battleIdx, groupIdx) {
 // Tutorial / Guided Help System
 // ============================================================
 
-var tutorialSteps = {
-    historical: [
-        {
-            target: '.battle-visuals',
-            text: 'This is the battle artwork. You can switch between the painting and a tactical battle map using the tabs above it.',
-            position: 'below'
-        },
-        {
-            target: '#sectionIntel',
-            fallback: '#sectionSituation',
-            text: 'This section gives you background on the battle \u2014 the forces, commanders, and advantages on each side. Read it to understand what both sides are facing.',
-            position: 'below'
-        },
-        {
-            target: '#sectionSituation',
-            text: 'The Situation puts you in the shoes of your chosen side. Read carefully \u2014 you\'ll need to make a decision next!',
-            position: 'below'
-        },
-        {
-            target: '#narrativeContinueBtn',
-            text: 'Click Continue to move through the steps of each battle. The pills at the top show which step you\'re on.',
-            position: 'above'
-        },
-        {
-            target: '.step-pills',
-            text: 'These show your progress through each battle: Briefing \u2192 Your Call \u2192 What Happened \u2192 Reflect. You\'ll do this for all 13 battles!',
-            position: 'below'
-        }
-    ],
-    freeplay: [
-        {
-            target: '.battle-visuals',
-            text: 'Each battle has artwork and a tactical map. Use the map to help plan your strategy!',
-            position: 'below'
-        },
-        {
-            target: '.strategy-cards',
-            text: 'Choose one of three strategies for each battle. Each has different strengths \u2014 read the details before picking.',
-            position: 'below'
-        },
-        {
-            target: '.momentum-display',
-            text: 'Your momentum builds with victories and drops with defeats. Higher momentum gives you a power bonus in future battles!',
-            position: 'below'
-        }
-    ]
-};
 
 var helpTips = {
     historical: [
@@ -1710,128 +1663,6 @@ var helpTips = {
     ]
 };
 
-var currentTutorialStep = 0;
-var currentTutorialMode = '';
-var previousHighlight = null;
-
-function shouldShowTutorial(mode) {
-    var key = 'civilWarTutorial_' + mode;
-    return !localStorage.getItem(key);
-}
-
-function markTutorialDone(mode) {
-    var key = 'civilWarTutorial_' + mode;
-    localStorage.setItem(key, 'done');
-}
-
-function startTutorial(mode) {
-    currentTutorialMode = mode;
-    currentTutorialStep = 0;
-
-    var steps = tutorialSteps[mode];
-    if (!steps || steps.length === 0) return;
-
-    document.getElementById('tutorialOverlay').style.display = 'block';
-    showTutorialStep();
-}
-
-function showTutorialStep() {
-    var steps = tutorialSteps[currentTutorialMode];
-    if (currentTutorialStep >= steps.length) {
-        endTutorial();
-        return;
-    }
-
-    var step = steps[currentTutorialStep];
-    var target = document.querySelector(step.target);
-
-    // Try fallback target if primary isn't visible
-    if ((!target || target.offsetParent === null || target.style.display === 'none') && step.fallback) {
-        target = document.querySelector(step.fallback);
-    }
-
-    // Remove previous highlight
-    if (previousHighlight) {
-        previousHighlight.classList.remove('tutorial-highlight');
-    }
-
-    // Update step count
-    document.getElementById('tutorialStepCount').textContent =
-        'Step ' + (currentTutorialStep + 1) + ' of ' + steps.length;
-
-    // Update text
-    document.getElementById('tutorialText').textContent = step.text;
-
-    // Update button text
-    var nextBtn = document.getElementById('tutorialNext');
-    nextBtn.textContent = (currentTutorialStep === steps.length - 1) ? 'Got It!' : 'Next';
-
-    if (target && target.offsetParent !== null) {
-        // Highlight element
-        target.classList.add('tutorial-highlight');
-        previousHighlight = target;
-
-        // Scroll into view
-        target.scrollIntoView({ behavior: 'smooth', block: 'center' });
-
-        // Position tooltip near target
-        setTimeout(function() {
-            positionTooltip(target, step.position || 'below');
-        }, 300);
-    } else {
-        // No visible target - center tooltip
-        previousHighlight = null;
-        var tooltip = document.getElementById('tutorialTooltip');
-        tooltip.style.top = '50%';
-        tooltip.style.left = '50%';
-        tooltip.style.transform = 'translate(-50%, -50%)';
-    }
-}
-
-function positionTooltip(target, position) {
-    var tooltip = document.getElementById('tutorialTooltip');
-    var rect = target.getBoundingClientRect();
-    var tooltipRect = tooltip.getBoundingClientRect();
-    var margin = 12;
-
-    tooltip.style.transform = 'none';
-
-    var left = Math.max(margin, Math.min(
-        rect.left + (rect.width / 2) - (tooltipRect.width / 2),
-        window.innerWidth - tooltipRect.width - margin
-    ));
-
-    if (position === 'above') {
-        var top = rect.top - tooltipRect.height - margin;
-        if (top < margin) top = rect.bottom + margin;
-        tooltip.style.top = top + 'px';
-    } else {
-        var top = rect.bottom + margin;
-        if (top + tooltipRect.height > window.innerHeight - margin) {
-            top = rect.top - tooltipRect.height - margin;
-        }
-        tooltip.style.top = top + 'px';
-    }
-
-    tooltip.style.left = left + 'px';
-}
-
-function nextTutorialStep() {
-    currentTutorialStep++;
-    showTutorialStep();
-}
-
-function endTutorial() {
-    document.getElementById('tutorialOverlay').style.display = 'none';
-
-    if (previousHighlight) {
-        previousHighlight.classList.remove('tutorial-highlight');
-        previousHighlight = null;
-    }
-
-    markTutorialDone(currentTutorialMode);
-    showHelpBar(currentTutorialMode);
-}
 
 // Help Bar (persistent, toggleable)
 var helpBarVisible = false;
@@ -1873,16 +1704,11 @@ function updateHelpBarText(mode, step) {
     if (el) el.textContent = text;
 }
 
-// Initialize tutorial on first battle
+// v3.18: tutorial overlay removed — first battle just shows the lightweight help bar.
 function maybeStartTutorial(mode) {
     var btn = document.getElementById('helpToggleMenuBtn');
-    btn.style.display = '';
-
-    if (shouldShowTutorial(mode)) {
-        setTimeout(function() { startTutorial(mode); }, 600);
-    } else if (helpBarVisible) {
-        updateHelpBarText(mode, narrativeStep);
-    }
+    if (btn) btn.style.display = '';
+    showHelpBar(mode);
 }
 
 function advanceNarrative() {
