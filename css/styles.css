@@ -4409,12 +4409,67 @@ a.settings-item:visited { color: var(--color-ink); }
    LEARN MORE TABBED PANEL (v3.19)
    =============================================== */
 
-.learn-more-section .learn-tabs {
-    margin-bottom: var(--space-3);
+/* Manila folder tabs: active tab sits "in front", connected to the panel
+   below; inactive tabs sit recessed and darker "behind". Scoped to
+   .learn-tabs only so the artwork/map .visual-tab styling is untouched. */
+.learn-more-section .learn-tabs,
+.learn-tabs {
+    display: flex;
+    align-items: flex-end;
+    gap: var(--space-1);
+    margin-bottom: 0;
+    /* the strip baseline the active tab merges into */
+    border-bottom: 2px solid var(--color-rule-strong);
 }
 
+/* Inactive (recessed) folder tabs */
+.learn-tabs .visual-tab {
+    position: relative;
+    background: var(--color-paper-deep);
+    color: var(--color-ink-muted);
+    font-family: var(--font-mono);
+    font-size: var(--font-size-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-top: 5px;
+    padding: var(--space-1) var(--space-3);
+    border: 1px solid var(--color-rule-strong);
+    border-radius: 6px 6px 0 0;
+    cursor: pointer;
+    transition: background 0.12s ease, color 0.12s ease,
+        margin-top 0.12s ease, padding 0.12s ease;
+}
+
+/* Hover: lift and darken so it reads as interactive */
+.learn-tabs .visual-tab:not(.active):hover {
+    background: var(--color-paper-elev);
+    color: var(--color-ink);
+    margin-top: 3px;
+}
+
+/* Active (in front) folder tab — accent top edge, taller, merged with panel */
+.learn-tabs .visual-tab.active {
+    background: var(--color-paper-card);
+    color: var(--color-ink);
+    font-weight: 700;
+    margin-top: 0;
+    padding-top: var(--space-2);
+    padding-bottom: var(--space-2);
+    border: 1px solid var(--color-rule-strong);
+    border-top: 3px solid var(--color-accent);
+    /* the folder-tab connect trick: cover the strip's border so the tab
+       merges into the content panel below */
+    border-bottom-color: var(--color-paper-card);
+    margin-bottom: -2px;
+    z-index: 1;
+}
+
+/* Content panel: card surface with a border the active tab joins into */
 .learn-tab-body {
-    padding: var(--space-2) 0 var(--space-1);
+    background: var(--color-paper-card);
+    border: 1px solid var(--color-rule-strong);
+    border-top: none;
+    padding: var(--space-3);
 }
 
 .learn-tab-body .narrative-text {
