@@ -1433,6 +1433,8 @@ function renderHistoricalBattle() {
     if (nudgeOutcome) nudgeOutcome.style.display = 'none';
     var nudgeReflection = document.getElementById('noteNudgeReflection');
     if (nudgeReflection) nudgeReflection.style.display = 'none';
+    var keyIdeaCalloutReset = document.getElementById('keyIdeaCallout');
+    if (keyIdeaCalloutReset) keyIdeaCalloutReset.style.display = 'none';
     document.getElementById('teacherTip').style.display = 'none';
 
     // Button text

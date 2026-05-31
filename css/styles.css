@@ -4370,16 +4370,16 @@ a.settings-item:visited { color: var(--color-ink); }
     border-top: 1px solid var(--color-rule);
     border-right: 1px solid var(--color-rule);
     border-bottom: 1px solid var(--color-rule);
-    padding: 12px 16px;
-    margin: 16px 0;
+    padding: var(--space-3) var(--space-4);
+    margin: var(--space-4) 0;
 }
 .key-idea-label {
     font-family: var(--font-mono);
-    font-size: 0.8rem;
+    font-size: var(--font-size-xs);
     text-transform: uppercase;
     letter-spacing: 0.05em;
     color: var(--color-accent);
-    margin-bottom: 6px;
+    margin-bottom: var(--space-2);
 }
 .key-idea-text {
     font-family: var(--font-serif);
