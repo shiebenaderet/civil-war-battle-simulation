@@ -2719,12 +2719,39 @@ function showCampaignLog() {
             var isCurrent = i === gameState.currentBattle;
             var cssClass = isCompleted ? 'victory' : (isCurrent ? '' : '');
             var status = isCompleted ? 'Complete' : (isCurrent ? 'Current' : 'Upcoming');
-            timelineHtml += '<div class="timeline-item ' + cssClass + '">' +
+            // Completed battles are clickable to open a read-only review.
+            // Current/Upcoming battles are NOT clickable.
+            var clickAttrs = isCompleted
+                ? ' timeline-clickable" data-battle-index="' + i + '" role="button" tabindex="0"'
+                : '"';
+            var reviewHint = isCompleted ? ' <span class="timeline-review-hint">Review &rsaquo;</span>' : '';
+            timelineHtml += '<div class="timeline-item ' + cssClass + clickAttrs + '>' +
                 '<div class="timeline-battle">' + (i + 1) + '. ' + battles[i].name + '</div>' +
-                '<div class="timeline-details">' + battles[i].date + ' &mdash; ' + status + '</div>' +
+                '<div class="timeline-details">' + battles[i].date + ' &mdash; ' + status + reviewHint + '</div>' +
                 '</div>';
         }
         timeline.innerHTML = timelineHtml;
+
+        // Wire revisit clicks via delegation. innerHTML is rebuilt each open,
+        // so a single delegated listener on the timeline container is robust.
+        // Guard against attaching more than once.
+        if (!timeline.dataset.revisitWired) {
+            timeline.dataset.revisitWired = '1';
+            timeline.addEventListener('click', function(e) {
+                var item = e.target.closest ? e.target.closest('.timeline-clickable') : null;
+                if (!item) return;
+                var idx = parseInt(item.getAttribute('data-battle-index'), 10);
+                if (!isNaN(idx)) openBattleRevisit(idx);
+            });
+            timeline.addEventListener('keydown', function(e) {
+                if (e.key !== 'Enter' && e.key !== ' ' && e.key !== 'Spacebar') return;
+                var item = e.target.closest ? e.target.closest('.timeline-clickable') : null;
+                if (!item) return;
+                e.preventDefault();
+                var idx = parseInt(item.getAttribute('data-battle-index'), 10);
+                if (!isNaN(idx)) openBattleRevisit(idx);
+            });
+        }
     }
 
     // Reset to progress tab
@@ -2991,6 +3018,66 @@ function closeCampaignLog() {
     // Restore summary visibility for next open
     var summary = document.querySelector('.campaign-overview');
     if (summary) summary.style.display = '';
+}
+
+// ============================================================
+// Battle Revisit (READ-ONLY review of a completed battle)
+// ------------------------------------------------------------
+// Opened from the campaign log when a student clicks a COMPLETED battle.
+// HARD RULE: this is a pure READ view. It must NOT mutate game state
+// (gameState.currentBattle, narrativeStep, gameState.responses, etc.) and
+// must NOT call any advancing/rendering function (renderHistoricalBattle,
+// advanceNarrative, enterBattleScreen, saveHistoricalResponse). It only reads
+// battles[index] and gameState.responses[index] and writes display markup.
+// ============================================================
+
+function openBattleRevisit(index) {
+    if (typeof battles === 'undefined' || !battles[index]) return;
+    var battle = battles[index];
+    var h = battle.historical || {};
+    var resp = (gameState.responses && gameState.responses[index]) ? gameState.responses[index] : null;
+    var body = document.getElementById('revisitBody');
+    var title = document.getElementById('revisitTitle');
+    if (!body || !title) return;
+
+    title.textContent = battle.name;
+
+    // All student-derived text (wwydChoice) is escaped via escapeHtml before
+    // being placed into the HTML string. getContent() resolves the student's
+    // tier (reads gameState.difficulty). h.outcome is a plain string.
+    var html = '';
+    html += '<div class="revisit-date">' + escapeHtml(battle.date) + '</div>';
+
+    if (resp) {
+        var matched = resp.wwydMatchedHistory;
+        html += '<div class="revisit-choice">';
+        html += '<div class="revisit-label">What you picked</div>';
+        html += '<p>' + escapeHtml(resp.wwydChoice || '(no choice recorded)') + '</p>';
+        html += '<div class="revisit-badge ' + (matched ? 'matched' : 'different') + '">' +
+                (matched ? 'Matched history' : 'You chose a different path') + '</div>';
+        html += '</div>';
+    }
+
+    html += '<div class="revisit-section"><div class="revisit-label">What really happened</div><p>' +
+            escapeHtml(getContent(h.whatHappened)) + '</p>';
+    if (h.outcome) html += '<p class="revisit-outcome">' + escapeHtml(h.outcome) + '</p>';
+    html += '</div>';
+
+    html += '<div class="revisit-keyidea"><div class="revisit-label">Key idea</div><p>' +
+            escapeHtml(getContent(h.keyIdea)) + '</p></div>';
+
+    html += '<div class="revisit-section"><div class="revisit-label">The bigger picture</div><p>' +
+            escapeHtml(getContent(h.biggerPicture)) + '</p></div>';
+
+    body.innerHTML = html;
+
+    var modal = document.getElementById('battleRevisitModal');
+    if (modal) modal.style.display = 'block';
+}
+
+function closeBattleRevisit() {
+    var m = document.getElementById('battleRevisitModal');
+    if (m) m.style.display = 'none';
 }
 
 // ============================================================

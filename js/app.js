@@ -232,10 +232,28 @@ function setupEventListeners() {
         }
     });
 
+    // Battle revisit (read-only review) modal: close button + backdrop click
+    var closeRevisitBtn = document.getElementById('closeRevisitBtn');
+    if (closeRevisitBtn) {
+        closeRevisitBtn.addEventListener('click', closeBattleRevisit);
+    }
+    var battleRevisitModal = document.getElementById('battleRevisitModal');
+    if (battleRevisitModal) {
+        battleRevisitModal.addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeBattleRevisit();
+            }
+        });
+    }
+
     // Keyboard: Escape closes modals
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') {
-            if (screens.campaignLogModal.style.display === 'block') {
+            // Revisit modal takes priority (it can open on top of the campaign log).
+            var revisitModal = document.getElementById('battleRevisitModal');
+            if (revisitModal && revisitModal.style.display === 'block') {
+                closeBattleRevisit();
+            } else if (screens.campaignLogModal.style.display === 'block') {
                 closeCampaignLog();
             } else {
                 var settingsMenu = document.getElementById('settingsMenu');
