@@ -170,6 +170,29 @@ function setupEventListeners() {
     // Campaign log + war map shortcut
     document.getElementById('campaignLogMenuBtn').addEventListener('click', showCampaignLog);
     document.getElementById('warMapMenuBtn').addEventListener('click', showWarMapDirect);
+
+    // Leaderboard (nav menu) — discoverable anytime, not just after a game.
+    var leaderboardMenuBtn = document.getElementById('leaderboardMenuBtn');
+    if (leaderboardMenuBtn) {
+        leaderboardMenuBtn.addEventListener('click', function() {
+            var sm = document.getElementById('settingsMenu');
+            if (sm) sm.classList.remove('show');
+            document.getElementById('settingsBtn').setAttribute('aria-expanded', 'false');
+            openLeaderboardModal();
+        });
+    }
+    var closeLeaderboardBtn = document.getElementById('closeLeaderboardBtn');
+    if (closeLeaderboardBtn) {
+        closeLeaderboardBtn.addEventListener('click', closeLeaderboardModal);
+    }
+    var leaderboardModal = document.getElementById('leaderboardModal');
+    if (leaderboardModal) {
+        leaderboardModal.addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeLeaderboardModal();
+            }
+        });
+    }
     // v3.18: centered navbar act label opens the campaign log
     var navActLabel = document.getElementById('navbarActLabel');
     if (navActLabel) navActLabel.addEventListener('click', showCampaignLog);
@@ -254,8 +277,11 @@ function setupEventListeners() {
         if (e.key === 'Escape') {
             // Revisit modal takes priority (it can open on top of the campaign log).
             var revisitModal = document.getElementById('battleRevisitModal');
+            var leaderboardModalEl = document.getElementById('leaderboardModal');
             if (revisitModal && revisitModal.style.display === 'block') {
                 closeBattleRevisit();
+            } else if (leaderboardModalEl && leaderboardModalEl.style.display === 'block') {
+                closeLeaderboardModal();
             } else if (screens.campaignLogModal.style.display === 'block') {
                 closeCampaignLog();
             } else {

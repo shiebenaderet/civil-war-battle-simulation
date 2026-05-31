@@ -2341,6 +2341,13 @@ a.settings-item:visited { color: var(--color-ink); }
     margin-top: var(--space-6);
 }
 
+/* Device-board wrapper inside the menu Leaderboard modal. Distinct class (not
+   .scoreboard-table-wrapper) so the end-game save form's
+   querySelector('.scoreboard-table-wrapper') still targets the end screen. */
+.menu-leaderboard-device-wrapper {
+    margin-top: var(--space-2);
+}
+
 .scoreboard-table {
     width: 100%;
     border-collapse: collapse;

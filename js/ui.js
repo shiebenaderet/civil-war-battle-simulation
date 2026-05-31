@@ -2670,6 +2670,69 @@ function renderClassLeaderboardTable(entries) {
         '</tr></thead><tbody>' + rows + '</tbody></table>';
 }
 
+// ------------------------------------------------------------
+// Leaderboard modal (menu-discoverable, view-only device board)
+// ------------------------------------------------------------
+// The end-of-game flow already builds the device + class leaderboards inside
+// #endGameScreen. To make them reachable from the menu ANYTIME, this modal:
+//   1. Renders the device top-10 into its own container (view-only: no
+//      Save-Score form, since saving only makes sense right after a game).
+//   2. MOVES the single #classLeaderboardSection node into the modal so the
+//      live join/leave + class board works here too (showClassLeaderboard()
+//      operates on it by id regardless of where it lives in the DOM).
+//   3. On close, RESTORES #classLeaderboardSection to its original parent and
+//      position so the end-of-game screen still shows it correctly.
+// We capture the original parent + next sibling before moving so restore is
+// exact even if siblings change.
+
+var _leaderboardClassSectionHome = null; // { parent, nextSibling }
+
+function openLeaderboardModal() {
+    // 1. Device leaderboard (read-only, no save form)
+    var deviceMount = document.getElementById('menuLeaderboardDeviceTable');
+    if (deviceMount && typeof getScoreboard === 'function' && typeof renderScoreboardTable === 'function') {
+        deviceMount.innerHTML = renderScoreboardTable(getScoreboard());
+    }
+
+    // 2. Relocate the class leaderboard section into the modal, remembering home
+    var classSection = document.getElementById('classLeaderboardSection');
+    var mount = document.getElementById('menuLeaderboardClassMount');
+    if (classSection && mount) {
+        _leaderboardClassSectionHome = {
+            parent: classSection.parentNode,
+            nextSibling: classSection.nextSibling
+        };
+        mount.appendChild(classSection);
+        if (typeof showClassLeaderboard === 'function') {
+            showClassLeaderboard();
+        }
+    }
+
+    var modal = document.getElementById('leaderboardModal');
+    if (modal) modal.style.display = 'block';
+}
+
+function closeLeaderboardModal() {
+    // Restore #classLeaderboardSection to its original parent/position so the
+    // end-of-game leaderboard flow keeps working exactly as before.
+    var classSection = document.getElementById('classLeaderboardSection');
+    if (classSection && _leaderboardClassSectionHome && _leaderboardClassSectionHome.parent) {
+        var home = _leaderboardClassSectionHome;
+        if (home.nextSibling && home.nextSibling.parentNode === home.parent) {
+            home.parent.insertBefore(classSection, home.nextSibling);
+        } else {
+            home.parent.appendChild(classSection);
+        }
+        // The end screen controls its own visibility; hide it again here so it
+        // does not flash on the end screen before that flow re-shows it.
+        classSection.style.display = 'none';
+    }
+    _leaderboardClassSectionHome = null;
+
+    var modal = document.getElementById('leaderboardModal');
+    if (modal) modal.style.display = 'none';
+}
+
 function escapeHtml(text) {
     var div = document.createElement('div');
     div.textContent = text;
