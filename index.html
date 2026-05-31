@@ -710,12 +710,6 @@
         <!-- ============================= -->
         <div class="screen" id="freeplayBriefing" style="display:none;" role="region" aria-label="Battle briefing and strategy selection">
             <div class="freeplay-status">
-                <div class="battle-progress">
-                    <div class="progress-label" id="freeplayProgressLabel">Battle 1 of 13</div>
-                    <div class="progress-bar">
-                        <div class="progress-fill" id="freeplayProgressFill" style="width: 7.7%"></div>
-                    </div>
-                </div>
                 <div class="war-stats">
                     <div class="stat-item">
                         <span class="stat-label">Wins</span>
@@ -774,6 +768,14 @@
             <div class="strategy-choices" role="group" aria-label="Choose your strategy">
                 <h3 class="choices-heading">Choose Your Strategy</h3>
                 <div class="strategy-list" id="strategyList"></div>
+            </div>
+
+            <!-- v3.20: progress moved to the bottom to match Historical Mode -->
+            <div class="battle-progress">
+                <div class="progress-label" id="freeplayProgressLabel">Battle 1 of 13</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="freeplayProgressFill" style="width: 7.7%"></div>
+                </div>
             </div>
         </div>
 

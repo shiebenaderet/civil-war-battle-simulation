@@ -67,9 +67,9 @@ function showScreen(screenId) {
         if (typeof hideResetBattleMenuItem === 'function') hideResetBattleMenuItem();
     }
 
-    // v3.18: navbar act label only lives on the historical battle screen.
-    // renderHistoricalBattle shows it; hide it everywhere else so it never lingers.
-    if (screenId !== 'historicalScreen') {
+    // v3.18: navbar act label lives on the battle screens (historical + freeplay
+    // briefing). Those renderers show it; hide it everywhere else so it never lingers.
+    if (screenId !== 'historicalScreen' && screenId !== 'freeplayBriefing') {
         var navActLabel = document.getElementById('navbarActLabel');
         if (navActLabel) navActLabel.style.display = 'none';
     }
@@ -2136,6 +2136,14 @@ function renderFreeplayBriefing() {
         }
 
         datelines.forEach(function(el) { el.textContent = datelineText; });
+
+        // v3.20: also drive the persistent navbar act label (shown in Historical;
+        // was blank in Free-play). Clicking it opens the campaign log, same as Historical.
+        var navAct = document.getElementById('navbarActLabel');
+        if (navAct) {
+            navAct.textContent = datelineText;
+            navAct.style.display = datelineText ? '' : 'none';
+        }
     })();
 
     // Progress
