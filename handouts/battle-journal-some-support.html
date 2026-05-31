@@ -205,6 +205,27 @@ body { font-family: 'Old Standard TT', Georgia, serif; font-size: 14pt; line-hei
 .cont-line .left-cont { color: var(--ink-soft); }
 .cont-line .right-cont { font-style: italic; }
 
+/* Per-battle log */
+.act-section { margin: 12px 0; break-inside: avoid; page-break-inside: avoid; }
+.act-section-head {
+    font-family: 'Special Elite', monospace; font-size: 10pt;
+    color: var(--paper); background: var(--ink);
+    padding: 3px 9px; letter-spacing: 0.06em; text-transform: uppercase;
+    display: inline-block; margin-bottom: 6px;
+}
+.battle-row {
+    border: 1px solid var(--rule-strong); background: var(--card);
+    padding: 8px 12px; margin: 6px 0;
+    break-inside: avoid; page-break-inside: avoid;
+}
+.battle-row .bname { font-family: 'Old Standard TT', serif; font-weight: 700; font-size: 13pt; }
+.battle-row .frow { display: grid; grid-template-columns: 1fr auto; gap: 10px; align-items: baseline; margin-top: 4px; }
+.battle-row .matched { font-family: 'Special Elite', monospace; font-size: 9.5pt; white-space: nowrap; }
+.battle-row .matched .box { display: inline-block; width: 0.9em; height: 0.9em; border: 1.4px solid var(--ink); margin: 0 3px 0 8px; vertical-align: -1px; }
+.reflect-box { background: var(--card-warm); border: 1px solid var(--rule-strong); padding: 8px 12px; margin: 6px 0 14px 0; break-inside: avoid; page-break-inside: avoid; }
+.reflect-box .rlbl { font-family: 'Special Elite', monospace; font-size: 9.5pt; color: var(--brand); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
+.reflect-box .rtext { font-size: 12.5pt; margin-bottom: 6px; }
+
 @media print {
     html, body {
         background: white !important;
@@ -238,19 +259,24 @@ body { font-family: 'Old Standard TT', Georgia, serif; font-size: 14pt; line-hei
     .act-grid { gap: 6px; margin: 6px 0; }
     .lineW { height: 1.2em; margin: 1px 0; }
     .foot { display: none; }
+
+    /* Per-battle log B&W overrides */
+    .battle-row, .reflect-box { background: white !important; border: 1px solid black; break-inside: avoid; page-break-inside: avoid; }
+    .act-section-head { background: white !important; color: black !important; border: 1px solid black; }
+    .battle-row .matched .box { border-color: black; }
 }
 </style>
 </head>
 <body>
 <div class="print-toolbar">
-    <span class="hint">Battle Journal · Some Support · Large Text</span>
+    <span class="hint">Battle Journal · ★★ More Support</span>
     <button onclick="window.print()">Print Handout</button>
 </div>
 
 <div class="page">
 
     <div class="top-line">
-        <div class="left"><span class="mod-tag">Some Support · Large Text</span></div>
+        <div class="left"><span class="mod-tag">★★ · More Support</span></div>
         <div class="namebar">
             Name <b></b>
             Period <b style="min-width:60px;"></b>
@@ -266,66 +292,188 @@ body { font-family: 'Old Standard TT', Georgia, serif; font-size: 14pt; line-hei
     <div class="pat-list">
         <div class="lbl">What to do · while you play Historical Mode</div>
         <ol>
-            <li>After each <b>Act review screen</b>, fill in that act's box. Don't wait until the end of the game.</li>
-            <li>The 8 important words are on the back. <b>Circle each one</b> when you see it in the game.</li>
-            <li>Your big question: <b>How did the Union win the Civil War?</b> You will use your notes to answer it on the back.</li>
+            <li>After <b>each battle</b>, write your choice, check whether it <b>matched history</b>, and <b>sum up the key idea</b> in your own words (don't just copy it).</li>
+            <li>After each <b>Act review screen</b>, answer that act's <b>reflection question</b> in the box.</li>
+            <li>Your final job: <b>How was the Union able to defeat the Confederacy?</b> Build evidence as you play, then answer on the back.</li>
         </ol>
     </div>
 
-    <div class="act-grid">
+    <div class="act-section">
+        <span class="act-section-head">Act I · The War Begins · 1861-1862</span>
 
-        <div class="act-box">
-            <span class="act-tag">Act I</span>
-            <div class="act-title">The War Begins</div>
-            <div class="act-battles">1861-1862 · Fort Sumter · Bull Run · Shiloh</div>
-            <div class="field-lbl">What happened in this act?</div>
-            <div class="stem">Try: "In Act I, ______ happened. The Union ______."</div>
+        <div class="battle-row">
+            <div class="bname">Fort Sumter</div>
+            <div class="frow"><span class="field-lbl">My choice</span><span class="matched">Matched history?<span class="box"></span>Yes<span class="box"></span>No</span></div>
+            <span class="lineW"></span>
+            <div class="field-lbl" style="margin-top:6px;">Why it mattered (sum up the key idea in your own words)</div>
             <span class="lineW"></span>
             <span class="lineW"></span>
-            <div class="field-lbl">Did the Union or South do better in this act?</div>
+            <div class="stem">Start with: "This battle mattered because..."</div>
+        </div>
+
+        <div class="battle-row">
+            <div class="bname">Bull Run</div>
+            <div class="frow"><span class="field-lbl">My choice</span><span class="matched">Matched history?<span class="box"></span>Yes<span class="box"></span>No</span></div>
+            <span class="lineW"></span>
+            <div class="field-lbl" style="margin-top:6px;">Why it mattered (sum up the key idea in your own words)</div>
+            <span class="lineW"></span>
+            <span class="lineW"></span>
+            <div class="stem">Start with: "This battle mattered because..."</div>
+        </div>
+
+        <div class="battle-row">
+            <div class="bname">Shiloh</div>
+            <div class="frow"><span class="field-lbl">My choice</span><span class="matched">Matched history?<span class="box"></span>Yes<span class="box"></span>No</span></div>
+            <span class="lineW"></span>
+            <div class="field-lbl" style="margin-top:6px;">Why it mattered (sum up the key idea in your own words)</div>
+            <span class="lineW"></span>
+            <span class="lineW"></span>
+            <div class="stem">Start with: "This battle mattered because..."</div>
+        </div>
+
+        <div class="reflect-box">
+            <div class="rlbl">Act I reflection · answer after the Act I review screen</div>
+            <div class="rtext">After Shiloh, Grant said the only way to save the country was to completely beat the South, not just win one battle. Why do you think seeing so much fighting changed how he thought about the war?</div>
+            <span class="lineW"></span>
             <span class="lineW"></span>
             <span class="lineW"></span>
         </div>
+    </div>
 
-        <div class="act-box">
-            <span class="act-tag">Act II</span>
-            <div class="act-title">A New Kind of War</div>
-            <div class="act-battles">1862-1863 · Antietam · Fredericksburg · Chancellorsville</div>
-            <div class="field-lbl">What happened in this act?</div>
-            <div class="stem">Try: "In Act II, ______ happened. This changed ______."</div>
+    <div class="act-section">
+        <span class="act-section-head">Act II · A New Kind of War · 1862-1863</span>
+
+        <div class="battle-row">
+            <div class="bname">Antietam</div>
+            <div class="frow"><span class="field-lbl">My choice</span><span class="matched">Matched history?<span class="box"></span>Yes<span class="box"></span>No</span></div>
+            <span class="lineW"></span>
+            <div class="field-lbl" style="margin-top:6px;">Why it mattered (sum up the key idea in your own words)</div>
             <span class="lineW"></span>
             <span class="lineW"></span>
-            <div class="field-lbl">Did the Union or South do better in this act?</div>
+            <div class="stem">Start with: "This battle mattered because..."</div>
+        </div>
+
+        <div class="battle-row">
+            <div class="bname">Fredericksburg</div>
+            <div class="frow"><span class="field-lbl">My choice</span><span class="matched">Matched history?<span class="box"></span>Yes<span class="box"></span>No</span></div>
+            <span class="lineW"></span>
+            <div class="field-lbl" style="margin-top:6px;">Why it mattered (sum up the key idea in your own words)</div>
+            <span class="lineW"></span>
+            <span class="lineW"></span>
+            <div class="stem">Start with: "This battle mattered because..."</div>
+        </div>
+
+        <div class="battle-row">
+            <div class="bname">Chancellorsville</div>
+            <div class="frow"><span class="field-lbl">My choice</span><span class="matched">Matched history?<span class="box"></span>Yes<span class="box"></span>No</span></div>
+            <span class="lineW"></span>
+            <div class="field-lbl" style="margin-top:6px;">Why it mattered (sum up the key idea in your own words)</div>
+            <span class="lineW"></span>
+            <span class="lineW"></span>
+            <div class="stem">Start with: "This battle mattered because..."</div>
+        </div>
+
+        <div class="reflect-box">
+            <div class="rlbl">Act II reflection · answer after the Act II review screen</div>
+            <div class="rtext">Lee won a huge battle, but he lost his best general, Stonewall Jackson. Was this victory worth it? When can winning still feel like losing?</div>
+            <span class="lineW"></span>
             <span class="lineW"></span>
             <span class="lineW"></span>
         </div>
+    </div>
 
-        <div class="act-box">
-            <span class="act-tag">Act III</span>
-            <div class="act-title">The Tide Turns</div>
-            <div class="act-battles">1863 · Vicksburg · Gettysburg · Chickamauga</div>
-            <div class="field-lbl">What happened in this act?</div>
-            <div class="stem">Try: "The Union won at ______. This was important because ______."</div>
+    <div class="act-section">
+        <span class="act-section-head">Act III · The Tide Turns · 1863</span>
+
+        <div class="battle-row">
+            <div class="bname">Vicksburg</div>
+            <div class="frow"><span class="field-lbl">My choice</span><span class="matched">Matched history?<span class="box"></span>Yes<span class="box"></span>No</span></div>
+            <span class="lineW"></span>
+            <div class="field-lbl" style="margin-top:6px;">Why it mattered (sum up the key idea in your own words)</div>
             <span class="lineW"></span>
             <span class="lineW"></span>
-            <div class="field-lbl">Did the Union or South do better in this act?</div>
+            <div class="stem">Start with: "This battle mattered because..."</div>
+        </div>
+
+        <div class="battle-row">
+            <div class="bname">Gettysburg</div>
+            <div class="frow"><span class="field-lbl">My choice</span><span class="matched">Matched history?<span class="box"></span>Yes<span class="box"></span>No</span></div>
+            <span class="lineW"></span>
+            <div class="field-lbl" style="margin-top:6px;">Why it mattered (sum up the key idea in your own words)</div>
+            <span class="lineW"></span>
+            <span class="lineW"></span>
+            <div class="stem">Start with: "This battle mattered because..."</div>
+        </div>
+
+        <div class="battle-row">
+            <div class="bname">Chickamauga</div>
+            <div class="frow"><span class="field-lbl">My choice</span><span class="matched">Matched history?<span class="box"></span>Yes<span class="box"></span>No</span></div>
+            <span class="lineW"></span>
+            <div class="field-lbl" style="margin-top:6px;">Why it mattered (sum up the key idea in your own words)</div>
+            <span class="lineW"></span>
+            <span class="lineW"></span>
+            <div class="stem">Start with: "This battle mattered because..."</div>
+        </div>
+
+        <div class="reflect-box">
+            <div class="rlbl">Act III reflection · answer after the Act III review screen</div>
+            <div class="rtext">One mixed-up order created the gap that lost the whole battle. How much of war comes down to luck or mistakes versus actual skill and planning?</div>
+            <span class="lineW"></span>
             <span class="lineW"></span>
             <span class="lineW"></span>
         </div>
+    </div>
 
-        <div class="act-box">
-            <span class="act-tag">Act IV</span>
-            <div class="act-title">The War's Legacy</div>
-            <div class="act-battles">1864-1865 · Wilderness · Atlanta · Sherman's March · Appomattox</div>
-            <div class="field-lbl">What happened in this act?</div>
-            <div class="stem">Try: "Grant ______. Sherman ______. Lee ______ at Appomattox."</div>
+    <div class="act-section">
+        <span class="act-section-head">Act IV · The War's Legacy · 1864-1865</span>
+
+        <div class="battle-row">
+            <div class="bname">Wilderness</div>
+            <div class="frow"><span class="field-lbl">My choice</span><span class="matched">Matched history?<span class="box"></span>Yes<span class="box"></span>No</span></div>
+            <span class="lineW"></span>
+            <div class="field-lbl" style="margin-top:6px;">Why it mattered (sum up the key idea in your own words)</div>
             <span class="lineW"></span>
             <span class="lineW"></span>
-            <div class="field-lbl">How did the war end?</div>
+            <div class="stem">Start with: "This battle mattered because..."</div>
+        </div>
+
+        <div class="battle-row">
+            <div class="bname">Atlanta</div>
+            <div class="frow"><span class="field-lbl">My choice</span><span class="matched">Matched history?<span class="box"></span>Yes<span class="box"></span>No</span></div>
+            <span class="lineW"></span>
+            <div class="field-lbl" style="margin-top:6px;">Why it mattered (sum up the key idea in your own words)</div>
+            <span class="lineW"></span>
+            <span class="lineW"></span>
+            <div class="stem">Start with: "This battle mattered because..."</div>
+        </div>
+
+        <div class="battle-row">
+            <div class="bname">Sherman's March</div>
+            <div class="frow"><span class="field-lbl">My choice</span><span class="matched">Matched history?<span class="box"></span>Yes<span class="box"></span>No</span></div>
+            <span class="lineW"></span>
+            <div class="field-lbl" style="margin-top:6px;">Why it mattered (sum up the key idea in your own words)</div>
+            <span class="lineW"></span>
+            <span class="lineW"></span>
+            <div class="stem">Start with: "This battle mattered because..."</div>
+        </div>
+
+        <div class="battle-row">
+            <div class="bname">Appomattox</div>
+            <div class="frow"><span class="field-lbl">My choice</span><span class="matched">Matched history?<span class="box"></span>Yes<span class="box"></span>No</span></div>
+            <span class="lineW"></span>
+            <div class="field-lbl" style="margin-top:6px;">Why it mattered (sum up the key idea in your own words)</div>
+            <span class="lineW"></span>
+            <span class="lineW"></span>
+            <div class="stem">Start with: "This battle mattered because..."</div>
+        </div>
+
+        <div class="reflect-box">
+            <div class="rlbl">Act IV reflection · answer after the Act IV review screen</div>
+            <div class="rtext">Grant let the Confederate soldiers go home in peace. Five days later, Lincoln was killed. How might things have been different if Lincoln had lived? When a war ends, what does a country owe to the people who suffered?</div>
+            <span class="lineW"></span>
             <span class="lineW"></span>
             <span class="lineW"></span>
         </div>
-
     </div>
 
     <div class="foot">CONTINUED BELOW</div>
