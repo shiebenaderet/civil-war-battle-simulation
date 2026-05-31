@@ -1838,10 +1838,9 @@ function advanceNarrative() {
             bigPicture.style.display = 'block';
             targetSection = voice;
 
-            // At beginner/ES: collapse Voice and Bigger Picture
-            var isLowReadingTier = (gameState.difficulty === 'beginner' || gameState.difficulty === 'extra');
-            setupCollapsibleSection('voiceHeading', 'voiceBody', !isLowReadingTier);
-            setupCollapsibleSection('bigPictureHeading', 'bigPictureBody', !isLowReadingTier);
+            // v3.18: deeper content is opt-in for ALL tiers (the Key Idea callout carries the takeaway).
+            setupCollapsibleSection('voiceHeading', 'voiceBody', false);
+            setupCollapsibleSection('bigPictureHeading', 'bigPictureBody', false);
 
             populateNoteNudge('noteNudgeReflection', 'reflectionFromHistory');
 
