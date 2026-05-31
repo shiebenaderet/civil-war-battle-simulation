@@ -288,6 +288,11 @@ function resolveBattle(strategyIndex) {
     const basePower = strategy.power[side];
     const momentumBonus = Math.floor(gameState.momentum / 5);
 
+    // FP-3: underdog comeback bonus. When momentum is negative, give a small
+    // boost (max +2) that partially offsets the negative momentumBonus, so an
+    // early stumble isn't mathematically fatal. 0 when momentum >= 0.
+    var underdogBonus = (gameState.momentum < 0) ? Math.min(2, Math.floor(-gameState.momentum / 5)) : 0;
+
     // Fog of war
     var fogEvent = rollFogOfWar(battle);
     var fogMod = fogEvent ? fogEvent.mod : 0;
@@ -299,8 +304,15 @@ function resolveBattle(strategyIndex) {
         histMod = histEvent.mod[side] || 0;
     }
 
-    const effectivePower = basePower + momentumBonus + fogMod + histMod;
+    const effectivePower = basePower + momentumBonus + fogMod + histMod + underdogBonus;
     const won = effectivePower >= battle.freeplay.difficulty;
+
+    // FP-6: final-battle decider. On the LAST battle, if the war is still close
+    // (|momentum| <= 4 at entry, matching the briefing's decider banner), this
+    // battle carries double weight, so the final choice actually decides the war.
+    var isDecider = (gameState.currentBattle === battles.length - 1) &&
+                    (Math.abs(gameState.momentum) <= 4);
+    var momentumSwing = battle.freeplay.momentumValue * (isDecider ? 2 : 1);
 
     // Update state
     const casualties = strategy.casualties[side];
@@ -309,11 +321,11 @@ function resolveBattle(strategyIndex) {
 
     if (won) {
         gameState.wins++;
-        gameState.momentum += battle.freeplay.momentumValue;
-        gameState.score += (basePower * 100) + (battle.freeplay.momentumValue * 50);
+        gameState.momentum += momentumSwing;
+        gameState.score += (basePower * 100) + (momentumSwing * 50);
     } else {
         gameState.losses++;
-        gameState.momentum -= battle.freeplay.momentumValue;
+        gameState.momentum -= momentumSwing;
         gameState.score += Math.max(0, basePower * 25);
     }
 
@@ -337,11 +349,13 @@ function resolveBattle(strategyIndex) {
         casualties: casualties,
         outcomeText: won ? getSideText(strategy.outcome.win) : getSideText(strategy.outcome.lose),
         momentum: gameState.momentum,
-        momentumChange: won ? battle.freeplay.momentumValue : -battle.freeplay.momentumValue,
+        momentumChange: won ? momentumSwing : -momentumSwing,
+        isDecider: isDecider,
         fogEvent: fogEvent,
         histEvent: histEvent,
         fogMod: fogMod,
         histMod: histMod,
+        underdogBonus: underdogBonus,
         basePower: basePower,
         momentumBonus: momentumBonus,
         effectivePower: effectivePower,
@@ -349,8 +363,25 @@ function resolveBattle(strategyIndex) {
     };
 }
 
+// FP-4: troop floors below which the army can no longer sustain the war.
+// Scaled to starting numbers (Union 1.5M, Confederacy 1.0M).
+var ATTRITION_FLOOR = { union: 400000, confederacy: 250000 };
+
 // Check if the war should end early
 function checkWarEnd() {
+    // FP-4: attrition check runs EVERY battle, before the 8-battle gate.
+    // Bleeding your army below its floor is always terminal, no matter how
+    // few battles have been fought. gameState.soldiers has already been
+    // reduced by the battle just resolved (in resolveBattle).
+    var floor = gameState.side === 'union' ? ATTRITION_FLOOR.union : ATTRITION_FLOOR.confederacy;
+    if (gameState.soldiers <= floor) {
+        return {
+            ended: true,
+            reason: 'attrition_defeat',
+            message: 'Your army has been bled white. With too few soldiers left to continue the fight, you are forced to surrender.'
+        };
+    }
+
     const battleNum = gameState.currentBattle + 1;
 
     // Always play at least 8 battles (adjusted for 13-battle campaign)
@@ -396,6 +427,17 @@ function advanceFreeplay() {
 
     if (gameState.currentBattle >= battles.length) {
         clearSave();
+        // FP-4: an army wiped out on the final battle is still an attrition defeat,
+        // not a normal completion. checkWarEnd's attrition test runs every battle,
+        // but the all-battles branch returns before it, so check the floor here too.
+        var attritionFloor = gameState.side === 'union' ? ATTRITION_FLOOR.union : ATTRITION_FLOOR.confederacy;
+        if (gameState.soldiers <= attritionFloor) {
+            return {
+                ended: true,
+                reason: 'attrition_defeat',
+                message: 'Your army has been bled white. With too few soldiers left to continue the fight, you are forced to surrender.'
+            };
+        }
         return { ended: true, reason: 'all_battles' };
     }
 
@@ -408,8 +450,23 @@ function advanceFreeplay() {
     return { ended: false };
 }
 
-// Determine final outcome for free-play
-function getFreeplayResult() {
+// Determine final outcome for free-play.
+// FP-4: optional warEndReason lets the caller force a distinct attrition
+// outcome. When reason === 'attrition_defeat' the war is ALWAYS a defeat,
+// regardless of momentum sign (a reckless player can win battles yet bleed
+// their army dry). Param is optional; without it, the legacy momentum logic
+// runs unchanged for backward compatibility.
+function getFreeplayResult(warEndReason) {
+    if (warEndReason === 'attrition_defeat') {
+        return {
+            victory: false,
+            title: 'DEFEAT',
+            subtitle: gameState.side === 'union'
+                ? 'The Union Army is Bled White'
+                : 'The Confederate Army is Bled White',
+            summary: 'You won battles but spent soldiers recklessly. With too few troops left to keep fighting, your army collapsed and the war was lost to attrition.'
+        };
+    }
     if (gameState.momentum > 0) {
         return {
             victory: true,
@@ -447,6 +504,141 @@ function getMomentumSummary(victory) {
     if (m >= 10) return 'A strong campaign with clear momentum in your favor. Your decisions consistently outmatched the enemy.';
     if (m >= 5) return 'A solid but hard-fought campaign. Your choices made the difference, but it was closer than it might seem.';
     return 'An extremely close campaign that could have gone either way. Every decision mattered.';
+}
+
+// ============================================================
+// FP-6: Victory rating + FP-5: "Did you change history?" overview
+// Both are derived at result time from gameState (momentum, side,
+// battleHistory, soldiers) plus the war-end reason. They add NO new
+// persisted state and do NOT touch Historical Mode. The UI (next task)
+// calls them; they return plain data only.
+// ============================================================
+
+// FP-6: classify the final outcome into a rating label + styling tone.
+// Pass the war-end reason so an attrition defeat overrides momentum.
+// tone is for UI styling only ('victory' | 'defeat' | 'neutral').
+function getVictoryRating(warEndReason) {
+    if (warEndReason === 'attrition_defeat') {
+        return {
+            label: 'Costly Defeat',
+            tone: 'defeat',
+            note: 'Your army was destroyed before the war could be won.'
+        };
+    }
+    var m = gameState.momentum;
+    if (m >= 15) return { label: 'Crushing Victory', tone: 'victory', note: 'You dominated the war from start to finish. The enemy never recovered.' };
+    if (m >= 5)  return { label: 'Clear Victory', tone: 'victory', note: 'A strong campaign. Your choices kept you ahead through the hard battles.' };
+    if (m >= 1)  return { label: 'Narrow Victory', tone: 'victory', note: 'You won, but only just. A few different choices and it could have gone the other way.' };
+    if (m === 0) {
+        // At dead-even momentum, tiebreak on the win/loss record so this badge
+        // agrees with getFreeplayResult (which calls a wins>losses edge a narrow win).
+        if (gameState.wins > gameState.losses) {
+            return { label: 'Narrow Victory', tone: 'victory', note: 'You won, but only just. A few different choices and it could have gone the other way.' };
+        }
+        return { label: 'Stalemate', tone: 'neutral', note: 'Neither side could break the other. The war ground to an even, exhausting halt.' };
+    }
+    if (m <= -15) return { label: 'Decisive Defeat', tone: 'defeat', note: 'The enemy outfought you at nearly every turn. There was no way back.' };
+    return { label: 'Defeat', tone: 'defeat', note: 'You lost more ground than you gained. The war slipped away from you.' };
+}
+
+// FP-5: structured comparison of the player's run to the real Civil War.
+// Returns a small array of comparison points plus one overall divergence
+// highlight. The UI renders this into a "Did you change history?" panel.
+// Real-history reference: the Union won, the war was fought all 13 battles
+// (1861-1865), and about 620,000 Americans died.
+function getHistoryComparison(warEndReason) {
+    var side = gameState.side;
+    var playerIsUnion = side === 'union';
+    // An attrition defeat is never a win, no matter the momentum sign.
+    var playerWon = warEndReason !== 'attrition_defeat' && gameState.momentum > 0;
+
+    var startingSoldiers = playerIsUnion ? 1500000 : 1000000;
+    var lost = Math.max(0, startingSoldiers - gameState.soldiers);
+    var rate = Math.round((lost / startingSoldiers) * 100);
+
+    var battlesPlayed = gameState.battleHistory.length;
+    var realBattles = 13;
+
+    var points = [];
+
+    // 1. Who won, vs the real outcome (the Union won the real war).
+    var whoWon;
+    if (playerIsUnion && playerWon) {
+        whoWon = { label: 'Who won', playerText: 'You led the Union to victory, as in real history.', historyText: 'The Union won the real Civil War.', changed: false };
+    } else if (playerIsUnion && !playerWon) {
+        whoWon = { label: 'Who won', playerText: 'You could not save the Union. History went the other way.', historyText: 'The Union won the real Civil War.', changed: true };
+    } else if (!playerIsUnion && playerWon) {
+        whoWon = { label: 'Who won', playerText: 'You won independence for the Confederacy. In real life, the Confederacy lost.', historyText: 'The Confederacy lost the real Civil War.', changed: true };
+    } else {
+        whoWon = { label: 'Who won', playerText: 'The Confederacy fell, as it did in real history.', historyText: 'The Confederacy lost the real Civil War.', changed: false };
+    }
+    points.push(whoWon);
+
+    // 2. Length: how long the player's war lasted vs the real 13 battles.
+    var length;
+    if (battlesPlayed < realBattles) {
+        length = {
+            label: 'How long it lasted',
+            playerText: 'Your war ended early, at battle ' + battlesPlayed + '. The real war was fought all the way to battle 13.',
+            historyText: 'The real war ran all 13 battles, from 1861 to 1865.',
+            changed: true
+        };
+    } else {
+        length = {
+            label: 'How long it lasted',
+            playerText: 'You fought all 13 battles, like the real war.',
+            historyText: 'The real war ran all 13 battles, from 1861 to 1865.',
+            changed: false
+        };
+    }
+    points.push(length);
+
+    // 3. Casualties: framed around the player's choices, not raw history.
+    var casualties;
+    if (rate >= 50) {
+        casualties = {
+            label: 'The cost in lives',
+            playerText: 'You lost over half your army (' + rate + '% casualties). A brutal, costly campaign.',
+            historyText: 'About 620,000 Americans died in the real war.',
+            changed: true
+        };
+    } else if (rate <= 20) {
+        casualties = {
+            label: 'The cost in lives',
+            playerText: playerWon
+                ? 'You won with light losses (' + rate + '% casualties), far more careful than the real generals.'
+                : 'You kept losses light (' + rate + '% casualties), far more careful than the real generals.',
+            historyText: 'About 620,000 Americans died in the real war.',
+            changed: true
+        };
+    } else {
+        casualties = {
+            label: 'The cost in lives',
+            playerText: 'Your campaign cost a serious number of soldiers (' + rate + '% casualties), about what such a war demands.',
+            historyText: 'About 620,000 Americans died in the real war.',
+            changed: false
+        };
+    }
+    points.push(casualties);
+
+    // 4. Divergence highlight: pick ONE, in priority order.
+    var highlight;
+    if (!playerIsUnion && playerWon) {
+        highlight = 'You changed history: the Confederacy won the war.';
+    } else if (playerIsUnion && !playerWon) {
+        highlight = 'History diverged: the Union failed to hold the nation together.';
+    } else if (battlesPlayed <= 9) {
+        highlight = 'You ended the war far faster than the four years it really took.';
+    } else if (rate <= 20) {
+        highlight = 'You won with remarkably few lives lost.';
+    } else {
+        highlight = 'Your campaign followed the broad arc of history.';
+    }
+
+    return {
+        points: points,
+        highlight: highlight
+    };
 }
 
 // ============================================================

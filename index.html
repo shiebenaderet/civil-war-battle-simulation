@@ -209,6 +209,9 @@
                             <button class="settings-item" id="campaignLogMenuBtn" role="menuitem" style="display:none;">
                                 <span class="menu-icon">&#x1F4CA;</span> Campaign Log
                             </button>
+                            <button class="settings-item" id="leaderboardMenuBtn" role="menuitem">
+                                <span class="menu-icon">&#x1F3C6;</span> Leaderboard
+                            </button>
                             <button class="settings-item" id="helpToggleMenuBtn" role="menuitem">
                                 <span class="menu-icon">?</span> Help &amp; Tips
                             </button>
@@ -742,6 +745,12 @@
                 </div>
             </div>
 
+            <!-- FP-6: final-battle decider banner (shown only on the last battle when the war is close) -->
+            <div class="decider-banner" id="fpDeciderBanner" style="display:none;" role="status">
+                <span class="decider-banner-label">The Decisive Battle</span>
+                <p class="decider-banner-text" id="fpDeciderBannerText"></p>
+            </div>
+
             <div class="battle-visuals">
                 <div class="visual-tabs">
                     <button class="visual-tab active" data-tab="artwork" onclick="switchVisualTab(this, 'fpArtwork', 'fpMap')">Artwork</button>
@@ -790,6 +799,11 @@
                         <span class="fog-label">Historical Event:</span>
                         <span class="fog-text" id="histEventText"></span>
                         <span class="fog-mod" id="histEventMod"></span>
+                    </div>
+                    <div class="hist-event underdog-event" id="underdogBonusDisplay" style="display:none;">
+                        <span class="fog-label">Underdog Rally:</span>
+                        <span class="fog-text" id="underdogBonusText"></span>
+                        <span class="fog-mod underdog-mod" id="underdogBonusMod"></span>
                     </div>
                 </div>
 
@@ -903,6 +917,28 @@
                             <p class="tours-credit">Videos from <a href="https://www.youtube.com/@AmericanBattlefieldTrust" target="_blank" rel="noopener">American Battlefield Trust</a></p>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================= -->
+        <!-- LEADERBOARD MODAL             -->
+        <!-- Makes the leaderboard reachable from the menu anytime (not only -->
+        <!-- after finishing a Free-play campaign). Shows the device top-10   -->
+        <!-- (view-only, no save form) and relocates the live class board.    -->
+        <!-- ============================= -->
+        <div class="modal" id="leaderboardModal" style="display:none;">
+            <div class="modal-container">
+                <div class="modal-header">
+                    <h2 class="modal-title">Leaderboard</h2>
+                    <button class="modal-close" id="closeLeaderboardBtn">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="menu-leaderboard-device-wrapper">
+                        <h3 class="scoreboard-title">Device Leaderboard</h3>
+                        <div id="menuLeaderboardDeviceTable"></div>
+                    </div>
+                    <div id="menuLeaderboardClassMount"></div>
                 </div>
             </div>
         </div>

@@ -138,7 +138,12 @@ const battles = [
 
 
         freeplay: {
-            briefing: "The first shots of the Civil War! Confederate batteries ring Charleston Harbor, surrounding the Union-held Fort Sumter. Major Anderson's tiny garrison is running low on supplies. The Confederacy must decide how to handle this standoff, and the Union must decide how to survive it.",
+            briefing: {
+                extra: "This is the start of the Civil War. Confederate guns surround a small Union fort. The soldiers inside are running out of food.",
+                beginner: "This is the first fight of the Civil War. Confederate cannons surround Fort Sumter, a Union fort in Charleston Harbor. The few Union soldiers inside are running low on food, and now both sides must decide what to do.",
+                intermediate: "The first shots of the Civil War! Confederate batteries ring Charleston Harbor, surrounding the Union-held Fort Sumter. Major Anderson's tiny garrison is running low on supplies. The Confederacy must decide how to handle this standoff, and the Union must decide how to survive it.",
+                advanced: "The first shots of the Civil War! Confederate batteries ring Charleston Harbor, surrounding the Union-held Fort Sumter. Major Anderson's tiny garrison is running low on supplies. The Confederacy must decide how to handle this standoff, and the Union must decide how to survive it. Whoever fires first will be branded the aggressor, so the politics of this opening move matter as much as the cannon fire."
+            },
             difficulty: 5,
             momentumValue: 1,
             strategies: [
@@ -322,7 +327,12 @@ const battles = [
 
 
         freeplay: {
-            briefing: "The first major battle of the war! Both armies are raw and untrained. The Confederates are defending a position along Bull Run creek in Virginia, just 30 miles from Washington. Everyone thinks one big battle will decide the whole war.",
+            briefing: {
+                extra: "This is the first big battle of the war. Both armies are new and have never fought before. People think one battle will end the war.",
+                beginner: "This is the first big battle of the war. Both armies are new and have not been trained. The Confederates are defending a creek in Virginia, close to Washington, and everyone thinks one fight will decide everything.",
+                intermediate: "The first major battle of the war! Both armies are raw and untrained. The Confederates are defending a position along Bull Run creek in Virginia, just 30 miles from Washington. Everyone thinks one big battle will decide the whole war.",
+                advanced: "The first major battle of the war! Both armies are raw and untrained. The Confederates are defending a position along Bull Run creek in Virginia, just 30 miles from Washington. Everyone thinks one big battle will decide the whole war. Civilians have even ridden out from the capital with picnic baskets to watch what they expect to be a quick, glorious victory."
+            },
             difficulty: 6,
             momentumValue: 2,
             strategies: [
@@ -506,7 +516,12 @@ const battles = [
 
 
         freeplay: {
-            briefing: "Grant's Union army is camped near Shiloh Church in Tennessee. Confederate forces are planning a surprise dawn attack. The question is whether the element of surprise can overcome the Union's numerical advantage, or whether Grant's reinforcements will arrive in time.",
+            briefing: {
+                extra: "Grant's Union army is camped in Tennessee. The Confederates want to attack them by surprise at dawn.",
+                beginner: "Grant's Union army is camped near a church in Tennessee. The Confederates plan to attack them by surprise early in the morning. The Union has more soldiers, but a surprise attack could change everything.",
+                intermediate: "Grant's Union army is camped near Shiloh Church in Tennessee. Confederate forces are planning a surprise dawn attack. The question is whether the element of surprise can overcome the Union's numerical advantage, or whether Grant's reinforcements will arrive in time.",
+                advanced: "Grant's Union army is camped near Shiloh Church in Tennessee. Confederate forces are planning a surprise dawn attack. The question is whether the element of surprise can overcome the Union's numerical advantage, or whether Grant's reinforcements will arrive in time. The Confederates must strike before Buell's Union column links up with Grant, because once the two armies combine, the chance for surprise is gone."
+            },
             difficulty: 5,
             momentumValue: 2,
             strategies: [
@@ -701,7 +716,12 @@ const battles = [
         },
 
         freeplay: {
-            briefing: "Lee has invaded Maryland, and Union forces have found his battle plans! McClellan's army outnumbers Lee nearly 2-to-1. But Lee is a master tactician fighting with desperate courage. The fate of the war may hinge on this single day of battle near Antietam Creek.",
+            briefing: {
+                extra: "Lee's army has marched into Maryland. The Union found his secret plans. The Union has many more soldiers.",
+                beginner: "Lee has marched his army into Maryland, and the Union has found his secret battle plans. McClellan's Union army is almost twice as big as Lee's. But Lee is a smart general, and one day of battle could decide the whole war.",
+                intermediate: "Lee has invaded Maryland, and Union forces have found his battle plans! McClellan's army outnumbers Lee nearly 2-to-1. But Lee is a master tactician fighting with desperate courage. The fate of the war may hinge on this single day of battle near Antietam Creek.",
+                advanced: "Lee has invaded Maryland, and Union forces have found his battle plans! McClellan's army outnumbers Lee nearly 2-to-1. But Lee is a master tactician fighting with desperate courage. The fate of the war may hinge on this single day of battle near Antietam Creek. A clear Union victory here could also give Lincoln the political footing he needs to issue the Emancipation Proclamation."
+            },
             difficulty: 7,
             momentumValue: 3,
             strategies: [
@@ -896,7 +916,12 @@ const battles = [
         },
 
         freeplay: {
-            briefing: "The Union army must cross the Rappahannock River and attack Lee's fortified positions on Marye's Heights. Lee has had weeks to prepare, and a stone wall provides perfect cover for his defenders. Attacking uphill across open ground against prepared defenses is extremely dangerous.",
+            briefing: {
+                extra: "The Union must cross a river and attack uphill. Lee's men are hiding behind a strong stone wall.",
+                beginner: "The Union army has to cross a river and attack Lee's men on a hill. Lee has had weeks to get ready, and his soldiers are protected by a stone wall. Charging uphill at them across open ground is very dangerous.",
+                intermediate: "The Union army must cross the Rappahannock River and attack Lee's fortified positions on Marye's Heights. Lee has had weeks to prepare, and a stone wall provides perfect cover for his defenders. Attacking uphill across open ground against prepared defenses is extremely dangerous.",
+                advanced: "The Union army must cross the Rappahannock River and attack Lee's fortified positions on Marye's Heights. Lee has had weeks to prepare, and a stone wall provides perfect cover for his defenders. Attacking uphill across open ground against prepared defenses is extremely dangerous. The sunken road behind that wall lets rank after rank of riflemen fire in relays, turning the slope into a killing ground."
+            },
             difficulty: 7,
             momentumValue: 2,
             strategies: [
@@ -1078,7 +1103,12 @@ const battles = [
         },
 
         freeplay: {
-            briefing: "Hooker's massive Union army of 130,000 faces Lee's 60,000 in the dense Virginia wilderness. Lee is taking an enormous gamble: splitting his outnumbered army to send Jackson on a flanking march. It's either military genius or suicide.",
+            briefing: {
+                extra: "Hooker's huge Union army is much bigger than Lee's. Lee is taking a big risk by splitting his small army in two.",
+                beginner: "Hooker's Union army of 130,000 men is much bigger than Lee's 60,000 in the thick Virginia woods. Lee is taking a huge risk by splitting his smaller army to sneak Jackson around the side. It is either brilliant or a disaster.",
+                intermediate: "Hooker's massive Union army of 130,000 faces Lee's 60,000 in the dense Virginia wilderness. Lee is taking an enormous gamble: splitting his outnumbered army to send Jackson on a flanking march. It's either military genius or suicide.",
+                advanced: "Hooker's massive Union army of 130,000 faces Lee's 60,000 in the dense Virginia wilderness. Lee is taking an enormous gamble: splitting his outnumbered army to send Jackson on a flanking march. It's either military genius or suicide. Dividing an outnumbered force in the face of the enemy violates every rule of warfare, and only the tangled terrain hides Jackson's column long enough to make it possible."
+            },
             difficulty: 6,
             momentumValue: 2,
             strategies: [
@@ -1261,7 +1291,12 @@ const battles = [
         },
 
         freeplay: {
-            briefing: "Vicksburg, the 'Gibraltar of the Confederacy,' controls the Mississippi River from 200-foot bluffs. Grant's army has surrounded the fortress city after two failed assaults. Inside, 30,000 Confederate troops and thousands of civilians are slowly starving. Grant must decide how to crack this nut.",
+            briefing: {
+                extra: "The city of Vicksburg sits on tall cliffs above the Mississippi River. Grant's army has it surrounded. The people inside are running out of food.",
+                beginner: "Vicksburg sits on tall cliffs high above the Mississippi River, which makes it very hard to attack. Grant's army has surrounded the city after two failed tries. Inside, 30,000 soldiers and many families are slowly running out of food.",
+                intermediate: "Vicksburg, the 'Gibraltar of the Confederacy,' controls the Mississippi River from 200-foot bluffs. Grant's army has surrounded the fortress city after two failed assaults. Inside, 30,000 Confederate troops and thousands of civilians are slowly starving. Grant must decide how to crack this nut.",
+                advanced: "Vicksburg, the 'Gibraltar of the Confederacy,' controls the Mississippi River from 200-foot bluffs. Grant's army has surrounded the fortress city after two failed assaults. Inside, 30,000 Confederate troops and thousands of civilians are slowly starving. Grant must decide how to crack this nut. Take Vicksburg and the Union splits the Confederacy in two, seizing control of the entire Mississippi and choking off the western states."
+            },
             difficulty: 7,
             momentumValue: 4,
             strategies: [
@@ -1456,7 +1491,12 @@ const battles = [
         },
 
         freeplay: {
-            briefing: "The war's biggest battle! Lee has invaded Pennsylvania, and both armies have stumbled into each other at Gettysburg. The Union holds the high ground on Cemetery Ridge. Lee must decide whether to attack uphill or try to outmaneuver. Over 160,000 soldiers are about to collide.",
+            briefing: {
+                extra: "This is the biggest battle of the war. Both armies have run into each other at Gettysburg. The Union holds the high ground.",
+                beginner: "This is the biggest battle of the whole war. Lee marched into Pennsylvania, and the two armies bumped into each other at Gettysburg. The Union holds the high ground, and now Lee must decide whether to attack uphill or go around.",
+                intermediate: "The war's biggest battle! Lee has invaded Pennsylvania, and both armies have stumbled into each other at Gettysburg. The Union holds the high ground on Cemetery Ridge. Lee must decide whether to attack uphill or try to outmaneuver. Over 160,000 soldiers are about to collide.",
+                advanced: "The war's biggest battle! Lee has invaded Pennsylvania, and both armies have stumbled into each other at Gettysburg. The Union holds the high ground on Cemetery Ridge. Lee must decide whether to attack uphill or try to outmaneuver. Over 160,000 soldiers are about to collide. A Confederate win deep in Northern territory could shatter Union morale and finally win foreign recognition for the South."
+            },
             difficulty: 6,
             momentumValue: 4,
             strategies: [
@@ -1639,7 +1679,12 @@ const battles = [
         },
 
         freeplay: {
-            briefing: "Dense forests in northern Georgia. The Confederacy has more troops here for once, thanks to reinforcements from Virginia. A confused order has created a gap in the Union line. In the chaos of the thick woods, can one side exploit the other's mistakes?",
+            briefing: {
+                extra: "Two armies fight in thick forests in Georgia. This time the Confederates have more soldiers. There is a gap in the Union line.",
+                beginner: "The armies are fighting in thick forests in northern Georgia. For once, the Confederates have more troops, thanks to help from Virginia. A mixed-up order has left a gap in the Union line, and in the confusion of the woods, anything can happen.",
+                intermediate: "Dense forests in northern Georgia. The Confederacy has more troops here for once, thanks to reinforcements from Virginia. A confused order has created a gap in the Union line. In the chaos of the thick woods, can one side exploit the other's mistakes?",
+                advanced: "Dense forests in northern Georgia. The Confederacy has more troops here for once, thanks to reinforcements from Virginia. A confused order has created a gap in the Union line. In the chaos of the thick woods, can one side exploit the other's mistakes? Longstreet's veterans, rushed in by rail from the eastern theater, are poised to pour through any opening before the Union can close it."
+            },
             difficulty: 6,
             momentumValue: 2,
             strategies: [
@@ -1822,7 +1867,12 @@ const battles = [
         },
 
         freeplay: {
-            briefing: "Grant enters the dense Wilderness where Hooker was defeated a year ago. The thick forest neutralizes the Union's advantages in numbers and artillery. Lee knows this terrain well. But Grant has something no previous Union commander had: the absolute determination to keep fighting no matter the cost.",
+            briefing: {
+                extra: "Grant marches into a thick forest where the Union lost before. The trees make it hard to use his big guns. But Grant will not give up.",
+                beginner: "Grant marches into the same thick forest where the Union lost a year ago. The trees take away the Union's big guns and large numbers, and Lee knows this ground well. But Grant is the first Union general who refuses to quit, no matter what.",
+                intermediate: "Grant enters the dense Wilderness where Hooker was defeated a year ago. The thick forest neutralizes the Union's advantages in numbers and artillery. Lee knows this terrain well. But Grant has something no previous Union commander had: the absolute determination to keep fighting no matter the cost.",
+                advanced: "Grant enters the dense Wilderness where Hooker was defeated a year ago. The thick forest neutralizes the Union's advantages in numbers and artillery. Lee knows this terrain well. But Grant has something no previous Union commander had: the absolute determination to keep fighting no matter the cost. Where earlier generals retreated after a bloody check, Grant intends to press south regardless, grinding Lee's smaller army down in a war of attrition it cannot win."
+            },
             difficulty: 7,
             momentumValue: 2,
             strategies: [
@@ -2006,7 +2056,12 @@ const battles = [
         },
 
         freeplay: {
-            briefing: "Sherman's army has reached Atlanta after months of marching through Georgia. The city is the industrial heart of the Confederacy, producing weapons and connecting railroad lines. Hood has replaced Johnston and wants to attack aggressively. The fate of the 1864 election may rest on this campaign.",
+            briefing: {
+                extra: "Sherman's army has reached the city of Atlanta. The city builds weapons for the South. A new general named Hood wants to attack.",
+                beginner: "After months of marching through Georgia, Sherman's army has reached Atlanta. The city builds weapons and ties the South's railroads together. A bold new general named Hood wants to attack, and the 1864 election may depend on what happens here.",
+                intermediate: "Sherman's army has reached Atlanta after months of marching through Georgia. The city is the industrial heart of the Confederacy, producing weapons and connecting railroad lines. Hood has replaced Johnston and wants to attack aggressively. The fate of the 1864 election may rest on this campaign.",
+                advanced: "Sherman's army has reached Atlanta after months of marching through Georgia. The city is the industrial heart of the Confederacy, producing weapons and connecting railroad lines. Hood has replaced Johnston and wants to attack aggressively. The fate of the 1864 election may rest on this campaign. If Atlanta holds out, war-weary Northern voters may turn Lincoln out of office for a candidate willing to negotiate peace and let the Confederacy go."
+            },
             difficulty: 5,
             momentumValue: 3,
             strategies: [
@@ -2190,7 +2245,12 @@ const battles = [
         },
 
         freeplay: {
-            briefing: "Sherman has cut loose from Atlanta with 60,000 men, marching toward Savannah with no supply line. His army will live off the land, destroying everything of military value in a 60-mile-wide path. The Confederacy has no army large enough to stop him. The question is how much destruction is necessary to end the war.",
+            briefing: {
+                extra: "Sherman marches 60,000 men across Georgia to the sea. They take food from the land and destroy things as they go. No army is big enough to stop them.",
+                beginner: "Sherman has left Atlanta with 60,000 men and is marching to the sea with no supply line. His army takes food from the land and destroys anything useful for the war in a wide path. The South has no army big enough to stop him.",
+                intermediate: "Sherman has cut loose from Atlanta with 60,000 men, marching toward Savannah with no supply line. His army will live off the land, destroying everything of military value in a 60-mile-wide path. The Confederacy has no army large enough to stop him. The question is how much destruction is necessary to end the war.",
+                advanced: "Sherman has cut loose from Atlanta with 60,000 men, marching toward Savannah with no supply line. His army will live off the land, destroying everything of military value in a 60-mile-wide path. The Confederacy has no army large enough to stop him. The question is how much destruction is necessary to end the war. This is a deliberate strategy of total war, aimed at the South's will to fight as much as its armies, and it forces hard moral questions about where the line between soldier and civilian should fall."
+            },
             difficulty: 5,
             momentumValue: 3,
             strategies: [
@@ -2395,7 +2455,12 @@ const battles = [
         },
 
         freeplay: {
-            briefing: "The endgame. Lee's starving army of 28,000 is surrounded by Grant's 100,000+. Richmond has fallen. The Confederacy's last army is trapped at Appomattox Court House. The question isn't whether the war will end, but how.",
+            briefing: {
+                extra: "The war is almost over. Lee's hungry army is surrounded and trapped. The Union has far more soldiers.",
+                beginner: "The war is almost over. Lee's starving army of 28,000 is trapped and surrounded by Grant's 100,000 men. Richmond has fallen, and the South's last army has nowhere left to go.",
+                intermediate: "The endgame. Lee's starving army of 28,000 is surrounded by Grant's 100,000+. Richmond has fallen. The Confederacy's last army is trapped at Appomattox Court House. The question isn't whether the war will end, but how.",
+                advanced: "The endgame. Lee's starving army of 28,000 is surrounded by Grant's 100,000+. Richmond has fallen. The Confederacy's last army is trapped at Appomattox Court House. The question isn't whether the war will end, but how. The terms offered here, generous or harsh, will shape whether the country heals or whether the bitterness of war smolders on for generations."
+            },
             difficulty: 4,
             momentumValue: 3,
             strategies: [
