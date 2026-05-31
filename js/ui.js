@@ -3484,6 +3484,24 @@ function rerenderForReadingLevel() {
 
     var screen = gameState.currentScreen;
 
+    // Reflect step (grouped reflection) lives on historicalScreen at narrativeStep 5
+    // with #sectionReflect visible. The full battle re-render below would reset to
+    // Briefing and hide the reflect prompt (kicking the student out and wiping their
+    // typed answer). Instead, re-render JUST the reflect prompt at the new tier and
+    // preserve what they've typed.
+    var reflectSection = document.getElementById('sectionReflect');
+    var onReflectStep = screen === 'historicalScreen' && narrativeStep === 5 &&
+                        reflectSection && reflectSection.style.display !== 'none';
+    if (onReflectStep) {
+        var reflectInput = document.getElementById('histReflectInput');
+        var typed = reflectInput ? reflectInput.value : '';
+        if (typeof showGroupedReflection === 'function') {
+            showGroupedReflection(); // rebuilds the prompt at the current tier (and clears the textarea)
+        }
+        if (reflectInput) reflectInput.value = typed; // restore what the student wrote
+        return;
+    }
+
     // Battle screen (historical mode) — uses gameState.currentBattle internally
     if (screen === 'historicalScreen' && typeof renderHistoricalBattle === 'function') {
         // Preserve the student's place in the battle's reveal sequence.
