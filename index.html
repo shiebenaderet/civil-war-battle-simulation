@@ -745,6 +745,12 @@
                 </div>
             </div>
 
+            <!-- FP-6: final-battle decider banner (shown only on the last battle when the war is close) -->
+            <div class="decider-banner" id="fpDeciderBanner" style="display:none;" role="status">
+                <span class="decider-banner-label">The Decisive Battle</span>
+                <p class="decider-banner-text" id="fpDeciderBannerText"></p>
+            </div>
+
             <div class="battle-visuals">
                 <div class="visual-tabs">
                     <button class="visual-tab active" data-tab="artwork" onclick="switchVisualTab(this, 'fpArtwork', 'fpMap')">Artwork</button>
@@ -793,6 +799,11 @@
                         <span class="fog-label">Historical Event:</span>
                         <span class="fog-text" id="histEventText"></span>
                         <span class="fog-mod" id="histEventMod"></span>
+                    </div>
+                    <div class="hist-event underdog-event" id="underdogBonusDisplay" style="display:none;">
+                        <span class="fog-label">Underdog Rally:</span>
+                        <span class="fog-text" id="underdogBonusText"></span>
+                        <span class="fog-mod underdog-mod" id="underdogBonusMod"></span>
                     </div>
                 </div>
 

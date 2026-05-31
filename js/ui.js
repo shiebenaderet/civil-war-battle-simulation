@@ -2162,6 +2162,22 @@ function renderFreeplayBriefing() {
     document.getElementById('fpBattleDate').textContent = battle.date;
     document.getElementById('fpBattleLocation').textContent = battle.location;
 
+    // FP-6: final-battle decider banner. Only on the LAST battle, and only
+    // when the war is still close (not already decided). Presentation only:
+    // the 2x momentum swing is a deferred game.js change (see report).
+    var deciderBanner = document.getElementById('fpDeciderBanner');
+    if (deciderBanner) {
+        var isLastBattle = gameState.currentBattle === battles.length - 1;
+        var warIsClose = Math.abs(gameState.momentum) <= 4;
+        if (isLastBattle && warIsClose) {
+            document.getElementById('fpDeciderBannerText').textContent =
+                'This is the decisive battle. The war hangs in the balance, and this choice could decide everything.';
+            deciderBanner.style.display = 'block';
+        } else {
+            deciderBanner.style.display = 'none';
+        }
+    }
+
     // Image + Map
     renderBattleImage(document.getElementById('fpArtwork'), battle);
     renderBattleMap(document.getElementById('fpMap'), battle);
@@ -2269,9 +2285,12 @@ function renderFreeplayResults(result) {
     resultOutcomeEl.setAttribute('data-tts-label', 'Battle result');
 
     // Fog of War / Historical Event display
+    // FP-3: an underdog rally bonus (when the player fought while behind) also
+    // surfaces in this section, alongside fog/historical modifiers.
+    var hasUnderdogBonus = result.underdogBonus && result.underdogBonus > 0;
     var fogSection = document.getElementById('fogOfWarSection');
     if (fogSection) {
-        if (result.fogEvent || result.histEvent) {
+        if (result.fogEvent || result.histEvent || hasUnderdogBonus) {
             fogSection.style.display = 'block';
 
             // Fog of war event
@@ -2295,6 +2314,20 @@ function renderFreeplayResults(result) {
             } else {
                 histDisplay.style.display = 'none';
             }
+
+            // FP-3: underdog rally bonus (only when behind, bonus > 0)
+            var underdogDisplay = document.getElementById('underdogBonusDisplay');
+            if (underdogDisplay) {
+                if (hasUnderdogBonus) {
+                    document.getElementById('underdogBonusText').textContent =
+                        'Your troops fought harder while behind.';
+                    document.getElementById('underdogBonusMod').textContent =
+                        '+' + result.underdogBonus;
+                    underdogDisplay.style.display = 'flex';
+                } else {
+                    underdogDisplay.style.display = 'none';
+                }
+            }
         } else {
             fogSection.style.display = 'none';
         }
@@ -2314,6 +2347,10 @@ function renderFreeplayResults(result) {
         if (result.histEvent && result.histMod !== 0) {
             breakdownHtml += '<div class="power-item"><span>Historical Event</span><span>' +
                 (result.histMod >= 0 ? '+' : '') + result.histMod + '</span></div>';
+        }
+        if (hasUnderdogBonus) {
+            breakdownHtml += '<div class="power-item"><span>Underdog Rally</span><span>+' +
+                result.underdogBonus + '</span></div>';
         }
         powerItems.innerHTML = breakdownHtml;
     }
@@ -2376,7 +2413,10 @@ function proceedFromResults() {
 }
 
 function renderFreeplayEnd(advancement) {
-    var result = getFreeplayResult();
+    // FP-4: pass the war-end reason so an attrition defeat is reflected as a
+    // forced defeat (getFreeplayResult handles 'attrition_defeat' distinctly).
+    var warEndReason = advancement && advancement.reason;
+    var result = getFreeplayResult(warEndReason);
 
     // Override with early-end message if applicable
     if (advancement && advancement.reason === 'momentum_victory') {
@@ -2387,7 +2427,17 @@ function renderFreeplayEnd(advancement) {
         result.victory = false;
         result.title = 'DECISIVE DEFEAT';
         result.subtitle = advancement.message;
+    } else if (advancement && advancement.reason === 'attrition_defeat') {
+        // FP-4: army destroyed. result is already a forced defeat from
+        // getFreeplayResult('attrition_defeat'); override the framing.
+        result.victory = false;
+        result.title = 'ARMY DESTROYED';
+        result.subtitle = advancement.message || result.subtitle;
     }
+
+    // FP-6: victory rating; FP-5: "did you change history?" comparison.
+    var rating = getVictoryRating(warEndReason);
+    var hist = getHistoryComparison(warEndReason);
 
     var banner = document.getElementById('endBanner');
     banner.className = result.victory ? 'outcome-banner victory-banner' : 'outcome-banner defeat-banner';
@@ -2398,7 +2448,39 @@ function renderFreeplayEnd(advancement) {
     var casualtyRate = Math.round(((startingSoldiers - gameState.soldiers) / startingSoldiers) * 100);
     var sideLabel = gameState.side === 'union' ? 'Union' : 'Confederacy';
 
+    // FP-6: rating badge (tone drives the color class).
+    var ratingTone = rating.tone === 'victory' ? 'rating-victory'
+        : rating.tone === 'defeat' ? 'rating-defeat'
+        : 'rating-neutral';
+    var ratingHtml =
+        '<div class="rating-badge-wrap">' +
+        '<div class="rating-badge ' + ratingTone + '">' + escapeHtml(rating.label) + '</div>' +
+        '<p class="rating-note">' + escapeHtml(rating.note) + '</p>' +
+        '</div>';
+
+    // FP-5: "Did you change history?" comparison panel.
+    var histRowsHtml = hist.points.map(function(p) {
+        var marker = p.changed
+            ? '<span class="hist-compare-tag changed">CHANGED</span>'
+            : '<span class="hist-compare-tag matched">SAME AS HISTORY</span>';
+        return '<div class="hist-compare-row ' + (p.changed ? 'is-changed' : 'is-matched') + '">' +
+            '<div class="hist-compare-head">' +
+            '<span class="hist-compare-label">' + escapeHtml(p.label) + '</span>' +
+            marker +
+            '</div>' +
+            '<p class="hist-compare-you"><span class="hist-compare-who">You:</span> ' + escapeHtml(p.playerText) + '</p>' +
+            '<p class="hist-compare-history"><span class="hist-compare-who">History:</span> ' + escapeHtml(p.historyText) + '</p>' +
+            '</div>';
+    }).join('');
+    var historyPanelHtml =
+        '<div class="history-compare-panel">' +
+        '<h3>Did You Change History?</h3>' +
+        '<p class="history-compare-highlight">' + escapeHtml(hist.highlight) + '</p>' +
+        '<div class="hist-compare-rows">' + histRowsHtml + '</div>' +
+        '</div>';
+
     document.getElementById('endContent').innerHTML =
+        ratingHtml +
         '<div class="end-summary">' +
         '<h3>Campaign Results</h3>' +
         '<p>' + result.summary + '</p>' +
@@ -2410,13 +2492,16 @@ function renderFreeplayEnd(advancement) {
         '<div class="final-stat"><span class="final-stat-label">Soldiers Lost</span><span class="final-stat-value">' + (startingSoldiers - gameState.soldiers).toLocaleString() + ' (' + casualtyRate + '%)</span></div>' +
         '<div class="final-stat"><span class="final-stat-label">Battles Fought</span><span class="final-stat-value">' + gameState.battleHistory.length + '</span></div>' +
         '</div>' +
+        '</div>' +
+        historyPanelHtml +
+        '<div class="end-summary">' +
         '<h3>Battle History</h3>' +
         '<div class="battle-history-list">' +
         gameState.battleHistory.map(function(b) {
             return '<div class="history-item ' + (b.won ? 'won' : 'lost') + '">' +
                 '<span class="history-icon">' + (b.won ? '&#x2705;' : '&#x274C;') + '</span>' +
-                '<span class="history-name">' + b.name + '</span>' +
-                '<span class="history-strategy">' + b.strategy + '</span>' +
+                '<span class="history-name">' + escapeHtml(b.name) + '</span>' +
+                '<span class="history-strategy">' + escapeHtml(b.strategy) + '</span>' +
                 '<span class="history-momentum">Momentum: ' + (b.momentumAfter >= 0 ? '+' : '') + b.momentumAfter + '</span>' +
                 '</div>';
         }).join('') +
