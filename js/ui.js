@@ -2452,23 +2452,23 @@ function renderFreeplayEnd(advancement) {
     var hist = getHistoryComparison(warEndReason);
 
     var banner = document.getElementById('endBanner');
-    banner.className = result.victory ? 'outcome-banner victory-banner' : 'outcome-banner defeat-banner';
-    document.getElementById('endTitle').textContent = result.title;
-    document.getElementById('endSubtitle').textContent = result.subtitle;
+    // v3.20: the banner IS the rating. The precise grade (Crushing Victory,
+    // Narrow Victory, Stalemate, Defeat, Costly Defeat...) is the headline, so we
+    // no longer show a generic "DEFEAT" title AND a separate "Defeat" badge below
+    // it. Banner tone follows the rating, so a Stalemate reads neutral, not red.
+    var bannerTone = rating.tone === 'victory' ? 'victory-banner'
+        : rating.tone === 'defeat' ? 'defeat-banner'
+        : 'neutral-banner';
+    banner.className = 'outcome-banner ' + bannerTone;
+    document.getElementById('endTitle').textContent = rating.label;
+    // Subtitle: the in-character outcome line, then the rating note on its own line.
+    document.getElementById('endSubtitle').innerHTML =
+        '<span class="end-subtitle-main">' + escapeHtml(result.subtitle) + '</span>' +
+        '<span class="end-subtitle-note">' + escapeHtml(rating.note) + '</span>';
 
     var startingSoldiers = gameState.side === 'union' ? 1500000 : 1000000;
     var casualtyRate = Math.round(((startingSoldiers - gameState.soldiers) / startingSoldiers) * 100);
     var sideLabel = gameState.side === 'union' ? 'Union' : 'Confederacy';
-
-    // FP-6: rating badge (tone drives the color class).
-    var ratingTone = rating.tone === 'victory' ? 'rating-victory'
-        : rating.tone === 'defeat' ? 'rating-defeat'
-        : 'rating-neutral';
-    var ratingHtml =
-        '<div class="rating-badge-wrap">' +
-        '<div class="rating-badge ' + ratingTone + '">' + escapeHtml(rating.label) + '</div>' +
-        '<p class="rating-note">' + escapeHtml(rating.note) + '</p>' +
-        '</div>';
 
     // FP-5: "Did you change history?" comparison panel.
     var histRowsHtml = hist.points.map(function(p) {
@@ -2492,7 +2492,6 @@ function renderFreeplayEnd(advancement) {
         '</div>';
 
     document.getElementById('endContent').innerHTML =
-        ratingHtml +
         '<div class="end-summary">' +
         '<h3>Campaign Results</h3>' +
         '<p>' + result.summary + '</p>' +
