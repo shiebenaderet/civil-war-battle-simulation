@@ -59,7 +59,7 @@ Same content arc across all 4 tiers; scaffolding scales:
 - **★ Most Support (extra):** stacked single-column, largest font, sentence starters under every write-line ("This battle mattered because...", "This act helped the Union win because..."), word bank with definitions, simplest Q-set. Uses BEGINNER reflection text (no `extra` reflection exists; documented fallback).
 - **★★ More Support (beginner):** sentence starters on the why-it-mattered and bridge lines; full word bank; BEGINNER reflection text.
 - **★★★ Standard (intermediate):** the approved baseline; light scaffolding; INTERMEDIATE reflection text. (Already built; needs Part 2 bridge line + Part 3 reframing added.)
-- **★★★★ Extra Challenge (advanced):** least scaffolding, no sentence starters, trimmed word bank or terms-only (no definitions), ADVANCED reflection text. Most open writing space.
+- **★★★★ Extra Challenge (advanced):** least scaffolding, no sentence starters, ADVANCED reflection text, most open writing space. KEEP the full 8-term word bank WITH definitions (user decision 2026-05-30: a vocab reference helps every tier, including advanced).
 
 ## Reflection text by tier (verbatim, em-dash-clean; from verified-tier-text reference)
 
