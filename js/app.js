@@ -8,13 +8,7 @@ function boot() {
     // Initialize Firebase leaderboard (no-op if SDK didn't load)
     firebaseLeaderboard.init();
 
-    // Show intro splash on first visit, mode selection on return
-    var hasSeenIntro = localStorage.getItem('civilWarIntroSeen');
-    if (hasSeenIntro) {
-        renderModeSelection();
-    } else {
-        showScreen('introSplash');
-    }
+    renderModeSelection();
 
     if (typeof wireNoTeacherBanner === 'function') wireNoTeacherBanner();
 }
@@ -27,12 +21,6 @@ function setupEventListeners() {
             e.returnValue = '';
             return '';
         }
-    });
-
-    // Intro splash - proceed to mode selection
-    document.getElementById('splashStartBtn').addEventListener('click', function() {
-        localStorage.setItem('civilWarIntroSeen', '1');
-        renderModeSelection();
     });
 
     // Mode selection - both go directly to side selection (name is inline now)

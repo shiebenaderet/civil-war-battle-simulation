@@ -8,7 +8,6 @@
 var screens = {};
 
 function cacheScreens() {
-    screens.introSplash = document.getElementById('introSplash');
     screens.modeSelection = document.getElementById('modeSelection');
     screens.sideSelection = document.getElementById('sideSelection');
     screens.leaderLetterScreen = document.getElementById('leaderLetterScreen');
@@ -54,7 +53,7 @@ function showScreen(screenId) {
     if (typeof gameState !== 'undefined' && gameState) {
         gameState.currentScreen = screenId;
     }
-    var preGameScreens = ['introSplash', 'modeSelection', 'sideSelection', 'leaderLetterScreen'];
+    var preGameScreens = ['modeSelection', 'sideSelection', 'leaderLetterScreen'];
     if (preGameScreens.indexOf(screenId) !== -1) {
         hideNavbarReadingPills();
     } else {
