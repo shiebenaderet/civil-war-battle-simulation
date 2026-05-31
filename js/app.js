@@ -204,7 +204,7 @@ function setupEventListeners() {
     // Handout links: close the menu after clicking (the link still opens in a
     // new tab via target="_blank"; closing the menu prevents it from staying
     // open behind the new tab).
-    ['handoutStandardMenuBtn', 'handoutSomeSupportMenuBtn', 'handoutExtraSupportMenuBtn'].forEach(function(id) {
+    ['handoutStandardMenuBtn', 'handoutSomeSupportMenuBtn', 'handoutExtraSupportMenuBtn', 'handoutAdvancedMenuBtn'].forEach(function(id) {
         var el = document.getElementById(id);
         if (el) {
             el.addEventListener('click', function() {
