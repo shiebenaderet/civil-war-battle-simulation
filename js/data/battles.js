@@ -106,6 +106,12 @@ const battles = [
                 beginner: "Nobody was killed in the actual battle! The only death was a Union soldier who died in an accidental explosion during the surrender ceremony on April 14.",
                 intermediate: "No soldiers on either side were killed in combat during the bombardment. The only death was a Union soldier killed in an accidental explosion during the 100-gun surrender salute on April 14.",
                 advanced: "Remarkably, the bombardment produced no combat fatalities on either side. The sole death was Private Daniel Hough, killed during an accidental powder explosion in the 100-gun surrender salute on April 14. This bloodless beginning belied the apocalyptic scale of violence to come: over 620,000 Americans would die before the war's end."
+            },
+            keyIdea: {
+                extra: "This battle started the Civil War. After it, four more states joined the South.",
+                beginner: "This first battle started the war. After Fort Sumter, four more Southern states left the Union to join the Confederacy.",
+                intermediate: "Fort Sumter started the war and pushed four more states to secede. There was no turning back to peace.",
+                advanced: "The attack on Fort Sumter began the war and drove four more states into the Confederacy. Any hope of a peaceful settlement was gone for good."
             }
         },
 
@@ -284,6 +290,12 @@ const battles = [
                 beginner: "People from Washington, D.C. brought picnic baskets to watch the battle like a show! When the Union army started losing, the soldiers and the picnickers all tried to run home at the same time, jamming the roads.",
                 intermediate: "Civilians from Washington brought picnic baskets to watch the battle like a sporting event. They fled in terror alongside retreating Union soldiers, jamming the roads back to the capital.",
                 advanced: "Washington society figures brought picnic baskets and opera glasses to observe the battle as spectacle. Their panicked flight alongside retreating soldiers created a chaotic scene that graphically illustrated the nation's naive understanding of what modern warfare would entail."
+            },
+            keyIdea: {
+                extra: "This loss showed the war would be long and hard, not quick.",
+                beginner: "The Union lost badly. It proved the war would not be quick, and both sides got ready for a long fight.",
+                intermediate: "The Union defeat killed the idea of a quick war and forced both sides to prepare for a long, deadly struggle.",
+                advanced: "The Union rout destroyed the fantasy of a short war. Both sides now braced for a long, costly struggle, and Lincoln called up far more troops."
             }
         },
 
@@ -462,6 +474,12 @@ const battles = [
                 beginner: "Over 23,000 soldiers were killed or hurt in just two days, more than in all of America's earlier wars added together. Nobody had ever seen anything like it.",
                 intermediate: "Over 23,000 soldiers were killed or wounded in two days, more than all previous American wars combined at that point. The nation was horrified by the scale of the slaughter.",
                 advanced: "Shiloh's 23,000 casualties in forty-eight hours exceeded the combined losses of every previous American conflict. The battle marked the moment when both sides recognized that the war would demand sacrifice on an industrial scale previously unimaginable in American warfare."
+            },
+            keyIdea: {
+                extra: "So many soldiers died that people saw the war would be very deadly.",
+                beginner: "The huge number of dead shocked the country. People realized this war would cost far more lives than they thought.",
+                intermediate: "The staggering death toll proved this war would cost more lives than anyone imagined, and convinced Grant only total victory could end it.",
+                advanced: "Shiloh's casualties exceeded all of America's earlier wars combined, shocking the nation. It convinced Grant that nothing short of complete conquest could win the war."
             }
         },
 
@@ -640,6 +658,12 @@ const battles = [
                 beginner: "September 17, 1862 is still the bloodiest single day in American history. Over 22,000 soldiers were killed or hurt in just 12 hours. That's more people than live in many small towns.",
                 intermediate: "September 17, 1862 remains the bloodiest single day in American history. Over 22,000 soldiers were killed or wounded in just 12 hours of fighting.",
                 advanced: "September 17, 1862 remains the bloodiest single day in American history, with over 22,000 casualties in twelve hours. To put this in perspective, Antietam's single-day losses exceeded total American casualties in the War of 1812 and approached those of the entire Revolutionary War."
+            },
+            keyIdea: {
+                extra: "This win let Lincoln start to end slavery.",
+                beginner: "Stopping Lee's army let Lincoln write the Emancipation Proclamation. The war became a fight to end slavery.",
+                intermediate: "Stopping Lee's invasion let Lincoln issue the Emancipation Proclamation, turning the war into a fight to end slavery and keeping Britain and France out.",
+                advanced: "Halting Lee's invasion gave Lincoln the moment to issue the Emancipation Proclamation, redefining the war as a fight to end slavery. It also kept Britain and France from backing the Confederacy."
             },
             perspectives: [
                 {
@@ -830,6 +854,12 @@ const battles = [
                 intermediate: "A Confederate officer watching the slaughter said, 'A chicken could not live on that field.' Union soldiers later tried to use the bodies of fallen comrades as cover from the relentless fire.",
                 advanced: "Longstreet reportedly assured Lee that 'a chicken could not live on that field when we open on it.' The killing ground before the stone wall became so densely carpeted with Union dead and wounded that survivors used their fallen comrades' bodies as improvised cover. It was a grim testament to the technological revolution that had rendered Napoleonic tactics obsolete."
             },
+            keyIdea: {
+                extra: "A terrible Union loss made many people in the North want to stop the war.",
+                beginner: "The Union was slaughtered. The loss made more Northerners want to quit, and the soldiers' spirits sank to their lowest.",
+                intermediate: "A lopsided Union slaughter fueled the Northern peace movement and dropped army morale to its lowest point of the war.",
+                advanced: "The one-sided Union slaughter energized the Northern peace movement and sank army morale to its lowest point. Soldiers openly doubted their commanders, and Burnside was removed."
+            },
             perspectives: [
                 {
                     title: "The Irish Brigade at Marye's Heights",
@@ -1017,6 +1047,12 @@ const battles = [
                 beginner: "Stonewall Jackson was accidentally shot by his own soldiers in the dark! He died 8 days later. Lee said losing Jackson was like losing his right arm. No one could replace him.",
                 intermediate: "Stonewall Jackson was accidentally shot by his own men in the darkness. He died 8 days later. Lee never found a replacement who could match Jackson's speed and daring.",
                 advanced: "Jackson was struck by three bullets from his own troops while reconnoitering ahead of his lines in the darkness. He died eight days later. Lee's lament, 'I have lost my right arm,' proved prophetic: no subsequent Confederate commander could replicate Jackson's combination of strategic vision, tactical audacity, and the speed of execution that had made Lee's operational style possible."
+            },
+            keyIdea: {
+                extra: "Lee won, but lost his best general, Stonewall Jackson.",
+                beginner: "Lee won a big victory, but his best general, Stonewall Jackson, was killed. The South never replaced him.",
+                intermediate: "Lee's greatest victory cost him Stonewall Jackson, a loss the Confederacy never recovered from, and emboldened the invasion that led to Gettysburg.",
+                advanced: "Lee's masterpiece victory cost him Stonewall Jackson, an irreplaceable loss for the Confederacy. Emboldened, Lee launched the northern invasion that ended at Gettysburg."
             }
         },
 
@@ -1194,6 +1230,12 @@ const battles = [
                 beginner: "Vicksburg surrendered on July 4, Independence Day! The people of Vicksburg were so upset about surrendering on that date that they refused to celebrate the Fourth of July for over 80 years.",
                 intermediate: "Vicksburg surrendered on July 4, 1863. The city was so bitter about the date that residents refused to celebrate Independence Day for over 80 years afterward.",
                 advanced: "Pemberton, a Northern-born officer serving the Confederacy, deliberately chose July 4 for the surrender, calculating that Grant would offer more generous terms on Independence Day. The gambit worked. Grant paroled the garrison rather than imprisoning them. But the date left such bitterness that Vicksburg residents reportedly refused to celebrate Independence Day until the 1940s."
+            },
+            keyIdea: {
+                extra: "The Union took the Mississippi River and split the South in two.",
+                beginner: "The Union captured the whole Mississippi River. This cut the Confederacy in two and split off the western states.",
+                intermediate: "The Union won control of the entire Mississippi River, splitting the Confederacy in two and cutting off the western states.",
+                advanced: "Capturing Vicksburg gave the Union the entire Mississippi River, splitting the Confederacy in two. Texas, Arkansas, and Louisiana were cut off from the rest of the South."
             }
         },
 
@@ -1371,6 +1413,12 @@ const battles = [
                 beginner: "During Pickett's Charge, 12,000 Confederate soldiers had to walk almost a mile across an open field while cannons and rifles shot at them. Fewer than half made it back. Lee told his men, 'It is all my fault.'",
                 intermediate: "During Pickett's Charge, 12,000 Confederate soldiers marched nearly a mile across open ground. Union artillery and rifle fire cut them to pieces. Fewer than half made it back. Lee told his men, 'It is all my fault.'",
                 advanced: "Pickett's Charge required 12,000 men to advance nearly a mile across open ground under concentrated artillery and rifle fire. The assault achieved a momentary penetration at 'the Angle' before being overwhelmed. Fewer than half the attackers returned. Lee personally rode among the survivors, accepting full responsibility: 'It is all my fault.' The failed charge became the Confederacy's 'high-water mark.'"
+            },
+            keyIdea: {
+                extra: "Lee's invasion of the North failed. The South could not attack like that again.",
+                beginner: "Lee's invasion of the North failed for good. The Confederacy could no longer go on the attack, and Lincoln's Gettysburg Address called the war a fight for equality.",
+                intermediate: "Lee's invasion of the North failed for good, ending the Confederacy's ability to go on offense, and the Gettysburg Address redefined the war as a fight for equality.",
+                advanced: "Lee's invasion of the North failed permanently, ending the Confederacy's power to attack. Lincoln's Gettysburg Address then recast the war as a fight for 'a new birth of freedom.'"
             },
             perspectives: [
                 {
@@ -1560,6 +1608,12 @@ const battles = [
                 beginner: "General George Thomas got the nickname 'Rock of Chickamauga' because he refused to run when everyone else did. He held his ground on Snodgrass Hill until dark, saving the whole Union army from being destroyed.",
                 intermediate: "General George Thomas earned the nickname 'Rock of Chickamauga' for refusing to retreat. He held Snodgrass Hill against repeated Confederate assaults until nightfall, saving the Union army from total destruction.",
                 advanced: "Thomas' stand on Snodgrass Hill, holding against repeated Confederate assaults until nightfall with diminishing ammunition, prevented the rout from becoming annihilation. His performance earned him the sobriquet 'Rock of Chickamauga' and was arguably the most consequential individual act of defensive leadership in the war. The army he saved would later fight at Chattanooga, Atlanta, and Nashville."
+            },
+            keyIdea: {
+                extra: "The Union lost the battle but held the city. Lincoln put Grant in charge.",
+                beginner: "Even after losing, the Union held Chattanooga. Lincoln put Grant in command of the West to lead the next push.",
+                intermediate: "Even after a battlefield defeat, the Union held Chattanooga and Lincoln put Grant in command of the West, setting up the final Union push.",
+                advanced: "Despite the Confederate win, Bragg failed to follow up, and the Union held Chattanooga. Lincoln responded by giving Grant command in the West, setting up the Union breakout."
             }
         },
 
@@ -1737,6 +1791,12 @@ const battles = [
                 beginner: "When Union soldiers realized Grant was marching south, not north back home, they burst into cheers! For the first time ever, a Union general refused to turn back after fighting Lee. That moment changed everything.",
                 intermediate: "When Union soldiers realized Grant was marching south instead of retreating north, they burst into cheers. For the first time, a Union commander refused to turn back after a brutal fight.",
                 advanced: "The moment Union soldiers realized they were marching south rather than north has become one of the war's iconic turning points. After years of commanders who fought Lee, withdrew, and reorganized, Grant's refusal to retreat signaled a fundamental change in Union strategy. The cheers that erupted along the marching columns reflected soldiers' recognition that the war's endgame had finally begun."
+            },
+            keyIdea: {
+                extra: "Grant did not retreat. The Union would now keep chasing Lee.",
+                beginner: "After a brutal fight, Grant marched forward instead of retreating. The Union would now press Lee without stopping.",
+                intermediate: "Grant refused to retreat after a brutal fight, signaling that the Union would now press Lee relentlessly until the war was won.",
+                advanced: "For the first time, a Union commander refused to retreat after a bloody fight with Lee. Grant's push south signaled the relentless final campaign that would grind the Confederacy down."
             }
         },
 
@@ -1915,6 +1975,12 @@ const battles = [
                 beginner: "Atlanta's capture helped Lincoln win re-election in 1864. If Lincoln had lost, the new president might have made peace with the Confederacy, and slavery could have continued.",
                 intermediate: "Atlanta's fall helped Lincoln win re-election in 1864. If Lincoln had lost, the new president might have negotiated peace and allowed the Confederacy to survive.",
                 advanced: "Atlanta's fall transformed the 1864 election from a referendum on Lincoln's management of a seemingly endless war into a validation of his determination to see it through. McClellan's Democratic platform called for an armistice and negotiated peace, terms that would likely have preserved the Confederacy. Sherman's victory ensured that possibility never materialized."
+            },
+            keyIdea: {
+                extra: "Taking Atlanta helped Lincoln win the election and keep fighting to win.",
+                beginner: "Capturing Atlanta helped Lincoln win re-election. That meant the North would keep fighting until the South was beaten.",
+                intermediate: "Capturing Atlanta secured Lincoln's re-election, ensuring the war would be fought to victory instead of a negotiated peace that might have saved the Confederacy.",
+                advanced: "Atlanta's fall guaranteed Lincoln's re-election over a peace candidate. Without it, a negotiated peace might have let the Confederacy survive with slavery intact."
             }
         },
 
@@ -2093,6 +2159,12 @@ const battles = [
                 beginner: "Sherman's army destroyed about $100 million worth of property, that's about $1.8 billion in today's money! Soldiers twisted hot railroad rails around trees, making 'neckties' that could never be used again.",
                 intermediate: "Sherman's army destroyed an estimated $100 million in property (about $1.8 billion today). Soldiers bent heated railroad rails around trees, creating twisted metal 'neckties' that couldn't be straightened and reused.",
                 advanced: "Sherman's army inflicted an estimated $100 million in property damage (approximately $1.8 billion in current value) across a 300-mile corridor. The systematic destruction of railroad infrastructure, cotton gins, and agricultural resources crippled the Confederate war economy. An estimated 25,000 formerly enslaved people followed the army to freedom, though their treatment by some Union soldiers was inconsistent with the liberation they sought."
+            },
+            keyIdea: {
+                extra: "Sherman destroyed the South's supplies. The South could not protect its people.",
+                beginner: "Sherman's army destroyed the South's farms, railroads, and supplies. It showed the Confederacy could no longer protect its own people.",
+                intermediate: "By destroying the South's war resources, Sherman showed the Confederacy could no longer protect its own people. This was 'total war.'",
+                advanced: "By systematically destroying the South's farms, railroads, and industry, Sherman proved the Confederacy could no longer protect its own civilians. This was the meaning of 'total war.'"
             }
         },
 
@@ -2275,6 +2347,12 @@ const battles = [
                 beginner: "When Union soldiers started firing celebration cannons, Grant ordered them to stop immediately. He said: 'The war is over. The rebels are our countrymen again.' That tells you a lot about the kind of peace Grant wanted.",
                 intermediate: "Grant's generous surrender terms set the tone for reconciliation. When Union troops began firing celebration cannons, Grant ordered them to stop: 'The war is over. The rebels are our countrymen again.'",
                 advanced: "Grant's order silencing celebratory cannons, 'The war is over. The rebels are our countrymen again,' encapsulated the Union's approach to the war's end. Chamberlain's decision to have Union troops present arms as Confederates marched to stack their weapons further embodied this spirit. These gestures of magnanimity, however, existed in tension with the unresolved question of justice for four million formerly enslaved people, a tension that would define the troubled era of Reconstruction."
+            },
+            keyIdea: {
+                extra: "Lee surrendered and the fighting ended. But freedom for freed people was just starting.",
+                beginner: "Lee surrendered and the war's fighting ended. But big questions about Reconstruction and freedom for four million freed people were just beginning.",
+                intermediate: "Lee's surrender ended the fighting, but the questions of Reconstruction and what freedom would mean for four million freed people were just beginning.",
+                advanced: "Lee's surrender ended the military conflict, but not the larger struggle. Reconstruction and the meaning of freedom for four million formerly enslaved people were only beginning to be decided."
             },
             perspectives: [
                 {

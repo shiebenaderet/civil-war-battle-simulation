@@ -865,12 +865,12 @@ function populateKeyIdeaCallout() {
     var textEl = document.getElementById('keyIdeaText');
     if (!callout || !textEl) return;
     var content = getHistoricalContent();
-    var keyFact = content && content.keyFact;
-    if (!keyFact || !String(keyFact).trim()) {
+    var keyIdea = content && content.keyIdea;
+    if (!keyIdea || !String(keyIdea).trim()) {
         callout.style.display = 'none';
         return;
     }
-    textEl.textContent = keyFact;
+    textEl.textContent = keyIdea;
     callout.style.display = '';
     // TTS: make the key idea readable aloud, consistent with other narrative text.
     textEl.classList.add('tts-readable');
