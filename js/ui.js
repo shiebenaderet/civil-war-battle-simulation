@@ -3085,7 +3085,15 @@ function openBattleRevisit(index) {
     html += '<div class="revisit-section"><div class="revisit-label">The bigger picture</div><p>' +
             escapeHtml(getContent(h.biggerPicture)) + '</p></div>';
 
+    // Explicit, obvious way back to the battle list (the small X alone wasn't clear).
+    html += '<div class="revisit-actions">' +
+            '<button type="button" class="btn-secondary revisit-back-btn" id="revisitBackBtn">← Back to battle list</button>' +
+            '</div>';
+
     body.innerHTML = html;
+
+    var backBtn = document.getElementById('revisitBackBtn');
+    if (backBtn) backBtn.addEventListener('click', closeBattleRevisit);
 
     var modal = document.getElementById('battleRevisitModal');
     if (modal) modal.style.display = 'block';
