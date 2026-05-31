@@ -138,10 +138,13 @@ function renderSideSelection() {
     var difficultySection = document.getElementById('difficultySelectorSection');
     var unionCardEl = document.getElementById('unionCard');
     var confedCardEl = document.getElementById('confederacyCard');
+    var startActions = document.getElementById('setupStartActions');
 
     if (gameState.mode === 'historical') {
         // v3.18: Historical Mode is Union-only — hide the side picker, auto-select Union.
-        title.textContent = 'Set Up Your Journal';
+        // The hidden side cards used to be the only way to start, so we show an
+        // explicit Begin button instead.
+        title.textContent = 'Welcome, Commander';
         subtitle.textContent = 'You will lead the Union through the war. Enter your name and choose your reading level.';
         unionCount.textContent = '';
         confCount.textContent = '';
@@ -149,6 +152,7 @@ function renderSideSelection() {
         difficultySection.style.display = '';
         if (unionCardEl) unionCardEl.style.display = 'none';
         if (confedCardEl) confedCardEl.style.display = 'none';
+        if (startActions) startActions.style.display = '';
         gameState.side = 'union';
 
         // Clear inputs
@@ -172,6 +176,7 @@ function renderSideSelection() {
         difficultySection.style.display = 'none';
         if (unionCardEl) unionCardEl.style.display = '';
         if (confedCardEl) confedCardEl.style.display = '';
+        if (startActions) startActions.style.display = 'none';
     }
 
     showScreen('sideSelection');

@@ -778,6 +778,16 @@ a.settings-item:visited { color: var(--color-ink); }
     background: var(--color-paper-deep);
 }
 
+/* v3.18: Historical setup Begin button (replaces side-card start in Union-only mode) */
+.setup-start-actions {
+    display: flex;
+    justify-content: center;
+    margin-top: var(--space-8);
+}
+.setup-start-btn {
+    min-width: 16rem;
+}
+
 .back-btn {
     display: block;
     margin: var(--space-8) auto 0;

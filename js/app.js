@@ -147,6 +147,11 @@ function setupEventListeners() {
         renderModeSelection();
     });
 
+    // v3.18: Historical setup -> begin (Union-only; replaces the now-hidden side cards)
+    document.getElementById('beginSetupBtn').addEventListener('click', function() {
+        startWithSide('union');
+    });
+
     // Leader letter - begin journey
     document.getElementById('beginJourneyBtn').addEventListener('click', function() {
         enterBattleScreen();
