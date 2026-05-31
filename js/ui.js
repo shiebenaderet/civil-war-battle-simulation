@@ -858,8 +858,9 @@ function populateNoteNudge(slotId, subStepKey) {
 }
 
 // v3.18: Always-visible key-idea takeaway, shown to EVERY tier in sectionHappened.
-// Sources the per-tier keyFact (the same field the handout "why it mattered" box expects),
-// so the takeaway is never hidden -- fixing the old gap where low tiers never saw it.
+// Sources the per-tier keyIdea (the battle's real significance, the same field the
+// handout "why it mattered" box expects), so the takeaway is never hidden -- fixing
+// the old gap where low tiers never saw it.
 function populateKeyIdeaCallout() {
     var callout = document.getElementById('keyIdeaCallout');
     var textEl = document.getElementById('keyIdeaText');
