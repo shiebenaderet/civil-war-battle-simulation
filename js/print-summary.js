@@ -54,8 +54,8 @@
         var completedDate = new Date().toLocaleDateString();
 
         var sideLabel = side ? (side.charAt(0).toUpperCase() + side.slice(1)) : 'Unknown';
-        var levelLabel = level === 'extra' ? 'Extra Support'
-            : (level ? (level.charAt(0).toUpperCase() + level.slice(1)) : '');
+        var levelNames = { extra: 'Most Support', beginner: 'More Support', intermediate: 'Standard', advanced: 'Extra Challenge' };
+        var levelLabel = levelNames[level] || '';
 
         var parts = [];
         parts.push('<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Civil War Simulation Summary - ' + escape(studentName) + '</title>');

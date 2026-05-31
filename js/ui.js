@@ -3225,10 +3225,10 @@ function setReadingLevelEverywhere(level) {
 
     // Update difficulty hint text on start screen if visible
     var difficultyHints = {
-        extra: 'Easiest reading, lots of writing help, fewer choices',
-        beginner: 'Shorter text, extra help with writing',
-        intermediate: 'Standard text, some writing help',
-        advanced: 'More detail, deeper questions, full challenge'
+        extra: 'Most Support. Easiest reading, lots of writing help.',
+        beginner: 'More Support. Shorter text, extra writing help.',
+        intermediate: 'Standard. Standard text, some writing help.',
+        advanced: 'Extra Challenge. More detail, deeper questions.'
     };
     var hintEl = document.getElementById('difficultyHint');
     if (hintEl) hintEl.textContent = difficultyHints[level] || '';
