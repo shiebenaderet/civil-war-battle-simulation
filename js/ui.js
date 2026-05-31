@@ -2231,10 +2231,14 @@ function renderFreeplayBriefing() {
         var sDetail = getSideText(strategy.detail);
         card.setAttribute('aria-label', 'Choose strategy: ' + sName);
 
+        // Name + description are escaped (controlled data, but stay safe). The
+        // detail (densest reading) gets vocabulary tooltips via applyGlossary,
+        // which escapes internally. v3.20: glossary now reaches Free-play strategy text.
         card.innerHTML =
-            '<div class="strategy-name">' + sName + '</div>' +
-            '<div class="strategy-description">' + sDesc + '</div>' +
-            '<div class="strategy-detail">' + sDetail + '</div>';
+            '<div class="strategy-name">' + escapeHtml(sName) + '</div>' +
+            '<div class="strategy-description">' + escapeHtml(sDesc) + '</div>' +
+            '<div class="strategy-detail"></div>';
+        applyGlossary(card.querySelector('.strategy-detail'), sDetail);
 
         card.addEventListener('click', function() {
             selectStrategy(index);
@@ -2287,7 +2291,7 @@ function renderFreeplayResults(result) {
 
     // Outcome text
     var resultOutcomeEl = document.getElementById('resultOutcome');
-    resultOutcomeEl.textContent = result.outcomeText;
+    applyGlossary(resultOutcomeEl, result.outcomeText); // v3.20: vocabulary tooltips
     // v3.20: read-aloud parity with Historical Mode
     resultOutcomeEl.classList.add('tts-readable');
     resultOutcomeEl.setAttribute('data-tts-label', 'Battle result');
@@ -2391,7 +2395,7 @@ function renderFreeplayResults(result) {
         var histWinner = battleData.historical.winner;
         var winnerLabel = histWinner === 'union' ? 'Union' : histWinner === 'confederacy' ? 'Confederate' : 'Draw';
 
-        document.getElementById('histContextText').textContent = getContent(battleData.historical.whatHappened);
+        applyGlossary(document.getElementById('histContextText'), getContent(battleData.historical.whatHappened)); // v3.20: vocabulary tooltips
         document.getElementById('histContextOutcome').textContent =
             'Historical result: ' + histOutcome + ' (' + winnerLabel + ' victory)';
         histContextBox.style.display = 'block';
