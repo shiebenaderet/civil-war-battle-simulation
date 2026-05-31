@@ -3210,7 +3210,44 @@ function rerenderForReadingLevel() {
 
     // Battle screen (historical mode) — uses gameState.currentBattle internally
     if (screen === 'historicalScreen' && typeof renderHistoricalBattle === 'function') {
-        renderHistoricalBattle();
+        // Preserve the student's place in the battle's reveal sequence.
+        // renderHistoricalBattle() resets narrativeStep to 0 and wwydSelected to
+        // -1 (back to Briefing), so capture both BEFORE re-rendering, then replay
+        // the DISPLAY-ONLY reveals up to where the student was — never the terminal
+        // save/advance steps.
+        //
+        // Step map (see advanceNarrative): 0 Briefing, 1 Your Call (WWYD),
+        // 2 feedback, 3 What Happened, 4 Learn More — all reveal UI only.
+        // Steps 5/6 SAVE the response and advance to the next battle (or reflect/
+        // recall). SAFE_MAX is the last display-only step (4 = Learn More); the
+        // replay must never reach 5/6, or changing difficulty would save a
+        // duplicate response or jump to the next battle.
+        var savedStep = narrativeStep;
+        var savedSel = wwydSelected;
+        var SAFE_MAX = 4; // last display-only reveal step (Learn More)
+
+        renderHistoricalBattle(); // resets narrativeStep = 0, wwydSelected = -1
+
+        if (savedStep > 0) {
+            // Restore the WWYD selection (state + button highlight) so the
+            // step-1 guard (wwydSelected === -1 blocks advancing) doesn't stall
+            // the replay and the student's pick stays visible. selectWwydOption
+            // only touches the continue button when narrativeStep === 1, which is
+            // 0 here, so it has no terminal side effects.
+            if (savedSel >= 0 && typeof selectWwydOption === 'function') {
+                selectWwydOption(savedSel);
+            }
+            // Clamp to SAFE_MAX so the loop can never call advanceNarrative() once
+            // narrativeStep reaches 4 — it therefore never enters case 5/6
+            // (saveHistoricalResponse / advanceHistorical / enterBattleScreen /
+            // renderHistoricalComplete). If the student was on a terminal step,
+            // we re-show the last visible content (Learn More) and do NOT re-save
+            // or re-advance.
+            var replayTarget = Math.min(savedStep, SAFE_MAX);
+            while (narrativeStep < replayTarget) {
+                advanceNarrative();
+            }
+        }
     } else if (screen === 'actIntroScreen' && typeof renderActIntro === 'function' &&
                typeof getActForBattle === 'function') {
         var actIdx = getActForBattle(gameState.currentBattle);
