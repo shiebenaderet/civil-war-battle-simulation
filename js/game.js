@@ -64,9 +64,16 @@ function resolveDifficulty(field) {
 function getSideText(field) {
     if (field && typeof field === 'object' && !Array.isArray(field) &&
         ('union' in field || 'confederacy' in field)) {
-        return field[gameState.side] || field.union || '';
+        var sideVal = field[gameState.side] || field.union || '';
+        // v3.20: a side value may itself be a {extra,beginner,intermediate,advanced}
+        // reading-tier object (Free-play strategy text). getContent resolves the
+        // tier; a plain string passes through unchanged (backward compatible).
+        return getContent(sideVal);
     }
-    return field;
+    // v3.20: a field with no side keys may still be a shared reading-tier object
+    // (strategies whose text is the same for both sides). Resolve the tier here too.
+    // getContent returns a plain string/array unchanged, so this is backward compatible.
+    return getContent(field);
 }
 
 // ============================================================
