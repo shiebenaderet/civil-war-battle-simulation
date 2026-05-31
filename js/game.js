@@ -288,6 +288,11 @@ function resolveBattle(strategyIndex) {
     const basePower = strategy.power[side];
     const momentumBonus = Math.floor(gameState.momentum / 5);
 
+    // FP-3: underdog comeback bonus. When momentum is negative, give a small
+    // boost (max +2) that partially offsets the negative momentumBonus, so an
+    // early stumble isn't mathematically fatal. 0 when momentum >= 0.
+    var underdogBonus = (gameState.momentum < 0) ? Math.min(2, Math.floor(-gameState.momentum / 5)) : 0;
+
     // Fog of war
     var fogEvent = rollFogOfWar(battle);
     var fogMod = fogEvent ? fogEvent.mod : 0;
@@ -299,7 +304,7 @@ function resolveBattle(strategyIndex) {
         histMod = histEvent.mod[side] || 0;
     }
 
-    const effectivePower = basePower + momentumBonus + fogMod + histMod;
+    const effectivePower = basePower + momentumBonus + fogMod + histMod + underdogBonus;
     const won = effectivePower >= battle.freeplay.difficulty;
 
     // Update state
@@ -342,6 +347,7 @@ function resolveBattle(strategyIndex) {
         histEvent: histEvent,
         fogMod: fogMod,
         histMod: histMod,
+        underdogBonus: underdogBonus,
         basePower: basePower,
         momentumBonus: momentumBonus,
         effectivePower: effectivePower,
@@ -349,8 +355,25 @@ function resolveBattle(strategyIndex) {
     };
 }
 
+// FP-4: troop floors below which the army can no longer sustain the war.
+// Scaled to starting numbers (Union 1.5M, Confederacy 1.0M).
+var ATTRITION_FLOOR = { union: 400000, confederacy: 250000 };
+
 // Check if the war should end early
 function checkWarEnd() {
+    // FP-4: attrition check runs EVERY battle, before the 8-battle gate.
+    // Bleeding your army below its floor is always terminal, no matter how
+    // few battles have been fought. gameState.soldiers has already been
+    // reduced by the battle just resolved (in resolveBattle).
+    var floor = gameState.side === 'union' ? ATTRITION_FLOOR.union : ATTRITION_FLOOR.confederacy;
+    if (gameState.soldiers <= floor) {
+        return {
+            ended: true,
+            reason: 'attrition_defeat',
+            message: 'Your army has been bled white. With too few soldiers left to continue the fight, you are forced to surrender.'
+        };
+    }
+
     const battleNum = gameState.currentBattle + 1;
 
     // Always play at least 8 battles (adjusted for 13-battle campaign)
@@ -408,8 +431,23 @@ function advanceFreeplay() {
     return { ended: false };
 }
 
-// Determine final outcome for free-play
-function getFreeplayResult() {
+// Determine final outcome for free-play.
+// FP-4: optional warEndReason lets the caller force a distinct attrition
+// outcome. When reason === 'attrition_defeat' the war is ALWAYS a defeat,
+// regardless of momentum sign (a reckless player can win battles yet bleed
+// their army dry). Param is optional; without it, the legacy momentum logic
+// runs unchanged for backward compatibility.
+function getFreeplayResult(warEndReason) {
+    if (warEndReason === 'attrition_defeat') {
+        return {
+            victory: false,
+            title: 'DEFEAT',
+            subtitle: gameState.side === 'union'
+                ? 'The Union Army is Bled White'
+                : 'The Confederate Army is Bled White',
+            summary: 'You won battles but spent soldiers recklessly. With too few troops left to keep fighting, your army collapsed and the war was lost to attrition.'
+        };
+    }
     if (gameState.momentum > 0) {
         return {
             victory: true,
