@@ -206,7 +206,7 @@ body { font-family: 'Old Standard TT', Georgia, serif; font-size: 14pt; line-hei
 .cont-line .right-cont { font-style: italic; }
 
 /* Per-battle log */
-.act-section { margin: 12px 0; break-inside: avoid; page-break-inside: avoid; }
+.act-section { margin: 12px 0; }
 .act-section-head {
     font-family: 'Special Elite', monospace; font-size: 10pt;
     color: var(--paper); background: var(--ink);
@@ -255,13 +255,26 @@ body { font-family: 'Old Standard TT', Georgia, serif; font-size: 14pt; line-hei
     }
     .section-head { margin-bottom: 6px; }
     .section-head h1 { font-size: 22pt; margin-top: 0; }
+
+    /* Greedy page flow: an act flows between its boxes so each page fills to
+       the bottom, but every individual box stays whole on one page (never
+       split across a page boundary) and a heading never strands at a page foot. */
+    .act-section { break-inside: auto; page-break-inside: auto; }
+    .battle-row, .reflect-box, .q-embed, .pat-list, .wordbank {
+        break-inside: avoid; page-break-inside: avoid;
+    }
+    .act-section-head, .section-head, .section-head h1, .badge {
+        break-after: avoid; page-break-after: avoid;
+    }
+    .act-section-head { break-inside: avoid; page-break-inside: avoid; }
+    .section-head { break-inside: avoid; page-break-inside: avoid; }
     .pat-list, .act-box, .q-embed, .wordbank { margin: 6px 0; padding: 6px 10px; }
     .act-grid { gap: 6px; margin: 6px 0; }
     .lineW { height: 1.2em; margin: 1px 0; }
     .foot { display: none; }
 
-    /* Per-battle log B&W overrides */
-    .battle-row, .reflect-box { background: white !important; border: 1px solid black; break-inside: avoid; page-break-inside: avoid; }
+    /* Per-battle log B&W overrides (break-inside handled by greedy-flow rules) */
+    .battle-row, .reflect-box { background: white !important; border: 1px solid black; }
     .act-section-head { background: white !important; color: black !important; border: 1px solid black; }
     .battle-row .matched .box { border-color: black; }
 }
