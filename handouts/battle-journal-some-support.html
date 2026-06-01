@@ -188,13 +188,18 @@ body { font-family: 'Old Standard TT', Georgia, serif; font-size: 14pt; line-hei
     box-shadow: 0 2px 6px rgba(0,0,0,0.15);
 }
 .print-toolbar .hint { color: var(--paper); opacity: 0.85; }
-.print-toolbar button {
+.print-toolbar .actions { display: flex; gap: 10px; align-items: center; }
+.print-toolbar button, .print-toolbar .dl {
     background: var(--brand); color: var(--paper); border: none;
     padding: 8px 18px; font-family: 'Special Elite', monospace; font-size: 11pt;
     letter-spacing: 0.05em; text-transform: uppercase; cursor: pointer;
-    border-radius: 2px;
+    border-radius: 2px; text-decoration: none; display: inline-block;
+}
+.print-toolbar .dl {
+    background: transparent; border: 1px solid var(--paper);
 }
 .print-toolbar button:hover { background: #8c2f1f; }
+.print-toolbar .dl:hover { background: rgba(244,236,216,0.15); }
 
 .cont-line {
     font-family: 'Special Elite', monospace; font-size: 10pt;
@@ -283,7 +288,10 @@ body { font-family: 'Old Standard TT', Georgia, serif; font-size: 14pt; line-hei
 <body>
 <div class="print-toolbar">
     <span class="hint">Battle Journal · ★★ More Support</span>
-    <button onclick="window.print()">Print Handout</button>
+    <span class="actions">
+        <a class="dl" href="battle-journal-some-support.pdf" download>Download PDF</a>
+        <button onclick="window.print()">Print Handout</button>
+    </span>
 </div>
 
 <div class="page">
