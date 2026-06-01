@@ -2586,6 +2586,9 @@ function wireUpScoreboardEvents() {
 
             // Also submit to Firebase if room code is active
             submitToClassLeaderboard(name);
+            // v3.21: and to the global leaderboard (works without a class code,
+            // so anyone who finishes a game can appear).
+            submitToGlobalLeaderboard(name);
         });
 
         nameInput.addEventListener('keydown', function(e) {
@@ -2724,6 +2727,21 @@ function leaveRoom() {
     document.getElementById('classLeaderboardDisplay').style.display = 'none';
     document.getElementById('roomCodeInput').value = '';
     document.getElementById('roomCodeError').style.display = 'none';
+}
+
+// v3.21: post the finished game to the GLOBAL leaderboard. No room code needed,
+// so anonymous visitors appear too. Best-effort: silently no-ops when offline.
+function submitToGlobalLeaderboard(playerName) {
+    if (!firebaseLeaderboard.isAvailable()) return;
+    firebaseLeaderboard.submitGlobalScore({
+        name: playerName,
+        score: gameState.score,
+        side: gameState.side,
+        wins: gameState.wins,
+        losses: gameState.losses,
+        momentum: gameState.momentum,
+        victory: gameState.momentum > 0 || (gameState.momentum === 0 && gameState.wins > gameState.losses)
+    }, function() {});
 }
 
 function submitToClassLeaderboard(playerName) {
