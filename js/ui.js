@@ -2569,12 +2569,10 @@ function wireUpScoreboardEvents() {
     var nameInput = document.getElementById('playerNameInput');
     if (saveBtn && nameInput) {
         saveBtn.addEventListener('click', function() {
-            var name = nameInput.value.trim();
-            if (!name) {
-                nameInput.focus();
-                nameInput.style.borderColor = '#dc2626';
-                return;
-            }
+            // v3.21: an empty name no longer blocks the save. The global leaderboard
+            // is meant to include anonymous players, so default to "Anonymous"
+            // instead of refusing to record the score.
+            var name = nameInput.value.trim() || 'Anonymous';
             var updated = saveToScoreboard(name);
             document.getElementById('scoreEntryForm').innerHTML =
                 '<p class="score-saved-msg">Score saved locally!</p>';
@@ -2769,7 +2767,13 @@ function submitToGlobalLeaderboard(playerName) {
         losses: gameState.losses,
         momentum: gameState.momentum,
         victory: gameState.momentum > 0 || (gameState.momentum === 0 && gameState.wins > gameState.losses)
-    }, function() {});
+    }, function(success, err) {
+        // Surface a failed global write in the console so a rejected write
+        // (e.g. a rules validation mismatch) is diagnosable instead of silent.
+        if (!success && typeof console !== 'undefined') {
+            console.warn('Global leaderboard submit failed:', err);
+        }
+    });
 }
 
 function submitToClassLeaderboard(playerName) {
