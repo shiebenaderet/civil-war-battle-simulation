@@ -2638,6 +2638,34 @@ function renderScoreboardTable(scoreboard) {
         '</tr></thead><tbody>' + rows + '</tbody></table>';
 }
 
+// v3.21: Render the GLOBAL leaderboard table (view-only, in-game modal). Names
+// here come from anonymous global players, so every dynamic string field is run
+// through escapeHtml before it reaches innerHTML. No delete/rename controls:
+// students only view this board (moderation lives in the teacher dashboard).
+function renderGlobalLeaderboardTable(entries) {
+    if (!entries || entries.length === 0) {
+        return '<p class="scoreboard-empty">No global scores yet.</p>';
+    }
+
+    var rows = entries.map(function(entry, i) {
+        var medal = i === 0 ? '&#x1F947;' : i === 1 ? '&#x1F948;' : i === 2 ? '&#x1F949;' : (i + 1);
+        var sideIcon = entry.side === 'union' ? '&#x1F1FA;&#x1F1F8;' : '&#x1F3F4;';
+        var victoryIcon = entry.victory ? '&#x2705;' : '&#x274C;';
+        return '<tr class="scoreboard-row' + (i < 3 ? ' top-three' : '') + '">' +
+            '<td class="rank-cell">' + medal + '</td>' +
+            '<td class="name-cell">' + escapeHtml(String(entry.name || 'Anonymous')) + '</td>' +
+            '<td class="score-cell">' + (Number(entry.score) || 0).toLocaleString() + '</td>' +
+            '<td class="side-cell">' + sideIcon + '</td>' +
+            '<td class="record-cell">' + (Number(entry.wins) || 0) + 'W-' + (Number(entry.losses) || 0) + 'L</td>' +
+            '<td class="victory-cell">' + victoryIcon + '</td>' +
+            '</tr>';
+    }).join('');
+
+    return '<table class="scoreboard-table"><thead><tr>' +
+        '<th>#</th><th>Name</th><th>Score</th><th>Side</th><th>Record</th><th>Won?</th>' +
+        '</tr></thead><tbody>' + rows + '</tbody></table>';
+}
+
 // ============================================================
 // Class Leaderboard (Firebase)
 // ============================================================
@@ -2816,6 +2844,24 @@ function openLeaderboardModal() {
     var deviceMount = document.getElementById('menuLeaderboardDeviceTable');
     if (deviceMount && typeof getScoreboard === 'function' && typeof renderScoreboardTable === 'function') {
         deviceMount.innerHTML = renderScoreboardTable(getScoreboard());
+    }
+
+    // 1b. Global leaderboard (read-only, view-only). Untrusted anonymous names
+    //     are escaped inside renderGlobalLeaderboardTable. Offline -> message.
+    var globalMount = document.getElementById('menuLeaderboardGlobalTable');
+    if (globalMount) {
+        globalMount.innerHTML = '<p class="scoreboard-empty">Loading...</p>';
+        if (firebaseLeaderboard.isAvailable()) {
+            firebaseLeaderboard.loadGlobalLeaderboard(50, function(entries, err) {
+                if (err || !entries) {
+                    globalMount.innerHTML = '<p class="scoreboard-empty">Global leaderboard unavailable.</p>';
+                    return;
+                }
+                globalMount.innerHTML = renderGlobalLeaderboardTable(entries);
+            });
+        } else {
+            globalMount.innerHTML = '<p class="scoreboard-empty">Global leaderboard needs an internet connection.</p>';
+        }
     }
 
     // 2. Relocate the class leaderboard section into the modal, remembering home.
