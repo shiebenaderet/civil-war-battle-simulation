@@ -1,5 +1,45 @@
 // App initialization and event wiring for Civil War Battle Simulation v3.7
 
+// v3.21: Send Feedback. Prompts for a comment and opens the user's email client
+// with the teacher's address, the current screen, and the reading level prefilled,
+// so feedback arrives with context. No backend required.
+var FEEDBACK_EMAIL = 'benaderets885@edmonds.wednet.edu';
+var FEEDBACK_SCREEN_NAMES = {
+    modeSelection: 'Mode selection',
+    sideSelection: 'Setup / side selection',
+    leaderLetterScreen: 'Leader letter',
+    actIntroScreen: 'Act introduction',
+    historicalScreen: 'Historical battle',
+    actRecallScreen: 'Act recall quiz',
+    freeplayBriefing: 'Free-play battle briefing',
+    freeplayResults: 'Free-play battle result',
+    endGameScreen: 'End of game'
+};
+
+function sendFeedback() {
+    var comment = window.prompt('Your feedback or suggestion (it will be emailed to Mr. B):', '');
+    if (comment === null) return; // cancelled
+    comment = String(comment).trim();
+    if (!comment) return;
+
+    var screenId = (typeof gameState !== 'undefined' && gameState && gameState.currentScreen) || '';
+    var screenName = FEEDBACK_SCREEN_NAMES[screenId] || screenId || 'Unknown';
+    var level = (typeof gameState !== 'undefined' && gameState && gameState.difficulty) || 'unknown';
+    var mode = (typeof gameState !== 'undefined' && gameState && gameState.mode) || 'unknown';
+
+    var body = comment + '\n\n' +
+        '----------\n' +
+        'Screen: ' + screenName + '\n' +
+        'Mode: ' + mode + '\n' +
+        'Reading level: ' + level + '\n' +
+        'Sent from the Civil War Simulation.';
+
+    var url = 'mailto:' + FEEDBACK_EMAIL +
+        '?subject=' + encodeURIComponent('Civil War Simulation Feedback') +
+        '&body=' + encodeURIComponent(body);
+    window.location.href = url;
+}
+
 function boot() {
     cacheScreens();
     wireActReviewOverlay();
@@ -240,6 +280,19 @@ function setupEventListeners() {
             });
         }
     });
+
+    // v3.21: Send Feedback — prompt for a comment, then email it to the teacher
+    // with the current screen and reading level so the report has context.
+    var feedbackBtn = document.getElementById('sendFeedbackMenuBtn');
+    if (feedbackBtn) {
+        feedbackBtn.addEventListener('click', function() {
+            var sm = document.getElementById('settingsMenu');
+            if (sm) sm.classList.remove('show');
+            var sb = document.getElementById('settingsBtn');
+            if (sb) sb.setAttribute('aria-expanded', 'false');
+            sendFeedback();
+        });
+    }
 
     // Close settings when clicking outside
     document.addEventListener('click', function(e) {

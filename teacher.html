@@ -200,11 +200,197 @@
             cursor: pointer;
             color: #333;
         }
+
+        /* --- Tabs (Progress / Leaderboard) --- */
+        .tab-bar {
+            display: flex;
+            gap: 4px;
+            background: #2c3e50;
+            padding: 0 24px;
+        }
+        .tab-btn {
+            background: transparent;
+            border: none;
+            border-bottom: 3px solid transparent;
+            color: #cdd6df;
+            font-size: 14px;
+            font-weight: 600;
+            padding: 10px 18px;
+            cursor: pointer;
+        }
+        .tab-btn:hover { color: #fff; }
+        .tab-btn.active {
+            color: #fff;
+            border-bottom-color: #f5f5f0;
+        }
+
+        /* --- Code chips in header --- */
+        .code-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 6px;
+        }
+        .code-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 3px 10px;
+            background: rgba(255,255,255,0.12);
+            border: 1px solid rgba(255,255,255,0.25);
+            border-radius: 14px;
+            font-size: 13px;
+            color: #fff;
+            cursor: pointer;
+            transition: background 0.12s ease;
+        }
+        .code-chip:hover {
+            background: rgba(255,255,255,0.24);
+        }
+        .code-chip .chip-period {
+            font-size: 11px;
+            font-weight: 700;
+            opacity: 0.85;
+        }
+        .code-chip .chip-code {
+            font-family: "SFMono-Regular", Menlo, Consolas, monospace;
+            letter-spacing: 0.5px;
+        }
+
+        /* --- Fullscreen class-code overlay --- */
+        .code-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: #f3ead8;
+            color: #2c3e50;
+            cursor: pointer;
+            padding: 24px;
+            text-align: center;
+        }
+        .code-overlay.show { display: flex; }
+        .code-overlay .overlay-period {
+            font-size: clamp(28px, 6vw, 64px);
+            font-weight: 600;
+            margin-bottom: 24px;
+            color: #6b5b3e;
+            letter-spacing: 1px;
+        }
+        .code-overlay .overlay-code {
+            font-family: "SFMono-Regular", Menlo, Consolas, monospace;
+            font-size: clamp(64px, 22vw, 320px);
+            font-weight: 700;
+            line-height: 1;
+            letter-spacing: 4px;
+            word-break: break-word;
+        }
+        .code-overlay .overlay-hint {
+            margin-top: 40px;
+            font-size: clamp(14px, 2vw, 20px);
+            color: #8a7c5e;
+        }
+
+        /* --- Leaderboard view --- */
+        #leaderboardView { display: none; }
+        body.tab-leaderboard #leaderboardView { display: block; }
+        body.tab-leaderboard #dashboardMain { display: none; }
+        /* Progress-only controls hidden on the leaderboard tab */
+        body.tab-leaderboard #sortControlGroup,
+        body.tab-leaderboard #clearAllBtn,
+        body.tab-leaderboard .filter-noperiod { display: none; }
+
+        /* --- Global leaderboard view (reuses .lb-* table styles) --- */
+        #globalView { display: none; }
+        body.tab-global #globalView { display: block; }
+        body.tab-global #dashboardMain { display: none; }
+        /* Period filter and progress-only controls do not apply to global scores */
+        body.tab-global #sortControlGroup,
+        body.tab-global #clearAllBtn,
+        body.tab-global .control-group { display: none; }
+
+        .lb-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+        .lb-table th {
+            text-align: left;
+            font-size: 12px;
+            color: #555;
+            font-weight: 700;
+            padding: 8px 10px;
+            border-bottom: 2px solid #e5e5e0;
+        }
+        .lb-table td {
+            padding: 8px 10px;
+            border-bottom: 1px solid #eee;
+            vertical-align: middle;
+        }
+        .lb-table tr:hover td { background: #fafaf7; }
+        .lb-rank {
+            font-weight: 700;
+            color: #888;
+            width: 44px;
+        }
+        .lb-name { font-weight: 600; color: #222; }
+        .lb-side {
+            text-transform: capitalize;
+            font-size: 13px;
+            color: #555;
+        }
+        .lb-side.union { color: #1e40af; }
+        .lb-side.confederacy { color: #9a3412; }
+        .lb-score { font-weight: 700; color: #2c3e50; }
+        .lb-wl { color: #555; font-variant-numeric: tabular-nums; }
+        .lb-victory {
+            margin-left: 6px;
+            font-size: 12px;
+            color: #166534;
+        }
+        .lb-actions { white-space: nowrap; text-align: right; }
+        .lb-period-tag {
+            font-size: 11px;
+            font-weight: 700;
+            padding: 1px 6px;
+            border-radius: 8px;
+            background: #eee;
+            color: #555;
+        }
+        .lb-period-tag.p1 { background: #fde2e2; color: #9a3412; }
+        .lb-period-tag.p2 { background: #fef3c7; color: #92400e; }
+        .lb-period-tag.p4 { background: #d1fae5; color: #065f46; }
+        .lb-period-tag.p5 { background: #dbeafe; color: #1e40af; }
+        .lb-period-tag.unknown { background: #e5e5e5; color: #666; }
+        .lb-action-btn {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            line-height: 1;
+            padding: 2px 6px;
+            opacity: 0.55;
+        }
+        .lb-action-btn:hover { opacity: 1; }
+        .lb-action-btn.delete { color: #b91c1c; }
+        .lb-action-btn.rename { color: #2c3e50; }
+        .lb-empty {
+            color: #999;
+            font-style: italic;
+            padding: 24px 10px;
+            font-size: 14px;
+        }
     </style>
 </head>
 <body>
     <header>
-        <h1>Teacher Dashboard</h1>
+        <div>
+            <h1>Teacher Dashboard</h1>
+            <div class="code-chips" id="codeChips"></div>
+        </div>
         <div class="room-info">
             Room: <strong id="roomLabel">…</strong>
             &nbsp;·&nbsp;
@@ -212,8 +398,14 @@
         </div>
     </header>
 
+    <nav class="tab-bar" id="tabBar">
+        <button class="tab-btn active" data-tab="progress" type="button">Progress</button>
+        <button class="tab-btn" data-tab="leaderboard" type="button">Leaderboard</button>
+        <button class="tab-btn" data-tab="global" type="button">Global</button>
+    </nav>
+
     <div class="controls">
-        <div class="control-group">
+        <div class="control-group" id="sortControlGroup">
             <span class="control-label">Sort:</span>
             <div class="pill-group" id="sortGroup">
                 <button class="pill active" data-sort="battle">Battle</button>
@@ -229,7 +421,7 @@
                 <button class="pill" data-filter="2">2nd</button>
                 <button class="pill" data-filter="4">4th</button>
                 <button class="pill" data-filter="5">5th</button>
-                <button class="pill" data-filter="?">No period</button>
+                <button class="pill filter-noperiod" data-filter="?">No period</button>
             </div>
         </div>
         <button class="refresh-btn" id="refreshBtn">Refresh</button>
@@ -242,6 +434,21 @@
         <div id="battleList"></div>
         <div id="groupedView"></div>
     </main>
+
+    <main id="leaderboardView">
+        <div id="leaderboardBody"></div>
+    </main>
+
+    <main id="globalView">
+        <div id="globalBody"></div>
+    </main>
+
+    <!-- Fullscreen class-code overlay (for projecting) -->
+    <div class="code-overlay" id="codeOverlay" role="dialog" aria-modal="true">
+        <div class="overlay-period" id="overlayPeriod"></div>
+        <div class="overlay-code" id="overlayCode"></div>
+        <div class="overlay-hint">Click anywhere or press Escape to close.</div>
+    </div>
 
     <!-- Firebase SDK (same versions as main app) -->
     <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
@@ -256,6 +463,15 @@
         var STALE_AFTER_MS = 5 * 60 * 1000; // 5 minutes since lastSeen = stale
         var DASHBOARD_PASSWORD = 'amsmustangs';
         var SESSION_AUTH_KEY = 'teacherDashboardAuthed';
+
+        // Escape dynamic text before injecting via innerHTML.
+        function esc(s) {
+            return String(s == null ? '' : s)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;');
+        }
 
         function requireAuth() {
             try {
@@ -278,7 +494,12 @@
             filter: 'all',
             entries: [],
             perRoom: {},
-            lastUpdate: 0
+            lastUpdate: 0,
+            tab: 'progress',
+            lbEntries: [],
+            lbLoading: false,
+            gbEntries: [],
+            gbLoading: false
         };
 
         function init() {
@@ -293,6 +514,7 @@
             var rooms = firebaseLeaderboard.getAllPeriodRooms();
             document.getElementById('roomLabel').textContent =
                 Object.keys(rooms).map(function(p) { return 'P' + p; }).join(', ');
+            renderCodeChips(rooms);
 
             state.perRoom = {};
 
@@ -337,9 +559,30 @@
                 state.filter = btn.dataset.filter;
                 setActivePill('filterGroup', btn);
                 render();
+                if (state.tab === 'leaderboard') renderLeaderboard();
             });
             document.getElementById('refreshBtn').addEventListener('click', function() {
-                render();
+                if (state.tab === 'leaderboard') {
+                    loadLeaderboard();
+                } else if (state.tab === 'global') {
+                    loadGlobalLeaderboard();
+                } else {
+                    render();
+                }
+            });
+
+            // Tab toggle: Progress (default live view) vs Leaderboard.
+            document.getElementById('tabBar').addEventListener('click', function(e) {
+                var btn = e.target.closest('.tab-btn');
+                if (!btn) return;
+                switchTab(btn.dataset.tab);
+            });
+
+            // Fullscreen code overlay: close on click anywhere or Escape.
+            var overlay = document.getElementById('codeOverlay');
+            overlay.addEventListener('click', closeOverlay);
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') closeOverlay();
             });
             document.getElementById('clearAllBtn').addEventListener('click', function() {
                 if (!window.confirm('Delete ALL student progress from ALL four periods? This cannot be undone.')) return;
@@ -572,6 +815,302 @@
 
         function clear(node) {
             while (node.firstChild) node.removeChild(node.firstChild);
+        }
+
+        // --- Feature 3: clickable class-code chips + fullscreen overlay ---
+
+        function renderCodeChips(rooms) {
+            var wrap = document.getElementById('codeChips');
+            if (!wrap) return;
+            var html = Object.keys(rooms).map(function(p) {
+                var code = String(rooms[p] || '');
+                return '<button type="button" class="code-chip" ' +
+                       'data-period="' + esc(p) + '" data-code="' + esc(code) + '">' +
+                       '<span class="chip-period">P' + esc(p) + '</span>' +
+                       '<span class="chip-code">' + esc(code.toUpperCase()) + '</span>' +
+                       '</button>';
+            }).join('');
+            wrap.innerHTML = html;
+            wrap.addEventListener('click', function(e) {
+                var chip = e.target.closest('.code-chip');
+                if (!chip) return;
+                openOverlay(chip.dataset.period, chip.dataset.code);
+            });
+        }
+
+        function openOverlay(period, code) {
+            document.getElementById('overlayPeriod').textContent = 'Period ' + period;
+            document.getElementById('overlayCode').textContent = String(code || '').toUpperCase();
+            document.getElementById('codeOverlay').classList.add('show');
+        }
+
+        function closeOverlay() {
+            document.getElementById('codeOverlay').classList.remove('show');
+        }
+
+        // --- Feature 1: tab toggle ---
+
+        function switchTab(tab) {
+            if (tab !== 'leaderboard' && tab !== 'global') tab = 'progress';
+            state.tab = tab;
+            document.body.classList.toggle('tab-leaderboard', tab === 'leaderboard');
+            document.body.classList.toggle('tab-global', tab === 'global');
+
+            var btns = document.querySelectorAll('#tabBar .tab-btn');
+            for (var i = 0; i < btns.length; i++) {
+                btns[i].classList.toggle('active', btns[i].dataset.tab === tab);
+            }
+
+            if (tab === 'leaderboard') {
+                loadLeaderboard();
+            } else if (tab === 'global') {
+                loadGlobalLeaderboard();
+            }
+        }
+
+        // --- Feature 2: leaderboard across all period rooms ---
+
+        function loadLeaderboard() {
+            var body = document.getElementById('leaderboardBody');
+            if (!firebaseLeaderboard.isAvailable()) {
+                body.innerHTML = '<div class="lb-empty">Firebase is offline. Leaderboard is unavailable.</div>';
+                return;
+            }
+
+            var rooms = firebaseLeaderboard.getAllPeriodRooms();
+            var periods = Object.keys(rooms);
+            var pending = periods.length;
+            var collected = [];
+            state.lbLoading = true;
+            body.innerHTML = '<div class="lb-empty">Loading leaderboard…</div>';
+
+            if (pending === 0) {
+                state.lbEntries = [];
+                state.lbLoading = false;
+                renderLeaderboard();
+                return;
+            }
+
+            periods.forEach(function(period) {
+                var code = rooms[period];
+                firebaseLeaderboard.loadLeaderboardWithKeys(code, function(entries, err) {
+                    if (!err && entries) {
+                        for (var i = 0; i < entries.length; i++) {
+                            var e = entries[i];
+                            e.period = period;
+                            e.roomCode = code;
+                            collected.push(e);
+                        }
+                    }
+                    pending--;
+                    if (pending <= 0) {
+                        collected.sort(function(a, b) { return (b.score || 0) - (a.score || 0); });
+                        state.lbEntries = collected;
+                        state.lbLoading = false;
+                        renderLeaderboard();
+                    }
+                });
+            });
+        }
+
+        function lbPassesFilter(entry) {
+            // The leaderboard ignores the '?' / No period filter (every score has a room).
+            if (state.filter === 'all' || state.filter === '?') return true;
+            return periodKey(entry.period) === state.filter;
+        }
+
+        function renderLeaderboard() {
+            var body = document.getElementById('leaderboardBody');
+
+            if (!firebaseLeaderboard.isAvailable()) {
+                body.innerHTML = '<div class="lb-empty">Firebase is offline. Leaderboard is unavailable.</div>';
+                return;
+            }
+            if (state.lbLoading) {
+                body.innerHTML = '<div class="lb-empty">Loading leaderboard…</div>';
+                return;
+            }
+
+            var visible = state.lbEntries.filter(lbPassesFilter);
+            if (visible.length === 0) {
+                body.innerHTML = '<div class="lb-empty">No scores yet.</div>';
+                return;
+            }
+
+            var rows = visible.map(function(e, i) {
+                var pk = periodKey(e.period);
+                var tagClass = pk === '?' ? 'unknown' : 'p' + pk;
+                var tagText = pk === '?' ? '?' : 'P' + pk;
+                var side = String(e.side || '').toLowerCase();
+                var sideLabel = side === 'confederacy' ? 'Confederacy' :
+                                (side === 'union' ? 'Union' : (e.side || ''));
+                var wins = (e.wins == null ? 0 : e.wins);
+                var losses = (e.losses == null ? 0 : e.losses);
+                var victory = e.victory ? '<span class="lb-victory" title="Won the campaign">★</span>' : '';
+                return '<tr>' +
+                    '<td class="lb-rank">' + (i + 1) + '</td>' +
+                    '<td class="lb-name">' + esc(e.name || 'Student') + '</td>' +
+                    '<td><span class="lb-period-tag ' + tagClass + '">' + esc(tagText) + '</span></td>' +
+                    '<td class="lb-side ' + esc(side) + '">' + esc(sideLabel) + '</td>' +
+                    '<td class="lb-score">' + esc(e.score == null ? 0 : e.score) + victory + '</td>' +
+                    '<td class="lb-wl">' + esc(wins) + '-' + esc(losses) + '</td>' +
+                    '<td class="lb-actions">' +
+                        '<button type="button" class="lb-action-btn rename" data-idx="' + i + '" title="Rename">&#9998;</button>' +
+                        '<button type="button" class="lb-action-btn delete" data-idx="' + i + '" title="Delete">&#10005;</button>' +
+                    '</td>' +
+                '</tr>';
+            }).join('');
+
+            body.innerHTML =
+                '<table class="lb-table"><thead><tr>' +
+                '<th>#</th><th>Name</th><th>Period</th><th>Side</th><th>Score</th><th>W-L</th><th></th>' +
+                '</tr></thead><tbody>' + rows + '</tbody></table>';
+
+            // Store the filtered list so action handlers map idx -> entry.
+            var tbody = body.querySelector('tbody');
+            tbody.addEventListener('click', function(ev) {
+                var btn = ev.target.closest('.lb-action-btn');
+                if (!btn) return;
+                var idx = parseInt(btn.dataset.idx, 10);
+                var entry = visible[idx];
+                if (!entry) return;
+                if (btn.classList.contains('delete')) {
+                    handleLbDelete(entry);
+                } else if (btn.classList.contains('rename')) {
+                    handleLbRename(entry);
+                }
+            });
+        }
+
+        function handleLbDelete(entry) {
+            if (!window.confirm('Delete this score?')) return;
+            firebaseLeaderboard.deleteScore(entry.roomCode, entry._key, function(ok, errMsg) {
+                if (!ok) {
+                    setStatus(errMsg || 'Delete failed.', true);
+                    return;
+                }
+                loadLeaderboard();
+            });
+        }
+
+        function handleLbRename(entry) {
+            var next = window.prompt('New name:', entry.name || '');
+            if (next == null) return;
+            next = String(next).trim();
+            if (!next) return;
+            firebaseLeaderboard.renameScore(entry.roomCode, entry._key, next, function(ok, errMsg) {
+                if (!ok) {
+                    setStatus(errMsg || 'Rename failed.', true);
+                    return;
+                }
+                loadLeaderboard();
+            });
+        }
+
+        // --- Feature 3: GLOBAL leaderboard (anonymous scores, with moderation) ---
+
+        function loadGlobalLeaderboard() {
+            var body = document.getElementById('globalBody');
+            if (!firebaseLeaderboard.isAvailable()) {
+                body.innerHTML = '<div class="lb-empty">Firebase is offline. Global leaderboard is unavailable.</div>';
+                return;
+            }
+            state.gbLoading = true;
+            body.innerHTML = '<div class="lb-empty">Loading global leaderboard…</div>';
+            firebaseLeaderboard.loadGlobalLeaderboard(100, function(entries, err) {
+                state.gbLoading = false;
+                if (err || !entries) {
+                    state.gbEntries = [];
+                    body.innerHTML = '<div class="lb-empty">Could not load global leaderboard.</div>';
+                    return;
+                }
+                state.gbEntries = entries;
+                renderGlobalLeaderboard();
+            });
+        }
+
+        function renderGlobalLeaderboard() {
+            var body = document.getElementById('globalBody');
+
+            if (!firebaseLeaderboard.isAvailable()) {
+                body.innerHTML = '<div class="lb-empty">Firebase is offline. Global leaderboard is unavailable.</div>';
+                return;
+            }
+            if (state.gbLoading) {
+                body.innerHTML = '<div class="lb-empty">Loading global leaderboard…</div>';
+                return;
+            }
+
+            var visible = state.gbEntries;
+            if (!visible || visible.length === 0) {
+                body.innerHTML = '<div class="lb-empty">No global scores yet.</div>';
+                return;
+            }
+
+            // Names are untrusted (anonymous global players): esc() every field.
+            var rows = visible.map(function(e, i) {
+                var side = String(e.side || '').toLowerCase();
+                var sideLabel = side === 'confederacy' ? 'Confederacy' :
+                                (side === 'union' ? 'Union' : (e.side || ''));
+                var wins = (e.wins == null ? 0 : e.wins);
+                var losses = (e.losses == null ? 0 : e.losses);
+                var victory = e.victory ? '<span class="lb-victory" title="Won the campaign">★</span>' : '';
+                return '<tr>' +
+                    '<td class="lb-rank">' + (i + 1) + '</td>' +
+                    '<td class="lb-name">' + esc(e.name || 'Anonymous') + '</td>' +
+                    '<td class="lb-side ' + esc(side) + '">' + esc(sideLabel) + '</td>' +
+                    '<td class="lb-score">' + esc(e.score == null ? 0 : e.score) + victory + '</td>' +
+                    '<td class="lb-wl">' + esc(wins) + '-' + esc(losses) + '</td>' +
+                    '<td class="lb-actions">' +
+                        '<button type="button" class="lb-action-btn rename" data-idx="' + i + '" title="Rename">&#9998;</button>' +
+                        '<button type="button" class="lb-action-btn delete" data-idx="' + i + '" title="Delete">&#10005;</button>' +
+                    '</td>' +
+                '</tr>';
+            }).join('');
+
+            body.innerHTML =
+                '<table class="lb-table"><thead><tr>' +
+                '<th>#</th><th>Name</th><th>Side</th><th>Score</th><th>W-L</th><th></th>' +
+                '</tr></thead><tbody>' + rows + '</tbody></table>';
+
+            var tbody = body.querySelector('tbody');
+            tbody.addEventListener('click', function(ev) {
+                var btn = ev.target.closest('.lb-action-btn');
+                if (!btn) return;
+                var idx = parseInt(btn.dataset.idx, 10);
+                var entry = visible[idx];
+                if (!entry) return;
+                if (btn.classList.contains('delete')) {
+                    handleGlobalDelete(entry);
+                } else if (btn.classList.contains('rename')) {
+                    handleGlobalRename(entry);
+                }
+            });
+        }
+
+        function handleGlobalDelete(entry) {
+            if (!window.confirm('Delete this global score?')) return;
+            firebaseLeaderboard.deleteGlobalScore(entry._key, function(ok, errMsg) {
+                if (!ok) {
+                    setStatus(errMsg || 'Delete failed.', true);
+                    return;
+                }
+                loadGlobalLeaderboard();
+            });
+        }
+
+        function handleGlobalRename(entry) {
+            var next = window.prompt('New name:', entry.name || '');
+            if (next == null) return;
+            next = String(next).trim();
+            if (!next) return;
+            firebaseLeaderboard.renameGlobalScore(entry._key, next, function(ok, errMsg) {
+                if (!ok) {
+                    setStatus(errMsg || 'Rename failed.', true);
+                    return;
+                }
+                loadGlobalLeaderboard();
+            });
         }
 
         if (document.readyState === 'loading') {

@@ -298,6 +298,114 @@ var firebaseLeaderboard = (function() {
         catch (e) {}
     }
 
+    // v3.21 (teacher dashboard): read a room's scores INCLUDING each score's
+    // push-key, so the dashboard can delete/rename individual entries. Returns
+    // entries sorted by score descending, each with a `_key` field.
+    function loadLeaderboardWithKeys(roomCode, callback) {
+        if (!isAvailable()) {
+            callback(null, 'Offline.');
+            return;
+        }
+        var code = String(roomCode || '').toLowerCase().trim();
+        db.ref('rooms/' + code + '/scores')
+            .orderByChild('score')
+            .once('value')
+            .then(function(snapshot) {
+                var entries = [];
+                snapshot.forEach(function(child) {
+                    var v = child.val() || {};
+                    v._key = child.key;
+                    entries.push(v);
+                });
+                entries.sort(function(a, b) { return (b.score || 0) - (a.score || 0); });
+                callback(entries, '');
+            })
+            .catch(function() { callback(null, 'Could not load leaderboard.'); });
+    }
+
+    // v3.21: delete one score entry by its push-key.
+    function deleteScore(roomCode, key, callback) {
+        if (!isAvailable()) { if (callback) callback(false, 'Offline.'); return; }
+        var code = String(roomCode || '').toLowerCase().trim();
+        var k = String(key || '').trim();
+        if (!code || !k) { if (callback) callback(false, 'Missing code or key.'); return; }
+        db.ref('rooms/' + code + '/scores/' + k).remove()
+            .then(function() { if (callback) callback(true, ''); })
+            .catch(function() { if (callback) callback(false, 'Delete failed.'); });
+    }
+
+    // v3.21: GLOBAL leaderboard. A shared node every finished game can post to,
+    // independent of class room codes, so anyone (including anonymous visitors)
+    // can appear. Stored at top-level 'globalScores'.
+    function submitGlobalScore(scoreData, callback) {
+        if (!isAvailable()) { if (callback) callback(false, 'Offline.'); return; }
+        var entry = {
+            name: String(scoreData.name || 'Anonymous').substring(0, 30),
+            score: Number(scoreData.score) || 0,
+            side: scoreData.side === 'union' ? 'union' : 'confederacy',
+            wins: Number(scoreData.wins) || 0,
+            losses: Number(scoreData.losses) || 0,
+            momentum: Number(scoreData.momentum) || 0,
+            victory: Boolean(scoreData.victory),
+            timestamp: firebase.database.ServerValue.TIMESTAMP
+        };
+        db.ref('globalScores').push(entry)
+            .then(function() { if (callback) callback(true, ''); })
+            .catch(function() { if (callback) callback(false, 'Could not submit global score.'); });
+    }
+
+    // Read the top global scores (descending). limit caps how many come back.
+    function loadGlobalLeaderboard(limit, callback) {
+        if (!isAvailable()) { callback(null, 'Offline.'); return; }
+        var n = Number(limit) || 50;
+        db.ref('globalScores').orderByChild('score').limitToLast(n).once('value')
+            .then(function(snapshot) {
+                var entries = [];
+                snapshot.forEach(function(child) {
+                    var v = child.val() || {};
+                    v._key = child.key;
+                    entries.push(v);
+                });
+                entries.sort(function(a, b) { return (b.score || 0) - (a.score || 0); });
+                callback(entries, '');
+            })
+            .catch(function() { callback(null, 'Could not load global leaderboard.'); });
+    }
+
+    // Teacher controls for the global board (delete/rename one entry by key).
+    function deleteGlobalScore(key, callback) {
+        if (!isAvailable()) { if (callback) callback(false, 'Offline.'); return; }
+        var k = String(key || '').trim();
+        if (!k) { if (callback) callback(false, 'Missing key.'); return; }
+        db.ref('globalScores/' + k).remove()
+            .then(function() { if (callback) callback(true, ''); })
+            .catch(function() { if (callback) callback(false, 'Delete failed.'); });
+    }
+
+    function renameGlobalScore(key, newName, callback) {
+        if (!isAvailable()) { if (callback) callback(false, 'Offline.'); return; }
+        var k = String(key || '').trim();
+        var name = String(newName || '').trim().substring(0, 30);
+        if (!k) { if (callback) callback(false, 'Missing key.'); return; }
+        if (!name) { if (callback) callback(false, 'Name cannot be empty.'); return; }
+        db.ref('globalScores/' + k + '/name').set(name)
+            .then(function() { if (callback) callback(true, ''); })
+            .catch(function() { if (callback) callback(false, 'Rename failed.'); });
+    }
+
+    // v3.21: rename one score entry by its push-key (updates only the name).
+    function renameScore(roomCode, key, newName, callback) {
+        if (!isAvailable()) { if (callback) callback(false, 'Offline.'); return; }
+        var code = String(roomCode || '').toLowerCase().trim();
+        var k = String(key || '').trim();
+        var name = String(newName || '').trim().substring(0, 30);
+        if (!code || !k) { if (callback) callback(false, 'Missing code or key.'); return; }
+        if (!name) { if (callback) callback(false, 'Name cannot be empty.'); return; }
+        db.ref('rooms/' + code + '/scores/' + k + '/name').set(name)
+            .then(function() { if (callback) callback(true, ''); })
+            .catch(function() { if (callback) callback(false, 'Rename failed.'); });
+    }
+
     return {
         init: init,
         isAvailable: isAvailable,
@@ -316,7 +424,14 @@ var firebaseLeaderboard = (function() {
         getAllPeriodRooms: getAllPeriodRooms,
         getSavedClassCode: getSavedClassCode,
         saveClassCode: saveClassCode,
-        clearClassCode: clearClassCode
+        clearClassCode: clearClassCode,
+        loadLeaderboardWithKeys: loadLeaderboardWithKeys,
+        deleteScore: deleteScore,
+        renameScore: renameScore,
+        submitGlobalScore: submitGlobalScore,
+        loadGlobalLeaderboard: loadGlobalLeaderboard,
+        deleteGlobalScore: deleteGlobalScore,
+        renameGlobalScore: renameGlobalScore
     };
 
 })();

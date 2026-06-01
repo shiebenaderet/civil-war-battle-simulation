@@ -1,0 +1,65 @@
+{
+  "//": "Firebase Realtime Database rules for the Civil War Simulation.",
+  "//1": "This app is an UNAUTHENTICATED classroom tool: students play without",
+  "//2": "signing in, so reads/writes are open. The validation rules below constrain",
+  "//3": "the SHAPE and SIZE of writes so the open nodes cannot be trivially abused",
+  "//4": "with oversized or malformed payloads. Display code escapes all names on",
+  "//5": "read, so a malicious name cannot inject HTML even if it gets written.",
+  "//6": "Deploy from the Firebase console (Realtime Database > Rules) or via the CLI:",
+  "//7": "  firebase deploy --only database",
+  "rules": {
+    ".read": false,
+    ".write": false,
+
+    "rooms": {
+      "$code": {
+        ".read": true,
+        ".write": true,
+        "scores": {
+          "$scoreId": {
+            ".validate": "newData.hasChildren(['name','score']) || !newData.exists()",
+            "name": { ".validate": "newData.isString() && newData.val().length <= 40" },
+            "score": { ".validate": "newData.isNumber()" },
+            "side": { ".validate": "newData.isString() && newData.val().length <= 20" },
+            "wins": { ".validate": "newData.isNumber()" },
+            "losses": { ".validate": "newData.isNumber()" },
+            "momentum": { ".validate": "newData.isNumber()" },
+            "victory": { ".validate": "newData.isBoolean()" },
+            "timestamp": { ".validate": "newData.isNumber()" },
+            "$other": { ".validate": false }
+          }
+        },
+        "progress": {
+          "$studentId": {
+            "name": { ".validate": "newData.isString() && newData.val().length <= 40" },
+            "period": { ".validate": "newData.isString() && newData.val().length <= 4" },
+            "currentBattle": { ".validate": "newData.isNumber()" },
+            "totalBattles": { ".validate": "newData.isNumber()" },
+            "side": { ".validate": "newData.isString() && newData.val().length <= 20" },
+            "finished": { ".validate": "newData.isBoolean()" },
+            "lastSeen": { ".validate": "newData.isNumber()" },
+            "$other": { ".validate": true }
+          }
+        }
+      }
+    },
+
+    "globalScores": {
+      "//": "Public leaderboard for everyone, including anonymous visitors.",
+      ".read": true,
+      ".write": true,
+      "$scoreId": {
+        ".validate": "newData.hasChildren(['name','score']) || !newData.exists()",
+        "name": { ".validate": "newData.isString() && newData.val().length <= 40" },
+        "score": { ".validate": "newData.isNumber()" },
+        "side": { ".validate": "newData.isString() && newData.val().length <= 20" },
+        "wins": { ".validate": "newData.isNumber()" },
+        "losses": { ".validate": "newData.isNumber()" },
+        "momentum": { ".validate": "newData.isNumber()" },
+        "victory": { ".validate": "newData.isBoolean()" },
+        "timestamp": { ".validate": "newData.isNumber()" },
+        "$other": { ".validate": false }
+      }
+    }
+  }
+}
