@@ -147,6 +147,7 @@ Two things make this work in a real classroom:
 - The Help menu has an "Email Mr. B" button (a mailto link) and a "Send Feedback" button (prompts for a comment and emails it with the student's current screen and reading level attached) for students who want to reach the teacher.
 - **Teacher Dashboard** at `/teacher.html` (password-gated) shows where every student in each class period is in real time, plus class and cross-school leaderboards and a per-question difficulty view. See the Teacher Dashboard section below.
 - **Battlefield Tours** embed curated American Battlefield Trust videos (10 Animated Maps, 3 Documentaries) for every battle, surfacing on the post-battle results screen at the moment of maximum curiosity.
+- **Visitor guest book + world map:** students who finish Historical Mode can add their school and location (dropdowns, no IP tracking) to a world map of everyone who has played, shown on the finish screen and in the Leaderboard. Teacher-moderated from the dashboard's Guest Book tab.
 
 ## Battle Journal handout
 
@@ -167,6 +168,7 @@ A standalone page at `/teacher.html` that shows live progress for every student 
 - **Leaderboard:** your classes' high scores across all period rooms, with teacher delete and rename controls.
 - **Global:** the public, cross-school leaderboard. Every finished game anywhere (including anonymous visitors from other schools) posts here, so you can see players beyond your own classes. Same delete/rename moderation controls. Names are self-entered and unverified, and there is no school or location field, so "another school" is an inference from an unfamiliar name, not a verified attribute.
 - **Questions:** per-question difficulty. For each act-review recall question it shows how many students answered it and the **first-try miss rate** (the share who got it wrong on their first attempt, even if they later got it right), sorted worst-first and respecting the period filter. Click a row to expand the names of the students who missed it on first try. This is the view for spotting which content to reteach. Question results are written to Firebase only for students with a valid class code, same as Progress.
+- **Guest Book:** every signature from the visitor guest book (school + location) shown on a world map and in a table, newest first. Edit a school name or delete an entry inline. This is the moderation surface for the public map; the guest book is open to anyone who finishes the game, including players from other schools.
 
 Other dashboard behavior:
 
@@ -269,7 +271,8 @@ civil-war-battle-simulation/
 │   │   ├── acts.js         # Act intros, recall questions, grouped reflections
 │   │   ├── glossary.js     # Vocabulary terms + plain-language definitions (click-to-define)
 │   │   ├── leaders.js      # Lincoln & Davis personalized letters
-│   │   └── maps.js         # SVG battle maps
+│   │   ├── maps.js         # SVG battle maps
+│   │   └── geo.js          # Country/US-state centroids + projection + bundled world map (guest book)
 │   ├── firebase-leaderboard.js  # Firebase wrapper: room codes, class + global leaderboards, dashboard progress & recall writes
 │   ├── game.js             # State, save/load, momentum, fog of war, scoreboard
 │   ├── ui.js               # Screen management, rendering, DOM, banners
@@ -292,7 +295,7 @@ civil-war-battle-simulation/
 - **No ES modules:** works with `file://` protocol for offline classroom use.
 - **GitHub Pages deployment:** push to main branch to deploy.
 - **localStorage** for persistence (game saves, leaderboard, theme preference, class code, reading level).
-- **Firebase Realtime Database** for the class leaderboard, the public global leaderboard, the teacher dashboard (live progress and per-question results). Gracefully degrades to local-only when offline. Rules live in `database.rules.json`; publish them via the Firebase console or `firebase deploy --only database`.
+- **Firebase Realtime Database** for the class leaderboard, the public global leaderboard, the visitor guest book, and the teacher dashboard (live progress and per-question results). Gracefully degrades to local-only when offline. Rules live in `database.rules.json`; publish them via the Firebase console or `firebase deploy --only database`.
 - Scripts load in dependency order: data files → game logic → Firebase → UI → app init.
 
 ## Version history
@@ -300,6 +303,7 @@ civil-war-battle-simulation/
 <details>
 <summary>Expand version history</summary>
 
+- **v3.23.0** - Visitor guest book + world map. When a student finishes Historical Mode they can sign a guest book with their school and location (country, plus US state) chosen from dropdowns; every signature drops a pin on a dependency-free SVG world map. The map appears on the finish screen and in the in-game Leaderboard ("Where Players Are From"), so a class can see who has played around the world. No student names or free-text messages are stored on the public entry; a client-side filter screens school names and the teacher dashboard's new Guest Book tab lists every entry on a map with edit/delete moderation. Location is entered by dropdown only (no IP geolocation), and the map uses bundled public-domain Natural Earth land with no mapping library or tiles, so it works offline.
 - **v3.22.0** - Recall fairness and question analytics. Rewrote the distractors on all 48 act-review questions (4 acts × 4 reading tiers × 3 questions) so every option is a similar length and the correct answer is no longer the longest, most detailed choice; correct answers, explanations, and nudges are unchanged. The teacher dashboard gains a **Questions** tab showing each recall question's first-try miss rate (worst-first, per period), expandable to the names of students who missed it, so teachers can see what to reteach. Question results write to Firebase under each room's `recall` node, class-code gated like Progress.
 - **v3.21.0** - Teacher dashboard tabs, global leaderboard, and feedback. The dashboard splits into Progress / Leaderboard / Global tabs, with delete-and-rename moderation on both leaderboards and clickable fullscreen class codes for projecting. A new public **global leaderboard** (`globalScores`) lets every finished game anywhere post a score, viewable in an in-game modal and on the dashboard's Global tab, so players from other schools can show up. A "Send Feedback" menu item emails a student comment with their screen and reading-level context. Firebase rules documented in `database.rules.json`.
 - **v3.20.0** - Free-play Mode overhaul and accessibility parity. Troops now matter (an army bled below its floor loses to attrition), an underdog comeback bonus softens early stumbles, a "Did You Change History?" end overview compares the run to the real war, victory ratings grade the outcome, and a final-battle decider doubles the stakes when the war is close. Free-play now matches Historical Mode for accessibility: read-aloud on briefings and results, all 13 briefings and all strategy choices written in four reading levels, the current act shown in the top bar, and the leaderboard openable from the menu anytime. Read-aloud coverage also expanded across the leader letter, act intros, primary-source voices, and battle-review screens.
