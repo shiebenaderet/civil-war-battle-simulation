@@ -60,6 +60,70 @@ git add docs/superpowers/specs/helper-content-draft.md
 git commit -m "Helper content: approved draft for reflection + unionWin (all tiers)"
 ```
 
+## Task 1b: Align the in-game reflection prompt to the handout question
+
+**Files:**
+- Modify: `js/ui.js` (`groupedReflections[i].prompt`, the four `prompt` objects)
+
+The in-game reflection prompt and the handout reflection question were different
+questions. Since students write on the handout, the on-screen prompt must MATCH
+the handout question verbatim per tier, so screen and paper reinforce each other.
+
+The 16 verbatim handout questions (4 tiers x 4 acts) are extracted in
+`/tmp/handout-questions.json` (re-extract if missing — see the command below).
+Replace each `groupedReflections[i].prompt.{extra,beginner,intermediate,advanced}`
+with that tier's exact handout reflection question for act `i`.
+
+- [ ] **Step 1: Re-extract the verbatim questions** (idempotent; source of truth is the handouts):
+
+```bash
+cd /Users/shiebenaderet/Documents/GitHub/civil-war-battle-simulation
+python3 -c "
+import re, json
+files={'extra':'extra-support','beginner':'some-support','intermediate':'standard','advanced':'advanced'}
+out={}
+for tier,f in files.items():
+    s=open('handouts/battle-journal-'+f+'.html').read()
+    parts=re.split(r'<div class=\"reflect-box\">', s)[1:]
+    out[tier]=[re.findall(r'rtext[^>]*>([^<]+)<', b)[0].strip() for b in parts[:4]]
+open('/tmp/handout-questions.json','w').write(json.dumps(out,indent=1))
+print('re-extracted', sum(len(v) for v in out.values()), 'questions')
+"
+```
+
+- [ ] **Step 2: Replace the four `prompt` objects** in `groupedReflections`
+(ui.js, the `prompt: { extra/beginner/intermediate/advanced }` blocks at lines
+~435, ~464, ~493, ~522). Each tier value becomes the exact string from
+`/tmp/handout-questions.json` for that act+tier. (`extra` and `beginner` share the
+same question text per act; `intermediate` and `advanced` differ. The strings
+contain apostrophes/quotes — JSON-encode or escape them properly in the JS.)
+
+- [ ] **Step 3: Verify the in-game prompts now equal the handout questions.**
+
+```bash
+cd /Users/shiebenaderet/Documents/GitHub/civil-war-battle-simulation
+node -e '
+const fs=require("fs"),vm=require("vm");
+const c={};vm.createContext(c);vm.runInContext(fs.readFileSync("js/ui.js","utf8")+"\nthis.G=groupedReflections;",c);
+const h=JSON.parse(fs.readFileSync("/tmp/handout-questions.json","utf8"));
+const tiers=["extra","beginner","intermediate","advanced"];
+let fail=[];
+c.G.forEach((g,i)=>tiers.forEach(t=>{ if(g.prompt[t]!==h[t][i]) fail.push("act "+i+" "+t+" prompt != handout question"); }));
+if(fail.length){console.error("FAILS:\n"+fail.join("\n"));process.exit(1);}
+console.log("PASS: all 16 in-game prompts match handout questions verbatim");
+'
+```
+
+Expected: `PASS: all 16 in-game prompts match handout questions verbatim`.
+
+- [ ] **Step 4: Commit.**
+
+```bash
+node --check js/ui.js && echo "ui.js OK"
+git add js/ui.js
+git commit -m "Reflection: align in-game prompts to handout questions (screen = paper)"
+```
+
 ## Task 2: Add the helpers data to groupedReflections
 
 **Files:**
