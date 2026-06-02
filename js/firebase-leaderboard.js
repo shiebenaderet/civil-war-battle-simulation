@@ -468,6 +468,77 @@ var firebaseLeaderboard = (function() {
             .catch(function() { if (callback) callback(false, 'Rename failed.'); });
     }
 
+    // v3.23: visitor guest book. Public node (like globalScores) so anyone who
+    // finishes can drop a pin. Entries carry a precomputed centroid so the map
+    // renders with no lookups. school is length-capped; teacher moderates.
+    function submitGuestEntry(entry, callback) {
+        if (!isAvailable()) { if (callback) callback(false, 'Offline.'); return; }
+        var e = {
+            school: String(entry.school || '').substring(0, 60),
+            countryName: String(entry.countryName || '').substring(0, 56),
+            regionName: String(entry.regionName || '').substring(0, 40),
+            lat: Number(entry.lat) || 0,
+            lng: Number(entry.lng) || 0,
+            label: String(entry.label || '').substring(0, 80),
+            timestamp: firebase.database.ServerValue.TIMESTAMP
+        };
+        db.ref('guestbook').push(e)
+            .then(function() { if (callback) callback(true, ''); })
+            .catch(function() { if (callback) callback(false, 'Could not sign the guest book.'); });
+    }
+
+    function loadGuestbook(limit, callback) {
+        if (!isAvailable()) { callback(null, 'Offline.'); return; }
+        var n = Number(limit) || 500;
+        db.ref('guestbook').limitToLast(n).once('value')
+            .then(function(snapshot) {
+                var entries = [];
+                snapshot.forEach(function(child) {
+                    var v = child.val() || {}; v._key = child.key; entries.push(v);
+                });
+                callback(entries, '');
+            })
+            .catch(function() { callback(null, 'Could not load the guest book.'); });
+    }
+
+    function subscribeToGuestbook(callback) {
+        if (!isAvailable()) { callback(null, 'Offline.'); return function() {}; }
+        var ref = db.ref('guestbook');
+        var handler = ref.on('value', function(snapshot) {
+            var entries = [];
+            snapshot.forEach(function(child) {
+                var v = child.val() || {}; v._key = child.key; entries.push(v);
+            });
+            callback(entries, '');
+        }, function() { callback(null, 'Listener error.'); });
+        return function() { ref.off('value', handler); };
+    }
+
+    function deleteGuestEntry(key, callback) {
+        if (!isAvailable()) { if (callback) callback(false, 'Offline.'); return; }
+        var k = String(key || '').trim();
+        if (!k) { if (callback) callback(false, 'Missing key.'); return; }
+        db.ref('guestbook/' + k).remove()
+            .then(function() { if (callback) callback(true, ''); })
+            .catch(function() { if (callback) callback(false, 'Delete failed.'); });
+    }
+
+    function updateGuestEntry(key, fields, callback) {
+        if (!isAvailable()) { if (callback) callback(false, 'Offline.'); return; }
+        var k = String(key || '').trim();
+        if (!k) { if (callback) callback(false, 'Missing key.'); return; }
+        var patch = {};
+        if (typeof fields.school === 'string') patch.school = fields.school.substring(0, 60);
+        if (typeof fields.countryName === 'string') patch.countryName = fields.countryName.substring(0, 56);
+        if (typeof fields.regionName === 'string') patch.regionName = fields.regionName.substring(0, 40);
+        if (fields.lat !== undefined) patch.lat = Number(fields.lat) || 0;
+        if (fields.lng !== undefined) patch.lng = Number(fields.lng) || 0;
+        if (typeof fields.label === 'string') patch.label = fields.label.substring(0, 80);
+        db.ref('guestbook/' + k).update(patch)
+            .then(function() { if (callback) callback(true, ''); })
+            .catch(function() { if (callback) callback(false, 'Update failed.'); });
+    }
+
     return {
         init: init,
         isAvailable: isAvailable,
@@ -496,7 +567,12 @@ var firebaseLeaderboard = (function() {
         submitGlobalScore: submitGlobalScore,
         loadGlobalLeaderboard: loadGlobalLeaderboard,
         deleteGlobalScore: deleteGlobalScore,
-        renameGlobalScore: renameGlobalScore
+        renameGlobalScore: renameGlobalScore,
+        submitGuestEntry: submitGuestEntry,
+        loadGuestbook: loadGuestbook,
+        subscribeToGuestbook: subscribeToGuestbook,
+        deleteGuestEntry: deleteGuestEntry,
+        updateGuestEntry: updateGuestEntry
     };
 
 })();
