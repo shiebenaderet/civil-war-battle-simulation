@@ -252,6 +252,78 @@ git add index.html css/styles.css
 git commit -m "Reflection helpers: bright helper-box markup + CSS"
 ```
 
+## Task 3b: Glossary tooltips for academic terms in helpers
+
+**Files:**
+- Modify: `js/data/glossary.js` (add entries), `js/ui.js` (`renderReflectHelper` applies the glossary linker)
+
+The helpers introduce academic/specialized terms ("Pyrrhic victory", "Clausewitz",
+"friction" in the military sense, "Reconstruction", "reconciliation", "complete
+conquest", "tactical"/"strategic", etc.) that are NOT in the current glossary.
+Any term hard enough to need explaining MUST be click-to-define, at EVERY tier
+(an advanced reader is still an 8th grader). The exact term list comes from the
+content audit (its `hardTerms` output).
+
+- [ ] **Step 1: Add a glossary entry per audited hard term** to `js/data/glossary.js`,
+following the existing entry shape (`{ term, tier: 'distinctive', aliases?, definition }`)
+with a plain-language, 8th-grade definition. Use the audit's `hardTerms` list as the
+authoritative set. Example entries:
+
+```javascript
+    { term: "Pyrrhic victory", tier: "distinctive",
+      definition: "A victory that costs the winner so much that it almost feels like a defeat. Named after King Pyrrhus, who won battles but lost so many soldiers he could not keep fighting." },
+
+    { term: "Reconstruction", tier: "distinctive",
+      definition: "The period after the Civil War (1865-1877) when the United States tried to rebuild the South and decide the rights of newly freed people." },
+
+    { term: "reconciliation", tier: "distinctive",
+      definition: "Bringing two sides back together peacefully after a conflict, instead of punishing the losing side." },
+
+    { term: "friction", tier: "distinctive",
+      definition: "A military idea (from the thinker Clausewitz) that real war is full of small accidents, confusion, and mistakes that no plan can fully control." },
+
+    { term: "Clausewitz", tier: "distinctive",
+      definition: "Carl von Clausewitz, a famous Prussian military thinker who wrote about how chaos and chance shape real wars." }
+```
+
+(Add every term the audit flagged; the five above are illustrative. Match the
+file's comment style and ordering convention.)
+
+- [ ] **Step 2: Apply the glossary linker when rendering helpers.** In
+`renderReflectHelper` (Task 4), instead of `li.textContent = line`, use the same
+`applyGlossary` path the game uses for reading text, so the new terms become
+clickable `.vocab-term` tooltips. Find the signature:
+
+```bash
+grep -n "function applyGlossary" js/ui.js
+```
+
+Use it on each `li` (it handles safe DOM insertion). If `applyGlossary(el, text)`
+sets the element's content from `text`, replace the `textContent` assignment in
+Task 4's loop with `applyGlossary(li, line)`.
+
+- [ ] **Step 3: Verify** the glossary loads and the new terms are present.
+
+```bash
+cd /Users/shiebenaderet/Documents/GitHub/civil-war-battle-simulation
+node --check js/data/glossary.js && echo "glossary.js OK"
+node -e '
+const fs=require("fs"),vm=require("vm");const c={};vm.createContext(c);
+vm.runInContext(fs.readFileSync("js/data/glossary.js","utf8")+"\nthis.g=glossary;",c);
+const have=c.g.map(e=>e.term.toLowerCase());
+["pyrrhic victory","reconstruction","reconciliation","friction"].forEach(t=>{
+  console.log((have.includes(t)?"OK ":"MISSING ")+t);
+});
+'
+```
+
+- [ ] **Step 4: Commit.**
+
+```bash
+git add js/data/glossary.js
+git commit -m "Glossary: add academic terms used in reflection helpers (tooltips)"
+```
+
 ## Task 4: Render the helper boxes (tier-resolved, live-updating)
 
 **Files:**
