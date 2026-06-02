@@ -2035,6 +2035,10 @@ function renderHistoricalComplete() {
     document.getElementById('scoreboardSection').style.display = 'none';
     document.getElementById('classLeaderboardSection').style.display = 'none';
 
+    // Visitor guest book: let the student add their school to the world map.
+    var gbSection = document.getElementById('guestbookSection');
+    if (gbSection && typeof buildGuestbookForm === 'function') buildGuestbookForm(gbSection);
+
     showScreen('endGameScreen');
     showGameActions(false);
     showCampaignLogBtn(false);
@@ -2773,6 +2777,94 @@ function renderVisitorMap(container, entries, highlightKey) {
     });
     svg.appendChild(popup);
     container.appendChild(svg);
+}
+
+// Build the "Sign the Guest Book" card on the Historical finish screen.
+function buildGuestbookForm(container) {
+    if (!container || typeof GEO_COUNTRIES === 'undefined') return;
+    var countryOpts = GEO_COUNTRIES.map(function(c) {
+        return '<option value="' + escapeHtml(c.code) + '">' + escapeHtml(c.name) + '</option>';
+    }).join('');
+    var stateOpts = '<option value="">Select state…</option>' + GEO_US_STATES.map(function(s) {
+        return '<option value="' + escapeHtml(s.code) + '">' + escapeHtml(s.name) + '</option>';
+    }).join('');
+    container.style.display = '';
+    container.innerHTML =
+        '<div class="guestbook-card" id="guestbookCard">' +
+        '<h3 class="guestbook-title">Sign the Guest Book</h3>' +
+        '<p class="guestbook-sub">Add your school to the map of everyone who has played.</p>' +
+        '<input type="text" id="gbSchool" class="guestbook-input" maxlength="60" placeholder="Your school name">' +
+        '<select id="gbCountry" class="guestbook-input">' + countryOpts + '</select>' +
+        '<select id="gbState" class="guestbook-input">' + stateOpts + '</select>' +
+        '<div id="gbError" class="guestbook-error" style="display:none;"></div>' +
+        '<button type="button" id="gbSubmit" class="guestbook-btn">Add me to the map</button>' +
+        '</div>' +
+        '<div id="guestbookMapMount" class="guestbook-map-mount"></div>';
+    wireGuestbookForm(container);
+}
+
+function wireGuestbookForm(container) {
+    var countrySel = container.querySelector('#gbCountry');
+    var stateSel = container.querySelector('#gbState');
+    var schoolEl = container.querySelector('#gbSchool');
+    var errEl = container.querySelector('#gbError');
+    var submitBtn = container.querySelector('#gbSubmit');
+    var card = container.querySelector('#guestbookCard');
+    var mapMount = container.querySelector('#guestbookMapMount');
+    if (!countrySel || !stateSel || !schoolEl || !submitBtn) return;
+
+    function syncStateVisibility() {
+        stateSel.style.display = (countrySel.value === 'US') ? '' : 'none';
+    }
+    syncStateVisibility();
+    countrySel.addEventListener('change', syncStateVisibility);
+
+    var submitted = false;
+    submitBtn.addEventListener('click', function() {
+        if (submitted) return;
+        var filt = cleanSchoolName(schoolEl.value);
+        if (!filt.ok) { errEl.textContent = filt.reason; errEl.style.display = 'block'; return; }
+        if (countrySel.value === 'US' && !stateSel.value) {
+            errEl.textContent = 'Pick your state.'; errEl.style.display = 'block'; return;
+        }
+        var loc = geoLookup(countrySel.value, stateSel.value);
+        if (!loc) { errEl.textContent = 'Pick your country.'; errEl.style.display = 'block'; return; }
+        if (!firebaseLeaderboard.isAvailable()) {
+            errEl.textContent = 'You need an internet connection to add to the map.';
+            errEl.style.display = 'block'; return;
+        }
+        errEl.style.display = 'none';
+        submitted = true;
+        submitBtn.disabled = true;
+        var countryName = '';
+        for (var i = 0; i < GEO_COUNTRIES.length; i++) {
+            if (GEO_COUNTRIES[i].code === countrySel.value) { countryName = GEO_COUNTRIES[i].name; break; }
+        }
+        var entry = {
+            school: filt.cleaned,
+            countryName: countryName,
+            regionName: (stateSel.value && countrySel.value === 'US') ? stateSel.options[stateSel.selectedIndex].text : '',
+            lat: loc.lat, lng: loc.lng, label: loc.label
+        };
+        firebaseLeaderboard.submitGuestEntry(entry, function() {
+            if (card) {
+                // Thank-you built with textContent so nothing user-entered is injected as HTML.
+                while (card.firstChild) card.removeChild(card.firstChild);
+                var h = document.createElement('h3'); h.className = 'guestbook-title'; h.textContent = 'Thanks for signing!';
+                var p = document.createElement('p'); p.className = 'guestbook-sub'; p.textContent = 'You are on the map: ' + loc.label;
+                card.appendChild(h); card.appendChild(p);
+            }
+            firebaseLeaderboard.loadGuestbook(500, function(entries) {
+                if (entries && mapMount) {
+                    var hi = null;
+                    for (var j = entries.length - 1; j >= 0; j--) {
+                        if (entries[j].label === loc.label && entries[j].school === entry.school) { hi = entries[j]._key; break; }
+                    }
+                    renderVisitorMap(mapMount, entries, hi);
+                }
+            });
+        });
+    });
 }
 
 // ============================================================
