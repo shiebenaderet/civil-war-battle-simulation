@@ -1074,6 +1074,7 @@ function renderActRecall(actIndex) {
     var questionIdx = 0;
     var wrongAttempts = 0;
     var questionResolved = false;
+    var reported = false;
 
     function renderQuestion() {
         var q = questions[questionIdx];
@@ -1114,6 +1115,7 @@ function renderActRecall(actIndex) {
 
         wrongAttempts = 0;
         questionResolved = false;
+        reported = false;
     }
 
     // Helper: build feedback content with strong + body + optional em (XSS-safe, no innerHTML)
@@ -1146,6 +1148,14 @@ function renderActRecall(actIndex) {
             feedbackEl.className = 'act-recall-feedback feedback-correct';
             setFeedback(feedbackEl, 'Right', q.explanation || '', null);
             questionResolved = true;
+            // v3.22: record first-try outcome once per question for the teacher's
+            // Question-difficulty view. firstTry is true only if no prior wrong answer.
+            if (!reported) {
+                reported = true;
+                if (typeof reportRecallResultToDashboard === 'function') {
+                    reportRecallResultToDashboard(actIndex, questionIdx, wrongAttempts === 0, true, wrongAttempts + 1);
+                }
+            }
             document.getElementById('actRecallContinueBtn').disabled = false;
             return;
         }
@@ -1156,7 +1166,14 @@ function renderActRecall(actIndex) {
         btnEl.disabled = true;
 
         if (wrongAttempts === 1) {
-            // First wrong: nudge, retry allowed
+            // First wrong: nudge, retry allowed.
+            // v3.22: record the first-try miss once for the Question-difficulty view.
+            if (!reported) {
+                reported = true;
+                if (typeof reportRecallResultToDashboard === 'function') {
+                    reportRecallResultToDashboard(actIndex, questionIdx, false, false, 1);
+                }
+            }
             feedbackEl.className = 'act-recall-feedback feedback-nudge';
             setFeedback(feedbackEl, 'Not quite. Try again.',
                         q.nudge || 'Think it through once more.', null);
