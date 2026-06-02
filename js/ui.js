@@ -2035,9 +2035,17 @@ function renderHistoricalComplete() {
     document.getElementById('scoreboardSection').style.display = 'none';
     document.getElementById('classLeaderboardSection').style.display = 'none';
 
-    // Visitor guest book: let the student add their school to the world map.
+    // Visitor guest book. Students with a valid class code are already located
+    // for the teacher via the dashboard, so they see the world map but get no
+    // sign form (no redundant pin). Untracked players get the full sign form.
     var gbSection = document.getElementById('guestbookSection');
-    if (gbSection && typeof buildGuestbookForm === 'function') buildGuestbookForm(gbSection);
+    if (gbSection && typeof buildGuestbookForm === 'function') {
+        var hasClassCode = false;
+        if (typeof firebaseLeaderboard !== 'undefined') {
+            hasClassCode = !!firebaseLeaderboard.periodForRoom(firebaseLeaderboard.getSavedClassCode());
+        }
+        buildGuestbookForm(gbSection, !hasClassCode);
+    }
 
     showScreen('endGameScreen');
     showGameActions(false);
@@ -2780,15 +2788,39 @@ function renderVisitorMap(container, entries, highlightKey) {
 }
 
 // Build the "Sign the Guest Book" card on the Historical finish screen.
-function buildGuestbookForm(container) {
+// Build the guest book section on the Historical finish screen.
+// includeForm=true: full "Sign the Guest Book" form + map (untracked players).
+// includeForm=false: map only with a heading (students with a class code —
+// the teacher already knows where they are, so they view the world map but
+// don't add a redundant pin).
+function buildGuestbookForm(container, includeForm) {
     if (!container || typeof GEO_COUNTRIES === 'undefined') return;
+    container.style.display = '';
+
+    if (!includeForm) {
+        container.innerHTML =
+            '<div class="guestbook-card">' +
+            '<h3 class="guestbook-title">Where Players Are From</h3>' +
+            '<p class="guestbook-sub">Schools around the world that have played.</p>' +
+            '</div>' +
+            '<div id="guestbookMapMount" class="guestbook-map-mount"></div>';
+        var mapOnly = container.querySelector('#guestbookMapMount');
+        if (mapOnly && firebaseLeaderboard.isAvailable()) {
+            mapOnly.textContent = 'Loading map…';
+            firebaseLeaderboard.loadGuestbook(500, function(entries, err) {
+                if (err || !entries || !entries.length) { mapOnly.textContent = ''; return; }
+                renderVisitorMap(mapOnly, entries, null);
+            });
+        }
+        return;
+    }
+
     var countryOpts = GEO_COUNTRIES.map(function(c) {
         return '<option value="' + escapeHtml(c.code) + '">' + escapeHtml(c.name) + '</option>';
     }).join('');
     var stateOpts = '<option value="">Select state…</option>' + GEO_US_STATES.map(function(s) {
         return '<option value="' + escapeHtml(s.code) + '">' + escapeHtml(s.name) + '</option>';
     }).join('');
-    container.style.display = '';
     container.innerHTML =
         '<div class="guestbook-card" id="guestbookCard">' +
         '<h3 class="guestbook-title">Sign the Guest Book</h3>' +
@@ -2801,6 +2833,14 @@ function buildGuestbookForm(container) {
         '</div>' +
         '<div id="guestbookMapMount" class="guestbook-map-mount"></div>';
     wireGuestbookForm(container);
+    // Show the existing world map immediately, even before this student signs.
+    var mapMount = container.querySelector('#guestbookMapMount');
+    if (mapMount && firebaseLeaderboard.isAvailable()) {
+        firebaseLeaderboard.loadGuestbook(500, function(entries, err) {
+            if (err || !entries || !entries.length) return;
+            renderVisitorMap(mapMount, entries, null);
+        });
+    }
 }
 
 function wireGuestbookForm(container) {
