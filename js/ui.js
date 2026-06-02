@@ -3071,6 +3071,22 @@ function openLeaderboardModal() {
         }
     }
 
+    // 1c. Visitor map (where players are from). Untrusted entry text is rendered
+    //     via textContent inside renderVisitorMap. Offline -> message.
+    var mapMount = document.getElementById('menuLeaderboardMapMount');
+    if (mapMount) {
+        if (firebaseLeaderboard.isAvailable()) {
+            mapMount.textContent = 'Loading map…';
+            firebaseLeaderboard.loadGuestbook(500, function(entries, err) {
+                if (err || !entries) { mapMount.textContent = 'Map needs an internet connection.'; return; }
+                if (!entries.length) { mapMount.textContent = 'No guest book signatures yet.'; return; }
+                renderVisitorMap(mapMount, entries, null);
+            });
+        } else {
+            mapMount.textContent = 'Map needs an internet connection.';
+        }
+    }
+
     // 2. Relocate the class leaderboard section into the modal, remembering home.
     //    Guard against a double-open overwriting the captured home with the modal
     //    mount (which would strand the section in the modal on the next close).
