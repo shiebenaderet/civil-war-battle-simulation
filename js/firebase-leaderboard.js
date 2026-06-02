@@ -234,6 +234,68 @@ var firebaseLeaderboard = (function() {
             .catch(function() { if (callback) callback(false, 'Clear failed (partial).'); });
     }
 
+    // v3.22: record one student's result on one recall question. Keyed by
+    // studentId + "<actIndex>_<qIndex>" so each question overwrites in place
+    // (we want "did they get it first try", not history). Graceful offline.
+    function writeRecallResult(roomCode, actIndex, qIndex, result, callback) {
+        if (!isAvailable()) { if (callback) callback(false, 'Offline.'); return; }
+        var code = String(roomCode || '').toLowerCase().trim();
+        if (!code) { if (callback) callback(false, 'No room code.'); return; }
+        var studentId = getStudentId();
+        var qKey = String(Number(actIndex) || 0) + '_' + String(Number(qIndex) || 0);
+        var entry = {
+            name: String(result.name || 'Student').substring(0, 30),
+            period: String(result.period || ''),
+            correct: Boolean(result.correct),
+            firstTry: Boolean(result.firstTry),
+            attempts: Number(result.attempts) || 1,
+            lastSeen: firebase.database.ServerValue.TIMESTAMP
+        };
+        db.ref('rooms/' + code + '/recall/' + studentId + '/' + qKey).set(entry)
+            .then(function() { if (callback) callback(true, ''); })
+            .catch(function() { if (callback) callback(false, 'Write failed.'); });
+    }
+
+    // Subscribe to all recall results for a room. Calls back with a flat array of
+    // { studentId, qKey, name, period, correct, firstTry, attempts, lastSeen }.
+    function subscribeToRecall(roomCode, callback) {
+        if (!isAvailable()) { callback(null, 'Offline.'); return function() {}; }
+        var code = String(roomCode || '').toLowerCase().trim();
+        if (!code) { callback(null, 'No room code.'); return function() {}; }
+        var ref = db.ref('rooms/' + code + '/recall');
+        var handler = ref.on('value', function(snapshot) {
+            var rows = [];
+            snapshot.forEach(function(studentChild) {
+                var sid = studentChild.key;
+                studentChild.forEach(function(qChild) {
+                    var v = qChild.val();
+                    if (v) {
+                        v.studentId = sid;
+                        v.qKey = qChild.key;
+                        rows.push(v);
+                    }
+                });
+            });
+            callback(rows, '');
+        }, function() { callback(null, 'Listener error.'); });
+        return function() { ref.off('value', handler); };
+    }
+
+    function clearAllRecall(roomCodes, callback) {
+        if (!isAvailable()) { if (callback) callback(false, 'Offline.'); return; }
+        if (!Array.isArray(roomCodes) || roomCodes.length === 0) {
+            if (callback) callback(false, 'No rooms to clear.'); return;
+        }
+        var promises = roomCodes.map(function(code) {
+            var c = String(code || '').toLowerCase().trim();
+            if (!c) return Promise.resolve();
+            return db.ref('rooms/' + c + '/recall').remove();
+        });
+        Promise.all(promises)
+            .then(function() { if (callback) callback(true, ''); })
+            .catch(function() { if (callback) callback(false, 'Clear failed (partial).'); });
+    }
+
     // Load leaderboard from a room (top 20 by score)
     function loadLeaderboard(roomCode, callback) {
         if (!isAvailable()) {
@@ -420,6 +482,9 @@ var firebaseLeaderboard = (function() {
         subscribeToProgress: subscribeToProgress,
         deleteProgressEntry: deleteProgressEntry,
         clearAllProgress: clearAllProgress,
+        writeRecallResult: writeRecallResult,
+        subscribeToRecall: subscribeToRecall,
+        clearAllRecall: clearAllRecall,
         periodForRoom: periodForRoom,
         getAllPeriodRooms: getAllPeriodRooms,
         getSavedClassCode: getSavedClassCode,
