@@ -76,7 +76,7 @@ The app boots straight to mode selection (no intro splash). In Historical Mode s
 1. **Briefing.** Intel report and situation context for the battle they're about to face.
 2. **Your Call.** A "What Would You Do?" decision with personalized feedback comparing their choice to the historical decision. The options shuffle so the historically correct answer isn't always in the same position.
 3. **What Happened.** The historical outcome, led by a prominent "Key idea, write this in your journal" callout. Every tier sees this callout: it's the per-battle key idea students summarize on the handout in their own words. The deeper content sits behind three folder-style tabs the student can click through if they want more: A Voice From the Field (a primary-source voice such as Sullivan Ballou, Clara Barton, Susie King Taylor, or Sam Watkins), The Bigger Picture (with Perspectives sidebars on race, class, gender, and Indigenous experiences), and Technology Spotlight (rifled musket, ironclads, telegraph, and so on). The Battlefield Trust video shows as a small thumbnail.
-4. **Reflect.** A "Reflect on your Battle Journal" callout. For most battles this is a short pause to update the handout. After the final battle of each act (Shiloh, Chancellorsville, Chickamauga, Appomattox), this step expands into an **act review**: a three-question multiple-choice recall moment drawn from that act's content, followed by a grouped reflection prompt on the act's bigger themes. The act review is also where the handout-nudge banner appears.
+4. **Reflect.** A "Reflect on your Battle Journal" callout. For most battles this is a short pause to update the handout. After the final battle of each act (Shiloh, Chancellorsville, Chickamauga, Appomattox), this step expands into an **act review**: a three-question multiple-choice recall moment drawn from that act's content, followed by a grouped reflection prompt on the act's bigger themes. The act review is also where the handout-nudge banner appears. The recall options shuffle position each session, and all four options in a question are written to a similar length so the correct answer can't be guessed by picking the longest one. A teacher can see which recall questions students miss most on the dashboard's Questions tab.
 
 During a battle, the current act and years (e.g. "Act II · 1862-1863") show centered in the top bar. Clicking that label, or the Campaign Log in the menu, opens the campaign log. From there a student can click any battle they've already finished to open a read-only review of it (what they picked versus what happened, the key idea, the bigger picture). That lets them catch up their handout without losing their place; it does not change their progress.
 
@@ -144,13 +144,13 @@ Two things make this work in a real classroom:
 - **Read-aloud (text-to-speech) is broadly available.** Play buttons appear on the main battle reading text and, as of v3.20, on the leader's letter, act introductions, the primary-source voice quotes, the Technology Spotlight, the battle-review screens, and (with the rest of the Free-play accessibility work) on Free-play battle briefings and results.
 - Screen reader support and keyboard navigation.
 - Printable Battle Journal handout in four differentiation tiers.
-- The Help menu has an "Email Mr. B" button (a mailto link) for students who want to reach the teacher.
-- **Teacher Dashboard** at `/teacher.html` (password-gated) shows where every student in each class period is in real time, with per-student and clear-all controls. See the Teacher Dashboard section below.
+- The Help menu has an "Email Mr. B" button (a mailto link) and a "Send Feedback" button (prompts for a comment and emails it with the student's current screen and reading level attached) for students who want to reach the teacher.
+- **Teacher Dashboard** at `/teacher.html` (password-gated) shows where every student in each class period is in real time, plus class and cross-school leaderboards and a per-question difficulty view. See the Teacher Dashboard section below.
 - **Battlefield Tours** embed curated American Battlefield Trust videos (10 Animated Maps, 3 Documentaries) for every battle, surfacing on the post-battle results screen at the moment of maximum curiosity.
 
 ## Battle Journal handout
 
-A printable companion handout students fill in during Historical Mode. It runs as a single flow: a per-battle log, then an act checkpoint after each act, then the final thesis-and-evidence answer to "How was the Union able to defeat the Confederacy?" Available in four tiers, all large-text. Open in a browser and click the Print Handout button at the top.
+A printable companion handout students fill in during Historical Mode. It runs as a single flow: a per-battle log, then an act checkpoint after each act, then the final thesis-and-evidence answer to "How was the Union able to defeat the Confederacy?" Available in four tiers, all large-text. Open in a browser and use the toolbar at the top: **Print Handout** to print, or **Download PDF** to grab a clean, pre-rendered PDF with no browser headers/footers. (Regenerating those PDFs after editing a handout's HTML is documented in `handouts/README.md`.)
 
 - **★ Most Support:** [civil.mrbsocialstudies.org/handouts/battle-journal-extra-support.html](https://civil.mrbsocialstudies.org/handouts/battle-journal-extra-support.html) (1-3rd grade level, fill-in-the-blank sentences and sentence stems above the write-lines, 8 Word Bank terms with plain-language definitions, logs 4 anchor battles, one per act)
 - **★★ More Support:** [civil.mrbsocialstudies.org/handouts/battle-journal-some-support.html](https://civil.mrbsocialstudies.org/handouts/battle-journal-some-support.html) (5-6th grade level, sentence stems above the lines, 8 Word Bank terms, logs 8 battles, two per act)
@@ -161,13 +161,17 @@ Everyone plays all 13 battles; the lower tiers just log fewer of them to keep th
 
 ## Teacher Dashboard
 
-A standalone page at `/teacher.html` that shows live progress for every student in your class. As students play, the dashboard updates within a second or two. Features:
+A standalone page at `/teacher.html` that shows live progress for every student in your class. As students play, the dashboard updates within a second or two. It is organized into four tabs:
 
-- Live student chips for every period (P1, P2, P4, P5), grouped by current battle.
-- Sort modes: by Battle, by Period, or by Name. Period filter pills.
-- Chip dims after 5 minutes of inactivity to flag stuck or disconnected students.
-- Per-student delete (✕ on hover) and Clear All (between units).
+- **Progress** (the default live view): student chips for every period (P1, P2, P4, P5), grouped by current battle. Sort by Battle, Period, or Name; filter by period. A chip dims after 5 minutes of inactivity to flag stuck or disconnected students. Per-student delete (✕ on hover) and Clear All (between units, which also clears question results).
+- **Leaderboard:** your classes' high scores across all period rooms, with teacher delete and rename controls.
+- **Global:** the public, cross-school leaderboard. Every finished game anywhere (including anonymous visitors from other schools) posts here, so you can see players beyond your own classes. Same delete/rename moderation controls. Names are self-entered and unverified, and there is no school or location field, so "another school" is an inference from an unfamiliar name, not a verified attribute.
+- **Questions:** per-question difficulty. For each act-review recall question it shows how many students answered it and the **first-try miss rate** (the share who got it wrong on their first attempt, even if they later got it right), sorted worst-first and respecting the period filter. Click a row to expand the names of the students who missed it on first try. This is the view for spotting which content to reteach. Question results are written to Firebase only for students with a valid class code, same as Progress.
+
+Other dashboard behavior:
+
 - Password-gated on page load; session-scoped so it only prompts once per browser tab.
+- Class codes can be projected fullscreen (click a code chip) for students to copy.
 
 Students opt into being tracked by entering a **class code** (e.g. `AMS-p1`) on the name entry form. No code = no dashboard write. A banner in the game offers a way back in if a student starts without one. Codes are distributed out-of-band by the teacher (whiteboard, Google Classroom). To rotate codes, edit four strings in `js/firebase-leaderboard.js` and delete the old `rooms/<oldcode>/progress` trees from the Firebase console.
 
@@ -254,7 +258,8 @@ If you do use this in your classroom, even just once, I'd really like to hear ho
 ```
 civil-war-battle-simulation/
 ├── index.html              # Student-facing app: markup, screens, inline theme script
-├── teacher.html            # Standalone teacher dashboard (password-gated)
+├── teacher.html            # Standalone teacher dashboard (password-gated): progress, leaderboards, questions
+├── database.rules.json     # Firebase Realtime Database security rules (publish manually)
 ├── favicon.svg             # Site icon
 ├── css/
 │   └── styles.css          # Design tokens, components, layouts
@@ -265,7 +270,7 @@ civil-war-battle-simulation/
 │   │   ├── glossary.js     # Vocabulary terms + plain-language definitions (click-to-define)
 │   │   ├── leaders.js      # Lincoln & Davis personalized letters
 │   │   └── maps.js         # SVG battle maps
-│   ├── firebase-leaderboard.js  # Firebase wrapper: room codes, class leaderboard, teacher dashboard writes
+│   ├── firebase-leaderboard.js  # Firebase wrapper: room codes, class + global leaderboards, dashboard progress & recall writes
 │   ├── game.js             # State, save/load, momentum, fog of war, scoreboard
 │   ├── ui.js               # Screen management, rendering, DOM, banners
 │   ├── app.js              # Init, event wiring, screen flow
@@ -273,7 +278,7 @@ civil-war-battle-simulation/
 │   ├── settings.js         # Settings menu wiring
 │   └── print-summary.js    # Legacy print-summary generator (unwired; kept for one release)
 ├── images/                 # Public domain artwork (Library of Congress, National Archives, Wikimedia Commons)
-├── handouts/               # Printable Battle Journal in four differentiation tiers
+├── handouts/               # Printable Battle Journal in four tiers (HTML + pre-rendered PDFs; see handouts/README.md)
 ├── docs/superpowers/       # Specs and implementation plans for major features
 ├── mockups/                # Design mockups
 └── README.md
@@ -287,7 +292,7 @@ civil-war-battle-simulation/
 - **No ES modules:** works with `file://` protocol for offline classroom use.
 - **GitHub Pages deployment:** push to main branch to deploy.
 - **localStorage** for persistence (game saves, leaderboard, theme preference, class code, reading level).
-- **Firebase Realtime Database** for the class leaderboard and the teacher dashboard. Gracefully degrades to local-only when offline.
+- **Firebase Realtime Database** for the class leaderboard, the public global leaderboard, the teacher dashboard (live progress and per-question results). Gracefully degrades to local-only when offline. Rules live in `database.rules.json`; publish them via the Firebase console or `firebase deploy --only database`.
 - Scripts load in dependency order: data files → game logic → Firebase → UI → app init.
 
 ## Version history
@@ -295,6 +300,8 @@ civil-war-battle-simulation/
 <details>
 <summary>Expand version history</summary>
 
+- **v3.22.0** - Recall fairness and question analytics. Rewrote the distractors on all 48 act-review questions (4 acts × 4 reading tiers × 3 questions) so every option is a similar length and the correct answer is no longer the longest, most detailed choice; correct answers, explanations, and nudges are unchanged. The teacher dashboard gains a **Questions** tab showing each recall question's first-try miss rate (worst-first, per period), expandable to the names of students who missed it, so teachers can see what to reteach. Question results write to Firebase under each room's `recall` node, class-code gated like Progress.
+- **v3.21.0** - Teacher dashboard tabs, global leaderboard, and feedback. The dashboard splits into Progress / Leaderboard / Global tabs, with delete-and-rename moderation on both leaderboards and clickable fullscreen class codes for projecting. A new public **global leaderboard** (`globalScores`) lets every finished game anywhere post a score, viewable in an in-game modal and on the dashboard's Global tab, so players from other schools can show up. A "Send Feedback" menu item emails a student comment with their screen and reading-level context. Firebase rules documented in `database.rules.json`.
 - **v3.20.0** - Free-play Mode overhaul and accessibility parity. Troops now matter (an army bled below its floor loses to attrition), an underdog comeback bonus softens early stumbles, a "Did You Change History?" end overview compares the run to the real war, victory ratings grade the outcome, and a final-battle decider doubles the stakes when the war is close. Free-play now matches Historical Mode for accessibility: read-aloud on briefings and results, all 13 briefings and all strategy choices written in four reading levels, the current act shown in the top bar, and the leaderboard openable from the menu anytime. Read-aloud coverage also expanded across the leader letter, act intros, primary-source voices, and battle-review screens.
 - **v3.19.0** - Lower the on-ramp and redesign the journal. The intro splash and how-to-play tutorial are gone; the app boots straight to mode selection (a one-line help bar remains, toggleable from the menu). Historical Mode is now Union-only, with a streamlined setup screen (name and reading level, then "Begin Your Journey"). Reading tiers show as 1 to 4 stars with support-level names (★ Most Support to ★★★★ Extra Challenge). A new always-visible "Key idea, write this in your journal" callout leads the after-battle screen, and the deeper content (A Voice From the Field, The Bigger Picture, Technology Spotlight) is consolidated into three folder tabs. Full Battle Journal redesign: a per-battle log, then act checkpoints, then the final answer, now in four tiers, with lower tiers logging fewer battles to cut writing load. New 25-term vocabulary glossary with click-to-define tooltips. Students can revisit any completed battle read-only from the campaign log. The current act shows centered in the top bar. The mid-battle difficulty toggle now preserves your exact place in the battle.
 - **v3.18.0** - Per-period room codes for the teacher dashboard. Replaces the single shared room code with four per-period codes (AMS-p1 through AMS-p5) and adds password-gated delete/clear controls on the dashboard. Strangers from other classrooms no longer appear in the dashboard because every dashboard write now requires a valid class code. New student-facing class code field (masked) on the name entry form, plus a "your teacher won't see your progress" banner with inline code entry for kids who skip it. Dashboard subscribes to all four period rooms in parallel and merges entries.
