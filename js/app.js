@@ -824,6 +824,24 @@ function reportProgressToDashboard(finished) {
     );
 }
 
+// v3.22: record a recall question result for the teacher's Question-difficulty
+// view. Historical mode only, requires a valid saved class code (so strangers
+// never write). Fire-and-forget — never blocks or surfaces errors to students.
+function reportRecallResultToDashboard(actIndex, qIndex, firstTry, correct, attempts) {
+    if (gameState.mode !== 'historical') return;
+    if (typeof firebaseLeaderboard === 'undefined' || !firebaseLeaderboard.isAvailable()) return;
+    var savedCode = firebaseLeaderboard.getSavedClassCode();
+    var period = firebaseLeaderboard.periodForRoom(savedCode);
+    if (!period) return;
+    firebaseLeaderboard.writeRecallResult(savedCode, actIndex, qIndex, {
+        name: gameState.studentName || 'Student',
+        period: period,
+        correct: !!correct,
+        firstTry: !!firstTry,
+        attempts: Number(attempts) || 1
+    });
+}
+
 // Initialize when DOM is ready
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', boot);
