@@ -42,6 +42,13 @@
       "$scoreId": {
         ".validate": "newData.hasChildren(['name', 'score', 'side', 'wins', 'losses', 'timestamp']) && newData.child('name').isString() && newData.child('name').val().length <= 30 && newData.child('score').isNumber() && newData.child('side').isString() && newData.child('wins').isNumber() && newData.child('losses').isNumber() && newData.child('timestamp').isNumber()"
       }
+    },
+    "guestbook": {
+      ".read": true,
+      ".write": true,
+      "$entryId": {
+        ".validate": "newData.hasChildren(['school', 'lat', 'lng', 'timestamp']) && newData.child('school').isString() && newData.child('school').val().length <= 60 && newData.child('lat').isNumber() && newData.child('lng').isNumber() && newData.child('timestamp').isNumber()"
+      }
     }
   }
 }
