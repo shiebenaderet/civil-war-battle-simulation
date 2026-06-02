@@ -312,6 +312,18 @@
         body.tab-global #clearAllBtn,
         body.tab-global .control-group { display: none; }
 
+        /* --- Questions view (per-question first-try miss rate) --- */
+        #questionsView { display: none; }
+        body.tab-questions #questionsView { display: block; }
+        body.tab-questions #dashboardMain { display: none; }
+        body.tab-questions #sortControlGroup,
+        body.tab-questions #clearAllBtn { display: none; }
+        .q-act-group { margin: 18px 0 6px; font-weight: 700; color: #333; font-size: 15px; }
+        .q-row { cursor: pointer; }
+        .q-row:hover td { background: #fafaf7; }
+        .q-miss-hi { color: #b3261e; font-weight: 700; }
+        .q-names { font-size: 13px; color: #555; padding: 4px 12px 12px; background: #fbfaf6; }
+
         .lb-table {
             width: 100%;
             border-collapse: collapse;
@@ -402,6 +414,7 @@
         <button class="tab-btn active" data-tab="progress" type="button">Progress</button>
         <button class="tab-btn" data-tab="leaderboard" type="button">Leaderboard</button>
         <button class="tab-btn" data-tab="global" type="button">Global</button>
+        <button class="tab-btn" data-tab="questions" type="button">Questions</button>
     </nav>
 
     <div class="controls">
@@ -443,6 +456,14 @@
         <div id="globalBody"></div>
     </main>
 
+    <main id="questionsView">
+        <table class="lb-table" id="questionsTable">
+            <thead><tr><th>Question</th><th>Students</th><th>Missed first try</th></tr></thead>
+            <tbody id="questionsBody"></tbody>
+        </table>
+        <p id="questionsEmpty" style="padding:16px;color:#777;display:none;">No recall answers recorded yet.</p>
+    </main>
+
     <!-- Fullscreen class-code overlay (for projecting) -->
     <div class="code-overlay" id="codeOverlay" role="dialog" aria-modal="true">
         <div class="overlay-period" id="overlayPeriod"></div>
@@ -456,6 +477,7 @@
 
     <!-- App data + Firebase wrapper -->
     <script src="js/data/battles.js"></script>
+    <script src="js/data/acts.js"></script>
     <script src="js/firebase-leaderboard.js"></script>
 
     <script>
@@ -499,7 +521,8 @@
             lbEntries: [],
             lbLoading: false,
             gbEntries: [],
-            gbLoading: false
+            gbLoading: false,
+            recallRows: {}
         };
 
         function init() {
@@ -542,6 +565,16 @@
                 });
             });
 
+            // v3.22: subscribe to per-question recall results for the Questions tab.
+            Object.keys(rooms).forEach(function(period) {
+                var rcode = rooms[period];
+                firebaseLeaderboard.subscribeToRecall(rcode, function(rows, rerr) {
+                    if (rerr) return;
+                    state.recallRows[period] = (rows || []).map(function(r) { r.period = period; return r; });
+                    if (state.tab === 'questions') renderQuestions();
+                });
+            });
+
             wireControls();
         }
 
@@ -560,12 +593,15 @@
                 setActivePill('filterGroup', btn);
                 render();
                 if (state.tab === 'leaderboard') renderLeaderboard();
+                if (state.tab === 'questions') renderQuestions();
             });
             document.getElementById('refreshBtn').addEventListener('click', function() {
                 if (state.tab === 'leaderboard') {
                     loadLeaderboard();
                 } else if (state.tab === 'global') {
                     loadGlobalLeaderboard();
+                } else if (state.tab === 'questions') {
+                    renderQuestions();
                 } else {
                     render();
                 }
@@ -585,11 +621,14 @@
                 if (e.key === 'Escape') closeOverlay();
             });
             document.getElementById('clearAllBtn').addEventListener('click', function() {
-                if (!window.confirm('Delete ALL student progress from ALL four periods? This cannot be undone.')) return;
+                if (!window.confirm('Delete ALL student progress AND question results from ALL four periods? This cannot be undone.')) return;
                 var rooms = firebaseLeaderboard.getAllPeriodRooms();
                 var codes = Object.keys(rooms).map(function(p) { return rooms[p]; });
                 firebaseLeaderboard.clearAllProgress(codes, function(ok, errMsg) {
                     if (!ok) setStatus(errMsg || 'Clear failed.', true);
+                });
+                firebaseLeaderboard.clearAllRecall(codes, function(ok, errMsg) {
+                    if (!ok) setStatus(errMsg || 'Recall clear failed.', true);
                 });
             });
         }
@@ -851,10 +890,11 @@
         // --- Feature 1: tab toggle ---
 
         function switchTab(tab) {
-            if (tab !== 'leaderboard' && tab !== 'global') tab = 'progress';
+            if (tab !== 'leaderboard' && tab !== 'global' && tab !== 'questions') tab = 'progress';
             state.tab = tab;
             document.body.classList.toggle('tab-leaderboard', tab === 'leaderboard');
             document.body.classList.toggle('tab-global', tab === 'global');
+            document.body.classList.toggle('tab-questions', tab === 'questions');
 
             var btns = document.querySelectorAll('#tabBar .tab-btn');
             for (var i = 0; i < btns.length; i++) {
@@ -865,7 +905,99 @@
                 loadLeaderboard();
             } else if (tab === 'global') {
                 loadGlobalLeaderboard();
+            } else if (tab === 'questions') {
+                renderQuestions();
             }
+        }
+
+        // --- Questions tab: per-question first-try miss rate ---
+
+        // Map "<actIndex>_<qIndex>" to a human-readable label using acts.js data.
+        // Uses a fixed reference tier so labels are stable regardless of student level.
+        function questionLabel(qKey) {
+            var parts = qKey.split('_');
+            var ai = parseInt(parts[0], 10), qi = parseInt(parts[1], 10);
+            try {
+                if (typeof acts !== 'undefined' && acts[ai] && acts[ai].recall) {
+                    var q = (acts[ai].recall.intermediate && acts[ai].recall.intermediate[qi]) ||
+                            (acts[ai].recall.beginner && acts[ai].recall.beginner[qi]) ||
+                            (acts[ai].recall.extra && acts[ai].recall.extra[qi]);
+                    if (q && q.question) {
+                        return 'Act ' + acts[ai].number + ' Q' + (qi + 1) + ': ' + q.question;
+                    }
+                }
+            } catch (e) {}
+            return 'Act ' + (ai + 1) + ' Q' + (qi + 1);
+        }
+
+        function renderQuestions() {
+            var body = document.getElementById('questionsBody');
+            var empty = document.getElementById('questionsEmpty');
+            body.innerHTML = '';
+
+            // Flatten recall rows across periods, applying the active period filter.
+            var rows = [];
+            Object.keys(state.recallRows).forEach(function(p) {
+                if (state.filter !== 'all' && state.filter !== p) return;
+                rows = rows.concat(state.recallRows[p] || []);
+            });
+
+            if (!rows.length) { empty.style.display = ''; return; }
+            empty.style.display = 'none';
+
+            // Aggregate by question key. A row per (studentId,qKey); count distinct
+            // students and how many missed on first try.
+            var agg = {};
+            rows.forEach(function(r) {
+                var k = r.qKey;
+                if (!agg[k]) agg[k] = { total: 0, missed: 0, names: [] };
+                agg[k].total++;
+                if (r.firstTry === false) {
+                    agg[k].missed++;
+                    agg[k].names.push(r.name || 'Student');
+                }
+            });
+
+            // Sort worst-first by miss rate, then by sample size.
+            var keys = Object.keys(agg).sort(function(a, b) {
+                var ra = agg[a].missed / agg[a].total, rb = agg[b].missed / agg[b].total;
+                if (rb !== ra) return rb - ra;
+                return agg[b].total - agg[a].total;
+            });
+
+            keys.forEach(function(k) {
+                var a = agg[k];
+                var rate = Math.round((a.missed / a.total) * 100);
+
+                // Build cells with textContent (no innerHTML) so student-entered
+                // names can never inject HTML.
+                var tr = document.createElement('tr');
+                tr.className = 'q-row';
+                var tdQ = document.createElement('td');
+                tdQ.textContent = questionLabel(k);
+                var tdN = document.createElement('td');
+                tdN.textContent = String(a.total);
+                var tdR = document.createElement('td');
+                tdR.textContent = rate + '%';
+                if (rate >= 40) tdR.className = 'q-miss-hi';
+                tr.appendChild(tdQ); tr.appendChild(tdN); tr.appendChild(tdR);
+
+                var namesTr = document.createElement('tr');
+                namesTr.style.display = 'none';
+                var tdNames = document.createElement('td');
+                tdNames.setAttribute('colspan', '3');
+                tdNames.className = 'q-names';
+                tdNames.textContent = a.names.length
+                    ? 'Missed first try: ' + a.names.join(', ')
+                    : 'No first-try misses.';
+                namesTr.appendChild(tdNames);
+
+                tr.addEventListener('click', function() {
+                    namesTr.style.display = (namesTr.style.display === 'none') ? '' : 'none';
+                });
+                body.appendChild(tr);
+                body.appendChild(namesTr);
+            });
         }
 
         // --- Feature 2: leaderboard across all period rooms ---
