@@ -23,6 +23,14 @@
             ".validate": "newData.hasChildren(['name', 'currentBattle', 'lastSeen']) && newData.child('name').isString() && newData.child('name').val().length <= 30 && newData.child('currentBattle').isNumber() && newData.child('lastSeen').isNumber()"
           }
         },
+        "recall": {
+          ".write": true,
+          "$studentId": {
+            "$qKey": {
+              ".validate": "newData.hasChildren(['name', 'firstTry', 'lastSeen']) && newData.child('name').isString() && newData.child('name').val().length <= 30 && newData.child('firstTry').isBoolean() && newData.child('lastSeen').isNumber()"
+            }
+          }
+        },
         "meta": {
           ".write": false
         }
