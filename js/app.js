@@ -51,6 +51,12 @@ function boot() {
     renderModeSelection();
 
     if (typeof wireNoTeacherBanner === 'function') wireNoTeacherBanner();
+
+    // Clear the class-code "not recognized" warning as soon as the student edits.
+    var classCodeInput = document.getElementById('classCodeInput');
+    if (classCodeInput && typeof showClassCodeError === 'function') {
+        classCodeInput.addEventListener('input', function() { showClassCodeError(false); });
+    }
 }
 
 function setupEventListeners() {
@@ -783,6 +789,14 @@ function hideResetBattleMenuItem() {
 function startWithSide(side) {
     // Read student name + period from inline fields (historical mode only)
     if (gameState.mode === 'historical') {
+        // A typed-but-invalid class code is almost always a typo. Catch it here
+        // and refuse to start so the student isn't silently left untracked.
+        // A blank code is allowed (legitimately playing without teacher tracking).
+        if (typeof classCodeEntryIsInvalid === 'function' && classCodeEntryIsInvalid()) {
+            showClassCodeError(true);
+            return;
+        }
+        showClassCodeError(false);
         gameState.studentName = getStudentNameFromForm();
         gameState.period = getPeriodFromForm();
     }

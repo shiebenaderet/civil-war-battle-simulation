@@ -368,8 +368,9 @@
                     <div class="name-field name-field-period">
                         <label for="classCodeInput" class="name-field-label">Class Code</label>
                         <input type="password" id="classCodeInput" class="name-field-input"
-                               placeholder="AMS-p1" maxlength="12" autocomplete="off"
+                               placeholder="Enter code here" maxlength="12" autocomplete="off"
                                aria-label="Class code from your teacher">
+                        <div id="classCodeError" class="name-field-error" style="display:none;">Code not recognized. Check with your teacher.</div>
                     </div>
                 </div>
             </div>
@@ -512,7 +513,7 @@
             <button type="button" id="noTeacherBannerOpenBtn" class="no-teacher-banner-link">Enter class code</button>
             <button type="button" id="noTeacherBannerSkipBtn" class="no-teacher-banner-skip" aria-label="Dismiss">&#10005;</button>
             <div id="noTeacherBannerForm" class="no-teacher-banner-form" style="display:none;">
-                <input type="password" id="noTeacherBannerInput" placeholder="AMS-p1" maxlength="12" autocomplete="off" aria-label="Class code">
+                <input type="password" id="noTeacherBannerInput" placeholder="Enter code here" maxlength="12" autocomplete="off" aria-label="Class code">
                 <button type="button" id="noTeacherBannerSaveBtn">Save</button>
                 <div id="noTeacherBannerError" class="no-teacher-banner-error" style="display:none;">Code not recognized. Check with your teacher.</div>
             </div>

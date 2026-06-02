@@ -213,6 +213,27 @@ function getPeriodFromForm() {
     return period;
 }
 
+// True only when the student TYPED something that is not a valid class code.
+// A blank field is NOT invalid (playing untracked is allowed); a typo IS.
+function classCodeEntryIsInvalid() {
+    var input = document.getElementById('classCodeInput');
+    if (!input) return false;
+    var code = String(input.value || '').trim();
+    if (!code) return false; // blank is fine
+    return !firebaseLeaderboard.periodForRoom(code.toLowerCase());
+}
+
+// Toggle the inline "code not recognized" message under the class-code box.
+function showClassCodeError(show) {
+    var err = document.getElementById('classCodeError');
+    if (err) err.style.display = show ? 'block' : 'none';
+    var input = document.getElementById('classCodeInput');
+    if (input) {
+        input.classList.toggle('input-error', !!show);
+        if (show) { try { input.focus(); } catch (e) {} }
+    }
+}
+
 // ============================================================
 // Leader Letter Screen (Transition into Historical Mode)
 // ============================================================

@@ -2974,6 +2974,17 @@ a.settings-item:visited { color: var(--color-ink); }
     opacity: 0.5;
 }
 
+.name-field-input.input-error {
+    border-color: #b91c1c;
+    outline-color: #b91c1c;
+}
+
+.name-field-error {
+    color: #b91c1c;
+    font-size: 13px;
+    margin-top: var(--space-1);
+}
+
 .initial-input {
     text-align: center;
     text-transform: uppercase;
