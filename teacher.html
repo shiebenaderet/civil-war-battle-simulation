@@ -324,6 +324,17 @@
         .q-miss-hi { color: #b3261e; font-weight: 700; }
         .q-names { font-size: 13px; color: #555; padding: 4px 12px 12px; background: #fbfaf6; }
 
+        /* --- Guest Book view --- */
+        #guestbookView { display: none; }
+        body.tab-guestbook #guestbookView { display: block; }
+        body.tab-guestbook #dashboardMain { display: none; }
+        body.tab-guestbook #sortControlGroup,
+        body.tab-guestbook #clearAllBtn { display: none; }
+        .visitor-map { width: 100%; height: auto; display: block; background: #a9c7e0; border: 1px solid #ccc; }
+        .visitor-pin { fill: #6b2419; stroke: #fff; stroke-width: 0.6; }
+        .visitor-map-popup { font-family: serif; font-size: 14px; fill: #2a1f12; paint-order: stroke; stroke: #fff; stroke-width: 3px; }
+        .lb-mini-btn { font-size: 12px; padding: 2px 8px; margin-left: 4px; cursor: pointer; }
+
         .lb-table {
             width: 100%;
             border-collapse: collapse;
@@ -415,6 +426,7 @@
         <button class="tab-btn" data-tab="leaderboard" type="button">Leaderboard</button>
         <button class="tab-btn" data-tab="global" type="button">Global</button>
         <button class="tab-btn" data-tab="questions" type="button">Questions</button>
+        <button class="tab-btn" data-tab="guestbook" type="button">Guest Book</button>
     </nav>
 
     <div class="controls">
@@ -464,6 +476,15 @@
         <p id="questionsEmpty" style="padding:16px;color:#777;display:none;">No recall answers recorded yet.</p>
     </main>
 
+    <main id="guestbookView">
+        <div id="guestbookMapMount" style="margin-bottom:16px;"></div>
+        <table class="lb-table" id="guestbookTable">
+            <thead><tr><th>School</th><th>Location</th><th>When</th><th></th></tr></thead>
+            <tbody id="guestbookBody"></tbody>
+        </table>
+        <p id="guestbookEmpty" style="padding:16px;color:#777;display:none;">No guest book signatures yet.</p>
+    </main>
+
     <!-- Fullscreen class-code overlay (for projecting) -->
     <div class="code-overlay" id="codeOverlay" role="dialog" aria-modal="true">
         <div class="overlay-period" id="overlayPeriod"></div>
@@ -478,6 +499,7 @@
     <!-- App data + Firebase wrapper -->
     <script src="js/data/battles.js"></script>
     <script src="js/data/acts.js"></script>
+    <script src="js/data/geo.js"></script>
     <script src="js/firebase-leaderboard.js"></script>
 
     <script>
@@ -522,7 +544,8 @@
             lbLoading: false,
             gbEntries: [],
             gbLoading: false,
-            recallRows: {}
+            recallRows: {},
+            gbEntries: []
         };
 
         function init() {
@@ -573,6 +596,13 @@
                     state.recallRows[period] = (rows || []).map(function(r) { r.period = period; return r; });
                     if (state.tab === 'questions') renderQuestions();
                 });
+            });
+
+            // v3.23: subscribe to the public guest book for the Guest Book tab.
+            firebaseLeaderboard.subscribeToGuestbook(function(entries, gerr) {
+                if (gerr) return;
+                state.gbEntries = entries || [];
+                if (state.tab === 'guestbook') renderGuestbook();
             });
 
             wireControls();
@@ -890,11 +920,12 @@
         // --- Feature 1: tab toggle ---
 
         function switchTab(tab) {
-            if (tab !== 'leaderboard' && tab !== 'global' && tab !== 'questions') tab = 'progress';
+            if (tab !== 'leaderboard' && tab !== 'global' && tab !== 'questions' && tab !== 'guestbook') tab = 'progress';
             state.tab = tab;
             document.body.classList.toggle('tab-leaderboard', tab === 'leaderboard');
             document.body.classList.toggle('tab-global', tab === 'global');
             document.body.classList.toggle('tab-questions', tab === 'questions');
+            document.body.classList.toggle('tab-guestbook', tab === 'guestbook');
 
             var btns = document.querySelectorAll('#tabBar .tab-btn');
             for (var i = 0; i < btns.length; i++) {
@@ -907,6 +938,8 @@
                 loadGlobalLeaderboard();
             } else if (tab === 'questions') {
                 renderQuestions();
+            } else if (tab === 'guestbook') {
+                renderGuestbook();
             }
         }
 
@@ -997,6 +1030,85 @@
                 });
                 body.appendChild(tr);
                 body.appendChild(namesTr);
+            });
+        }
+
+        // --- Guest Book tab (own renderVisitorMap; dashboard doesn't load ui.js) ---
+        // Depends only on geo.js (GEO_WORLD_SVG / GEO_WORLD_VIEWBOX / geoProject).
+        // XSS-safe: only innerHTML is the trusted bundled map constant + empty clears;
+        // all entry text reaches the DOM via textContent.
+        function renderVisitorMap(container, entries, highlightKey) {
+            if (!container) return;
+            if (typeof GEO_WORLD_SVG === 'undefined') { container.textContent = 'Map unavailable.'; return; }
+            var vb = (typeof GEO_WORLD_VIEWBOX !== 'undefined') ? GEO_WORLD_VIEWBOX : '0 0 1000 500';
+            container.innerHTML = '';
+            var SVG = 'http://www.w3.org/2000/svg';
+            var svg = document.createElementNS(SVG, 'svg');
+            svg.setAttribute('viewBox', vb);
+            svg.setAttribute('class', 'visitor-map');
+            var land = document.createElementNS(SVG, 'g');
+            land.innerHTML = GEO_WORLD_SVG; // trusted constant from geo.js
+            svg.appendChild(land);
+            var popup = document.createElementNS(SVG, 'text');
+            popup.setAttribute('class', 'visitor-map-popup');
+            popup.setAttribute('text-anchor', 'middle');
+            popup.style.display = 'none';
+            (entries || []).forEach(function(e) {
+                if (!isFinite(e.lat) || !isFinite(e.lng)) return;
+                var p = geoProject(e.lat, e.lng);
+                var seed = 0, key = String(e._key || (e.lat + '' + e.lng));
+                for (var i = 0; i < key.length; i++) seed = (seed * 31 + key.charCodeAt(i)) >>> 0;
+                var jx = ((seed % 100) / 100 - 0.5) * 10;
+                var jy = (((seed >> 8) % 100) / 100 - 0.5) * 10;
+                var px = p.x + jx, py = p.y + jy;
+                var dot = document.createElementNS(SVG, 'circle');
+                dot.setAttribute('cx', px.toFixed(1));
+                dot.setAttribute('cy', py.toFixed(1));
+                dot.setAttribute('r', '4');
+                dot.setAttribute('class', 'visitor-pin');
+                var labelText = (e.school ? e.school + ' — ' : '') + (e.label || '');
+                dot.addEventListener('click', function() {
+                    popup.textContent = labelText;
+                    popup.setAttribute('x', px.toFixed(1));
+                    popup.setAttribute('y', (py - 10).toFixed(1));
+                    popup.style.display = '';
+                });
+                svg.appendChild(dot);
+            });
+            svg.appendChild(popup);
+            container.appendChild(svg);
+        }
+
+        function renderGuestbook() {
+            var body = document.getElementById('guestbookBody');
+            var empty = document.getElementById('guestbookEmpty');
+            var mapMount = document.getElementById('guestbookMapMount');
+            body.innerHTML = '';
+            var rows = state.gbEntries.slice().sort(function(a, b) { return (b.timestamp || 0) - (a.timestamp || 0); });
+            if (mapMount) renderVisitorMap(mapMount, rows, null);
+            if (!rows.length) { empty.style.display = ''; return; }
+            empty.style.display = 'none';
+            rows.forEach(function(e) {
+                var tr = document.createElement('tr');
+                var tdS = document.createElement('td'); tdS.textContent = e.school || '';
+                var tdL = document.createElement('td'); tdL.textContent = e.label || '';
+                var tdW = document.createElement('td');
+                tdW.textContent = e.timestamp ? new Date(e.timestamp).toLocaleDateString() : '';
+                var tdA = document.createElement('td');
+                var edit = document.createElement('button'); edit.textContent = 'Edit'; edit.className = 'lb-mini-btn';
+                var del = document.createElement('button'); del.textContent = 'Delete'; del.className = 'lb-mini-btn';
+                edit.addEventListener('click', function() {
+                    var next = window.prompt('School name:', e.school || '');
+                    if (next == null) return;
+                    firebaseLeaderboard.updateGuestEntry(e._key, { school: String(next).substring(0, 60) }, function(ok, m) { if (!ok) setStatus(m || 'Update failed.', true); });
+                });
+                del.addEventListener('click', function() {
+                    if (!window.confirm('Delete this guest book entry?')) return;
+                    firebaseLeaderboard.deleteGuestEntry(e._key, function(ok, m) { if (!ok) setStatus(m || 'Delete failed.', true); });
+                });
+                tdA.appendChild(edit); tdA.appendChild(del);
+                tr.appendChild(tdS); tr.appendChild(tdL); tr.appendChild(tdW); tr.appendChild(tdA);
+                body.appendChild(tr);
             });
         }
 
