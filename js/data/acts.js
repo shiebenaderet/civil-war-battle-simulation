@@ -111,8 +111,8 @@ const acts = [
                     options: [
                         "The South",
                         "The North",
-                        "A ship in the harbor",
-                        "No one"
+                        "A boat in the bay",
+                        "Both at once"
                     ],
                     correctIndex: 0,
                     explanation: " The South fired the first shots at Fort Sumter. This started the Civil War.",
@@ -124,8 +124,8 @@ const acts = [
                     options: [
                         "The South",
                         "The North",
-                        "Nobody",
-                        "The picnic watchers"
+                        "The West",
+                        "The East"
                     ],
                     correctIndex: 0,
                     explanation: " The South won Bull Run. The North ran away. People had come to watch the battle. They had to run too.",
@@ -136,9 +136,9 @@ const acts = [
                     question: "Why was Shiloh shocking?",
                     options: [
                         "23,000 soldiers were killed or hurt in two days",
-                        "It was the first battle",
-                        "The North gave up",
-                        "It was very small"
+                        "The fight lasted only two hours and no one was hurt",
+                        "The North gave up and went home after one day",
+                        "Just a few hundred soldiers fought in the fields"
                     ],
                     correctIndex: 0,
                     explanation: " 23,000 soldiers were killed or hurt at Shiloh in just two days. People had never seen so many die in one battle.",
@@ -151,9 +151,9 @@ const acts = [
                     question: "Who fired first at Fort Sumter?",
                     options: [
                         "The Confederate batteries surrounding the fort",
-                        "The Union soldiers inside the fort",
+                        "The Union soldiers stationed inside the fort",
                         "The Union supply ship trying to reach the fort",
-                        "A reporter who fired a celebratory shot"
+                        "The Confederate spy hiding near the fort wall"
                     ],
                     correctIndex: 0,
                     explanation: " Confederate batteries opened fire on Fort Sumter at 4:30 AM on April 12, 1861. Union forces inside the fort fired back, but the Confederates fired the first shot of the war.",
@@ -165,8 +165,8 @@ const acts = [
                     options: [
                         "One day",
                         "Three days",
-                        "A week",
-                        "Most of the summer"
+                        "Five days",
+                        "Two weeks"
                     ],
                     correctIndex: 0,
                     explanation: " Bull Run was fought on July 21, 1861. It started in the morning and was over by evening, ending in a Union rout.",
@@ -176,10 +176,10 @@ const acts = [
                 {
                     question: "What made Shiloh shocking to Americans?",
                     options: [
-                        "It was the first battle of the war",
+                        "It was the very first battle fought in the whole war",
                         "The huge number of soldiers killed and wounded in just two days",
-                        "The Union surrendered",
-                        "Confederate spies attacked Lincoln"
+                        "The Union army surrendered the field on the first day",
+                        "Most of the soldiers there got sick instead of fighting"
                     ],
                     correctIndex: 1,
                     explanation: " Shiloh produced more than 23,000 casualties in two days, more than all previous American wars combined. The nation had not imagined this level of bloodshed possible.",
@@ -192,9 +192,9 @@ const acts = [
                     question: "Why did the South attack Fort Sumter when they did?",
                     options: [
                         "They wanted to prevent a Union supply ship from resupplying the fort",
-                        "They needed the fort's cannons for their own army",
-                        "A Confederate general lost control of his troops",
-                        "Britain promised to recognize the Confederacy if they fired first"
+                        "They needed the fort's heavy cannons to defend their own coastline",
+                        "A Confederate officer fired without waiting for any orders",
+                        "Lincoln demanded that they hand over the fort within one day"
                     ],
                     correctIndex: 0,
                     explanation: " Confederate leaders concluded that letting the Union supply ship reach Fort Sumter would make their new government look powerless. They chose to fire before the resupply arrived, accepting the political cost of starting the war.",
@@ -204,10 +204,10 @@ const acts = [
                 {
                     question: "Why did the Confederacy win at Bull Run despite being outnumbered?",
                     options: [
-                        "They had better weapons",
+                        "Their rifles could shoot much farther than Union weapons",
                         "Reinforcements arrived by railroad just in time",
-                        "A storm flooded the Union camp",
-                        "Most Union soldiers refused to fight"
+                        "A sudden storm flooded the Union army's camp overnight",
+                        "Most of the Union soldiers had not been trained at all"
                     ],
                     correctIndex: 1,
                     explanation: " Confederate troops under General Johnston traveled by railroad from the Shenandoah Valley to reinforce Beauregard's line. This was the first decisive use of railroads in combat history, and it turned the battle.",
@@ -217,10 +217,10 @@ const acts = [
                 {
                     question: "After Shiloh, why did Grant believe the war would have to be 'complete conquest'?",
                     options: [
-                        "He was angry about being criticized",
+                        "He was furious at the newspapers that had wrongly called him drunk",
                         "The scale of the killing convinced him a peace deal was impossible",
-                        "He had received new orders from Lincoln",
-                        "He needed an excuse for being surprised at the start"
+                        "Lincoln had ordered him to crush the South no matter the cost",
+                        "He wanted to hide the fact that his army was surprised that morning"
                     ],
                     correctIndex: 1,
                     explanation: " Shiloh's casualties showed Grant that the war had become something much larger than either side imagined. He concluded that only the complete defeat of the Confederate armies could end it.",
@@ -233,9 +233,9 @@ const acts = [
                     question: "What does it reveal about both sides that civilians brought picnic baskets to watch Bull Run?",
                     options: [
                         "Most people thought the war would be quick and not very costly",
-                        "Both armies welcomed civilian observers as honored guests",
-                        "It was a tradition borrowed from European armies",
-                        "The civilians were political officials with official roles"
+                        "Both armies actively welcomed civilian spectators as honored guests",
+                        "It reflected a battlefield custom Americans copied from European wars",
+                        "The spectators were officials sent to record the army's progress"
                     ],
                     correctIndex: 0,
                     explanation: " The picnic baskets reveal how thoroughly Americans on both sides had failed to imagine industrial-scale war. Spectators expected a single decisive battle that would settle the conflict, like an Independence Day parade with cannons.",
@@ -246,9 +246,9 @@ const acts = [
                     question: "Why did Fort Sumter unify the North even though Anderson's garrison surrendered?",
                     options: [
                         "Lincoln's call for volunteers turned a defeat into a national cause",
-                        "The South immediately offered peace terms",
-                        "Confederate sympathizers in the North quickly converted to the Union cause",
-                        "All of the above"
+                        "The Confederacy immediately offered the North generous peace terms",
+                        "Border states rushed to join the Union after the fort's surrender",
+                        "Foreign navies blockaded Charleston in support of the Union"
                     ],
                     correctIndex: 0,
                     explanation: " Fort Sumter ended in Confederate victory militarily, but Lincoln used the attack to call for 75,000 volunteers. Northern enlistment became a moral response to the firing on the flag, not just a political response to secession.",
@@ -259,9 +259,9 @@ const acts = [
                     question: "What pattern emerges across Fort Sumter, Bull Run, and Shiloh that would define the rest of the war?",
                     options: [
                         "Each battle revealed that this war would be far longer and bloodier than either side had imagined",
-                        "The North consistently won battles even when outnumbered",
-                        "The South's reliance on cavalry would prove decisive",
-                        "Foreign powers would intervene to end the war within months"
+                        "The Union consistently won decisive victories despite being heavily outnumbered on every battlefield",
+                        "The Confederacy's superior cavalry repeatedly proved to be the single deciding factor in each clash",
+                        "European powers were quietly preparing to intervene and impose a quick negotiated peace settlement"
                     ],
                     correctIndex: 0,
                     explanation: " Fort Sumter started the war that 'no one wanted.' Bull Run shattered the fantasy of a 90-day conflict. Shiloh showed bloodshed at a scale Americans had never imagined possible. The opening year established that this war would be unprecedented in length and cost.",
@@ -337,9 +337,9 @@ const acts = [
                     question: "Why is Antietam famous?",
                     options: [
                         "The bloodiest day in U.S. history",
-                        "It was the first battle",
-                        "The South won big",
-                        "No one was hurt"
+                        "The first big battle of the war",
+                        "The day the South won a huge win",
+                        "The day the long war finally ended"
                     ],
                     correctIndex: 0,
                     explanation: " 22,000 soldiers were killed or hurt at Antietam in one day. It is the bloodiest day in U.S. history.",
@@ -350,9 +350,9 @@ const acts = [
                     question: "What did Lincoln do after Antietam?",
                     options: [
                         "He freed enslaved people in the South",
-                        "He surrendered",
-                        "He moved to Canada",
-                        "He fired Grant"
+                        "He let the South keep all its slaves",
+                        "He gave up and stopped the whole war",
+                        "He sent all the soldiers back to home"
                     ],
                     correctIndex: 0,
                     explanation: " Lincoln signed the Emancipation Proclamation. It freed enslaved people in the South. Now the war was also about ending slavery.",
@@ -365,7 +365,7 @@ const acts = [
                         "Stonewall Jackson",
                         "Robert E. Lee",
                         "Ulysses S. Grant",
-                        "Abraham Lincoln"
+                        "George McClellan"
                     ],
                     correctIndex: 0,
                     explanation: " Stonewall Jackson was a great Southern general. His own soldiers shot him by mistake at night. He died eight days later. The South never had a general as good as him again.",
@@ -377,10 +377,10 @@ const acts = [
                 {
                     question: "What is Antietam known as?",
                     options: [
-                        "The first battle of the Civil War",
+                        "The very first battle fought in the whole Civil War",
                         "The bloodiest single day in American history",
-                        "The Confederacy's biggest victory",
-                        "The battle where Lincoln was wounded"
+                        "The biggest Confederate win in the entire war",
+                        "The final battle that ended the Civil War for good"
                     ],
                     correctIndex: 1,
                     explanation: " September 17, 1862 remains the bloodiest single day in American military history. Over 22,000 soldiers were killed or wounded in just 12 hours of fighting at Antietam.",
@@ -390,10 +390,10 @@ const acts = [
                 {
                     question: "What did Lincoln issue after Antietam?",
                     options: [
-                        "A surrender offer to the Confederacy",
+                        "A peace deal that gave up on the South",
                         "The Emancipation Proclamation",
-                        "A declaration of war on Britain",
-                        "An order to retreat from the South"
+                        "An order pulling troops out of the South",
+                        "A new tax to pay for the long war"
                     ],
                     correctIndex: 1,
                     explanation: " Lincoln used the strategic outcome of Antietam to issue the Emancipation Proclamation, declaring enslaved people in Confederate-held territory to be free.",
@@ -406,7 +406,7 @@ const acts = [
                         "Robert E. Lee",
                         "Ulysses S. Grant",
                         "Stonewall Jackson",
-                        "Abraham Lincoln"
+                        "George McClellan"
                     ],
                     correctIndex: 2,
                     explanation: " Stonewall Jackson was accidentally shot by his own men in the darkness after his successful flanking attack at Chancellorsville. He died eight days later.",
@@ -419,9 +419,9 @@ const acts = [
                     question: "Why was the Emancipation Proclamation important even though it did not free all enslaved people immediately?",
                     options: [
                         "It changed what the war was for, and it kept Britain and France from supporting the Confederacy",
-                        "It immediately freed every enslaved person in the country",
-                        "It convinced the Confederacy to surrender within months",
-                        "It gave the right to vote to formerly enslaved men"
+                        "It freed every enslaved person in the country the moment Lincoln signed it",
+                        "It forced the Confederate states to surrender to the Union within a few months",
+                        "It let formerly enslaved men vote and hold office throughout the South"
                     ],
                     correctIndex: 0,
                     explanation: " The Proclamation only applied to Confederate-held territory, so it freed no one immediately in places the Union did not yet control. But it transformed the war from a fight to save the Union into a war to end slavery, and it kept European powers from siding with the Confederacy.",
@@ -432,9 +432,9 @@ const acts = [
                     question: "Why was Fredericksburg called a disaster for the Union?",
                     options: [
                         "Burnside ordered 14 separate attacks against an impossible position, and over 12,000 Union soldiers fell",
-                        "A Confederate spy stole the Union battle plans",
-                        "A storm destroyed the Union army's gunpowder supply",
-                        "Lee captured the entire Union army"
+                        "A Confederate spy stole the Union battle plans and warned Lee long before the attack began",
+                        "A sudden winter storm soaked the Union army's gunpowder and left the soldiers unable to fire",
+                        "Lee surrounded and captured nearly the entire Union army before a shot was even fired"
                     ],
                     correctIndex: 0,
                     explanation: " Burnside ordered 14 separate assaults against the stone wall on Marye's Heights. Not a single one reached it. Over 12,000 Union soldiers were killed or wounded compared to about 5,000 Confederates.",
@@ -445,9 +445,9 @@ const acts = [
                     question: "Why did losing Stonewall Jackson hurt the Confederacy so much, even though they won Chancellorsville?",
                     options: [
                         "Lee never found another general who could move as fast or take as many risks",
-                        "Jackson was the only Confederate general the soldiers respected",
-                        "Jackson was the only one who knew Lee's secret battle plans",
-                        "Jackson controlled all the Confederate money"
+                        "Jackson was the only Confederate general the ordinary soldiers truly respected",
+                        "Jackson was the only officer who knew Lee's secret plans for invading the North",
+                        "Jackson controlled most of the money that kept the Confederate army supplied"
                     ],
                     correctIndex: 0,
                     explanation: " Jackson's speed and willingness to gamble made Lee's most aggressive battle plans possible. Lee never found a replacement who could execute risky flanking maneuvers the way Jackson did, and the Confederacy felt the loss for the rest of the war.",
@@ -460,9 +460,9 @@ const acts = [
                     question: "How did Antietam's strategic outcome differ from its battlefield outcome?",
                     options: [
                         "The battle itself was tactically inconclusive, but Lee's retreat let Lincoln claim enough of a victory to issue the Emancipation Proclamation",
-                        "The Union won decisively in the field, but Lincoln treated it as a defeat for political reasons",
-                        "The Confederacy won the battle but lost the war",
-                        "Neither side considered the day militarily significant at the time"
+                        "The Union won a crushing field victory, yet Lincoln deliberately downplayed it as a setback to avoid angering border-state slaveholders",
+                        "The Confederacy clearly won the engagement, but the staggering losses they suffered ultimately doomed their cause for the rest of the war",
+                        "Both commanders privately agreed the day was militarily meaningless, even as newspapers exaggerated it into a decisive turning point"
                     ],
                     correctIndex: 0,
                     explanation: " Antietam was tactically a draw. Both armies stood bloodied at sundown. But because Lee retreated back to Virginia, Lincoln could plausibly call it a Union victory, and that was the political moment he had been waiting for to issue the Proclamation.",
@@ -473,9 +473,9 @@ const acts = [
                     question: "What does the rise of the Copperhead movement after Fredericksburg reveal about the war's political fragility?",
                     options: [
                         "A significant minority in the North wanted to negotiate peace and let the Confederacy survive rather than continue the war",
-                        "Northern Democrats had secretly funded the Confederacy from the start",
-                        "The Republican Party was about to dissolve",
-                        "Lincoln had lost the support of his own cabinet"
+                        "A faction of Northern Democrats had been secretly funneling money and supplies to the Confederacy since the war's first months",
+                        "The Republican Party was fracturing so badly that many expected it to dissolve before the next presidential election arrived",
+                        "Lincoln had quietly lost the confidence of his entire cabinet, several of whom were preparing to resign in open protest"
                     ],
                     correctIndex: 0,
                     explanation: " After Fredericksburg's catastrophic losses, 'Copperhead' Democrats openly demanded an end to the war. Their movement showed that the Union's political will to keep fighting was not guaranteed, and a string of Union defeats might have given them enough power to force a negotiated end.",
@@ -486,9 +486,9 @@ const acts = [
                     question: "Why does Chancellorsville complicate the simple story that the Confederacy was 'doomed' by 1863?",
                     options: [
                         "It was Lee's most brilliant tactical victory, and it convinced him he could invade the North again, leading directly to Gettysburg",
-                        "It proved the Union army was not yet capable of winning under any circumstances",
-                        "Britain was about to recognize the Confederacy after the battle",
-                        "The Confederate army was far larger than the Union army at this point"
+                        "It demonstrated that the Union army was still incapable of winning a major battle under any commander or set of circumstances",
+                        "It came just as Britain prepared to formally recognize the Confederacy, nearly bringing a powerful European ally into the war",
+                        "It showed that the Confederate army had grown far larger than the Union force, reversing the manpower gap for the first time"
                     ],
                     correctIndex: 0,
                     explanation: " Chancellorsville was a brilliant Confederate victory against a Union force nearly twice its size. It gave Lee the confidence to invade Pennsylvania, which led directly to Gettysburg. The arc of the war was not a steady Union climb. Confederate momentum was real, until it wasn't.",
@@ -627,9 +627,9 @@ const acts = [
                     question: "What did the Union win at Vicksburg?",
                     options: [
                         "Control of the Mississippi River",
-                        "A new state",
-                        "A treaty with England",
-                        "A new president"
+                        "Control of the Tennessee River",
+                        "Control of the Ohio River",
+                        "Control of the Atlantic Coast"
                     ],
                     correctIndex: 0,
                     explanation: " The Union won at Vicksburg. They now controlled the Mississippi River. This cut the South in half.",
@@ -641,8 +641,8 @@ const acts = [
                     options: [
                         "The South (Lee)",
                         "The North (Meade)",
-                        "Nobody",
-                        "England"
+                        "The South (Bragg)",
+                        "The North (Grant)"
                     ],
                     correctIndex: 0,
                     explanation: " Lee's Southern army lost at Gettysburg. He had tried to invade the North. He never tried again.",
@@ -653,9 +653,9 @@ const acts = [
                     question: "Did the South win or lose at Chickamauga?",
                     options: [
                         "Won, but did not chase the Union army",
-                        "Lost the battle",
-                        "Tied",
-                        "Did not show up"
+                        "Lost, then chased the Union army",
+                        "Won, then took the Union capital",
+                        "Lost, then ran out of food and men"
                     ],
                     correctIndex: 0,
                     explanation: " The South won at Chickamauga. But they did not chase the Union army. The Union army got away. This was a missed chance for the South.",
@@ -668,9 +668,9 @@ const acts = [
                     question: "What date did Vicksburg surrender?",
                     options: [
                         "July 4, 1863 (Independence Day)",
-                        "New Year's Day, 1863",
-                        "Christmas Day, 1862",
-                        "Memorial Day, 1864"
+                        "July 4, 1862 (Independence Day)",
+                        "January 1, 1863 (New Year's Day)",
+                        "November 19, 1863 (Thanksgiving)"
                     ],
                     correctIndex: 0,
                     explanation: " Vicksburg surrendered on July 4, 1863. The city was so bitter about the date that residents refused to celebrate Independence Day for over 80 years afterward.",
@@ -680,10 +680,10 @@ const acts = [
                 {
                     question: "What was Pickett's Charge?",
                     options: [
-                        "A Confederate cavalry raid on Washington",
+                        "A bold Confederate cavalry raid that burned the city of Washington, D.C.",
                         "A failed Confederate attack at Gettysburg where 12,000 men marched across open ground",
-                        "A Union plan to capture Richmond",
-                        "A naval battle on the Mississippi River"
+                        "A Union plan where 12,000 men marched on the city of Richmond, Virginia",
+                        "A Confederate attack at Vicksburg where 12,000 men crossed the Mississippi River"
                     ],
                     correctIndex: 1,
                     explanation: " On the third day of Gettysburg, Lee ordered 12,000 Confederate soldiers to march nearly a mile across open ground into Union artillery and rifle fire. Fewer than half made it back. Lee told his men, 'It is all my fault.'",
@@ -694,9 +694,9 @@ const acts = [
                     question: "Why does Chickamauga matter even though the Confederacy won it?",
                     options: [
                         "It proved the South could still win battles, even after losing Vicksburg and Gettysburg the same summer",
-                        "It led to Lincoln's assassination",
-                        "It ended the war",
-                        "It was the battle where Stonewall Jackson died"
+                        "It proved the South could still take cities, since it captured Washington in the same summer of 1863",
+                        "It proved the war was over, since the worn-out North surrendered to the South right after the battle",
+                        "It proved Stonewall Jackson was alive, since he led the South to win the battle that same summer"
                     ],
                     correctIndex: 0,
                     explanation: " Chickamauga came two months after Vicksburg and Gettysburg, when many people thought the war was nearly over. It proved the Confederacy still had fight left in it, and that the war's end was not as close as many had hoped.",
@@ -709,9 +709,9 @@ const acts = [
                     question: "Why did Vicksburg's fall hurt the Confederacy so much beyond losing one city?",
                     options: [
                         "It gave the Union control of the entire Mississippi River, cutting Texas, Arkansas, and Louisiana off from the rest of the South",
-                        "It was the Confederate capital",
-                        "It contained most of the Confederate army",
-                        "It was the only Confederate port on the Atlantic"
+                        "It gave the Union the Confederate capital, since Vicksburg was where Jefferson Davis and his cabinet ran the entire Southern government",
+                        "It gave the Union most of the Southern army, since nearly every Confederate soldier in the West was trapped and captured inside the city",
+                        "It gave the Union the South's main port, since Vicksburg was the only harbor where blockade runners could still reach the Atlantic"
                     ],
                     correctIndex: 0,
                     explanation: " Vicksburg sat on the Mississippi River. With its fall, the Union controlled the entire Mississippi from Minnesota to the Gulf, splitting the Confederacy in two and cutting the western states off from supplies and reinforcements.",
@@ -722,9 +722,9 @@ const acts = [
                     question: "Why was Lincoln's Gettysburg Address so important?",
                     options: [
                         "It redefined the war as a fight for equality, not just for the Union",
-                        "It announced the surrender of Confederate forces",
-                        "It declared a Christmas truce",
-                        "It was the longest speech of the war"
+                        "It announced that the defeated Confederate armies had agreed to surrender",
+                        "It was the longest and most detailed speech Lincoln gave in the entire war",
+                        "It declared a holiday truce so both armies could stop fighting for the winter"
                     ],
                     correctIndex: 0,
                     explanation: " Lincoln's Gettysburg Address, delivered four months after the battle, redefined the meaning of the war. The Union was no longer just fighting to keep the country together. It was fighting for 'a new birth of freedom' and the proposition that all men are created equal.",
@@ -735,9 +735,9 @@ const acts = [
                     question: "Why did Chickamauga not finish the Union army even though it was a major Confederate victory?",
                     options: [
                         "General George Thomas held Snodgrass Hill, and Bragg failed to pursue the retreating Union forces",
-                        "A storm forced both armies to stop fighting",
-                        "Lincoln sent reinforcements by train overnight",
-                        "The Confederate army ran out of ammunition"
+                        "A sudden storm flooded the battlefield, forcing both exhausted armies to stop fighting for the day",
+                        "Lincoln rushed in fresh reinforcements by train overnight, turning the tide before the Union broke",
+                        "The Confederate army ran completely out of ammunition just as the Union line began to collapse"
                     ],
                     correctIndex: 0,
                     explanation: " On the second day, with the Union army nearly broken, General George Thomas held Snodgrass Hill against repeated Confederate assaults until nightfall, earning the nickname 'Rock of Chickamauga.' Bragg then failed to pursue the retreating Union forces, letting them fortify Chattanooga.",
@@ -750,9 +750,9 @@ const acts = [
                     question: "Why did losing Vicksburg and Gettysburg in the same week represent a strategic catastrophe for the Confederacy beyond the casualty numbers?",
                     options: [
                         "Vicksburg lost the western Confederacy's geographic spine while Gettysburg ended Lee's offensive capacity in the East",
-                        "They were both the largest battles of the entire war",
-                        "Both battles killed key Confederate political leaders",
-                        "Both battles allowed the Union to capture Richmond"
+                        "Vicksburg destroyed the Confederacy's only navy while Gettysburg captured the Southern government's wartime capital",
+                        "Vicksburg killed the South's most senior political leaders while Gettysburg eliminated its entire experienced officer corps",
+                        "Vicksburg opened a direct path to Atlanta while Gettysburg let Union forces immediately march on and seize Richmond"
                     ],
                     correctIndex: 0,
                     explanation: " Each defeat was strategic in a different way. Vicksburg gave the Union the Mississippi River, splitting the Confederacy geographically. Gettysburg ended Lee's ability to invade the North or impose terms through battlefield victory. Together, the two losses meant the Confederacy could no longer project force in either theater.",
@@ -763,9 +763,9 @@ const acts = [
                     question: "How does the 54th Massachusetts at Fort Wagner connect to the political meaning of summer 1863?",
                     options: [
                         "A Black regiment proved in combat that African Americans would fight for their own freedom, redefining what the war was about",
-                        "The 54th Massachusetts captured Fort Wagner and ended the war in the South",
-                        "It was the only Black regiment in the war",
-                        "The 54th Massachusetts was made up of Confederate deserters"
+                        "A Black regiment stormed and captured Fort Wagner, a victory so decisive it forced the South to abandon the entire coast",
+                        "A regiment showed that the war effort relied only on white volunteers, since no other Black units were ever permitted to serve",
+                        "A regiment of former Confederate soldiers switched sides at Fort Wagner, proving the South's own troops no longer believed in the cause"
                     ],
                     correctIndex: 0,
                     explanation: " The 54th Massachusetts, a Black regiment, fought heroically at Fort Wagner that same month as Gettysburg. They did not capture the fort, but they proved in the most public way possible that African Americans would fight and die for their own freedom. Combined with the Gettysburg Address, this redefined the war's purpose in real time.",
@@ -776,9 +776,9 @@ const acts = [
                     question: "What does Bragg's failure to pursue after Chickamauga reveal about Confederate command failures in the war's second half?",
                     options: [
                         "The Confederacy often won battles tactically but lacked leadership willing to take strategic risks for follow-through",
-                        "Bragg was a Union spy",
-                        "The Confederacy never learned to use cavalry",
-                        "Bragg was disabled in the battle"
+                        "The Confederacy consistently relied on commanders who secretly favored the Union and deliberately squandered their own victories",
+                        "The Confederacy never grasped how to deploy cavalry, leaving it unable to chase down any beaten or retreating enemy army",
+                        "The Confederacy lost its most capable generals to battlefield wounds, leaving inexperienced officers paralyzed after every victory"
                     ],
                     correctIndex: 0,
                     explanation: " Bragg won Chickamauga but failed to pursue and destroy the retreating Union army, letting them fortify Chattanooga. This pattern of tactical victory without strategic exploitation hurt the Confederacy repeatedly. By 1864, Lincoln had moved Grant west specifically to break this kind of stalemate.",
@@ -926,9 +926,9 @@ const acts = [
                     question: "Why was Grant a different kind of general?",
                     options: [
                         "He did not give up after a hard battle",
-                        "He never fought a battle",
-                        "He worked for the South",
-                        "He liked to retreat"
+                        "He lost every single battle he fought",
+                        "He always ran away from the enemy",
+                        "He stayed home and never led men"
                     ],
                     correctIndex: 0,
                     explanation: " Other Union generals would retreat after a hard battle. Grant kept marching south. He did not give up.",
@@ -939,9 +939,9 @@ const acts = [
                     question: "What did Sherman do on his march through Georgia?",
                     options: [
                         "He burned farms, railroads, and factories",
-                        "He gave food to everyone",
-                        "He built new schools",
-                        "He took a long nap"
+                        "He gave food to all the farmers there",
+                        "He built new roads and big bridges",
+                        "He freed every prisoner of the South"
                     ],
                     correctIndex: 0,
                     explanation: " Sherman's army marched 300 miles. They burned farms, railroads, and factories. They wanted to break the South's ability to fight.",
@@ -952,9 +952,9 @@ const acts = [
                     question: "What happened at Appomattox?",
                     options: [
                         "Lee surrendered to Grant",
-                        "Lincoln gave a speech",
-                        "Sherman burned a city",
-                        "The war started"
+                        "Grant surrendered to Lee",
+                        "The whole war first began",
+                        "Lincoln freed the slaves"
                     ],
                     correctIndex: 0,
                     explanation: " At Appomattox, Lee surrendered to Grant. The Civil War was over.",
@@ -967,9 +967,9 @@ const acts = [
                     question: "What was different about Grant compared to Union generals before him?",
                     options: [
                         "He refused to retreat after a hard fight",
-                        "He fought only at night",
-                        "He had been a Confederate general",
-                        "He never met Lincoln in person"
+                        "He won the war without losing any men",
+                        "He had once fought for the Confederacy",
+                        "He only attacked when the enemy was asleep"
                     ],
                     correctIndex: 0,
                     explanation: " After the Wilderness, where two days of brutal fighting ended without a clear winner, Grant marched south instead of retreating north. When Union soldiers realized he was not turning back, they cheered. No Union commander before him had refused to retreat after a fight that bloody.",
@@ -980,9 +980,9 @@ const acts = [
                     question: "What did Sherman destroy on his march from Atlanta to Savannah?",
                     options: [
                         "Railroads, factories, cotton gins, and farms across a 60-mile-wide path",
-                        "Only military bases",
-                        "Nothing, the march was peaceful",
-                        "Confederate prisons"
+                        "Only soldiers' camps, forts, and cannons along a narrow mountain road",
+                        "Nothing at all, because his whole march stayed calm and totally peaceful",
+                        "Prisons and supply depots holding Union soldiers along a 60-mile-wide path"
                     ],
                     correctIndex: 0,
                     explanation: " Sherman's 60,000 troops marched 300 miles from Atlanta to Savannah in five weeks, destroying railroads, factories, cotton gins, and farms in a 60-mile-wide swath. Soldiers twisted heated rails into 'Sherman's neckties' and burned anything of military value.",
@@ -993,9 +993,9 @@ const acts = [
                     question: "What happened at Appomattox?",
                     options: [
                         "Lee surrendered to Grant in a private home",
-                        "Lincoln gave the Gettysburg Address",
-                        "Sherman's march ended at the Atlantic Ocean",
-                        "Confederate forces won their last major battle"
+                        "Lincoln gave his Gettysburg Address to soldiers",
+                        "Sherman's long march finally reached the ocean",
+                        "The South won its last big battle of the war"
                     ],
                     correctIndex: 0,
                     explanation: " On April 9, 1865, in the parlor of the McLean house at Appomattox Court House, Lee surrendered to Grant. Grant offered generous terms: soldiers could keep their horses, officers their sidearms, and everyone could go home.",
@@ -1008,9 +1008,9 @@ const acts = [
                     question: "Why did Atlanta's fall help Lincoln win re-election in 1864?",
                     options: [
                         "It gave voters a reason to believe the war was being won, weakening the peace candidate's argument",
-                        "Atlanta voters all moved north and voted for Lincoln",
-                        "The Confederate government endorsed Lincoln",
-                        "Lincoln personally captured Atlanta"
+                        "It convinced most Southern soldiers to switch sides and march north to vote for Lincoln in person",
+                        "It proved the Confederate government secretly wanted Lincoln to win and serve a second full term",
+                        "It let Lincoln capture the city himself, which voters rewarded by re-electing him in a landslide"
                     ],
                     correctIndex: 0,
                     explanation: " Before Atlanta fell, the Northern peace movement was gaining strength, and a peace candidate against Lincoln might have won the November election. Sherman's capture of Atlanta in September 1864 changed Northern public opinion, made the war's end look closer, and gave Lincoln the momentum to win re-election.",
@@ -1021,9 +1021,9 @@ const acts = [
                     question: "Why was Sherman's destruction of civilian property considered a new kind of warfare?",
                     options: [
                         "He targeted what civilians needed to support a war, not just enemy armies",
-                        "He used weapons that had been banned by international treaty",
-                        "He fought only at night",
-                        "He attacked towns the Confederacy had already abandoned"
+                        "He used powerful new weapons that other generals had refused to fire",
+                        "He fought only after dark so enemy soldiers could not see his troops",
+                        "He attacked only the towns the Confederate army had already left empty"
                     ],
                     correctIndex: 0,
                     explanation: " Sherman believed that an army cannot fight without the food, transportation, and manufacturing that civilians produce behind the lines. By destroying those things across Georgia and the Carolinas, he targeted the South's ability to wage war itself, not just its soldiers in the field. This approach is now called 'total war.'",
@@ -1034,9 +1034,9 @@ const acts = [
                     question: "Why did Lee surrender at Appomattox instead of leading Confederates into a guerrilla war?",
                     options: [
                         "He believed continued fighting would only cause more suffering without changing the outcome",
-                        "He had been wounded and could no longer command",
-                        "Grant captured him personally",
-                        "His soldiers refused to obey orders"
+                        "He was wounded so badly in the last battle that he could no longer command his army at all",
+                        "Grant captured him in a surprise raid and forced him to sign the surrender papers immediately",
+                        "His own soldiers turned against him and flatly refused to obey any of his orders any longer"
                     ],
                     correctIndex: 0,
                     explanation: " Lee considered breaking his army into small bands to keep fighting from the hills and forests. Instead, he chose to surrender. He believed continued resistance would only prolong suffering for soldiers and civilians on both sides without changing the war's eventual outcome. That decision shaped how Reconstruction would unfold.",
@@ -1049,9 +1049,9 @@ const acts = [
                     question: "How did Grant's strategy in 1864 represent a different theory of how to end the war than earlier Union approaches?",
                     options: [
                         "Grant accepted heavier casualties in exchange for continuous pressure that the Confederacy could not match",
-                        "Grant used spies more than any Union commander before him",
-                        "Grant refused to fight any battles unless he had a 10-to-1 advantage",
-                        "Grant's strategy was identical to McClellan's"
+                        "Grant relied far more heavily on networks of spies and secret informants than any prior Union commander",
+                        "Grant refused to engage in any battle unless his forces outnumbered the enemy by ten soldiers to one",
+                        "Grant repeated McClellan's cautious approach of delaying battle until conditions were perfectly favorable"
                     ],
                     correctIndex: 0,
                     explanation: " Earlier Union commanders fought set-piece battles and then withdrew to refit. Grant understood that the Union had a population and industrial advantage the Confederacy could not match, and that continuous pressure across multiple theaters, even at high cost, would exhaust Southern manpower and supplies in a way that single decisive battles never had. The Wilderness, Spotsylvania, and Cold Harbor cost the Union over 50,000 casualties in six weeks, but Grant kept moving.",
@@ -1062,9 +1062,9 @@ const acts = [
                     question: "What questions about freedom did Appomattox leave unanswered, and why does that matter?",
                     options: [
                         "Appomattox ended the military conflict but did not settle citizenship, voting rights, or what the country owed to four million formerly enslaved people",
-                        "Appomattox automatically gave full citizenship to all freed people",
-                        "Appomattox declared the South an independent nation",
-                        "Appomattox ended slavery in every state immediately"
+                        "Appomattox immediately granted full citizenship and equal voting rights to every formerly enslaved person across all the reunited Southern states",
+                        "Appomattox formally recognized the Confederacy as a separate nation, leaving the question of two competing governments to be settled later",
+                        "Appomattox abolished slavery in every state at once, which made the constitutional amendments that followed entirely unnecessary afterward"
                     ],
                     correctIndex: 0,
                     explanation: " The 13th Amendment, which ended slavery nationwide, was ratified in December 1865, eight months after Appomattox. The 14th Amendment (citizenship) and 15th Amendment (voting for Black men) came later. Appomattox closed the war on the battlefield but left the questions of what freedom would look like, who would have it, and what the country owed people just released from slavery to be settled politically. Reconstruction was the answer to those questions, and its successes and failures shape American life to this day.",
@@ -1075,9 +1075,9 @@ const acts = [
                     question: "What does it reveal about the war's complexity that Sherman is celebrated by some historians and condemned by others?",
                     options: [
                         "The same actions can be defended as ending the war faster and condemned for the suffering they caused, and historians weigh those differently",
-                        "One group of historians has misread the documents",
-                        "Sherman's reputation is fixed and not actually debated",
-                        "Historians only condemn Sherman because of recent political changes"
+                        "One group of historians simply misread the surviving documents, and once that error is corrected the disagreement about Sherman disappears entirely",
+                        "Sherman's reputation has actually been settled for over a century, so the supposed debate among serious historians is mostly an invented one",
+                        "Historians only began criticizing Sherman because of very recent political shifts, not because of anything found in the wartime record itself"
                     ],
                     correctIndex: 0,
                     explanation: " Sherman's defenders argue his march broke Confederate morale and shortened the war, ultimately saving lives. His critics point to deliberate civilian suffering, especially among enslaved people who followed his army and were left vulnerable. Both readings draw on the same evidence and weigh it differently. The Civil War is full of decisions like this, where strategy, ethics, and consequence are tangled in ways no single judgment can resolve.",
