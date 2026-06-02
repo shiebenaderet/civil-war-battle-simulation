@@ -2703,6 +2703,79 @@ function renderGlobalLeaderboardTable(entries) {
 }
 
 // ============================================================
+// Visitor Guest Book + Map
+// ============================================================
+
+// Compact profanity deterrent. Not exhaustive — the teacher dashboard is the
+// authoritative moderation surface. Whole-word, case-insensitive.
+var GUESTBOOK_BANNED = ['fuck', 'shit', 'bitch', 'asshole', 'cunt', 'dick', 'piss', 'bastard', 'slut', 'whore', 'nigger', 'faggot', 'retard'];
+
+function cleanSchoolName(raw) {
+    var s = String(raw == null ? '' : raw).replace(/[<>]/g, '').trim();
+    if (!s) return { ok: false, cleaned: '', reason: 'Enter your school name.' };
+    if (s.length > 60) s = s.substring(0, 60);
+    var lower = s.toLowerCase();
+    for (var i = 0; i < GUESTBOOK_BANNED.length; i++) {
+        var re = new RegExp('\\b' + GUESTBOOK_BANNED[i] + '\\b', 'i');
+        if (re.test(lower)) return { ok: false, cleaned: s, reason: "Let's keep it school-appropriate." };
+    }
+    return { ok: true, cleaned: s, reason: '' };
+}
+
+// Render guest entries as pins on the bundled world map into `container`.
+// entries: [{ school, label, lat, lng, _key }]. highlightKey optional.
+// XSS-safe: the only innerHTML is the trusted bundled GEO_WORLD_SVG constant;
+// all entry text reaches the DOM via textContent.
+function renderVisitorMap(container, entries, highlightKey) {
+    if (!container) return;
+    if (typeof GEO_WORLD_SVG === 'undefined') { container.textContent = 'Map unavailable.'; return; }
+    var vb = (typeof GEO_WORLD_VIEWBOX !== 'undefined') ? GEO_WORLD_VIEWBOX : '0 0 1000 500';
+    container.innerHTML = '';
+
+    var SVG = 'http://www.w3.org/2000/svg';
+    var svg = document.createElementNS(SVG, 'svg');
+    svg.setAttribute('viewBox', vb);
+    svg.setAttribute('class', 'visitor-map');
+    svg.setAttribute('role', 'img');
+    svg.setAttribute('aria-label', 'Map of where players are from');
+
+    var land = document.createElementNS(SVG, 'g');
+    land.innerHTML = GEO_WORLD_SVG; // trusted constant from geo.js, not user data
+    svg.appendChild(land);
+
+    var popup = document.createElementNS(SVG, 'text');
+    popup.setAttribute('class', 'visitor-map-popup');
+    popup.setAttribute('text-anchor', 'middle');
+    popup.style.display = 'none';
+
+    (entries || []).forEach(function(e) {
+        if (!isFinite(e.lat) || !isFinite(e.lng)) return;
+        var p = geoProject(e.lat, e.lng);
+        var seed = 0, key = String(e._key || (e.lat + '' + e.lng));
+        for (var i = 0; i < key.length; i++) seed = (seed * 31 + key.charCodeAt(i)) >>> 0;
+        var jx = ((seed % 100) / 100 - 0.5) * 10;
+        var jy = (((seed >> 8) % 100) / 100 - 0.5) * 10;
+        var px = p.x + jx, py = p.y + jy;
+        var isHi = highlightKey && e._key === highlightKey;
+        var dot = document.createElementNS(SVG, 'circle');
+        dot.setAttribute('cx', px.toFixed(1));
+        dot.setAttribute('cy', py.toFixed(1));
+        dot.setAttribute('r', isHi ? '7' : '4');
+        dot.setAttribute('class', 'visitor-pin' + (isHi ? ' visitor-pin-new' : ''));
+        var labelText = (e.school ? e.school + ' — ' : '') + (e.label || '');
+        dot.addEventListener('click', function() {
+            popup.textContent = labelText; // textContent: XSS-safe
+            popup.setAttribute('x', px.toFixed(1));
+            popup.setAttribute('y', (py - 10).toFixed(1));
+            popup.style.display = '';
+        });
+        svg.appendChild(dot);
+    });
+    svg.appendChild(popup);
+    container.appendChild(svg);
+}
+
+// ============================================================
 // Class Leaderboard (Firebase)
 // ============================================================
 
