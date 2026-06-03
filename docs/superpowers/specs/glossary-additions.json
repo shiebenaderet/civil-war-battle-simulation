@@ -1,0 +1,135 @@
+[
+  {
+    "term": "Shiloh",
+    "tier": "distinctive",
+    "aliases": [
+      "Battle of Shiloh"
+    ],
+    "definition": "An April 1862 battle in Tennessee with about 23,000 casualties in two days, shocking the nation with how bloody the war would be."
+  },
+  {
+    "term": "Chancellorsville",
+    "tier": "distinctive",
+    "aliases": [
+      "Battle of Chancellorsville"
+    ],
+    "definition": "An 1863 Virginia battle that was Lee's greatest victory, but where his best general, Stonewall Jackson, was mortally wounded by his own men."
+  },
+  {
+    "term": "Chickamauga",
+    "tier": "distinctive",
+    "aliases": [
+      "Battle of Chickamauga"
+    ],
+    "definition": "An 1863 battle in Georgia where a mixed-up Union order opened a gap in the line, giving the Confederacy one of its last major victories."
+  },
+  {
+    "term": "Atlanta",
+    "tier": "distinctive",
+    "aliases": [
+      "Battle of Atlanta",
+      "fall of Atlanta"
+    ],
+    "definition": "A key Southern city captured by Sherman in 1864; its fall boosted Northern morale and helped Lincoln win re-election."
+  },
+  {
+    "term": "Pyrrhic victory",
+    "tier": "distinctive",
+    "definition": "A victory that costs the winner so much that it almost feels like a defeat. Named after King Pyrrhus, who won battles but lost so many soldiers he could not keep fighting."
+  },
+  {
+    "term": "complete conquest",
+    "tier": "distinctive",
+    "definition": "Completely defeating the enemy by destroying its army and its ability to keep fighting, rather than just winning one battle."
+  },
+  {
+    "term": "Clausewitz",
+    "tier": "distinctive",
+    "definition": "Carl von Clausewitz, a famous Prussian military thinker who wrote about how chaos and chance shape real wars."
+  },
+  {
+    "term": "friction",
+    "tier": "distinctive",
+    "definition": "A military idea from the thinker Clausewitz: real war is full of small accidents, confusion, and mistakes that no plan can fully control."
+  },
+  {
+    "term": "Reconstruction",
+    "tier": "distinctive",
+    "definition": "The period after the Civil War (1865 to 1877) when the United States tried to rebuild the South and decide the rights of newly freed people."
+  },
+  {
+    "term": "reconciliation",
+    "tier": "distinctive",
+    "definition": "Bringing two sides back together peacefully after a conflict, instead of punishing the losing side."
+  },
+  {
+    "term": "tactical",
+    "tier": "distinctive",
+    "definition": "Having to do with winning a single battle: the moves and decisions made on the battlefield itself."
+  },
+  {
+    "term": "strategic",
+    "tier": "distinctive",
+    "definition": "Having to do with winning the whole war: the big-picture plan, not just one battle."
+  },
+  {
+    "term": "morale",
+    "tier": "distinctive",
+    "definition": "How confident and hopeful a group of people feels. High morale makes soldiers fight harder; low morale makes them want to give up."
+  },
+  {
+    "term": "momentum",
+    "tier": "distinctive",
+    "definition": "The sense that one side is winning and gaining strength, which can make it harder for the other side to recover."
+  },
+  {
+    "term": "offensive",
+    "tier": "distinctive",
+    "definition": "An attack: when an army moves forward to strike the enemy, instead of defending."
+  },
+  {
+    "term": "Andrew Johnson",
+    "tier": "distinctive",
+    "definition": "The vice president who became president after Lincoln's assassination. He was far less willing to protect the rights of freed people."
+  },
+  {
+    "term": "Radical Republicans",
+    "tier": "distinctive",
+    "definition": "Members of Congress after the war who pushed hardest for equal rights and protections for newly freed Black Americans."
+  },
+  {
+    "term": "peace candidate",
+    "tier": "distinctive",
+    "definition": "A politician who ran for office promising to end the war by making a deal with the South, instead of fighting on to victory."
+  },
+  {
+    "term": "counterfactual",
+    "tier": "distinctive",
+    "definition": "A 'what if' question that imagines how history might have gone differently if one thing had changed."
+  },
+  {
+    "term": "apartheid",
+    "tier": "distinctive",
+    "definition": "A system of harsh, legally enforced racial separation in South Africa that lasted until the early 1990s."
+  },
+  {
+    "term": "Truth and Reconciliation Commission",
+    "tier": "distinctive",
+    "definition": "A group set up in South Africa after apartheid to uncover past wrongs and help the country heal instead of seeking revenge."
+  },
+  {
+    "term": "post-conflict",
+    "tier": "distinctive",
+    "definition": "Describing a society in the period right after a war or major conflict has ended, when it must rebuild and decide how to treat former enemies."
+  },
+  {
+    "term": "masterpiece",
+    "tier": "distinctive",
+    "definition": "In a military sense, a battle plan carried out so skillfully that experts study it as a model of how to win."
+  },
+  {
+    "term": "postwar Germany",
+    "tier": "distinctive",
+    "definition": "Germany in the years after World War II, when it rebuilt and confronted the wrongs of the Nazi era - often studied as an example of a society facing its past."
+  }
+]
