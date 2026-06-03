@@ -35,6 +35,18 @@ same kind of help for everyone.
 - **New order:** reflection + helper box (write on handout) THEN the recall quiz.
 - **Two helpers per act**, both tailored to all 4 levels: `reflection` and
   `unionWin`.
+- **Hard academic terms appear ONLY at the tier(s) that warrant them, by
+  construction.** Each tier's helper is written to scaffold THAT tier's own
+  (already-leveled) handout question, so esoteric terms (Pyrrhic victory,
+  Clausewitz, friction, apartheid, post-conflict, reconciliation) appear ONLY in
+  Extra Challenge. "Reconstruction" / "Andrew Johnson" reach Standard only
+  because the Standard handout question itself uses them (appropriate on-grade).
+  Most Support and More Support helpers contain NO such terms. The glossary
+  linker only scans the text actually rendered for the current tier, so a hard
+  term gets a click-to-define tooltip ONLY in the tier where it appears — no
+  per-tier tooltip logic is required, and lower tiers never see link-soup.
+  IMPLEMENTER CONSTRAINT: do not introduce a hard academic term into a lower
+  tier's helper text; keep the graduation the audited content established.
 - **Helper content graduates by tier** (this is the key design idea):
   - ★ Most Support (`extra`): a near-complete, correct **sentence frame** with
     1-2 meaningful blanks the student finishes. Supplies the history and the
