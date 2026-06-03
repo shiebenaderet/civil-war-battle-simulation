@@ -300,6 +300,20 @@ function setupEventListeners() {
         });
     }
 
+    // Join Class — let a student (re)enter their class code mid-game so they
+    // reconnect to the teacher dashboard. Reuses the existing validate/save/report
+    // logic via promptJoinClass(). Additive: does not touch any existing flow.
+    var joinClassBtn = document.getElementById('joinClassMenuBtn');
+    if (joinClassBtn) {
+        joinClassBtn.addEventListener('click', function() {
+            var sm = document.getElementById('settingsMenu');
+            if (sm) sm.classList.remove('show');
+            var sb = document.getElementById('settingsBtn');
+            if (sb) sb.setAttribute('aria-expanded', 'false');
+            if (typeof promptJoinClass === 'function') promptJoinClass();
+        });
+    }
+
     // Close settings when clicking outside
     document.addEventListener('click', function(e) {
         var settingsBtn = document.getElementById('settingsBtn');

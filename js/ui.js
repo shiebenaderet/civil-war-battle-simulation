@@ -3953,6 +3953,49 @@ function closeBattleRevisit() {
 // Settings Menu
 // ============================================================
 
+// ============================================================
+// Join Class (re-enter / correct class code from the menu)
+// ============================================================
+
+// Update the "Join Class" menu item's visibility + label to match state.
+// Historical mode only. Shown even when already joined so a student who typed
+// the wrong period can re-enter and switch.
+function refreshJoinClassMenuItem() {
+    var btn = document.getElementById('joinClassMenuBtn');
+    if (!btn) return;
+    var isHistorical = (typeof gameState !== 'undefined' && gameState && gameState.mode === 'historical');
+    if (!isHistorical || typeof firebaseLeaderboard === 'undefined') {
+        btn.style.display = 'none';
+        return;
+    }
+    btn.style.display = 'block';
+    var label = document.getElementById('joinClassMenuLabel');
+    if (!label) return;
+    var period = firebaseLeaderboard.periodForRoom(firebaseLeaderboard.getSavedClassCode());
+    label.textContent = period ? ('Class: Period ' + period + ' — change') : 'Join Class';
+}
+
+// Prompt for a class code and join (or switch) the class. Reuses the same
+// validate -> saveClassCode -> set period -> report sequence as the no-teacher
+// banner, so a student appears on the dashboard immediately.
+function promptJoinClass() {
+    if (typeof firebaseLeaderboard === 'undefined') return;
+    var raw = window.prompt('Enter your class code:');
+    if (raw === null) return;               // cancelled
+    var code = String(raw || '').toLowerCase().trim();
+    if (!code) return;                      // empty
+    var period = firebaseLeaderboard.periodForRoom(code);
+    if (!period) {
+        window.alert('Code not recognized. Check with your teacher.');
+        return;
+    }
+    firebaseLeaderboard.saveClassCode(code);
+    if (typeof gameState !== 'undefined' && gameState) gameState.period = period;
+    if (typeof reportProgressToDashboard === 'function') reportProgressToDashboard(false);
+    refreshJoinClassMenuItem();
+    window.alert("You're connected to Period " + period + '!');
+}
+
 function toggleSettingsMenu() {
     var menu = document.getElementById('settingsMenu');
     var btn = document.getElementById('settingsBtn');
@@ -3964,6 +4007,8 @@ function toggleSettingsMenu() {
     } else {
         menu.classList.add('show');
         btn.setAttribute('aria-expanded', 'true');
+        // Refresh the Join Class item each time the menu opens.
+        if (typeof refreshJoinClassMenuItem === 'function') refreshJoinClassMenuItem();
     }
 }
 
