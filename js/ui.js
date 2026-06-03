@@ -1141,9 +1141,13 @@ function renderActRecall(actIndex) {
 
         var continueBtn = document.getElementById('actRecallContinueBtn');
         continueBtn.disabled = true;
+        // v3.24: reflection now happens BEFORE the quiz, so finishing the last
+        // question advances to the next battle (or completes Historical Mode on
+        // the final act), not back to reflection.
+        var quizIsLastBattle = gameState.currentBattle >= battles.length - 1;
         continueBtn.textContent = (questionIdx < questions.length - 1)
             ? 'Next Question'
-            : 'Continue to Reflection';
+            : (quizIsLastBattle ? 'Complete Historical Mode' : 'Continue →');
 
         wrongAttempts = 0;
         questionResolved = false;
