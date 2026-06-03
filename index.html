@@ -308,6 +308,15 @@
             <h2 class="section-title">&#x2694;&#xFE0F; Civil War Battle Simulation</h2>
             <p class="subtitle">Experience the American Civil War (1861-1865) through 13 major battles</p>
 
+            <!-- Resume saved game prompt (shown at the top so returning students see it without scrolling) -->
+            <div class="resume-prompt" id="resumePrompt" style="display: none;">
+                <p class="resume-text">You have a saved game in progress.</p>
+                <div class="resume-actions">
+                    <button class="btn-primary" id="resumeBtn">Continue Where You Left Off</button>
+                    <button class="btn-secondary" id="newGameBtn">Start Fresh</button>
+                </div>
+            </div>
+
             <div class="mode-cards">
                 <div class="mode-card historical-mode-card" id="historicalModeCard" role="button" tabindex="0">
                     <h3 class="mode-title">Historical Mode</h3>
@@ -333,15 +342,6 @@
                     <div class="mode-lock" id="freeplayLock">
                         Complete Historical Mode to unlock
                     </div>
-                </div>
-            </div>
-
-            <!-- Resume saved game prompt -->
-            <div class="resume-prompt" id="resumePrompt" style="display: none;">
-                <p class="resume-text">You have a saved game in progress.</p>
-                <div class="resume-actions">
-                    <button class="btn-primary" id="resumeBtn">Continue Where You Left Off</button>
-                    <button class="btn-secondary" id="newGameBtn">Start Fresh</button>
                 </div>
             </div>
         </div>

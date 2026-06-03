@@ -897,7 +897,8 @@ a.settings-item:visited { color: var(--color-ink); }
     border-radius: var(--radius-xl);
     padding: var(--space-6);
     text-align: center;
-    margin-top: var(--space-6);
+    margin-top: var(--space-4);
+    margin-bottom: var(--space-6);
 }
 
 .resume-text {
