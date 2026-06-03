@@ -433,10 +433,10 @@ var groupedReflections = [
         theme: 'The War Begins',
         battleRange: 'Fort Sumter, Bull Run, and Shiloh',
         prompt: {
-            extra: "You saw the first three battles. At Fort Sumter, no one died. At Bull Run, people came to watch like it was a show. At Shiloh, 23,000 soldiers were killed or hurt in two days. The war got much worse very fast. Why? What changed?",
-            beginner: "You've seen the first three battles. At Fort Sumter, both sides said they were just defending themselves. At Bull Run, people thought the war would be quick. By Shiloh, thousands were dying in a single day. Why did the war get so much worse so fast? What changed between the first shots and the bloodbath at Shiloh?",
-            intermediate: "From Fort Sumter through Shiloh, the war escalated from a symbolic standoff to massive bloodshed. Both sides initially expected a short war. Civilians even picnicked at Bull Run. What caused this rapid escalation? How did the reality of battle change what people expected and how the war was fought?",
-            advanced: "Trace the escalation from Fort Sumter's relatively bloodless standoff through Bull Run's shocking rout to Shiloh's unprecedented carnage. How did each battle reshape assumptions about the war's nature and cost? After Shiloh, Grant concluded that only 'complete conquest' could end the war. What evidence from these three battles supports or complicates that conclusion?"
+            extra: "After Shiloh, Grant said the only way to save the country was to completely beat the South, not just win one battle. Why do you think seeing so much fighting changed how he thought about the war?",
+            beginner: "After Shiloh, Grant said the only way to save the country was to completely beat the South, not just win one battle. Why do you think seeing so much fighting changed how he thought about the war?",
+            intermediate: "After Shiloh, Grant wrote that he gave up all hope of saving the Union except by 'complete conquest.' Why do you think such a terrible battle changed his thinking about how the war needed to be fought?",
+            advanced: "After Shiloh, Grant wrote that he abandoned all hope of saving the Union 'except by complete conquest.' How did the unprecedented scale of violence at Shiloh reshape military thinking about the war's nature? What does Grant's evolution from expecting a short war to embracing 'complete conquest' reveal about how warfare transforms those who wage it?"
         },
         teacherTip: {
             extra: "Think about what people expected before the war. Then think about Shiloh. What surprised them most?",
@@ -462,10 +462,10 @@ var groupedReflections = [
         theme: 'The Human Cost',
         battleRange: 'Antietam, Fredericksburg, and Chancellorsville',
         prompt: {
-            extra: "These three battles hurt a lot of people. Soldiers died. Families lost loved ones. Lincoln signed the Emancipation Proclamation to free enslaved people in the South. Pick one person or group from the war. Tell how the war changed their life.",
-            beginner: "Over these three battles, you've seen how the war hurt everyone: soldiers, nurses, immigrants, and regular families. Clara Barton treated the wounded. Irish soldiers charged a wall 14 times. Lincoln freed enslaved people to help win the war. Pick one person or group and explain how the war changed their life.",
-            intermediate: "Antietam through Chancellorsville reveals the war's devastating human toll. The Emancipation Proclamation transformed the war's purpose. Fredericksburg exposed the cost of poor leadership. Chancellorsville showed that even victories have terrible prices. Choose one of these themes and explain how it changed the conflict.",
-            advanced: "These three battles illustrate the intersection of military strategy, political calculation, and human suffering. Lincoln weaponized Antietam's outcome for the Emancipation Proclamation. Fredericksburg's futile charges raise questions about command responsibility. Chancellorsville's Pyrrhic victory cost Lee his most irreplaceable general. Drawing on primary sources, analyze how the relationship between military action and political purpose evolved. Who bore the greatest cost?"
+            extra: "Lee won a huge battle, but he lost his best general, Stonewall Jackson. Was this victory worth it? When can winning still feel like losing?",
+            beginner: "Lee won a huge battle, but he lost his best general, Stonewall Jackson. Was this victory worth it? When can winning still feel like losing?",
+            intermediate: "Lee's greatest victory cost him Stonewall Jackson. When is a victory not worth the price?",
+            advanced: "Chancellorsville is often called Lee's masterpiece, yet it cost him Jackson, arguably the Confederacy's single most irreplaceable asset. How do we evaluate a tactical triumph that inflicts strategic damage on the victor? Consider the concept of a 'Pyrrhic victory': when does the cost of winning exceed the benefit?"
         },
         teacherTip: {
             extra: "Pick one person from these battles. How was their life changed by the war?",
@@ -491,10 +491,10 @@ var groupedReflections = [
         theme: 'Turning Points',
         battleRange: 'Vicksburg, Gettysburg, and Chickamauga',
         prompt: {
-            extra: "In one week, the war changed. The Union won at Vicksburg. The Union won at Gettysburg. The South was losing. But Chickamauga showed the South could still win. What made these battles so important? Why do people call this the turning point?",
-            beginner: "Vicksburg and Gettysburg happened at almost the same time and changed the whole war. People in Vicksburg hid in caves. At Gettysburg, 12,000 men charged across an open field. What made this the moment the war started to turn? Would you have kept fighting if you were on the losing side?",
-            intermediate: "The summer of 1863, Vicksburg, Gettysburg, and Chickamauga, was the war's turning point. The Confederacy was split in two and suffered its worst defeat, yet won one last major victory at Chickamauga. What made these battles decisive? Consider both the military results and the human cost.",
-            advanced: "July 1863 represents the war's strategic inflection point. Vicksburg split the Confederacy. Gettysburg ended Lee's offensive capacity. Yet Chickamauga proved the war was far from over. Analyze how these battles collectively transformed the war's trajectory, and examine the ethical questions they raise: civilian suffering at Vicksburg, the futility of Pickett's Charge, and the role of chance at Chickamauga."
+            extra: "One mixed-up order created the gap that lost the whole battle. How much of war comes down to luck or mistakes versus actual skill and planning?",
+            beginner: "One mixed-up order created the gap that lost the whole battle. How much of war comes down to luck or mistakes versus actual skill and planning?",
+            intermediate: "A simple miscommunication created the gap that lost the battle. How much of war depends on luck versus skill?",
+            advanced: "A single miscommunicated order created the gap that enabled the Confederate breakthrough. To what extent does this illustrate the role of chance versus planning in warfare? The Prussian theorist Clausewitz called this 'friction': the unpredictable factors that make real war chaotic. How do modern militaries attempt to reduce the impact of such friction?"
         },
         teacherTip: {
             extra: "Think about who was winning before these battles and who was winning after.",
@@ -520,10 +520,10 @@ var groupedReflections = [
         theme: "The War's Legacy",
         battleRange: 'Wilderness, Atlanta, Sherman\'s March, and Appomattox',
         prompt: {
-            extra: "The war is ending. Grant did not stop fighting. Sherman burned farms and cities. Lee surrendered. Then Lincoln was killed. Four million people were now free. Was the way the war ended fair? What should happen after a war this terrible?",
-            beginner: "The last four battles show how the war ended, and they raise big questions about what came next. Grant kept fighting no matter the cost. Sherman destroyed homes and farms. Then Grant let the Confederates go home in peace, and Lincoln was killed five days later. Was the way the war ended fair? What should happen after a war this terrible?",
-            intermediate: "The war's final chapter raises questions that still matter today. Grant's relentless strategy, Sherman's total war, and the generous surrender terms all shaped what came next. Was Grant a hero or a butcher? Was Sherman's destruction justified? How did Lincoln's assassination change Reconstruction?",
-            advanced: "The war's endgame crystallizes its most enduring moral questions. Grant accepted devastating casualties for strategic objectives. Sherman deliberately targeted civilian infrastructure. Appomattox embodied reconciliation, yet Lincoln's assassination five days later derailed that vision. Evaluate the ethical frameworks at work and the tension between reconciliation and justice for four million freed people. How do these unresolved tensions continue to shape American society?"
+            extra: "Grant let the Confederate soldiers go home in peace. Five days later, Lincoln was killed. How might things have been different if Lincoln had lived? When a war ends, what does a country owe to the people who suffered?",
+            beginner: "Grant let the Confederate soldiers go home in peace. Five days later, Lincoln was killed. How might things have been different if Lincoln had lived? When a war ends, what does a country owe to the people who suffered?",
+            intermediate: "Grant offered generous surrender terms: Confederates could go home and would not be prosecuted. Five days later, Lincoln was assassinated. How might Reconstruction have been different if Lincoln had lived? What responsibilities does a nation have to its people when a war ends?",
+            advanced: "Grant's generous terms embodied Lincoln's vision of reconciliation: 'with malice toward none, with charity for all.' Five days later, Lincoln's assassination placed Reconstruction in the hands of Andrew Johnson, a figure far less sympathetic to Black rights. How might Reconstruction have differed under Lincoln's leadership? More broadly, how do nations balance the competing imperatives of reconciliation with former enemies and justice for those who suffered? Consider modern examples of post-conflict societies grappling with these same questions."
         },
         teacherTip: {
             extra: "Think about a soldier, a freed person, and a Southern family. How would each one answer: was the war worth it?",
