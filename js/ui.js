@@ -878,7 +878,21 @@ function showReflectionStep() {
     var isLast = gameState.currentBattle >= battles.length - 1;
     var continueBtn = document.getElementById('narrativeContinueBtn');
     if (continueBtn) {
-        continueBtn.textContent = isLast ? 'Complete Historical Mode' : 'Next Battle →';
+        // v3.24: from the reflection screen, Continue goes to the act quiz first
+        // (if not already done), THEN advances. Clone the button so this handler
+        // does not stack with the global advanceNarrative click listener.
+        var actIdx2 = (typeof getActForBattle === 'function') ? getActForBattle(gameState.currentBattle) : -1;
+        var quizPending = (typeof shouldShowActRecall === 'function') && shouldShowActRecall(gameState.currentBattle);
+        var fresh = continueBtn.cloneNode(true);
+        continueBtn.parentNode.replaceChild(fresh, continueBtn);
+        fresh.disabled = false;
+        if (quizPending && actIdx2 !== -1) {
+            fresh.textContent = 'Continue to Quick Check →';
+            fresh.addEventListener('click', function() { renderActRecall(actIdx2); });
+        } else {
+            fresh.textContent = isLast ? 'Complete Historical Mode' : 'Next Battle →';
+            fresh.addEventListener('click', function() { advanceNarrative(); });
+        }
     }
     if (targetSection) targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
@@ -1058,13 +1072,13 @@ function renderActReviewMarkdown(text, container) {
 //                          -> wrong-twice (answer revealed; must click correct option to advance)
 function renderActRecall(actIndex) {
     if (typeof acts === 'undefined' || !acts[actIndex]) {
-        // Data missing — skip recall, advance to reflection
+        // Data missing — skip recall. v3.24: reflection already happened, so advance.
         gameState.completedRecalls = (gameState.completedRecalls || []);
         if (gameState.completedRecalls.indexOf(actIndex) === -1) {
             gameState.completedRecalls.push(actIndex);
         }
         if (typeof saveProgress === 'function') saveProgress();
-        showReflectionStep();
+        advanceNarrative();
         return;
     }
 
@@ -1073,13 +1087,14 @@ function renderActRecall(actIndex) {
     var questions = (act.recall && act.recall[difficulty]) || [];
 
     if (!questions.length) {
-        // No questions authored for this act/level — skip
+        // No questions authored for this act/level — skip.
+        // v3.24: reflection already happened, so advance.
         gameState.completedRecalls = (gameState.completedRecalls || []);
         if (gameState.completedRecalls.indexOf(actIndex) === -1) {
             gameState.completedRecalls.push(actIndex);
         }
         if (typeof saveProgress === 'function') saveProgress();
-        showReflectionStep();
+        advanceNarrative();
         return;
     }
 
@@ -1239,7 +1254,8 @@ function renderActRecall(actIndex) {
                 gameState.completedRecalls.push(actIndex);
             }
             if (typeof saveProgress === 'function') saveProgress();
-            showReflectionStep();
+            // v3.24: reflection already happened before the quiz — go to next battle.
+            advanceNarrative();
         } else {
             renderQuestion();
         }
@@ -1985,14 +2001,8 @@ function advanceNarrative() {
             break;
 
         case 5:
-            // RECALL or REFLECT (formerly case 3 reflection branch).
+            // RECALL or REFLECT — v3.24: reflection now comes BEFORE the quiz.
             if (isReflectionBattle(gameState.currentBattle)) {
-                if (typeof shouldShowActRecall === 'function' &&
-                    shouldShowActRecall(gameState.currentBattle)) {
-                    var actIdx = getActForBattle(gameState.currentBattle);
-                    renderActRecall(actIdx);
-                    return;
-                }
                 showReflectionStep();
             } else {
                 // Non-reflection battle: save WWYD choice and advance.
