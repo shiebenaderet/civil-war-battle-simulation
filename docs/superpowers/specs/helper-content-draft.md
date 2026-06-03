@@ -1,22 +1,16 @@
-# Reflection Helper Content — Draft for Review (audited)
+# Reflection Helper Content - Draft for Review (audited + challenge support)
 
-**Status:** 32 helper sets, drafted + adversarially verified + independently audited. Audit found ZERO historical errors. Four minor/major fixes applied (Act II beginner union-win no longer gives away the answer; three extra-tier frames tightened to one sentence).
+**Status:** 32 helper sets, drafted + adversarially verified + independently audited (ZERO historical errors). Audit fixes applied. Every Extra Challenge helper now ends with a tailored "Stuck?" line that teaches the thinking move (take a position, back it with specific evidence) without giving the answer.
 
-The in-game reflection prompt is now ALIGNED to each tier exact handout question (screen = paper).
+In-game reflection prompt is ALIGNED to each tier exact handout question (screen = paper).
 
-**Graduation:** ★ = sentence frame with `______` blanks · ★★ = starter + one question · ★★★ = brainstorm questions · ★★★★ = analytical questions.
+**Graduation:** ★ = frame with `______` blanks - ★★ = starter + question - ★★★ = brainstorm questions - ★★★★ = analytical questions + a Stuck? thinking-move.
 
-## Vocabulary tooltips to add (click-to-define)
-
-**Missing battle names:** Shiloh, Chancellorsville, Chickamauga, Atlanta.
-
-**Academic terms:** Pyrrhic victory, Clausewitz, friction (military), Reconstruction, reconciliation, complete conquest, tactical, strategic, morale, momentum, offensive (military), masterpiece (military), counterfactual, Andrew Johnson, Radical Republicans, peace candidate, post-conflict.
-
-**Modern examples (Extra Challenge):** apartheid, denazification, Truth and Reconciliation Commission.
+**Hard terms (Pyrrhic victory, Clausewitz, friction, etc.) appear ONLY in Extra Challenge** by design; lower tiers never see them. Tooltips render only where the term appears.
 
 ---
 
-## ACT I — The War Begins (Fort Sumter, Bull Run, Shiloh)
+## ACT I - The War Begins (Fort Sumter, Bull Run, Shiloh)
 
 ### Aligned reflection question (in-game = handout)
 - **★ Most Support:** After Shiloh, Grant said the only way to save the country was to completely beat the South, not just win one battle. Why do you think seeing so much fighting changed how he thought about the war?
@@ -24,7 +18,7 @@ The in-game reflection prompt is now ALIGNED to each tier exact handout question
 - **★★★ Standard:** After Shiloh, Grant wrote that he gave up all hope of saving the Union except by 'complete conquest.' Why do you think such a terrible battle changed his thinking about how the war needed to be fought?
 - **★★★★ Extra Challenge:** After Shiloh, Grant wrote that he abandoned all hope of saving the Union 'except by complete conquest.' How did the unprecedented scale of violence at Shiloh reshape military thinking about the war's nature? What does Grant's evolution from expecting a short war to embracing 'complete conquest' reveal about how warfare transforms those who wage it?
 
-### Helper 1 — reflection answer
+### Helper 1 - reflection answer
 - **★ Most Support:**
   - Grant saw so many soldiers hurt at Shiloh that it made him feel ______, so he decided the only way to win was to ______.
 - **★★ More Support:**
@@ -40,8 +34,9 @@ The in-game reflection prompt is now ALIGNED to each tier exact handout question
   - Grant shifted from expecting a short war to demanding 'complete conquest.' What specific realization could justify such a dramatic change in strategy?
   - How might 'complete conquest' as a goal change not just battles, but how the entire war was fought and who it affected?
   - Does Grant's change show clear-eyed realism, hardening from trauma, or both, and what evidence would you use to argue your view?
+  - Stuck? Pick ONE question, take a clear position on whether Shiloh changed Grant, and back it with one specific detail (the casualties, the surprise attack, or his own words about "complete conquest").
 
-### Helper 2 — "One way this act helped the Union win"
+### Helper 2 - "One way this act helped the Union win"
 - **★ Most Support:**
   - One way Act I helped the Union win was that the North saw the war would be ______, so it used its bigger ______ to slowly beat the South.
 - **★★ More Support:**
@@ -57,10 +52,11 @@ The in-game reflection prompt is now ALIGNED to each tier exact handout question
   - How did the Union's advantages in population and industry become decisive only once both sides accepted the war would be long?
   - What is the connection between Grant's turn toward 'complete conquest' and the kind of war the Union would need to fight to win?
   - Which Act I event do you think most shaped the Union's eventual victory, and what evidence supports choosing it over the others?
+  - Stuck? Name ONE Union advantage (people, industry, or the lesson that the war would be long), then explain with a specific reason how it would matter more over time.
 
 ---
 
-## ACT II — The Human Cost (Antietam, Fredericksburg, Chancellorsville)
+## ACT II - The Human Cost (Antietam, Fredericksburg, Chancellorsville)
 
 ### Aligned reflection question (in-game = handout)
 - **★ Most Support:** Lee won a huge battle, but he lost his best general, Stonewall Jackson. Was this victory worth it? When can winning still feel like losing?
@@ -68,7 +64,7 @@ The in-game reflection prompt is now ALIGNED to each tier exact handout question
 - **★★★ Standard:** Lee's greatest victory cost him Stonewall Jackson. When is a victory not worth the price?
 - **★★★★ Extra Challenge:** Chancellorsville is often called Lee's masterpiece, yet it cost him Jackson, arguably the Confederacy's single most irreplaceable asset. How do we evaluate a tactical triumph that inflicts strategic damage on the victor? Consider the concept of a 'Pyrrhic victory': when does the cost of winning exceed the benefit?
 
-### Helper 1 — reflection answer
+### Helper 1 - reflection answer
 - **★ Most Support:**
   - Lee won the battle but lost Stonewall Jackson, so I think the victory was ______ because ______.
 - **★★ More Support:**
@@ -83,8 +79,9 @@ The in-game reflection prompt is now ALIGNED to each tier exact handout question
   - A 'Pyrrhic victory' is a win whose cost outweighs its reward. What specific evidence from the months after Chancellorsville (think Gettysburg) would you use to argue Jackson's loss was that costly?
   - Tactical success means winning the battle; strategic damage means weakening your whole war effort. How can the same event be both at once, and which one decides the war?
   - If you were Lee's advisor, how would you measure whether a single soldier's life and skill 'outweighs' capturing a battlefield? What standard would you set?
+  - Stuck? Decide whether you think Chancellorsville was worth it, then defend it with one concrete consequence  -  for example, what Lee could no longer do without Jackson at Gettysburg two months later.
 
-### Helper 2 — "One way this act helped the Union win"
+### Helper 2 - "One way this act helped the Union win"
 - **★ Most Support:**
   - One way Act II helped the Union win was the Battle of Antietam, because it let President Lincoln issue the ______, which changed the war to also be about ending ______.
   - After the Emancipation Proclamation, the Union got stronger because ______ could now join the army.
@@ -101,10 +98,11 @@ The in-game reflection prompt is now ALIGNED to each tier exact handout question
   - Evaluate three effects of the Proclamation, new soldiers, a moral cause, and blocked foreign help. Which one did the most to push the Union toward winning?
   - The Proclamation reframed the war as a fight against slavery. Why did that make it politically impossible for Britain and France to support the Confederacy?
   - Some say the North could have won by force alone. Use the foreign-policy and manpower consequences of Antietam to argue whether the Proclamation was necessary, not just helpful.
+  - Stuck? Pick ONE effect of the Emancipation Proclamation (new soldiers, a moral cause, or blocking foreign help) and argue why that one did the most to help the Union win.
 
 ---
 
-## ACT III — Turning Points (Vicksburg, Gettysburg, Chickamauga)
+## ACT III - Turning Points (Vicksburg, Gettysburg, Chickamauga)
 
 ### Aligned reflection question (in-game = handout)
 - **★ Most Support:** One mixed-up order created the gap that lost the whole battle. How much of war comes down to luck or mistakes versus actual skill and planning?
@@ -112,7 +110,7 @@ The in-game reflection prompt is now ALIGNED to each tier exact handout question
 - **★★★ Standard:** A simple miscommunication created the gap that lost the battle. How much of war depends on luck versus skill?
 - **★★★★ Extra Challenge:** A single miscommunicated order created the gap that enabled the Confederate breakthrough. To what extent does this illustrate the role of chance versus planning in warfare? The Prussian theorist Clausewitz called this 'friction': the unpredictable factors that make real war chaotic. How do modern militaries attempt to reduce the impact of such friction?
 
-### Helper 1 — reflection answer
+### Helper 1 - reflection answer
 - **★ Most Support:**
   - I think war comes down more to ______ than to ______, because at this battle one mixed-up order accidentally ______.
 - **★★ More Support:**
@@ -128,8 +126,9 @@ The in-game reflection prompt is now ALIGNED to each tier exact handout question
   - Could better planning have prevented the mixed-up order, or are some mistakes simply unavoidable once thousands of people are involved? Defend your position.
   - Historians debate whether to credit Confederate skill or Union error for the breakthrough. Which interpretation does the evidence support more strongly, and why?
   - Modern militaries use redundant communication, clear chains of command, and rehearsals to fight friction. Which of these would have most likely prevented the Chickamauga gap, and could it have worked?
+  - Stuck? Take a side on luck versus skill, then anchor it in the Chickamauga evidence  -  was the gap caused by a mistake no plan could prevent, or by a failure that better planning would have caught?
 
-### Helper 2 — "One way this act helped the Union win"
+### Helper 2 - "One way this act helped the Union win"
 - **★ Most Support:**
   - One way this act helped the Union win was capturing ______, which gave the Union control of the ______ River and split the Confederacy in two.
 - **★★ More Support:**
@@ -145,10 +144,11 @@ The in-game reflection prompt is now ALIGNED to each tier exact handout question
   - Vicksburg split the Confederacy geographically while Gettysburg ended Lee's offensive power. Which type of advantage was harder for the South to recover from, and why?
   - Could the Confederacy have realistically won the war after losing both battles in July 1863? Build an argument using their resources and options.
   - Battles can have military effects and morale effects. For Vicksburg and Gettysburg, which kind of effect did the most to help the Union win in the long run?
+  - Stuck? Choose Vicksburg OR Gettysburg, state what advantage it gave the Union (control of the Mississippi, or ending Lee's invasions), and explain why the South could not recover from it.
 
 ---
 
-## ACT IV — The War Legacy (Wilderness, Atlanta, Sherman March, Appomattox)
+## ACT IV - The War Legacy (Wilderness, Atlanta, Sherman March, Appomattox)
 
 ### Aligned reflection question (in-game = handout)
 - **★ Most Support:** Grant let the Confederate soldiers go home in peace. Five days later, Lincoln was killed. How might things have been different if Lincoln had lived? When a war ends, what does a country owe to the people who suffered?
@@ -156,7 +156,7 @@ The in-game reflection prompt is now ALIGNED to each tier exact handout question
 - **★★★ Standard:** Grant offered generous surrender terms: Confederates could go home and would not be prosecuted. Five days later, Lincoln was assassinated. How might Reconstruction have been different if Lincoln had lived? What responsibilities does a nation have to its people when a war ends?
 - **★★★★ Extra Challenge:** Grant's generous terms embodied Lincoln's vision of reconciliation: 'with malice toward none, with charity for all.' Five days later, Lincoln's assassination placed Reconstruction in the hands of Andrew Johnson, a figure far less sympathetic to Black rights. How might Reconstruction have differed under Lincoln's leadership? More broadly, how do nations balance the competing imperatives of reconciliation with former enemies and justice for those who suffered? Consider modern examples of post-conflict societies grappling with these same questions.
 
-### Helper 1 — reflection answer
+### Helper 1 - reflection answer
 - **★ Most Support:**
   - Lincoln was killed just ______ days after the South gave up. If Lincoln had lived, I think the freed people would have been treated more ______, and a country owes the people who suffered ______.
 - **★★ More Support:**
@@ -172,8 +172,9 @@ The in-game reflection prompt is now ALIGNED to each tier exact handout question
   - Reconciliation with former enemies and justice for the people who suffered can be competing goals. Make an argument about which one a nation should prioritize first when a war ends, and defend it.
   - How much did one man's death actually change history here, versus the larger forces (a hostile Congress, Southern resistance, Northern fatigue) that would have shaped Reconstruction no matter who was president?
   - Pick a modern post-conflict society (for example South Africa after apartheid, or postwar Germany). What does its attempt to balance reconciliation and justice reveal about whether Lincoln's approach could have succeeded?
+  - Stuck? Take a position on whether Lincoln's death changed history, then support it with one specific contrast between Lincoln's stated vision ("malice toward none") and what Andrew Johnson actually did.
 
-### Helper 2 — "One way this act helped the Union win"
+### Helper 2 - "One way this act helped the Union win"
 - **★ Most Support:**
   - One way this act helped the Union win: General ______ kept attacking and never let the South rest, and Sherman ______ the South's farms and supplies so its army could not keep ______.
 - **★★ More Support:**
@@ -189,6 +190,7 @@ The in-game reflection prompt is now ALIGNED to each tier exact handout question
   - Sherman's 'total war' targeted the South's ability to supply its army, not just its troops. Evaluate the claim that destroying an enemy's resources can matter more than winning battles.
   - Atlanta's fall secured Lincoln's re-election over a peace candidate. Make the case that this political result was as important to Union victory as any military one.
   - Weigh military causes (Grant, Sherman) against political ones (the election) for the Union's win in this act. Which kind of cause was more decisive, and what evidence supports your judgment?
+  - Stuck? Pick ONE cause  -  Grant's pressure, Sherman's destruction, or Atlanta's fall helping Lincoln win re-election  -  take a side on which mattered most, and back it with a specific result.
 
 ---
 

@@ -358,11 +358,32 @@ function renderReflectHelper(boxId, helperData) {
 
     while (listEl.firstChild) listEl.removeChild(listEl.firstChild);
     lines.forEach(function(line) {
+        // A line beginning with "Stuck?" is the Extra Challenge thinking-move
+        // footer: render it set apart from the question bullets, not as a bullet.
+        if (/^Stuck\?/.test(line)) {
+            var foot = document.createElement('div');
+            foot.className = 'reflect-helper-stuck';
+            applyGlossary(foot, line); // glossary-linked like the rest (Task 3b)
+            listEl.parentNode.appendChild(foot);
+            return;
+        }
         var li = document.createElement('li');
-        li.textContent = line; // textContent: safe even though content is authored
+        applyGlossary(li, line); // Task 3b: glossary tooltips; replaces textContent
         listEl.appendChild(li);
     });
     box.style.display = '';
+}
+```
+
+Add CSS (with the Task 3 styles) for the set-apart footer:
+
+```css
+.reflect-helper-stuck {
+    margin-top: var(--space-2);
+    padding-top: var(--space-2);
+    border-top: 1px dashed var(--color-accent, #6b2419);
+    font-style: italic;
+    font-size: var(--font-size-sm);
 }
 ```
 
