@@ -1621,11 +1621,16 @@ function renderReflectHelper(boxId, helperData) {
     if (!box) return;
     var headEl = box.querySelector('.reflect-helper-head');
     var listEl = box.querySelector('.reflect-helper-list');
-    if (!headEl || !listEl || !helperData) { box.style.display = 'none'; return; }
+    function clearBox() {
+        if (listEl) { while (listEl.firstChild) listEl.removeChild(listEl.firstChild); }
+        var s = box.querySelector('.reflect-helper-stuck');
+        if (s) s.parentNode.removeChild(s);
+    }
+    if (!headEl || !listEl || !helperData) { clearBox(); box.style.display = 'none'; return; }
 
     var tier = (typeof resolveDifficulty === 'function') ? resolveDifficulty(helperData) : 'intermediate';
     var lines = helperData[tier] || helperData.extra || helperData.beginner || helperData.intermediate;
-    if (!lines || !lines.length) { box.style.display = 'none'; return; }
+    if (!lines || !lines.length) { clearBox(); box.style.display = 'none'; return; }
 
     // Frame tiers (extra/beginner) get "try this"; question tiers get "think about these".
     var isFrame = (tier === 'extra' || tier === 'beginner');
@@ -1634,9 +1639,7 @@ function renderReflectHelper(boxId, helperData) {
         : 'Not sure what to write? Think about these:';
 
     // Clear the list AND any prior Stuck footer (re-render safe).
-    while (listEl.firstChild) listEl.removeChild(listEl.firstChild);
-    var oldStuck = box.querySelector('.reflect-helper-stuck');
-    if (oldStuck) oldStuck.parentNode.removeChild(oldStuck);
+    clearBox();
 
     lines.forEach(function(line) {
         if (/^Stuck\?/.test(line)) {
