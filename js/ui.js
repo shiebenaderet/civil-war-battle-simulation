@@ -1614,6 +1614,46 @@ function showReflectScaffolding() {
 // Grouped Reflection Display
 // ============================================================
 
+// Render one tier-graduated helper box. helperData is a per-helper object
+// { extra:[...], beginner:[...], intermediate:[...], advanced:[...] }.
+function renderReflectHelper(boxId, helperData) {
+    var box = document.getElementById(boxId);
+    if (!box) return;
+    var headEl = box.querySelector('.reflect-helper-head');
+    var listEl = box.querySelector('.reflect-helper-list');
+    if (!headEl || !listEl || !helperData) { box.style.display = 'none'; return; }
+
+    var tier = (typeof resolveDifficulty === 'function') ? resolveDifficulty(helperData) : 'intermediate';
+    var lines = helperData[tier] || helperData.extra || helperData.beginner || helperData.intermediate;
+    if (!lines || !lines.length) { box.style.display = 'none'; return; }
+
+    // Frame tiers (extra/beginner) get "try this"; question tiers get "think about these".
+    var isFrame = (tier === 'extra' || tier === 'beginner');
+    headEl.textContent = isFrame
+        ? 'Not sure what to write? Try this:'
+        : 'Not sure what to write? Think about these:';
+
+    // Clear the list AND any prior Stuck footer (re-render safe).
+    while (listEl.firstChild) listEl.removeChild(listEl.firstChild);
+    var oldStuck = box.querySelector('.reflect-helper-stuck');
+    if (oldStuck) oldStuck.parentNode.removeChild(oldStuck);
+
+    lines.forEach(function(line) {
+        if (/^Stuck\?/.test(line)) {
+            // The Extra Challenge thinking-move footer: set apart, not a bullet.
+            var foot = document.createElement('div');
+            foot.className = 'reflect-helper-stuck';
+            applyGlossary(foot, line);
+            box.appendChild(foot);
+            return;
+        }
+        var li = document.createElement('li');
+        applyGlossary(li, line);
+        listEl.appendChild(li);
+    });
+    box.style.display = '';
+}
+
 function showGroupedReflection() {
     var groupIdx = getReflectionGroupIndex(gameState.currentBattle);
     var group = groupedReflections[groupIdx];
@@ -1627,6 +1667,10 @@ function showGroupedReflection() {
         '<span class="reflect-theme">' + escapeHtml(group.theme) + '</span><br>' +
         '<span class="reflect-battles">Thinking across: ' + escapeHtml(group.battleRange) + '</span><br><br>' +
         escapeHtml(getContent(group.prompt));
+
+    var helpers = group.helpers || {};
+    renderReflectHelper('reflectHelperReflection', helpers.reflection);
+    renderReflectHelper('reflectHelperUnion', helpers.unionWin);
 
     // Clear textarea
     document.getElementById('histReflectInput').value = '';
