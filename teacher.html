@@ -545,7 +545,7 @@
             gbEntries: [],
             gbLoading: false,
             recallRows: {},
-            gbEntries: []
+            guestbookEntries: []
         };
 
         function init() {
@@ -601,7 +601,7 @@
             // v3.23: subscribe to the public guest book for the Guest Book tab.
             firebaseLeaderboard.subscribeToGuestbook(function(entries, gerr) {
                 if (gerr) return;
-                state.gbEntries = entries || [];
+                state.guestbookEntries = entries || [];
                 if (state.tab === 'guestbook') renderGuestbook();
             });
 
@@ -1084,7 +1084,7 @@
             var empty = document.getElementById('guestbookEmpty');
             var mapMount = document.getElementById('guestbookMapMount');
             body.innerHTML = '';
-            var rows = state.gbEntries.slice().sort(function(a, b) { return (b.timestamp || 0) - (a.timestamp || 0); });
+            var rows = state.guestbookEntries.slice().sort(function(a, b) { return (b.timestamp || 0) - (a.timestamp || 0); });
             if (mapMount) renderVisitorMap(mapMount, rows, null);
             if (!rows.length) { empty.style.display = ''; return; }
             empty.style.display = 'none';
