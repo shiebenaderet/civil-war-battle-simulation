@@ -878,21 +878,13 @@ function showReflectionStep() {
     var isLast = gameState.currentBattle >= battles.length - 1;
     var continueBtn = document.getElementById('narrativeContinueBtn');
     if (continueBtn) {
-        // v3.24: from the reflection screen, Continue goes to the act quiz first
-        // (if not already done), THEN advances. Clone the button so this handler
-        // does not stack with the global advanceNarrative click listener.
-        var actIdx2 = (typeof getActForBattle === 'function') ? getActForBattle(gameState.currentBattle) : -1;
+        // v3.24: reflection comes before the act quiz. The quiz (if still pending)
+        // is launched from advanceNarrative's step-6 interception, not from here,
+        // so the global Continue handler stays intact. Label nudges toward the quiz.
         var quizPending = (typeof shouldShowActRecall === 'function') && shouldShowActRecall(gameState.currentBattle);
-        var fresh = continueBtn.cloneNode(true);
-        continueBtn.parentNode.replaceChild(fresh, continueBtn);
-        fresh.disabled = false;
-        if (quizPending && actIdx2 !== -1) {
-            fresh.textContent = 'Continue to Quick Check →';
-            fresh.addEventListener('click', function() { renderActRecall(actIdx2); });
-        } else {
-            fresh.textContent = isLast ? 'Complete Historical Mode' : 'Next Battle →';
-            fresh.addEventListener('click', function() { advanceNarrative(); });
-        }
+        continueBtn.disabled = false;
+        continueBtn.textContent = quizPending ? 'Continue to Quick Check →'
+            : (isLast ? 'Complete Historical Mode' : 'Next Battle →');
     }
     if (targetSection) targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
@@ -1897,6 +1889,20 @@ function advanceNarrative() {
     }
 
     narrativeStep++;
+
+    // v3.24: at an act end, the quiz comes AFTER reflection. When leaving the
+    // reflection step (now narrativeStep 6) with the quiz still pending, launch
+    // the quiz instead of advancing. The quiz's onContinue calls advanceNarrative
+    // again; by then completedRecalls marks the act done, so this is skipped and
+    // step 6 proceeds to advance. This keeps the single global Continue handler.
+    if (narrativeStep === 6 &&
+        typeof isReflectionBattle === 'function' && isReflectionBattle(gameState.currentBattle) &&
+        typeof shouldShowActRecall === 'function' && shouldShowActRecall(gameState.currentBattle)) {
+        narrativeStep--; // stay on the reflection step number; the quiz screen takes over
+        var actIdxQuiz = (typeof getActForBattle === 'function') ? getActForBattle(gameState.currentBattle) : -1;
+        if (actIdxQuiz !== -1) { renderActRecall(actIdxQuiz); return; }
+    }
+
     var targetSection = null;
 
     switch (narrativeStep) {
